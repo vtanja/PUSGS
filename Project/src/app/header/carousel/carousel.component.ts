@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgbCarousel, NgbSlideEvent, NgbSlideEventSource } from '@ng-bootstrap/ng-bootstrap';
+import { ActivatedRoute, Router } from '@angular/router';
 
 
 @Component({
@@ -25,6 +26,8 @@ export class CarouselComponent{
 
   @ViewChild('carousel', {static : true}) carousel: NgbCarousel;
 
+  constructor(private route:ActivatedRoute, private router:Router){}
+
   togglePaused() {
     if (this.paused) {
       this.carousel.cycle();
@@ -43,6 +46,8 @@ export class CarouselComponent{
       this.togglePaused();
     }
   }
+  
+  
 
 }
 
