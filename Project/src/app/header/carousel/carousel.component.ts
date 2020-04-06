@@ -12,9 +12,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class CarouselComponent{
 
   public images = [
-   "../../../assets/images/background2 .jpg" ,
-   "../../../assets/images/background2 .jpg",
-   "../../../assets/images/home_slider.jpg",
+   "../../../assets/images/background22.jpg" ,
+   "../../../assets/images/homeslider1.jpg",
+   "../../../assets/images/homslider2.jpg",
  ];
 
  public descriptions =["","Rent a car >> ","Book a plane ticket >> "]
@@ -46,8 +46,8 @@ export class CarouselComponent{
       this.togglePaused();
     }
   }
-  
-  
+
+
 
 }
 
