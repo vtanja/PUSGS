@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgbCarousel, NgbSlideEvent, NgbSlideEventSource } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute, Router } from '@angular/router';
+import { UserService } from 'src/app/userService.service';
 
 
 @Component({
@@ -9,7 +10,7 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['./carousel.component.css']
 })
 
-export class CarouselComponent{
+export class CarouselComponent implements OnInit{
 
   public images = [
    "../../../assets/images/background22.jpg" ,
@@ -26,7 +27,11 @@ export class CarouselComponent{
 
   @ViewChild('carousel', {static : true}) carousel: NgbCarousel;
 
-  constructor(private route:ActivatedRoute, private router:Router){}
+  constructor(private route:ActivatedRoute, private router:Router, private userService:UserService){}
+  
+  ngOnInit(){
+    
+  }
 
   togglePaused() {
     if (this.paused) {
@@ -47,6 +52,7 @@ export class CarouselComponent{
     }
   }
 
+  
 
 
 }

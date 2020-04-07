@@ -12,6 +12,8 @@ import { HomePageComponent } from './home-page/home-page.component';
 import { RegisterComponent } from './register/register.component';
 import { AirlinesComponent } from './airlines/airlines.component';
 import { RentACarsComponent } from './rent-a-cars/rent-a-cars.component';
+import { UserService } from './userService.service';
+import { UserProfileComponent } from './user-profile/user-profile.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +24,8 @@ import { RentACarsComponent } from './rent-a-cars/rent-a-cars.component';
     HomePageComponent,
     RegisterComponent,
     AirlinesComponent,
-    RentACarsComponent
+    RentACarsComponent,
+    UserProfileComponent
   ],
   imports: [
     BrowserModule,
@@ -31,7 +34,7 @@ import { RentACarsComponent } from './rent-a-cars/rent-a-cars.component';
     FormsModule,
     ReactiveFormsModule
   ],
-  providers: [],
+  providers: [UserService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

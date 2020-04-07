@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, OnInit, Input } from '@angular/core';
+import { UserService } from '../userService.service';
 
 @Component({
   selector: 'app-header',
@@ -8,9 +8,17 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class HeaderComponent implements OnInit {
 
-  constructor() { }
+  username:string ='';
+  loggedIn:boolean = false;
+
+  constructor(private userService:UserService) { }
 
   ngOnInit(): void {
+    this.userService.userLogged.subscribe(
+      (username: string)=>{
+        this.loggedIn=true;
+        this.username=username;
+      });
   }
 
   
