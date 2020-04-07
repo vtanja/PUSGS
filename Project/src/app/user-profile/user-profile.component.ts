@@ -23,21 +23,91 @@ export class UserProfileComponent implements OnInit {
       'lastName' : new FormControl(null,Validators.required),
       'email': new FormControl(null, [Validators.required, Validators.email]),
       'phone': new FormControl(null, [Validators.required, Validators.pattern(new RegExp('(([+][(]?[0-9]{1,3}[)]?)|([(]?[0-9]{4}[)]?))\s*[)]?[-\s\.]?[(]?[0-9]{1,3}[)]?([-\s\.]?[0-9]{3})([-\s\.]?[0-9]{3,4})'))]),
-      'address': new FormControl(null, Validators.required)
+      'address': new FormControl(null, Validators.required),
+
+      'passwordData' : new FormGroup({
+          'password': new FormControl(null,[Validators.required,
+            Validators.pattern(new RegExp("^(?=.*[0-9]+.*)(?=.*[a-zA-Z]+.*)[0-9a-zA-Z]{8,}$"))]),
+          'confirm': new FormControl(null,[Validators.required])
+           
+        },this.passwordMatchValidator.bind(this)),
+          
     });
 
     this.editForm.setValue({
       'firstName':'Pera',
       'lastName': 'Peric',
+      'passwordData':{
+        password:'pass1word1A',
+        confirm:'pass1word1A'
+      },
       'email': 'pera@pera.com',
-      'phone': '+38111111111',
-      'address': 'Ulica ulicic 1, Grad'
+      'phone': '+38163687654',
+      'address': 'Ulica ulicic 1, Grad',
     });
+
+    console.log(this.editForm);
   }
+
+  onCountryChange(event:any){
+    this.editForm.get('phone').setValue(event['dialCode']);
+   }
+
+  hasRequiredError(controlName:string){
+
+    const control = <FormControl>(this.editForm.get(controlName));
+    const errors = control.errors;
+
+    if(errors){
+      if(errors['required'] && control.touched )
+         return true;
+    }
+
+    return false;
+
+  }
+
+  doPasswordsMatch(){
+    if(this.editForm.get('passwordData').errors){
+      if(this.editForm.get('passwordData').errors['notMatching'] && this.editForm.get('passwordData.password').touched && this.editForm.get('passwordData.confirm').touched )
+         return true;
+    }
+
+    return false;
+  }
+
+
+  passwordMatchValidator(group: FormGroup): {[s:string]:boolean} {
+
+    if (group) {
+      if (group.get('password').value !== group.get('confirm').value) {
+        return { 'notMatching' : true };
+      }
+    }
+
+    return null;
+  }
+
+
+  hasRegExpError(controlName:string){
+
+    const control = <FormControl>(this.editForm.get(controlName));
+    const errors = control.errors;
+
+    if(errors){
+      if(errors['pattern'] && control.touched )
+         return true;
+    }
+
+    return false;
+
+  }
+
 
   onSaveChanges(){
 
   }
+
 
   onEdit(control: string){
     if(control==='firstName'){

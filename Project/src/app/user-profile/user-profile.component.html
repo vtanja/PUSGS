@@ -5,62 +5,103 @@
             <div class="wrap-login100" style="background: #31124b; opacity: 0.7; text-align: center; vertical-align: middle;">
 				<div><img src = "../../../assets/images/profil.jpg" class ="img-circle" style=" width:200px; height: 240px;" ></div>
 				<div><button class="btn btn-outline" >Change image...</button></div>
-            </div>
-
+			</div>
+			
 			<div class="wrap-login100 p-l-50 p-r-50 p-t-50 p-b-50">
 				<form class="login100-form validate-form" [formGroup]="editForm" (ngSubmit)="onSaveChanges()">
-				
-					<div class="wrap-input100 validate-input" >
-						<span class="label-input100">First name:</span>
-						<div class="input-icons">
-							<input [readonly]="firstNameReadonly" formControlName="firstName" class="input100" type="text" name="firstName" placeholder="First name...">    
-							<i class="fa fa-edit" (click)="onEdit('firstName')"></i>
-							<span class="focus-input100"></span>
+				<div class="container">
+					<div class="row" style="width: 100%;">
+						<div class="col-md" style="width: 100%;">
+							<div class="wrap-input100 validate-input" >
+								<span class="label-input100">First name:</span>
+								<div class="input-icons">
+									<input [readonly]="firstNameReadonly" formControlName="firstName" class="input100" type="text" name="firstName" placeholder="First name...">    
+									<i class="fa fa-edit" (click)="onEdit('firstName')"></i>
+									<span class="focus-input100"></span>
+								</div>
+								<span class="invalid-input-span" *ngIf="editForm.get('firstName').invalid && editForm.get('firstName').touched">First name is required</span> 
+							</div>
+						
+							<div formGroupName="passwordData" >
+								<div class="wrap-input100 validate-input" >
+									  <span class="label-input100">Password</span>
+									  <div class="input-icons">
+										<show-hide-password size="sm" btnStyle="light" [btnOutline]="false"  >
+											<input formControlName="password" class="input100" type="text" name="pass" placeholder="*************">
+										</show-hide-password>
+										<!-- <i *ngIf="registerForm.get('passwordData.password').invalid && registerForm.get('passwordData.password').touched" class="fa fa-exclamation"></i> -->
+										<span class="focus-input100"></span>
+									  </div>
+									  <span class="invalid-input-span" *ngIf="editForm.get('passwordData.password').invalid && editForm.get('passwordData.password').touched && !hasRegExpError('passwordData.password')">Password is required</span>
+									  <span class="invalid-input-span" *ngIf="editForm.get('passwordData.password').invalid && editForm.get('passwordData.password').touched && hasRegExpError('passwordData.password')">
+									   Password must have minimum eight characters, at least one letter and one number: </span>
+									 
+								</div>
+						
+								<div class="wrap-input100 validate-input" >
+									  <span class="label-input100">Confirm Password</span>
+									  <div class="input-icons">
+										<show-hide-password size="sm" btnStyle="light"  [btnOutline]="false" >
+											<input formControlName="confirm" class="input100" type="text" name="confirm-pass" placeholder="*************">
+										  </show-hide-password>
+										   <!-- <i *ngIf="doPasswordsMatch() || (registerForm.get('passwordData.confirm').invalid && registerForm.get('passwordData.confirm').touched)" class="fa fa-exclamation"></i> -->
+										<span class="focus-input100"></span>
+									  </div>
+						
+									 <span class="invalid-input-span" *ngIf="editForm.get('passwordData.confirm').invalid && editForm.get('passwordData.confirm').touched">Confirm password is required</span>
+									 <span class="invalid-input-span" *ngIf="editForm.get('passwordData.confirm').valid && editForm.get('passwordData.password').valid && editForm.get('passwordData').invalid">Passwords do not match.</span>
+								  </div>
 						</div>
-						<span class="invalid-input-span" *ngIf="editForm.get('firstName').invalid && editForm.get('firstName').touched">First name is required</span> 
+								  <div class="wrap-input100 validate-input">
+									<span class="label-input100">Address:</span>
+								   <div class="input-icons">
+										<input [readonly]="addressReadonly"  formControlName="address" class="input100" type="text" name="address" placeholder="Address...">
+										  <i class="fa fa-edit" (click)="onEdit('address')"></i>
+										  <span class="focus-input100"></span>
+									</div>
+									<span class="invalid-input-span" *ngIf="editForm.get('address').invalid && editForm.get('address').touched">Address is required</span>
+								</div>
+							</div>
+						
+						<div class="col-md" style="width: 100%;">
+							<div class="wrap-input100 validate-input">
+								<span class="label-input100">Last name:</span>
+							   <div class="input-icons">
+									<input [readonly]="lastNameReadonly"  formControlName="lastName" class="input100" type="text" name="lastName" placeholder="Last name...">
+									  <i class="fa fa-edit" (click)="onEdit('lastName')"></i>
+									  <span class="focus-input100"></span>
+								</div>
+								<span class="invalid-input-span" *ngIf="editForm.get('lastName').invalid && editForm.get('lastName').touched">Last name is required</span>
+							</div>
+						
+							<div class="wrap-input100 validate-input" >
+								<span class="label-input100">Email:</span>
+							   <div class="input-icons">
+									<input [readonly]="emailReadonly"  formControlName="email" class="input100" type="text" name="email" placeholder="Email...">
+									  <i class="fa fa-edit" (click)="onEdit('email')"></i>
+									  <span class="focus-input100"></span>
+								</div>
+								<span class="invalid-input-span" *ngIf="editForm.get('email').invalid && editForm.get('email').touched">Email is required</span>
+							</div> 
+							
+							<div class="wrap-input100 validate-input" >
+								<span class="label-input100">Phone number</span>
+								<div class="input-icons">
+								  <input formControlName="phone" class="input100" ng2TelInput
+				  
+								  (countryChange)="onCountryChange($event)"
+								  type="text" name="phone" placeholder="Phone number">
+								  <i *ngIf="editForm.get('phone').invalid && editForm.get('phone').touched" class="fa fa-exclamation"></i>
+								  <span class="focus-input100"></span>
+								</div>
+								<span class="invalid-input-span" *ngIf="editForm.get('phone').invalid && editForm.get('phone').touched && hasRequiredError('phone')">Phone number is required</span>
+								<span class="invalid-input-span" *ngIf="editForm.get('phone').invalid && editForm.get('phone').touched && hasRegExpError('phone')">Please enter valid phone number</span>
+								</div>
+						</div>
+						</div>
 					</div>
 
-					<div class="wrap-input100 validate-input">
-						<span class="label-input100">Last name:</span>
-					   <div class="input-icons">
-							<input [readonly]="lastNameReadonly"  formControlName="lastName" class="input100" type="text" name="lastName" placeholder="Last name...">
-		  					<i class="fa fa-edit" (click)="onEdit('lastName')"></i>
-		  					<span class="focus-input100"></span>
-						</div>
-						<span class="invalid-input-span" *ngIf="editForm.get('lastName').invalid && editForm.get('lastName').touched">Last name is required</span>
-					</div>
-					
-                    <div class="wrap-input100 validate-input" >
-						<span class="label-input100">Email:</span>
-					   <div class="input-icons">
-							<input [readonly]="emailReadonly"  formControlName="email" class="input100" type="text" name="email" placeholder="Email...">
-		  					<i class="fa fa-edit" (click)="onEdit('email')"></i>
-		  					<span class="focus-input100"></span>
-						</div>
-						<span class="invalid-input-span" *ngIf="editForm.get('email').invalid && editForm.get('email').touched">Email is required</span>
-                    </div> 
-                    
-                    <div class="wrap-input100 validate-input" >
-						<span class="label-input100">Phone number:</span>
-					   <div class="input-icons">
-							<input [readonly]="phoneReadonly"  formControlName="phone" class="input100" type="text" name="phone" placeholder="Phone number...">
-		  					<i class="fa fa-edit" (click)="onEdit('phone')"></i>
-		  					<span class="focus-input100"></span>
-						</div>
-						<span class="invalid-input-span" *ngIf="editForm.get('phone').invalid && editForm.get('phone').touched">Phone number is required</span>
-					</div>
-
-                    <div class="wrap-input100 validate-input">
-						<span class="label-input100">Address:</span>
-					   <div class="input-icons">
-							<input [readonly]="addressReadonly"  formControlName="address" class="input100" type="text" name="address" placeholder="Address...">
-		  					<i class="fa fa-edit" (click)="onEdit('address')"></i>
-		  					<span class="focus-input100"></span>
-						</div>
-						<span class="invalid-input-span" *ngIf="editForm.get('address').invalid && editForm.get('address').touched">Address is required</span>
-					</div>
-
-					<div class="container-login100-form-btn">
+					<div class="container-login100-form-btn" style="align-self: center;">
 						<div class="wrap-login100-form-btn">
 							<div class="login100-form-bgbtn"></div>
 							<button class="login100-form-btn" [disabled]="editForm.invalid">
@@ -73,3 +114,5 @@
 		</div>
 	</div>
 </body>
+
+

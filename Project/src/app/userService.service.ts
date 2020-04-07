@@ -5,9 +5,6 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class UserService{
     userLogged = new Subject<string>();
-    observers = [];
+    isLogged = new Subject<boolean>();
 
-    getObservers(){
-        return this.userLogged.observers.slice();
-    }
 }

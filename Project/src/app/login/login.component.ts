@@ -28,12 +28,8 @@ export class LoginComponent implements OnInit {
     this.loggedUsername=this.loginForm.get('username').value;
 
     if(this.loggedIn){
-      const observers=this.userService.getObservers();
-      console.log(observers);
-       for(let obs of observers){
-        this.userService.userLogged.next(this.loggedUsername);
-      }
       this.userService.userLogged.next(this.loggedUsername);
+      this.userService.isLogged.next(true);
     }
     this.router.navigate(['/home'], {relativeTo:this.route});
 

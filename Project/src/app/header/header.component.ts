@@ -9,7 +9,7 @@ import { UserService } from '../userService.service';
 export class HeaderComponent implements OnInit {
 
   username:string ='';
-  loggedIn:boolean = false;
+  loggedIn:boolean;
 
   constructor(private userService:UserService) { }
 
