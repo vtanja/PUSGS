@@ -4,61 +4,120 @@
 		<div class="container-login100">
 			<div class="login100-more" style="background-image: url('../../assets/images/bg-01.jpg');"></div>
 
-			<div class="wrap-login100 p-l-50 p-r-50 p-t-72 p-b-50">
+
+			<div class="wrap-login100 p-l-50 p-r-50 p-t-50 p-b-40">
 				<form class="login100-form validate-form" [formGroup]="registerForm">
-					<span class="login100-form-title p-b-59">
+          <div class="row" style="width: 100%;">
+					<span class="login100-form-title p-b-50">
 						Registration
-					</span>
-
-					<div class="wrap-input100 validate-input" >
-						<span class="label-input100">First Name</span>
-						<input formControlName="firstName" class="input100" type="text" name="firstName" placeholder="First name...">
-						<span class="focus-input100"></span>
-          </div>
-
-          <div class="wrap-input100 validate-input" >
-						<span class="label-input100">Last Name</span>
-						<input formControlName="lastName" class="input100" type="text" name="lastName" placeholder="Last name...">
-						<span class="focus-input100"></span>
-					</div>
-
-					<div class="wrap-input100 validate-input" >
-						<span class="label-input100">Username</span>
-						<input formControlName="username" class="input100" type="text" name="username" placeholder="Username...">
-						<span class="focus-input100"></span>
-          </div>
-
-          <div class="wrap-input100 validate-input" >
-						<span class="label-input100">Email</span>
-						<input formControlName="email" class="input100" type="text" name="email" placeholder="Email address...">
-						<span class="focus-input100"></span>
-					</div>
-
-          <div formGroupName="passwordData">
-					<div class="wrap-input100 validate-input" >
-						<span class="label-input100">Password</span>
-						<input formControlName="password" class="input100" type="text" name="pass" placeholder="*************">
-						<span class="focus-input100"></span>
-					</div>
-
-					<div class="wrap-input100 validate-input" >
-						<span class="label-input100">Confirm Password</span>
-						<input formControlName="confirm" class="input100" type="text" name="confirm-pass" placeholder="*************">
-						<span class="focus-input100"></span>
-          </div>
+          </span>
         </div>
-          <div class="wrap-input100 validate-input" >
-						<span class="label-input100">City/Town</span>
-						<input formControlName="city" class="input100" type="text" name="city" placeholder="City/Town..">
-						<span class="focus-input100"></span>
+
+			<div class="row" style="width: 100%;">
+				<div class="col" style="width: 100%"  >
+					<div class="wrap-input100 validate-input" >
+            <span class="label-input100">First Name</span>
+            <div class="input-icons">
+						<input formControlName="firstName" class="input100" type="text" name="firstName" placeholder="First name...">
+						<i *ngIf="registerForm.get('firstName').invalid && registerForm.get('firstName').touched" class="fa fa-exclamation"></i>
+                <span class="focus-input100"></span>
+              </div>
+             <span class="invalid-input-span" *ngIf="registerForm.get('firstName').invalid && registerForm.get('firstName').touched">First name is required</span>
           </div>
 
           <div class="wrap-input100 validate-input" >
-						<span class="label-input100">Phone number</span>
-						<input formControlName="phone" class="input100" type="text" name="phone-num" placeholder="Phone number">
-						<span class="focus-input100"></span>
+            <span class="label-input100">Last Name</span>
+            <div class="input-icons">
+					  	<input formControlName="lastName" class="input100" type="text" name="lastName" placeholder="Last name...">
+						  <i *ngIf="registerForm.get('lastName').invalid && registerForm.get('lastName').touched" class="fa fa-exclamation"></i>
+              <span class="focus-input100"></span>
+            </div>
+             <span class="invalid-input-span" *ngIf="registerForm.get('lastName').invalid && registerForm.get('lastName').touched">Last name is required</span>
+					</div>
+
+					<div class="wrap-input100 validate-input" >
+            <span class="label-input100">Username</span>
+            <div class="input-icons">
+						<input formControlName="username" class="input100" type="text" name="username" placeholder="Username...">
+						<i *ngIf="registerForm.get('username').invalid && registerForm.get('username').touched" class="fa fa-exclamation"></i>
+                <span class="focus-input100"></span>
+              </div>
+             <span class="invalid-input-span" *ngIf="registerForm.get('username').invalid && registerForm.get('username').touched">Username is required</span>
           </div>
 
+          <div class="wrap-input100 validate-input" >
+            <span class="label-input100">Email</span>
+            <div class="input-icons">
+              <input formControlName="email" class="input100" type="text" name="username" placeholder="Email...">
+              <i *ngIf="registerForm.get('email').invalid && registerForm.get('email').touched" class="fa fa-exclamation"></i>
+              <span class="focus-input100"></span>
+            </div>
+           <span class="invalid-input-span" *ngIf="registerForm.get('email').invalid && registerForm.get('email').touched && hasRequiredError('email')">Email is required</span>
+           <span class="invalid-input-span" *ngIf="registerForm.get('email').invalid && registerForm.get('email').touched && hasEmailError('email')">Email adrress format in not valid</span>
+					</div>
+        </div>
+
+
+				<div class="col" style="width: 100%; margin-left: 10%;">
+					<div formGroupName="passwordData">
+						<div class="wrap-input100 validate-input" >
+              <span class="label-input100">Password</span>
+              <div class="input-icons">
+                <show-hide-password size="sm" btnStyle="light" [btnOutline]="false"  >
+							  <input formControlName="password" class="input100" type="text" name="pass" placeholder="*************">
+                </show-hide-password>
+                <!-- <i *ngIf="registerForm.get('passwordData.password').invalid && registerForm.get('passwordData.password').touched" class="fa fa-exclamation"></i> -->
+                <span class="focus-input100"></span>
+              </div>
+             <span class="invalid-input-span" *ngIf="registerForm.get('passwordData.password').invalid && registerForm.get('passwordData.password').touched && !hasRegExpError('passwordData.password')">Password is required</span>
+             <span class="invalid-input-span" *ngIf="registerForm.get('passwordData.password').invalid && registerForm.get('passwordData.password').touched && hasRegExpError('passwordData.password')">
+              Password must have minimum eight characters, at least one letter and one number: </span>
+            </div>
+
+						<div class="wrap-input100 validate-input" >
+              <span class="label-input100">Confirm Password</span>
+              <div class="input-icons">
+                <show-hide-password size="sm" btnStyle="light"  [btnOutline]="false" >
+							  <input formControlName="confirm" class="input100" type="text" name="confirm-pass" placeholder="*************">
+              </show-hide-password>
+               <!-- <i *ngIf="doPasswordsMatch() || (registerForm.get('passwordData.confirm').invalid && registerForm.get('passwordData.confirm').touched)" class="fa fa-exclamation"></i> -->
+
+                <span class="focus-input100"></span>
+              </div>
+
+             <span class="invalid-input-span" *ngIf="registerForm.get('passwordData.confirm').invalid && registerForm.get('passwordData.confirm').touched">Confirm password is required</span>
+             <span class="invalid-input-span" *ngIf="registerForm.get('passwordData.confirm').valid && registerForm.get('passwordData.password').valid && registerForm.get('passwordData').invalid">Passwords do not match.</span>
+			      </div>
+      </div>
+
+
+			  <div class="wrap-input100 validate-input" >
+              <span class="label-input100">City/Town</span>
+              <div class="input-icons">
+						  	<input formControlName="city" class="input100" type="text" name="city" placeholder="City/Town..">
+                <i *ngIf="registerForm.get('city').invalid && registerForm.get('city').touched" class="fa fa-exclamation"></i>
+                <span class="focus-input100"></span>
+              </div>
+              <span class="invalid-input-span" *ngIf="registerForm.get('city').invalid && registerForm.get('city').touched">City name is required</span>
+			  </div>
+
+			  <div class="wrap-input100 validate-input" >
+              <span class="label-input100">Phone number</span>
+              <div class="input-icons">
+                <input formControlName="phone" class="input100" ng2TelInput
+
+                (countryChange)="onCountryChange($event)"
+                type="text" name="phone-num" placeholder="Phone number">
+                <i *ngIf="registerForm.get('phone').invalid && registerForm.get('phone').touched" class="fa fa-exclamation"></i>
+                <span class="focus-input100"></span>
+              </div>
+              <span class="invalid-input-span" *ngIf="registerForm.get('phone').invalid && registerForm.get('phone').touched && hasRequiredError('phone')">Phone number is required</span>
+              <span class="invalid-input-span" *ngIf="registerForm.get('phone').invalid && registerForm.get('phone').touched && hasRegExpError('phone')">Please enter valid phone number</span>
+			  </div>
+				</div>
+      </div>
+
+      <div class="row" style="width: 100%">
 					<div class="container-login100-form-btn">
 						<div class="wrap-login100-form-btn">
 							<div class="login100-form-bgbtn"></div>
@@ -66,7 +125,8 @@
 								Register
 							</button>
 						</div>
-					</div>
+          </div>
+        </div>
 				</form>
 			</div>
 		</div>

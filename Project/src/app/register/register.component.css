@@ -118,9 +118,9 @@ textarea:-ms-input-placeholder {color: #cccccc;}
 
 /*---------------------------------------------*/
 
-input.ng-invalid.ng-touched{
+/* input.ng-invalid.ng-touched{
   border: 1px solid red;
-}
+} */
 button {
 	outline: none !important;
 	border: none;
@@ -178,7 +178,7 @@ iframe {
 
 .container-login100 {
   width: 100%;
-  display: -webkit-box;
+   display: -webkit-box;
   display: -webkit-flex;
   display: -moz-box;
   display: -ms-flexbox;
@@ -190,7 +190,7 @@ iframe {
 
 
 .wrap-login100 {
-  width: 520px;
+  width: 60%;
   min-height: 50vh;
   background: #fff;
   border-radius: 2px;
@@ -203,7 +203,7 @@ iframe {
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
-  width: calc(100% - 520px);
+  width: 40%;
   position: relative;
   z-index: 1;
 }
@@ -236,13 +236,14 @@ iframe {
 }
 
 .login100-form-title {
-  display: block;
+  /* display: block; */
   width: 100%;
   font-family: Poppins-Bold;
   font-size: 39px;
   color: #333333;
   line-height: 1.2;
-  text-align: left;
+  text-align: center;
+  align-content: center;
 }
 
 
@@ -265,7 +266,7 @@ iframe {
   padding-left: 2px;
 }
 
-.input100 {
+/* .input100 {
   display: block;
   width: 100%;
   height: 50px;
@@ -275,7 +276,53 @@ iframe {
   color: #555555;
   line-height: 1.2;
   padding: 0 2px;
+} */
+
+
+.invalid-input-span{
+  font-size: 12px;
+  color:  red;
+  position: absolute;
+  margin-top:2%;
 }
+
+
+i{
+  margin-top: 3%;
+}
+
+.input-icons i {
+  position: absolute;
+}
+
+.input-icons {
+  width: 100%;
+  color: red;
+
+}
+
+.icon {
+  padding: 10px;
+  text-align: center;
+  width: 20px;
+  height: 20px;
+
+}
+
+.input100 {
+  width: 100%;
+  padding: 10px;
+  text-align: left;
+  display: inline-block;
+  height: 40px;
+  background: transparent;
+  font-family: Poppins-Regular;
+  font-size: 22px;
+  color: #555555;
+  line-height: 1.2;
+  padding: 0 2px;
+}
+
 
 .focus-input100 {
   position: absolute;
@@ -368,14 +415,16 @@ iframe {
 [ Button ]*/
 .container-login100-form-btn {
   width: 100%;
+  margin-left: 30%;
   display: -webkit-box;
   display: -webkit-flex;
   display: -moz-box;
   display: -ms-flexbox;
-  display: flex;
+   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: center;
+  /* justify-content: space-between; */
+  /* align-items: center; */
+
 }
 
 .wrap-login100-form-btn {
