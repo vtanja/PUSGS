@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule} from '@angular/core';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 import{FormsModule, ReactiveFormsModule} from '@angular/forms'
@@ -12,6 +12,9 @@ import { HomePageComponent } from './home-page/home-page.component';
 import { RegisterComponent } from './register/register.component';
 import { AirlinesComponent } from './airlines/airlines.component';
 import { RentACarsComponent } from './rent-a-cars/rent-a-cars.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {Ng2TelInputModule} from 'ng2-tel-input';
+import { ShowHidePasswordModule } from 'ngx-show-hide-password';
 
 @NgModule({
   declarations: [
@@ -23,13 +26,17 @@ import { RentACarsComponent } from './rent-a-cars/rent-a-cars.component';
     RegisterComponent,
     AirlinesComponent,
     RentACarsComponent
+
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     NgbModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    BrowserAnimationsModule,
+    Ng2TelInputModule,
+    ShowHidePasswordModule
   ],
   providers: [],
   bootstrap: [AppComponent]

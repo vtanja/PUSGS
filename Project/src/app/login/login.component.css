@@ -65,13 +65,6 @@ h1,h2,h3,h4,h5,h6 {
 	margin: 0px;
 }
 
-p {
-	font-family: Poppins-Regular;
-	font-size: 14px;
-	line-height: 1.7;
-	color: #666666;
-	margin: 0px;
-}
 
 ul, li {
 	margin: 0px;
@@ -118,9 +111,55 @@ textarea:-ms-input-placeholder {color: #cccccc;}
 
 /*---------------------------------------------*/
 
-input.ng-invalid.ng-touched{
+/* input.ng-invalid.ng-touched{
   border: 1px solid red;
+} */
+
+.invalid-input-span{
+  font-size: 12px;
+  color:  red;
+  position: absolute;
+  margin-top:2%;
 }
+
+
+i{
+  margin-top: 3%;
+}
+
+.input-icons i {
+  position: absolute;
+}
+
+.input-icons {
+  width: 100%;
+  color: red;
+
+}
+
+.icon {
+  padding: 10px;
+  text-align: center;
+  width: 20px;
+  height: 20px;
+
+}
+
+.input100 {
+  width: 100%;
+  padding: 10px;
+  text-align: left;
+  display: inline-block;
+  height: 40px;
+  background: transparent;
+  font-family: Poppins-Regular;
+  font-size: 22px;
+  color: #555555;
+  line-height: 1.2;
+  padding: 0 2px;
+}
+
+
 button {
 	outline: none !important;
 	border: none;
@@ -242,10 +281,21 @@ iframe {
   font-size: 39px;
   color: #333333;
   line-height: 1.2;
-  text-align: left;
+  text-align: center;
 }
 
+.socials-span{
+  margin-top: 10%;
+  text-align: center;
+  align-content: center;
+  width: 100%;
+  font-family: Poppins-SemiBold;
+  font-style: italic;
+  font-size: 16px;
+  color: #51217a;
+  line-height: 1.2;
 
+}
 
 /*------------------------------------------------------------------
 [ Input ]*/
@@ -259,23 +309,23 @@ iframe {
 
 .label-input100 {
   font-family: Poppins-SemiBold;
-  font-size: 18px;
+  font-size: 16px;
   color: #999999;
   line-height: 1.2;
   padding-left: 2px;
 }
 
-.input100 {
+/* .input100 {
   display: block;
   width: 100%;
-  height: 50px;
+  height: 40px;
   background: transparent;
   font-family: Poppins-Regular;
   font-size: 22px;
   color: #555555;
   line-height: 1.2;
   padding: 0 2px;
-}
+} */
 
 .focus-input100 {
   position: absolute;
@@ -318,64 +368,55 @@ iframe {
 }
 
 /*==================================================================
-[ Restyle Checkbox ]*/
+[ Restyle Socials ]*/
 
-.input-checkbox100 {
-  display: none;
-}
+p {
+  width: 100%;
+  font-family: "Popins-SemiBold";
+  color: gray;
+  margin-bottom: 22px;
+  align-content: center;
+  text-align: center;
+ }
 
-.label-checkbox100 {
-  margin: 0;
+.socials {
+  text-align: center;
+  margin-top: 10px; }
 
-  display: block;
-  position: relative;
-  padding-left: 26px;
-  cursor: pointer;
-}
-
-.label-checkbox100::before {
-  content: "\f00c";
-  font-family: FontAwesome;
-  font-size: 13px;
-  color: transparent;
-
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: flex;
-  justify-content: center;
+.socials-icon {
+  display: inline-flex;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
   align-items: center;
-  position: absolute;
-  width: 16px;
-  height: 16px;
-  border-radius: 2px;
-  background: #e6e6e6;
-  left: 0;
-  top: 50%;
-  -webkit-transform: translateY(-50%);
-  -moz-transform: translateY(-50%);
-  -ms-transform: translateY(-50%);
-  -o-transform: translateY(-50%);
-  transform: translateY(-50%);
+  justify-content: center;
+  border: 2px solid rgba(255, 255, 255, 0.7);
+  font-size: 19px;
+  /* color: transparent; */
+   transition: all 0.5s ease;
+   margin-right: 19px;
 }
+  .socials-icon:hover {
+    background:#be72df;
+    border: 1px solid transparent;
+    /* color: #be72df;  */
+  }
+  .socials-icon:last-child {
+    margin-right: 0; }
 
-.input-checkbox100:checked + .label-checkbox100::before {
-  color: #c87ef0;
-}
+
 
 /*------------------------------------------------------------------
 [ Button ]*/
 .container-login100-form-btn {
   width: 100%;
+  margin-left: 24%;
   display: -webkit-box;
   display: -webkit-flex;
   display: -moz-box;
   display: -ms-flexbox;
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: center;
 }
 
 .wrap-login100-form-btn {
