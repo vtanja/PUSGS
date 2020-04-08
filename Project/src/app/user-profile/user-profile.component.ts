@@ -1,5 +1,7 @@
 import { Component, OnInit, } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { User } from '../models/user';
+import { UserService } from '../userService.service';
 
 @Component({
   selector: 'app-user-profile',
@@ -14,8 +16,11 @@ export class UserProfileComponent implements OnInit {
   emailReadonly:boolean=true;
   phoneReadonly:boolean=true;
   addressReadonly:boolean=true;
+  loggedUser:User;
 
-  constructor() { }
+  constructor(private userService:UserService) { 
+    this.loggedUser=this.userService.getUser();
+  }
 
   ngOnInit(): void {
     this.editForm = new FormGroup({
@@ -35,15 +40,15 @@ export class UserProfileComponent implements OnInit {
     });
 
     this.editForm.setValue({
-      'firstName':'Pera',
-      'lastName': 'Peric',
+      'firstName':this.loggedUser.firstName,
+      'lastName': this.loggedUser.lastName,
       'passwordData':{
-        password:'pass1word1A',
-        confirm:'pass1word1A'
+        password:this.loggedUser.password,
+        confirm:this.loggedUser.password
       },
-      'email': 'pera@pera.com',
-      'phone': '+38163687654',
-      'address': 'Ulica ulicic 1, Grad',
+      'email': this.loggedUser.email,
+      'phone': this.loggedUser.phoneNumber,
+      'address': this.loggedUser.address,
     });
 
     console.log(this.editForm);

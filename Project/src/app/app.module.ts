@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule} from '@angular/core';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
+
 import{FormsModule, ReactiveFormsModule} from '@angular/forms'
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -17,6 +18,9 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {Ng2TelInputModule} from 'ng2-tel-input';
 import { ShowHidePasswordModule } from 'ngx-show-hide-password';
+import { FriendsListComponent } from './friends-list/friends-list.component';
+import { SearchPipe } from './friends-list/search.pipe';
+import { MatSortModule } from '@angular/material/sort';
 
 @NgModule({
   declarations: [
@@ -28,8 +32,9 @@ import { ShowHidePasswordModule } from 'ngx-show-hide-password';
     RegisterComponent,
     AirlinesComponent,
     RentACarsComponent,
-    UserProfileComponent
-
+    UserProfileComponent,
+    FriendsListComponent,
+    SearchPipe,
   ],
   imports: [
     BrowserModule,
@@ -39,7 +44,8 @@ import { ShowHidePasswordModule } from 'ngx-show-hide-password';
     ReactiveFormsModule,
     BrowserAnimationsModule,
     Ng2TelInputModule,
-    ShowHidePasswordModule
+    ShowHidePasswordModule,
+    MatSortModule
   ],
   providers: [UserService],
   bootstrap: [AppComponent]

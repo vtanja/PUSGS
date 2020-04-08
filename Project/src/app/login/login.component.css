@@ -120,7 +120,7 @@ textarea:-ms-input-placeholder {color: #cccccc;}
   font-size: 12px;
   color:  red;
   position: absolute;
-  margin-top:2%;
+  text-align: left;
 }
 
 
