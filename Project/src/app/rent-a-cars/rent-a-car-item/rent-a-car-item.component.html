@@ -1,0 +1,33 @@
+<ng-template #t let-fill="fill">
+  <span class="star" [class.full]="fill === 100">
+    <span class="half" [style.width.%]="fill">&#9733;</span>&#9733;
+  </span>
+</ng-template>
+
+<a  class="list-group-item list-group-item-action flex-column align-items-start">
+  <div class="row">
+    <div class="col-md-3">
+      <img src={{rentCar.images[0]}} style="width: 100%;height:140px">
+    </div>
+    <div class="col">
+        <h5 class="mb-1 my-h5-style">{{rentCar.name}}</h5>
+      <div class="row" >
+        <div class="col-sm-2">
+          <img src="../../../assets/images/map1.png" style="width: 100%;height: 100%;">
+        </div>
+        <div class="col">
+        <p class="mb-1" style="margin-left:-8px;margin-top: 10px;">{{rentCar.address}}</p>
+      </div>
+      </div>
+      <br>
+        <p class="mb-1 my-p-style">{{rentCar.description}}</p>
+    </div>
+    <div class="col-sm-3">
+      <small style="height: 30px;">
+        <ngb-rating [(rate)]="rentCar.rate" [starTemplate]="t" [readonly]="true" [max]="5"></ngb-rating>
+        <hr>
+        <pre>Rate: <b>{{rentCar.rate}}</b></pre>
+      </small>
+    </div>
+  </div>
+</a>

@@ -17,6 +17,10 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {Ng2TelInputModule} from 'ng2-tel-input';
 import { ShowHidePasswordModule } from 'ngx-show-hide-password';
+import { RentCarService } from './rent-a-cars/rent-a-car.service';
+import { RentACarListComponent } from './rent-a-cars/rent-a-car-list/rent-a-car-list.component';
+import { RentACarItemComponent } from './rent-a-cars/rent-a-car-item/rent-a-car-item.component';
+import { CarsSearchComponent } from './rent-a-cars/cars-search/cars-search.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +32,10 @@ import { ShowHidePasswordModule } from 'ngx-show-hide-password';
     RegisterComponent,
     AirlinesComponent,
     RentACarsComponent,
-    UserProfileComponent
+    UserProfileComponent,
+    RentACarListComponent,
+    RentACarItemComponent,
+    CarsSearchComponent
 
   ],
   imports: [
@@ -41,7 +48,10 @@ import { ShowHidePasswordModule } from 'ngx-show-hide-password';
     Ng2TelInputModule,
     ShowHidePasswordModule
   ],
-  providers: [UserService],
+  providers: [
+    UserService,
+    RentCarService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

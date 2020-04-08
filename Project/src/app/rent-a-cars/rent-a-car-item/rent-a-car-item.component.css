@@ -1,0 +1,24 @@
+.star {
+  position: relative;
+  display: inline-block;
+  font-size: 3rem;
+  color: #d3d3d3;
+}
+.full {
+  color: #eea136;
+}
+.half {
+  position: absolute;
+  display: inline-block;
+  overflow: hidden;
+  color:#eea136;
+}
+
+.my-p-style{
+  color: #5f5b5b;
+  font-style: italic;
+}
+
+.my-h5-style{
+  font-size: 22px;
+}
