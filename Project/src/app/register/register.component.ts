@@ -21,7 +21,7 @@ export class RegisterComponent implements OnInit {
       'email' : new FormControl(null,[Validators.required,Validators.email]),
       'passwordData' : new FormGroup({
         'password': new FormControl(null,[Validators.required,
-        Validators.pattern(new RegExp("^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$"))]),
+        Validators.pattern(new RegExp("^(?=.*[0-9]+.*)(?=.*[a-zA-Z]+.*)[0-9a-zA-Z]{6,}$"))]),
         'confirm': new FormControl(null,[Validators.required])
       },this.passwordMatchValidator.bind(this)),
       'city': new FormControl(null,Validators.required),
