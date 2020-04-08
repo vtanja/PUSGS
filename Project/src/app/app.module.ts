@@ -18,12 +18,15 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {Ng2TelInputModule} from 'ng2-tel-input';
 import { ShowHidePasswordModule } from 'ngx-show-hide-password';
-import { RentCarService } from './rent-a-cars/rent-a-car.service';
+import { FriendsListComponent } from './friends-list/friends-list.component';
+import { SearchPipe } from './friends-list/search.pipe';
+import { MatSortModule } from '@angular/material/sort';
 import { RentACarListComponent } from './rent-a-cars/rent-a-car-list/rent-a-car-list.component';
 import { RentACarItemComponent } from './rent-a-cars/rent-a-car-item/rent-a-car-item.component';
 import { CarsSearchComponent } from './rent-a-cars/cars-search/cars-search.component';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { RentACarSearchComponent } from './rent-a-cars/rent-a-car-search/rent-a-car-search.component';
+import { RentCarService } from './rent-a-cars/rent-a-car.service';
 
 @NgModule({
   declarations: [
@@ -36,6 +39,8 @@ import { RentACarSearchComponent } from './rent-a-cars/rent-a-car-search/rent-a-
     AirlinesComponent,
     RentACarsComponent,
     UserProfileComponent,
+    FriendsListComponent,
+    SearchPipe,
     RentACarListComponent,
     RentACarItemComponent,
     CarsSearchComponent,
@@ -51,8 +56,8 @@ import { RentACarSearchComponent } from './rent-a-cars/rent-a-car-search/rent-a-
     BrowserAnimationsModule,
     Ng2TelInputModule,
     ShowHidePasswordModule,
-    Ng2SearchPipeModule
-
+    Ng2SearchPipeModule,
+    MatSortModule
   ],
   providers: [
     UserService,

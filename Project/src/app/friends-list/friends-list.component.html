@@ -1,0 +1,39 @@
+<div class="box small">
+    <img src="../../assets/images/friends.jpeg" style="width:100%; height: 400px;"> 
+</div>
+
+<div class="container" style="display: inline;">
+  <div style="display: block; text-align: center;">
+      <div class="form-inline active-cyan-2">
+        <input class="form-control form-control-sm mr-3 w-75" [(ngModel)]="filterUser" type="text" placeholder="Search..."
+          aria-label="Search">
+        <i class="fa fa-search" aria-hidden="true"></i>
+      </div>
+    </div>
+    <!-- <div class="wrapper" style="display: block; text-align: center;"> 
+      <div style="display: inline-block; width: 80%;"> -->
+      <table class="table" matSort (matSortChange)="sortData($event)" >
+        <thead class="thead">
+          <tr>
+            <th scope="col" mat-sort-header="firstName">First Name</th>
+            <th scope="col" mat-sort-header="lastName">Last Name</th>
+            <th scope="col" mat-sort-header="accepted">Accepted</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of sortedData | search:filterUser">
+            <td>{{data.firstName}}</td>
+            <td>{{data.lastName}}</td>
+            <td>
+              <div class="form-check">
+                <input class="form-check-input position-static" type="checkbox" id="blankCheckbox" value="option1" aria-label="..." [checked]="data.accepted">
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    <!-- </div>
+   </div>                   -->
+</div>
+
+

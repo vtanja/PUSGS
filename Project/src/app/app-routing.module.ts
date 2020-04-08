@@ -6,6 +6,7 @@ import { RegisterComponent } from './register/register.component';
 import { AirlinesComponent } from './airlines/airlines.component';
 import { RentACarsComponent } from './rent-a-cars/rent-a-cars.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
+import { FriendsListComponent } from './friends-list/friends-list.component';
 import { CarsSearchComponent } from './rent-a-cars/cars-search/cars-search.component';
 
 
@@ -13,7 +14,8 @@ const routes: Routes = [
   {path: '', component:HomePageComponent, pathMatch:'full' },
   {path: 'home', component: HomePageComponent,
     children:[
-      {path: 'profile', component:UserProfileComponent}
+      {path: 'profile', component:UserProfileComponent},
+      {path: 'friends', component:FriendsListComponent}
     ]
   },
   {path: 'login', component: LoginComponent},
