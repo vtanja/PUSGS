@@ -21,6 +21,10 @@ import { ShowHidePasswordModule } from 'ngx-show-hide-password';
 import { FriendsListComponent } from './friends-list/friends-list.component';
 import { SearchPipe } from './friends-list/search.pipe';
 import { MatSortModule } from '@angular/material/sort';
+import { RentACarListComponent } from './rent-a-cars/rent-a-car-list/rent-a-car-list.component';
+import { RentACarItemComponent } from './rent-a-cars/rent-a-car-item/rent-a-car-item.component';
+import { CarsSearchComponent } from './rent-a-cars/cars-search/cars-search.component';
+import { RentCarService } from './rent-a-cars/rent-a-car.service';
 
 @NgModule({
   declarations: [
@@ -35,6 +39,10 @@ import { MatSortModule } from '@angular/material/sort';
     UserProfileComponent,
     FriendsListComponent,
     SearchPipe,
+    RentACarListComponent,
+    RentACarItemComponent,
+    CarsSearchComponent
+
   ],
   imports: [
     BrowserModule,
@@ -47,7 +55,10 @@ import { MatSortModule } from '@angular/material/sort';
     ShowHidePasswordModule,
     MatSortModule
   ],
-  providers: [UserService],
+  providers: [
+    UserService,
+    RentCarService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

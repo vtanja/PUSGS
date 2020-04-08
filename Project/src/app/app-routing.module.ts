@@ -7,11 +7,12 @@ import { AirlinesComponent } from './airlines/airlines.component';
 import { RentACarsComponent } from './rent-a-cars/rent-a-cars.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { FriendsListComponent } from './friends-list/friends-list.component';
+import { CarsSearchComponent } from './rent-a-cars/cars-search/cars-search.component';
 
 
 const routes: Routes = [
   {path: '', component:HomePageComponent, pathMatch:'full' },
-  {path: 'home', component: HomePageComponent, 
+  {path: 'home', component: HomePageComponent,
     children:[
       {path: 'profile', component:UserProfileComponent},
       {path: 'friends', component:FriendsListComponent}
@@ -19,9 +20,10 @@ const routes: Routes = [
   },
   {path: 'login', component: LoginComponent},
   {path: 'register', component: RegisterComponent},
-  {path: '1', component:RentACarsComponent},
+  {path: '1', component:CarsSearchComponent},
   {path: '2', component:AirlinesComponent},
-  
+  {path: 'allCarCompanies',component: RentACarsComponent}
+
 ];
 
 @NgModule({
