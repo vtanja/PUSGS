@@ -42,5 +42,41 @@ export class  RentCarService {
     return this.rentCars.slice();
   }
 
+  search(params:any){
+
+    if(params===undefined)
+    return this.rentCars;
+
+    console.log(params);
+    const resultArray =[];
+
+    for(const item of this.rentCars){
+
+      if(params.name!='' && params.name!=undefined ){
+        if(params.name.toUpperCase()!=item.name.toUpperCase()){
+          continue;
+        }
+      }
+
+      if(params.address!='' && params.address!=undefined ){
+        if(params.address.toUpperCase()!=item.address.toUpperCase()){
+          continue;
+        }
+      }
+
+      console.log(params.rate);
+
+      if(params.rate!=undefined  && params.rate!=NaN){
+        if(item.rate<params.rate){
+          continue;
+        }
+      }
+
+      resultArray.push(item);
+    }
+
+    return resultArray;
+  }
+
 
 }

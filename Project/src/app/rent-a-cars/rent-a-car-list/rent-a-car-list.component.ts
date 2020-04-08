@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { RentCarService } from '../rent-a-car.service';
-import { Car } from 'src/app/models/Car.model';
 import { RentCar } from 'src/app/models/rent-a-car.model';
 
 @Component({
@@ -18,9 +17,11 @@ export class RentACarListComponent implements OnInit {
    }
 
   ngOnInit(): void {
-
     this.rentCars = this.rentCarService.getRentCars();
+  }
 
+  applySearchParams(params:any){
+    this.rentCars = this.rentCarService.search(params);
   }
 
 }

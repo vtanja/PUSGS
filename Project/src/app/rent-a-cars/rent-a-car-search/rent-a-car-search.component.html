@@ -1,0 +1,27 @@
+<div class="row justify-content-center">
+  <h3 style="color: #31124b;margin-top: 5%;">Search companies</h3>
+</div>
+<form [formGroup]="searchForm" (ngSubmit)=onSubmitForm()>
+<div class="row">
+  <span class="label-input100">Name</span>
+  <input formControlName="name" class="input100" type="text" placeholder="Name..">
+</div>
+<div class="row">
+  <span class="label-input100">Address</span>
+  <input formControlName="address" class="input100" type="text" placeholder="Address..">
+</div>
+<div class="row">
+  <div class="wrap-input100 validate-input" >
+    <span class="label-input100">Minimal rate</span>
+    <div class="input-icons">
+      <input formControlName="rate" class="input100" type="number" placeholder="Minimal rate..">
+      <i *ngIf="searchForm.get('rate').invalid && searchForm.get('rate').touched" class="fa fa-exclamation"></i>
+    </div>
+   <span class="invalid-input-span" *ngIf="searchForm.get('rate').invalid && searchForm.get('rate').touched">Rate must be number between 1 and 5</span>
+  </div>
+</div>
+
+<div class="row justify-content-center" >
+      <button class="search_button"[disabled]="searchForm.invalid">Search</button>
+</div>
+</form>

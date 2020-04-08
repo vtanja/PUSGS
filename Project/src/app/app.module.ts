@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule} from '@angular/core';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
+
 import{FormsModule, ReactiveFormsModule} from '@angular/forms'
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -21,6 +22,8 @@ import { RentCarService } from './rent-a-cars/rent-a-car.service';
 import { RentACarListComponent } from './rent-a-cars/rent-a-car-list/rent-a-car-list.component';
 import { RentACarItemComponent } from './rent-a-cars/rent-a-car-item/rent-a-car-item.component';
 import { CarsSearchComponent } from './rent-a-cars/cars-search/cars-search.component';
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
+import { RentACarSearchComponent } from './rent-a-cars/rent-a-car-search/rent-a-car-search.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +38,8 @@ import { CarsSearchComponent } from './rent-a-cars/cars-search/cars-search.compo
     UserProfileComponent,
     RentACarListComponent,
     RentACarItemComponent,
-    CarsSearchComponent
+    CarsSearchComponent,
+    RentACarSearchComponent
 
   ],
   imports: [
@@ -46,7 +50,9 @@ import { CarsSearchComponent } from './rent-a-cars/cars-search/cars-search.compo
     ReactiveFormsModule,
     BrowserAnimationsModule,
     Ng2TelInputModule,
-    ShowHidePasswordModule
+    ShowHidePasswordModule,
+    Ng2SearchPipeModule
+
   ],
   providers: [
     UserService,
