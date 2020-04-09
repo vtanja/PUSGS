@@ -1,7 +1,7 @@
 import { Component, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { UserService } from '../userService.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { UserService } from '../user/userService.service';
 
 @Component({
   selector: 'app-login',
@@ -31,7 +31,7 @@ export class LoginComponent implements OnInit {
       this.userService.userLogged.next(this.loggedUsername);
       this.userService.isLogged.next(true);
     }
-    this.router.navigate(['/home'], {relativeTo:this.route});
+    this.router.navigate(['/user'], {relativeTo:this.route});
 
       
   }

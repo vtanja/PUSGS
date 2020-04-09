@@ -1,7 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { User } from '../models/user';
-import { stringify } from 'querystring';
-import { elementEventFullName } from '@angular/compiler/src/view_compiler/view_compiler';
+import { User } from 'src/app/models/user';
 
 @Pipe({
   name: 'search',
