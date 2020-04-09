@@ -13,13 +13,9 @@ import { HomePageComponent } from './home-page/home-page.component';
 import { RegisterComponent } from './register/register.component';
 import { AirlinesComponent } from './airlines/airlines.component';
 import { RentACarsComponent } from './rent-a-cars/rent-a-cars.component';
-import { UserService } from './userService.service';
-import { UserProfileComponent } from './user-profile/user-profile.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {Ng2TelInputModule} from 'ng2-tel-input';
+import { Ng2TelInputModule} from 'ng2-tel-input';
 import { ShowHidePasswordModule } from 'ngx-show-hide-password';
-import { FriendsListComponent } from './friends-list/friends-list.component';
-import { SearchPipe } from './friends-list/search.pipe';
 import { MatSortModule } from '@angular/material/sort';
 import { RentACarListComponent } from './rent-a-cars/rent-a-car-list/rent-a-car-list.component';
 import { RentACarItemComponent } from './rent-a-cars/rent-a-car-item/rent-a-car-item.component';
@@ -29,6 +25,12 @@ import { RentACarSearchComponent } from './rent-a-cars/rent-a-car-search/rent-a-
 import { RentCarService } from './rent-a-cars/rent-a-car.service';
 import { CarsListComponent } from './rent-a-cars/cars-list/cars-list.component';
 import { CarItemComponent } from './rent-a-cars/car-item/car-item.component';
+import { UserComponent } from './user/user.component';
+import { UserProfileComponent } from './user/user-profile/user-profile.component';
+import { FriendsListComponent } from './user/friends-list/friends-list.component';
+import { SearchPipe } from './user/friends-list/search.pipe';
+import { UserService } from './user/userService.service';
+import { NavbarComponent } from './navbar/navbar.component';
 
 @NgModule({
   declarations: [
@@ -47,8 +49,8 @@ import { CarItemComponent } from './rent-a-cars/car-item/car-item.component';
     RentACarItemComponent,
     CarsSearchComponent,
     RentACarSearchComponent,
-    CarsListComponent,
-    CarItemComponent
+    UserComponent,
+    NavbarComponent
 
   ],
   imports: [

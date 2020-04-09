@@ -1,19 +1,15 @@
-
-
-
-#wrapper2{
-    margin-top: -6.8%;
+#wrapper{
     height:auto; 
     width:100%;
     text-align: center;
 }
-#inner21{
+#inner1{
     width: 100%;
     float:left; 
 }
-#inner22{
+#inner2{
     margin-top: 6.9%;
     float:left; 
-    margin-left: 10.1%;
-    width: 82.2%;
+    margin-left: 10%;
+    width: 81.4%;
 } 

@@ -1,5 +1,4 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { UserService } from '../userService.service';
 
 @Component({
   selector: 'app-home-page',
@@ -8,18 +7,10 @@ import { UserService } from '../userService.service';
 })
 export class HomePageComponent  {
 
-  logged:boolean=false;
-
-
-  constructor(private userService:UserService) {
+  constructor() {
   }
 
   ngOnInit(): void {
-    // this.userService.isLogged.subscribe(
-    //   (isLogged: boolean)=>{
-    //     this.logged=isLogged;
-    //   });
-
   }
 
 }

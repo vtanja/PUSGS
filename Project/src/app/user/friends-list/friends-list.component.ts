@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Sort } from '@angular/material/sort';
-import { User } from '../models/user';
 import { UserService } from '../userService.service';
+import { User } from 'src/app/models/user';
 
 @Component({
   selector: 'app-friends-list',
@@ -17,16 +17,9 @@ export class FriendsListComponent implements OnInit {
   filterUser: string='';
   
   sortedData: User[]=[]; 
-
-  users:User[]=[
-    new User('Andjela', 'Cickovic', 'andjela.ljuban@gmail.com', 'andjela123', 
-    'andjela1sifra', '+38165432123', 'Trebinje', []),
-    new User('Pera', 'Peric', 'pera@pera.com', 'pera123', 'pera1sifra', '+381987654321', 
-    'Perina ulica 1, Novi Sad', [])
-  ];
   
   constructor(private userService:UserService) { 
-    this.sortedData = this.users.slice();
+    this.sortedData = this.userService.getUser().friends.slice();
     console.log(this.sortedData);
   }
 

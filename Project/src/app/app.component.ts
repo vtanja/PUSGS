@@ -1,5 +1,4 @@
 import { Component, Input } from '@angular/core';
-import { UserService } from './userService.service';
 
 @Component({
   selector: 'app-root',
@@ -9,5 +8,6 @@ import { UserService } from './userService.service';
 export class AppComponent{
   title = 'web-project';
 
+  
   
 }
