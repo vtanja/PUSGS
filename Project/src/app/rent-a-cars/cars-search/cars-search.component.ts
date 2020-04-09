@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-cars-search',
@@ -9,15 +10,12 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 })
 export class CarsSearchComponent implements OnInit {
 
-  dropOffDate: NgbDateStruct;
-  pickUpDate: NgbDateStruct;
-
   times:Array<string>;
   cars:Array<string>;
 
   searchForm:FormGroup;
 
-  constructor() { }
+  constructor(private router:Router) { }
 
   ngOnInit(): void {
 
@@ -29,17 +27,17 @@ export class CarsSearchComponent implements OnInit {
     this.searchForm = new FormGroup({
 
       'location' : new FormGroup({
-        'pickUpLocation' : new FormControl("",Validators.required),
-        'dropOffLocation' : new FormControl("",Validators.required)
+        'pickUpLocation' : new FormControl(""),
+        'dropOffLocation' : new FormControl("")
       }),
       'dates' : new FormGroup({
-        'pickUpDate': new FormControl("",Validators.required),
-        'dropOffDate' : new FormControl("",Validators.required)
+        'pickUpDate': new FormControl(""),
+        'dropOffDate' : new FormControl("")
       }),
 
       'times' : new FormGroup({
-        'pickUpTime': new FormControl("",Validators.required),
-        'dropOffTime' : new FormControl("",Validators.required)
+        'pickUpTime': new FormControl(""),
+        'dropOffTime' : new FormControl("")
       }),
 
       'carBrand' : new FormControl(""),
@@ -50,15 +48,18 @@ export class CarsSearchComponent implements OnInit {
 
   onFormSubmit(){
     const searchParams = {};
-    searchParams['pickUpDate'] = this.pickUpDate;
-    searchParams['dropOffDate'] = this.dropOffDate;
-    searchParams['pickUpTime'] = this.searchForm.get('pickUpTime').value;
-    searchParams['dropOffTime'] = this.searchForm.get('dropOffTime').value;
-    searchParams['pickUpLocation'] = this.searchForm.get('pickUpLocation').value;
-    searchParams['dropOffLocation'] = this.searchForm.get('dropOffLocation').value;
+    searchParams['pickUpDate'] = this.searchForm.get('dates.pickUpDate').value;
+    searchParams['dropOffDate'] = this.searchForm.get('dates.dropOffDate').value;
+    searchParams['pickUpTime'] = this.searchForm.get('times.pickUpTime').value;
+    searchParams['dropOffTime'] = this.searchForm.get('times.dropOffTime').value;
+    searchParams['pickUpLocation'] = this.searchForm.get('location.pickUpLocation').value;
+    searchParams['dropOffLocation'] = this.searchForm.get('location.dropOffLocation').value;
     searchParams['carBrand'] = this.searchForm.get('carBrand').value;
     searchParams['passengers'] = this.searchForm.get('passengers').value;
 
+    console.log(searchParams);
+
+    this.router.navigate(['/allCars'],{queryParams:searchParams});
 
   }
 

@@ -27,6 +27,8 @@ import { CarsSearchComponent } from './rent-a-cars/cars-search/cars-search.compo
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { RentACarSearchComponent } from './rent-a-cars/rent-a-car-search/rent-a-car-search.component';
 import { RentCarService } from './rent-a-cars/rent-a-car.service';
+import { CarsListComponent } from './rent-a-cars/cars-list/cars-list.component';
+import { CarItemComponent } from './rent-a-cars/car-item/car-item.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +46,9 @@ import { RentCarService } from './rent-a-cars/rent-a-car.service';
     RentACarListComponent,
     RentACarItemComponent,
     CarsSearchComponent,
-    RentACarSearchComponent
+    RentACarSearchComponent,
+    CarsListComponent,
+    CarItemComponent
 
   ],
   imports: [

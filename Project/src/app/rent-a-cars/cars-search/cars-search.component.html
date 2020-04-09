@@ -1,7 +1,7 @@
 
   <div class="container search">
     <div class="search-content">
-      <form [formGroup]="searchForm">
+      <form [formGroup]="searchForm" (ngSubmit)="onFormSubmit()">
         <div class="row" style="padding-top: 4%;">
             <div class="col" formGroupName="location">
               <div class="row">
@@ -28,7 +28,7 @@
                   <div class="input-icons">
                     <div class="input-group">
                       <input formControlName="pickUpDate" class="form-control input100"  placeholder="Pick up date..."
-                            name="dp" [(ngModel)]="pickUpDate" ngbDatepicker #p="ngbDatepicker">
+                            name="dp"  ngbDatepicker #p="ngbDatepicker">
                       <div class="input-group-append append_style" style="margin-left: -10px;padding-left: 10px;">
                         <button class="btn calendar"  (click)="p.toggle()" type="button"></button>
                       </div>
@@ -42,7 +42,7 @@
                   <div class="input-icons">
                     <div class="input-group">
                       <input formControlName="dropOffDate" class="form-control input100"  placeholder="Drop off date..."
-                            name="dp" [(ngModel)]="dropOffDate" ngbDatepicker #d="ngbDatepicker">
+                            name="dp"  ngbDatepicker #d="ngbDatepicker">
                       <div class="input-group-append append_style" style="margin-left: -10px;padding-left: 10px;">
                         <button class="btn calendar"  (click)="d.toggle()" type="button"></button>
                       </div>

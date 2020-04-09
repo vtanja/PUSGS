@@ -9,17 +9,17 @@ import { UserService } from '../userService.service';
 export class HeaderComponent implements OnInit {
 
   username:string ='';
-  loggedIn:boolean;
+  loggedIn:boolean=false;
 
   constructor(private userService:UserService) { }
 
   ngOnInit(): void {
-    this.userService.userLogged.subscribe(
-      (username: string)=>{
-        this.loggedIn=true;
-        this.username=username;
-      });
+    // this.userService.userLogged.subscribe(
+    //   (username: string)=>{
+    //     this.loggedIn=true;
+    //     this.username=username;
+    //   });
   }
 
-  
+
 }

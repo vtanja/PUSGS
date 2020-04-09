@@ -8,6 +8,7 @@ import { RentACarsComponent } from './rent-a-cars/rent-a-cars.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { FriendsListComponent } from './friends-list/friends-list.component';
 import { CarsSearchComponent } from './rent-a-cars/cars-search/cars-search.component';
+import { CarsListComponent } from './rent-a-cars/cars-list/cars-list.component';
 
 
 const routes: Routes = [
@@ -22,7 +23,8 @@ const routes: Routes = [
   {path: 'register', component: RegisterComponent},
   {path: '1', component:CarsSearchComponent},
   {path: '2', component:AirlinesComponent},
-  {path: 'allCarCompanies',component: RentACarsComponent}
+  {path: 'allCarCompanies',component: RentACarsComponent},
+  {path: 'allCars',component: CarsListComponent},
 
 ];
 

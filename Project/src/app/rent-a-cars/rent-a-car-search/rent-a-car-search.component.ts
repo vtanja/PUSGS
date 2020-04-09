@@ -1,5 +1,7 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { RentCarService } from '../rent-a-car.service';
+
 
 
 @Component({
@@ -9,12 +11,9 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 })
 export class RentACarSearchComponent implements OnInit {
 
-  @Output('formSearchSubmitted')
-  formParamsSubmitted = new EventEmitter<{}>();
-
   searchForm: FormGroup;
 
-  constructor() { }
+  constructor(private rentCarService:RentCarService) { }
 
   ngOnInit(): void {
     this.searchForm = new FormGroup({
@@ -32,9 +31,7 @@ export class RentACarSearchComponent implements OnInit {
       'rate' : this.searchForm.get('rate').value,
 
     };
-
-    this.formParamsSubmitted.emit(params);
-
+    this.rentCarService.searchParamsSubject.next(params);
   }
 
 }

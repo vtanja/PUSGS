@@ -7,19 +7,19 @@ import { UserService } from '../userService.service';
   styleUrls: ['./home-page.component.css']
 })
 export class HomePageComponent  {
-  
-  logged:boolean=false;
-  
 
-  constructor(private userService:UserService) { 
+  logged:boolean=false;
+
+
+  constructor(private userService:UserService) {
   }
 
   ngOnInit(): void {
-    this.userService.isLogged.subscribe(
-      (isLogged: boolean)=>{
-        this.logged=isLogged;
-      });
-    
+    // this.userService.isLogged.subscribe(
+    //   (isLogged: boolean)=>{
+    //     this.logged=isLogged;
+    //   });
+
   }
 
 }
