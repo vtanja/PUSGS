@@ -31,7 +31,7 @@ export class LoginComponent implements OnInit {
       this.userService.userLogged.next(this.loggedUsername);
       this.userService.isLogged.next(true);
     }
-    this.router.navigate(['/user'], {relativeTo:this.route});
+    this.router.navigate(['/home'], {relativeTo:this.route});
 
       
   }

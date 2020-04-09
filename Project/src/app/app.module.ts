@@ -31,6 +31,9 @@ import { FriendsListComponent } from './user/friends-list/friends-list.component
 import { SearchPipe } from './user/friends-list/search.pipe';
 import { UserService } from './user/userService.service';
 import { NavbarComponent } from './navbar/navbar.component';
+import { AirlinesListComponent } from './airlines/airlines-list/airlines-list.component';
+import { AirlineItemComponent } from './airlines/airline-item/airline-item.component';
+import { AirlineService } from './airlines/airline.service';
 
 @NgModule({
   declarations: [
@@ -50,8 +53,11 @@ import { NavbarComponent } from './navbar/navbar.component';
     CarsSearchComponent,
     RentACarSearchComponent,
     UserComponent,
-    NavbarComponent
-
+    NavbarComponent,
+    CarItemComponent,
+    CarsListComponent,
+    AirlinesListComponent,
+    AirlineItemComponent
   ],
   imports: [
     BrowserModule,
@@ -67,7 +73,8 @@ import { NavbarComponent } from './navbar/navbar.component';
   ],
   providers: [
     UserService,
-    RentCarService
+    RentCarService,
+    AirlineService
   ],
   bootstrap: [AppComponent]
 })

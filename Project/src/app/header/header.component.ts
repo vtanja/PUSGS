@@ -14,11 +14,11 @@ export class HeaderComponent implements OnInit {
   constructor(private userService:UserService) { }
 
   ngOnInit(): void {
-    // this.userService.userLogged.subscribe(
-    //   (username: string)=>{
-    //     this.loggedIn=true;
-    //     this.username=username;
-    //   });
+    this.userService.userLogged.subscribe(
+      (username: string)=>{
+        this.loggedIn=true;
+        this.username=username;
+      });
   }
 
 
