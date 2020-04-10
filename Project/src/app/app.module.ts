@@ -38,6 +38,10 @@ import { AirlineItemComponent } from './airlines/airline-item/airline-item.compo
 import { AirlineService } from './airlines/airline.service';
 import { FlightsSearchComponent } from './airlines/flights-search/flights-search.component';
 import { FlightsSerachFormComponent } from './airlines/flights-search/flights-search-form/flights-search-form.component';
+import { FlightListComponent } from './airlines/flights/flight-list/flight-list.component';
+import { FlightItemComponent } from './airlines/flights/flight-item/flight-item.component';
+import { FlightsComponent } from './airlines/flights/flights.component';
+import { RoundFlightItemComponent } from './airlines/flights/round-flight-item/round-flight-item.component';
 
 @NgModule({
   declarations: [
@@ -65,7 +69,11 @@ import { FlightsSerachFormComponent } from './airlines/flights-search/flights-se
     AirlinesListComponent,
     AirlineItemComponent,
     FlightsSearchComponent,
-    FlightsSerachFormComponent
+    FlightsSerachFormComponent,
+    FlightListComponent,
+    FlightItemComponent,
+    FlightsComponent,
+    RoundFlightItemComponent
   ],
   imports: [
     BrowserModule,
