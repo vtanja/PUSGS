@@ -8,9 +8,9 @@ import { Router, ActivatedRoute } from '@angular/router';
 })
 export class NavbarComponent implements OnInit {
   carActive:boolean=true;
-  
+
   constructor(private router:Router, private route:ActivatedRoute) { }
-  
+
   ngOnInit(): void {
   }
 
@@ -20,9 +20,9 @@ export class NavbarComponent implements OnInit {
       this.router.navigate(['home', 'search-cars']);
     }
     else{
-      this.router.navigate(['search-cars'], {relativeTo:this.route});
+      this.router.navigate(['search-cars'], {relativeTo:this.route},);
     }
-    
-  }  
+
+  }
 
 }

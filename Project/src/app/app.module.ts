@@ -23,14 +23,16 @@ import { CarsSearchComponent } from './rent-a-cars/cars-search/cars-search.compo
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { RentACarSearchComponent } from './rent-a-cars/rent-a-car-search/rent-a-car-search.component';
 import { RentCarService } from './rent-a-cars/rent-a-car.service';
-import { CarsListComponent } from './rent-a-cars/cars-list/cars-list.component';
-import { CarItemComponent } from './rent-a-cars/car-item/car-item.component';
+import { CarsListComponent } from './rent-a-cars/cars/cars-list/cars-list.component';
+import { CarItemComponent } from './rent-a-cars/cars/car-item/car-item.component';
 import { UserComponent } from './user/user.component';
 import { UserProfileComponent } from './user/user-profile/user-profile.component';
 import { FriendsListComponent } from './user/friends-list/friends-list.component';
 import { SearchPipe } from './user/friends-list/search.pipe';
 import { UserService } from './user/userService.service';
 import { NavbarComponent } from './navbar/navbar.component';
+import { CarsSearchFormComponent } from './rent-a-cars/cars-search/cars-search-form/cars-search-form.component';
+import { CarsComponent } from './rent-a-cars/cars/cars.component';
 
 @NgModule({
   declarations: [
@@ -50,7 +52,11 @@ import { NavbarComponent } from './navbar/navbar.component';
     CarsSearchComponent,
     RentACarSearchComponent,
     UserComponent,
-    NavbarComponent
+    NavbarComponent,
+    CarsListComponent,
+    CarItemComponent,
+    CarsSearchFormComponent,
+    CarsComponent
 
   ],
   imports: [

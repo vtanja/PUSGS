@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Car } from 'src/app/models/Car.model';
-import { RentCarService } from '../rent-a-car.service';
+import { RentCarService } from '../../rent-a-car.service';
 import { ActivatedRoute, Params } from '@angular/router';
 
 @Component({

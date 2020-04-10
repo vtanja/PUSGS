@@ -15,11 +15,11 @@ export class  RentCarService {
 
   loadRentCars(){
 
-    const c1 = new Car(1, 'Audi', 'RS5', 2020, 245,[],["../../assets/images/cars/car1.jpg"],5,4,true,true,'My RC First',5);
-    const c2 = new Car(2, 'BMW', 'M5', 2017, 175,[],["../../assets/images/cars/car2.jpg"],5,4,true,true,'My RC Second',4);
-    const c3 = new Car(3, 'Yugo', 'Koral 45', 1991, 25,[],["../../assets/images/cars/car3.jpg"],5,2,false,false,'My RC Third',3.7);
-    const c4 = new Car(4, 'Mercedec', 'AMG GT63', 2019, 437,[],["../../assets/images/cars/car4.jpg"],5,4,true,true,'My RC Fourth',5);
-    const c5 = new Car(5, 'Toyota', 'Yaris', 2010, 86,[],["../../assets/images/cars/car5.jpg"],5,4,true,true,'My RC Fifth',4.9);
+    const c1 = new Car(1, 'Audi', 'RS5', 2020, 245,["10-4-2020","11-4-2020","12-4-2020","13-4-2020","14-4-2020","15-4-2020"],["../../assets/images/cars/car1.jpg"],5,4,true,true,'My RC First',5);
+    const c2 = new Car(2, 'BMW', 'M5', 2017, 175,["10-4-2020","11-4-2020","12-4-2020","13-4-2020","14-4-2020","15-4-2020"],["../../assets/images/cars/car2.jpg"],5,4,true,true,'My RC Second',4);
+    const c3 = new Car(3, 'Yugo', 'Koral 45', 1991, 25,["10-4-2020","11-4-2020","12-4-2020","13-4-2020","14-4-2020","15-4-2020"],["../../assets/images/cars/car3.jpg"],5,2,false,false,'My RC Third',3.7);
+    const c4 = new Car(4, 'Mercedec', 'AMG GT63', 2019, 437,["10-4-2020","11-4-2020","12-4-2020","13-4-2020","14-4-2020","15-4-2020"],["../../assets/images/cars/car4.jpg"],5,4,true,true,'My RC Fourth',5);
+    const c5 = new Car(5, 'Toyota', 'Yaris', 2010, 86,["10-4-2020","11-4-2020","12-4-2020","13-4-2020","14-4-2020","15-4-2020"],["../../assets/images/cars/car5.jpg"],5,4,true,true,'My RC Fifth',4.9);
 
     const rc1 = new RentCar(1,"My RC First","Novi Sad,Serbia","We offer you wide choice of cars with favorable prices.Enjoy your travel fully.",3.5,[c1],["Novi Sad,Serbia"],["../../assets/images/rentcar1.jpg"]);
     const rc2 = new RentCar(2,"My RC Second","Belgrade,Serbia","Rent a car and enjoy",5,[c2],["Belgrade,Serbia"],["../../assets/images/rentcar2.jpg"]);
@@ -90,10 +90,15 @@ export class  RentCarService {
     var i = 0;
     var j = 0;
 
+    console.log(pickUpDate);
+    console.log(dropOffDate);
+
+    console.log(this.rentCars[0].cars[0].availableDates);
+
     for(const item of this.rentCars){
       var car;
       i=0;
-      for( car in item.cars){
+      for(const car of item.cars){
 
         if(pickUpLocation!='' && pickUpLocation!=undefined){
           if( item.offices.indexOf(pickUpLocation)===-1){
@@ -126,7 +131,7 @@ export class  RentCarService {
         }
 
         if(passengers !=NaN && passengers!=undefined){
-          if(car.passengers<passengers){
+          if(car.maxPassengers<passengers){
               continue;
           }
         }

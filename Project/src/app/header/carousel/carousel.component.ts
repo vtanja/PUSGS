@@ -12,7 +12,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class CarouselComponent implements OnInit{
 
   public images = [
-   "../../../assets/images/background22.jpg" ,
+   "../../../assets/images/background22 .jpg" ,
    "../../../assets/images/homeslider1.jpg",
    "../../../assets/images/homslider2.jpg",
  ];
@@ -27,7 +27,7 @@ export class CarouselComponent implements OnInit{
   @ViewChild('carousel', {static : true}) carousel: NgbCarousel;
 
   constructor(private route:ActivatedRoute, private router:Router){}
-  
+
   ngOnInit(){
     console.log(true);
   }
@@ -51,7 +51,7 @@ export class CarouselComponent implements OnInit{
     }
   }
 
-  
+
 
 
 }
