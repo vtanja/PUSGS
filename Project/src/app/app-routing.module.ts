@@ -6,12 +6,13 @@ import { RegisterComponent } from './register/register.component';
 import { AirlinesComponent } from './airlines/airlines.component';
 import { RentACarsComponent } from './rent-a-cars/rent-a-cars.component';
 import { CarsSearchComponent } from './rent-a-cars/cars-search/cars-search.component';
-// import { CarsListComponent } from './rent-a-cars/cars/cars-list/cars-list.component';
 import { UserProfileComponent } from './user/user-profile/user-profile.component';
 import { FriendsListComponent } from './user/friends-list/friends-list.component';
 import { UserComponent } from './user/user.component';
 import { NavbarComponent } from './navbar/navbar.component';
+import {CarsComponent} from './rent-a-cars/cars/cars.component'
 import { AirlinesListComponent } from './airlines/airlines-list/airlines-list.component';
+import {FlightsSearchComponent} from './airlines/flights-search/flights-search.component'
 
 
 const routes: Routes = [
@@ -19,6 +20,7 @@ const routes: Routes = [
   {path: 'home', component: HomePageComponent,
     children:[
       {path: 'search-cars', component:CarsSearchComponent},
+      {path: 'search-flights', component:FlightsSearchComponent}
     ]},
   {path: 'user', component: UserComponent,
     children:[
@@ -27,12 +29,10 @@ const routes: Routes = [
     ]},
   {path: 'login', component: LoginComponent},
   {path: 'register', component: RegisterComponent},
-  {path: '1', component:CarsSearchComponent},
-  {path: '2', component:AirlinesComponent},
   {path: 'allCarCompanies',component: RentACarsComponent},
   {path: 'allCars',component: CarsComponent},
   {path: 'navbar', component:NavbarComponent },
-    {path: 'allAirlines', component:AirlinesComponent}
+  {path: 'allAirlines', component:AirlinesComponent}
 ];
 
 const routerOptions: ExtraOptions = {

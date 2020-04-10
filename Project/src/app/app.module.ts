@@ -36,6 +36,8 @@ import { CarsComponent } from './rent-a-cars/cars/cars.component';
 import { AirlinesListComponent } from './airlines/airlines-list/airlines-list.component';
 import { AirlineItemComponent } from './airlines/airline-item/airline-item.component';
 import { AirlineService } from './airlines/airline.service';
+import { FlightsSearchComponent } from './airlines/flights-search/flights-search.component';
+import { FlightsSerachFormComponent } from './airlines/flights-search/flights-search-form/flights-search-form.component';
 
 @NgModule({
   declarations: [
@@ -61,7 +63,9 @@ import { AirlineService } from './airlines/airline.service';
     CarsSearchFormComponent,
     CarsComponent,
     AirlinesListComponent,
-    AirlineItemComponent
+    AirlineItemComponent,
+    FlightsSearchComponent,
+    FlightsSerachFormComponent
   ],
   imports: [
     BrowserModule,
