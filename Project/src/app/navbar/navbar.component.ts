@@ -14,15 +14,15 @@ export class NavbarComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  onCarsClick(){
-    console.log(this.route);
-    if(this.route.routeConfig.path===''){
-      this.router.navigate(['home', 'search-cars']);
-    }
-    else{
-      this.router.navigate(['search-cars'], {relativeTo:this.route},);
-    }
+  // onCarsClick(){
+  //   console.log(this.route);
+  //   if(this.route.routeConfig.path===''){
+  //     this.router.navigate(['home', 'search-cars']);
+  //   }
+  //   else{
+  //     this.router.navigate(['search-cars'], {relativeTo:this.route});
+  //   }
 
-  }
+  // }
 
 }

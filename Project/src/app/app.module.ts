@@ -33,6 +33,9 @@ import { UserService } from './user/userService.service';
 import { NavbarComponent } from './navbar/navbar.component';
 import { CarsSearchFormComponent } from './rent-a-cars/cars-search/cars-search-form/cars-search-form.component';
 import { CarsComponent } from './rent-a-cars/cars/cars.component';
+import { AirlinesListComponent } from './airlines/airlines-list/airlines-list.component';
+import { AirlineItemComponent } from './airlines/airline-item/airline-item.component';
+import { AirlineService } from './airlines/airline.service';
 
 @NgModule({
   declarations: [
@@ -56,8 +59,9 @@ import { CarsComponent } from './rent-a-cars/cars/cars.component';
     CarsListComponent,
     CarItemComponent,
     CarsSearchFormComponent,
-    CarsComponent
-
+    CarsComponent,
+    AirlinesListComponent,
+    AirlineItemComponent
   ],
   imports: [
     BrowserModule,
@@ -73,7 +77,8 @@ import { CarsComponent } from './rent-a-cars/cars/cars.component';
   ],
   providers: [
     UserService,
-    RentCarService
+    RentCarService,
+    AirlineService
   ],
   bootstrap: [AppComponent]
 })
