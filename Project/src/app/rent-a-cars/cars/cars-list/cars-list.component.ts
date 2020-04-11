@@ -18,10 +18,11 @@ export class CarsListComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.activeRoute.queryParams.subscribe((params:Params)=>
-      this.params = this.activeRoute.snapshot.queryParams );
-      this.cars=this.rentCarService.getCars(this.params);
+    this.activeRoute.queryParams.subscribe((queryParams:Params)=>{
+      //this.params = this.activeRoute.snapshot.queryParams );
+      this.cars=this.rentCarService.getCars(queryParams);
       console.log(this.cars);
+  });
   }
 
 }

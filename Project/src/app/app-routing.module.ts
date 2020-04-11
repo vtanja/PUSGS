@@ -10,7 +10,6 @@ import { UserProfileComponent } from './user/user-profile/user-profile.component
 import { FriendsListComponent } from './user/friends-list/friends-list.component';
 import { UserComponent } from './user/user.component';
 import { NavbarComponent } from './navbar/navbar.component';
-import {CarsComponent} from './rent-a-cars/cars/cars.component'
 import { AirlinesListComponent } from './airlines/airlines-list/airlines-list.component';
 import {FlightsSearchComponent} from './airlines/flights-search/flights-search.component'
 import { CarsComponent } from './rent-a-cars/cars/cars.component';
@@ -35,7 +34,7 @@ const routes: Routes = [
   {path: 'allCarCompanies',component: RentACarsComponent},
   {path: 'allCars',component: CarsComponent},
   {path: 'navbar', component:NavbarComponent },
-    {path: 'allAirlines', component:AirlinesComponent},
+    {path: 'allAirlineCompanies', component:AirlinesComponent},
     {path: 'allFlights', component:FlightsComponent}
 ];
 
