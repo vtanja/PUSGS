@@ -13,9 +13,9 @@ import { NavbarComponent } from './navbar/navbar.component';
 import {CarsComponent} from './rent-a-cars/cars/cars.component'
 import { AirlinesListComponent } from './airlines/airlines-list/airlines-list.component';
 import {FlightsSearchComponent} from './airlines/flights-search/flights-search.component'
-import { CarsComponent } from './rent-a-cars/cars/cars.component';
 import { FlightListComponent } from './airlines/flights/flight-list/flight-list.component';
 import { FlightsComponent } from './airlines/flights/flights.component';
+import { RentACarProfileComponent } from './rent-a-cars/rent-a-car-profile/rent-a-car-profile.component';
 
 
 const routes: Routes = [
@@ -33,10 +33,13 @@ const routes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'register', component: RegisterComponent},
   {path: 'allCarCompanies',component: RentACarsComponent},
+  {path:'carProfile/:id',component: RentACarProfileComponent},
   {path: 'allCars',component: CarsComponent},
   {path: 'navbar', component:NavbarComponent },
-    {path: 'allAirlines', component:AirlinesComponent},
-    {path: 'allFlights', component:FlightsComponent}
+  {path: 'allAirlines', component:AirlinesComponent},
+  {path: 'allFlights', component:FlightsComponent},
+  {path: 'carProfile', component:RentACarProfileComponent},
+  {path: '**',component:HomePageComponent}
 ];
 
 const routerOptions: ExtraOptions = {

@@ -1,34 +1,29 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { RentCar } from 'src/app/models/rent-a-car.model';
 import { NgbCarousel, NgbSlideEvent, NgbSlideEventSource } from '@ng-bootstrap/ng-bootstrap';
-import { ActivatedRoute, Router } from '@angular/router';
-
+import { ActivatedRoute } from '@angular/router';
+import { RentCarService } from '../../rent-a-car.service';
 
 @Component({
-  selector: 'app-carousel',
-  templateUrl: './carousel.component.html',
-  styleUrls: ['./carousel.component.css']
+  selector: 'app-cars-carousel',
+  templateUrl: './cars-carousel.component.html',
+  styleUrls: ['./cars-carousel.component.css']
 })
-
-export class CarouselComponent implements OnInit{
-
-  public images =[
-   "../../../assets/images/background22 .jpg" ,
-   "../../../assets/images/homeslider1.jpg",
-   "../../../assets/images/homslider2.jpg"
- ];
+export class CarsCarouselComponent implements OnInit{
 
   paused = false;
   unpauseOnArrow = false;
   pauseOnIndicator = false;
   pauseOnHover = true;
 
+  @Input('carCompany') carCompany:RentCar;
+
   @ViewChild('carousel', {static : true}) carousel: NgbCarousel;
+  constructor(private route:ActivatedRoute,private rentCarsService:RentCarService){}
 
-  constructor(private route:ActivatedRoute, private router:Router){}
+  ngOnInit(){}
 
-  ngOnInit(){
-    console.log(true);
-  }
+
 
   togglePaused() {
     if (this.paused) {
@@ -48,10 +43,5 @@ export class CarouselComponent implements OnInit{
       this.togglePaused();
     }
   }
-
-
-
-
 }
-
 

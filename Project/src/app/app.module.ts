@@ -42,6 +42,10 @@ import { FlightListComponent } from './airlines/flights/flight-list/flight-list.
 import { FlightItemComponent } from './airlines/flights/flight-item/flight-item.component';
 import { FlightsComponent } from './airlines/flights/flights.component';
 import { RoundFlightItemComponent } from './airlines/flights/round-flight-item/round-flight-item.component';
+import { RentACarProfileComponent } from './rent-a-cars/rent-a-car-profile/rent-a-car-profile.component';
+import { CarsCarouselComponent } from './rent-a-cars/rent-a-car-profile/cars-carousel/cars-carousel.component';
+import { CarProfileNavbarComponent } from './rent-a-cars/rent-a-car-profile/car-profile-navbar/car-profile-navbar.component';
+import { CarProfileOfficesComponent } from './rent-a-cars/rent-a-car-profile/car-profile-offices/car-profile-offices.component';
 
 @NgModule({
   declarations: [
@@ -73,7 +77,11 @@ import { RoundFlightItemComponent } from './airlines/flights/round-flight-item/r
     FlightListComponent,
     FlightItemComponent,
     FlightsComponent,
-    RoundFlightItemComponent
+    RoundFlightItemComponent,
+    RentACarProfileComponent,
+    CarsCarouselComponent,
+    CarProfileNavbarComponent,
+    CarProfileOfficesComponent
   ],
   imports: [
     BrowserModule,

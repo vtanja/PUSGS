@@ -19,7 +19,7 @@ export class RentACarSearchComponent implements OnInit {
     this.searchForm = new FormGroup({
       'name' : new FormControl(''),
       'address' : new FormControl(''),
-      'rate' : new FormControl('1',[Validators.min(1),Validators.max(5)])
+      'rate' : new FormControl('',[Validators.min(1),Validators.max(5)])
     })
   }
 

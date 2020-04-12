@@ -1,0 +1,25 @@
+.myBtn {
+  justify-content: center;
+  align-items: center;
+  font-family: Poppins-Medium;
+  font-size: 16px;
+  line-height: 1.2;
+  background-color:  #fa871b;
+  color: white;
+  border-color: #fa871b;
+  border-width: 0cm;
+  border-radius: 10px;
+}
+.myBtn:hover
+{
+	opacity: 0.8;
+}
+
+.li-style{
+  padding: 0%;
+  margin: 0%;
+  border-width: 0cm;
+  border-radius: 10px;
+  background: transparent;
+  margin-bottom: 3%;
+}

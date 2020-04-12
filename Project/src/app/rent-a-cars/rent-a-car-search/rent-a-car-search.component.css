@@ -1,12 +1,5 @@
 
 
-.search-header{
-  color: #31124b;
-  margin-top: 5%;
-   font-weight: 700;
-   font-size: 35px;
-}
-
 .input100 {
   width: 100%;
   padding-left: 25px;
@@ -22,14 +15,6 @@
   border-radius: 10px;
 }
 
-.label-input100 {
-  font-family: Poppins-SemiBold;
-  font-size: 18px;
-  color: #999999;
-  line-height: 1.2;
-  padding-left: 2px;
-  margin-top: 4%;
-}
 
 button:disabled{
   background-color: lightgrey;
@@ -44,8 +29,6 @@ button:disabled{
   display: -ms-flexbox;
    display: flex;
   flex-wrap: wrap;
-  /* justify-content: space-between; */
-  /* align-items: center; */
 
 }
 
@@ -114,14 +97,16 @@ button:disabled{
   align-items: center;
   padding: 0 20px;
   min-width: 40%;
-  height: 50px;
-  margin-top:3%;
+  height: 35px;
+  vertical-align: middle;
+  /* margin-top:3%; */
 
   font-family: Poppins-Medium;
   font-size: 16px;
   color: #fff;
   line-height: 1.2;
-  background: #31124b;
+  /* background: #31124b; */
+  background: linear-gradient(to right, #eea136, #7e4596, #f0a63f);
 
   border-width: 0cm;
   border-radius: 10px;
@@ -129,6 +114,10 @@ button:disabled{
 .search_button:hover
 {
 	opacity: 0.8;
+}
+
+.search_button:disabled{
+  background: lightgray;
 }
 
 .invalid-input-span{

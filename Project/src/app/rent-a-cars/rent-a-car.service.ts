@@ -15,17 +15,47 @@ export class  RentCarService {
 
   loadRentCars(){
 
-    const c1 = new Car(1, 'Audi', 'RS5', 2020, 245,["10-4-2020","11-4-2020","12-4-2020","13-4-2020","14-4-2020","15-4-2020"],["../../assets/images/cars/car1.jpg"],5,4,true,true,'My RC First',5);
-    const c2 = new Car(2, 'BMW', 'M5', 2017, 175,["10-4-2020","11-4-2020","12-4-2020","13-4-2020","14-4-2020","15-4-2020"],["../../assets/images/cars/car2.jpg"],5,4,true,true,'My RC Second',4);
-    const c3 = new Car(3, 'Yugo', 'Koral 45', 1991, 25,["10-4-2020","11-4-2020","12-4-2020","13-4-2020","14-4-2020","15-4-2020"],["../../assets/images/cars/car3.jpg"],5,2,false,false,'My RC Third',3.7);
-    const c4 = new Car(4, 'Mercedec', 'AMG GT63', 2019, 437,["10-4-2020","11-4-2020","12-4-2020","13-4-2020","14-4-2020","15-4-2020"],["../../assets/images/cars/car4.jpg"],5,4,true,true,'My RC Fourth',5);
-    const c5 = new Car(5, 'Toyota', 'Yaris', 2010, 86,["10-4-2020","11-4-2020","12-4-2020","13-4-2020","14-4-2020","15-4-2020"],["../../assets/images/cars/car5.jpg"],5,4,true,true,'My RC Fifth',4.9);
+    const c1 = new Car(1, 'Audi', 'Q3', 2020, 245,["10-4-2020","11-4-2020","12-4-2020","13-4-2020","14-4-2020","15-4-2020"],["../../assets/images/cars/audi-q3-car.png"],5,4,true,true,'My RC First',5);
+    const c2 = new Car(2, 'Citroen', 'M5', 2017, 175,["10-4-2020","11-4-2020","12-4-2020","13-4-2020","14-4-2020","15-4-2020"],["../../assets/images/cars/citroen-4.png"],5,4,true,true,'My RC Second',4);
+    const c3 = new Car(3, 'Ford', 'XY', 1991, 25,["10-4-2020","11-4-2020","12-4-2020","13-4-2020","14-4-2020","15-4-2020"],["../../assets/images/cars/ford-10.png"],7,4,false,false,'My RC Third',3.7);
+    const c4 = new Car(4, 'Kia', 'AMG', 2019, 437,["10-4-2020","11-4-2020","12-4-2020","13-4-2020","14-4-2020","15-4-2020"],["../../assets/images/cars/kia-37.png"],5,4,true,true,'My RC Fourth',5);
+    const c5 = new Car(5, 'Mercedes', 'YA', 2010, 86,["10-4-2020","11-4-2020","12-4-2020","13-4-2020","14-4-2020","15-4-2020"],["../../assets/images/cars/mercedes-2.png"],7,4,true,true,'My RC Fifth',4.9);
+    const c6 = new Car(6, 'Nissan', 'Y7', 2010, 86,["10-4-2020","11-4-2020","12-4-2020","13-4-2020","14-4-2020","15-4-2020"],["../../assets/images/cars/nissan57.png"],5,4,true,true,'My RC Fifth',4.9);
+    const c7 = new Car(7, 'Nissan', 'X9', 2010, 86,["10-4-2020","11-4-2020","12-4-2020","13-4-2020","14-4-2020","15-4-2020"],["../../assets/images/cars/nissan-19.png"],5,4,true,true,'My RC Fifth',4.9);
+    const c8 = new Car(8, 'Renault', 'R1', 2010, 86,["10-4-2020","11-4-2020","12-4-2020","13-4-2020","14-4-2020","15-4-2020"],["../../assets/images/cars/renault21.png"],5,4,true,true,'My RC Fifth',4.9);
+    const c9 = new Car(9, 'Renault', 'R2', 2010, 86,["10-4-2020","11-4-2020","12-4-2020","13-4-2020","14-4-2020","15-4-2020"],["../../assets/images/cars/renault24.png"],5,4,true,true,'My RC Fifth',4.9);
+    const c10 = new Car(10, 'Renault', 'R3', 2010, 86,["10-4-2020","11-4-2020","12-4-2020","13-4-2020","14-4-2020","15-4-2020"],["../../assets/images/cars/renault30.png"],5,4,true,true,'My RC Fifth',4.9);
 
-    const rc1 = new RentCar(1,"My RC First","Novi Sad,Serbia","We offer you wide choice of cars with favorable prices.Enjoy your travel fully.",3.5,[c1],["Novi Sad,Serbia"],["../../assets/images/rentcar1.jpg"]);
-    const rc2 = new RentCar(2,"My RC Second","Belgrade,Serbia","Rent a car and enjoy",5,[c2],["Belgrade,Serbia"],["../../assets/images/rentcar2.jpg"]);
-    const rc3 = new RentCar(3,"My RC Third","Trebinje,Bosnia and Herzegovina","We offer you best cars at lowest price",2.9,[c3],["Trebinje,Bosnia and Herzegovina"],["../../assets/images/rentcar3.jpg"]);
-    const rc4 = new RentCar(4,"My RC Fourth","Budapest,Hungary","We offer you best quality at lowest price",4.7,[c4],["Budapest,Hungary"],["../../assets/images/rentcar4.jpg"]);
-    const rc5 = new RentCar(5,"My RC Fifth","Dubrovnik,Croatia","Enjoy your stay with our cars",4.8,[c5],["Dubrovnik,Croatia"],["../../assets/images/rentcar5.jpg"]);
+    const description1 = "Welcome to Europcar, a global leader in car rental "+
+    "worldwide.With over 60 years of experience in the industry, you can be sure that Europcar "+
+    "has the vehicle to meet every car rental need.Make the most out of our large range of services to make car rental experience a unique experience.";
+
+    const description2 = "Welcome to Getaround, a global leader in car rental "+
+    "worldwide.With over 60 years of experience in the industry, you can be sure that Europcar "+
+    "has the vehicle to meet every car rental need.Make the most out of our large range of services to make car rental experience a unique experience.";
+    const description3 = "Welcome to Drivy, a global leader in car rental "+
+    "worldwide.With over 60 years of experience in the industry, you can be sure that Europcar "+
+    "has the vehicle to meet every car rental need.Make the most out of our large range of services to make car rental experience a unique experience.";
+    const description4 = "Welcome to Drive, a global leader in car rental "+
+    "worldwide.With over 60 years of experience in the industry, you can be sure that Europcar "+
+    "has the vehicle to meet every car rental need.Make the most out of our large range of services to make car rental experience a unique experience.";
+    const description5 = "Welcome to Solid, a global leader in car rental "+
+    "worldwide.With over 60 years of experience in the industry, you can be sure that Europcar "+
+    "has the vehicle to meet every car rental need.Make the most out of our large range of services to make car rental experience a unique experience.";
+
+    const offices = {'Serbia': ["Belgrade","Novi Sad","Kragujevac","Nis"],
+    'Montenegro':["Podgorica","Budva"],
+    'Ukraine':["Random Address 1"],
+    'United Kingdom':["Random Address 3","Random Address 4","Random Address 5"],
+    'Croatia':["Dubrovnik","Split","Zagreb","Zadar","Osijek"],
+    'Hungary':["Budapest"],
+    'BiH' : ['Trebinje','Banja Luka','Mostar']};
+
+    const rc1 = new RentCar(1,"Firefly","Novi Sad,Serbia",description1,3.5,[c1,c6,c3,c2,c10],offices,"../../assets/images/rentCarLogos/logo1.png");
+    const rc2 = new RentCar(2,"Getaround","Belgrade,Serbia",description2,5,[c2,c7,c4,c5,c9],offices,"../../assets/images/rentCarLogos/logo2.png");
+    const rc3 = new RentCar(3,"Drivy","Trebinje,BiH",description3,2.9,[c3,c8,c6,c1,c4],offices,"../../assets/images/rentCarLogos/logo3.png");
+    const rc4 = new RentCar(4,"Drive","Budapest,Hungary",description4,4.7,[c4,c9,c2,c8,c10],offices,"../../assets/images/rentCarLogos/logo4.png");
+    const rc5 = new RentCar(5,"Solid","Dubrovnik,Croatia",description5,4.8,[c5,c10,c3,c7,c1],offices,"../../assets/images/rentCarLogos/logo6.png");
 
     this.rentCars.push(rc1);
     this.rentCars.push(rc2);
@@ -38,6 +68,10 @@ export class  RentCarService {
   getRentCars(){
     console.log(this.rentCars);
     return this.rentCars.slice();
+  }
+
+  getRentCarCompany(id:number){
+    return this.rentCars.find(rc=>rc.id==id);
   }
 
   search(params:any){
@@ -75,7 +109,7 @@ export class  RentCarService {
 
   getCars(params:any):Array<Car>{
 
-     var resultArray = new Array<Car>();
+    var resultArray = new Array<Car>();
 
     if(params===undefined)
     return resultArray;
@@ -90,24 +124,33 @@ export class  RentCarService {
     var i = 0;
     var j = 0;
 
-    console.log(pickUpDate);
-    console.log(dropOffDate);
-
-    console.log(this.rentCars[0].cars[0].availableDates);
-
     for(const item of this.rentCars){
       var car;
-      i=0;
+      i=-1;
+
       for(const car of item.cars){
+        ++i;
 
         if(pickUpLocation!='' && pickUpLocation!=undefined){
-          if( item.offices.indexOf(pickUpLocation)===-1){
+
+          var locationParts=pickUpLocation.split(','); // town,state
+
+          if( item.offices[locationParts[1]]===undefined){
+            continue;
+          }else{
+            if (item.offices[locationParts[1]].indexOf(locationParts[0])===-1)
             continue;
           }
         }
 
         if(dropOffLocation !='' && dropOffLocation!=undefined){
-          if( item.offices.indexOf(dropOffLocation)===-1){
+
+          var locationParts=dropOffLocation.split(','); // town,state
+
+          if( item.offices[locationParts[1]]===undefined){
+            continue;
+          }else{
+            if (item.offices[locationParts[1]].indexOf(locationParts[0])===-1)
             continue;
           }
         }
@@ -136,11 +179,9 @@ export class  RentCarService {
           }
         }
         resultArray.push(this.rentCars[j].cars[i]);
-        ++i;
      }
      ++j;
     }
-    console.log(resultArray);
     return resultArray;
   }
 

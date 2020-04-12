@@ -8,10 +8,10 @@ export class RentCar{
   description:string;
   rate:number;
   cars:Array<Car>;
-  offices:Array<string>;
-  images:Array<string>;
+  offices:{};
+  logo:string;
 
-  constructor(id:number,name:string,address:string,description:string,rate:number,cars:Array<Car>,offices:Array<string>,images:Array<string>){
+  constructor(id:number,name:string,address:string,description:string,rate:number,cars:Array<Car>,offices:{},logo:string){
 
     this.id = id;
     this.name=name;
@@ -20,6 +20,6 @@ export class RentCar{
     this.rate=rate;
     this.cars=cars;
     this.offices=offices;
-    this.images = images;
+    this.logo = logo;
   }
 }

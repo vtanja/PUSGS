@@ -86,6 +86,7 @@ export class FlightsSerachFormComponent implements OnInit {
     searchParams['passengers'] = this.searchForm.get('passengers').value;
 
    // this.router.navigate(['/allCars'],{queryParams:searchParams});
+   console.log(searchParams);
 
   }
 

@@ -1,0 +1,156 @@
+<ngb-carousel style="width: 70%;margin-left: 15%;margin-bottom: 3%;" #carousel
+[interval]="4000" [pauseOnHover]="pauseOnHover" (slide)="onSlide($event)"
+ [showNavigationIndicators]=false [showNavigationArrows]=true>
+  <ng-template ngbSlide  *ngFor="let car of carCompany.cars; index as i">
+      <div class="picsum-img-wrapper" >
+        <div class="row">
+          <div class="col">
+            <div class="card ">
+              <img class="card-img-top main-image-style" [src]="car.images[0]" alt="My image {{i + 1}} description">
+              <div class="card-body">
+                <h4 class="card-title font-weight-bold h-style" >{{car.brand}}&nbsp;{{car.model}}</h4>
+                  <div class="row justify-content-center">
+                    <div class="col" >
+                      <div class="row" >
+                        <img src="../../../assets/images/team.png" class="icon-style">
+                        <label  class="label-style" >&nbsp;&nbsp;{{car.maxPassengers}}&nbsp;passengers</label>
+                      </div>
+                      <div class="row">
+                        <img src="../../../assets/images/gearshift.png" class="icon-style">
+                        <label *ngIf="car.hasAutomaticGearbox"  class="label-style" > &nbsp;&nbsp;A&nbsp;&nbsp;gearbox</label>
+                        <label  *ngIf="!car.hasAutomaticGearbox"  class="label-style" > &nbsp;&nbsp;M&nbsp;&nbsp;gearbox</label>
+                      </div>
+                     </div>
+
+                    <div class="col" style="align-content: center;">
+                      <div class="row" style="justify-content: center;">
+                        <img src="../../../assets/images/car-door.png" class="icon-style">
+                        <label class="label-style" style="font-weight:500">&nbsp;&nbsp;{{car.doors}}&nbsp;&nbsp;doors</label>
+                      </div>
+                      <div class="row" style="margin-top: 3%;" *ngIf="car.hasAirCondition">
+                        <img src="../../../assets/images/freezer.png" class="icon-style">
+                        <label class="label-style" >&nbsp;&nbsp;Air condition</label>
+                      </div>
+                    </div>
+                  </div>
+                <p style="text-align: center;margin-top: 10px;font-size: smaller;" >price from</p>
+                <p class="price">{{car.pricePerDay | currency:'EUR'}}</p>
+                 <a class="btn  btn-md btn-rounded button-style" style="display: block;">Rent</a>
+              </div>
+            </div>
+          </div>
+
+      <div class="col">
+        <div class="card ">
+          <img class="card-img-top main-image-style" [src]="carCompany.cars[(i+1)%carCompany.cars.length].images[0]" alt="My image {{i + 1}} description">
+          <div class="card-body">
+            <h4 class="card-title font-weight-bold h-style" >{{carCompany.cars[(i+1)%carCompany.cars.length].brand}}&nbsp;{{carCompany.cars[(i+1)%carCompany.cars.length].model}}</h4>
+              <div class="row justify-content-center">
+                <div class="col" >
+                  <div class="row" >
+                    <img src="../../../assets/images/team.png" class="icon-style">
+                    <label  class="label-style" >&nbsp;&nbsp;{{carCompany.cars[(i+1)%carCompany.cars.length].maxPassengers}}&nbsp;passengers</label>
+                  </div>
+                  <div class="row">
+                    <img src="../../../assets/images/gearshift.png" class="icon-style">
+                    <label *ngIf="carCompany.cars[(i+1)%carCompany.cars.length].hasAutomaticGearbox"  class="label-style" > &nbsp;&nbsp;A&nbsp;&nbsp;gearbox</label>
+                    <label  *ngIf="!carCompany.cars[(i+1)%carCompany.cars.length].hasAutomaticGearbox"  class="label-style" > &nbsp;&nbsp;M&nbsp;&nbsp;gearbox</label>
+                  </div>
+                 </div>
+
+                <div class="col" style="align-content: center;">
+                  <div class="row" style="justify-content: center;">
+                    <img src="../../../assets/images/car-door.png" class="icon-style">
+                    <label class="label-style" style="font-weight:500">&nbsp;&nbsp;{{carCompany.cars[(i+1)%carCompany.cars.length].doors}}&nbsp;&nbsp;doors</label>
+                  </div>
+                  <div class="row" style="margin-top: 3%;" *ngIf="carCompany.cars[(i+1)%carCompany.cars.length].hasAirCondition">
+                    <img src="../../../assets/images/freezer.png" class="icon-style">
+                    <label class="label-style" >&nbsp;&nbsp;Air condition</label>
+                  </div>
+                </div>
+              </div>
+            <p style="text-align: center;margin-top: 10px;font-size: smaller;" >price from</p>
+            <p class="price">{{carCompany.cars[(i+1)%carCompany.cars.length].pricePerDay | currency:'EUR'}}</p>
+             <a class="btn  btn-md btn-rounded button-style" style="display: block;">Rent</a>
+          </div>
+        </div>
+      </div>
+
+        <div class="col">
+        <div class="card ">
+          <img class="card-img-top main-image-style" [src]="carCompany.cars[(i+2)%carCompany.cars.length].images[0]" alt="My image {{i + 1}} description">
+          <div class="card-body">
+            <h4 class="card-title font-weight-bold h-style" >{{carCompany.cars[(i+2)%carCompany.cars.length].brand}}&nbsp;{{carCompany.cars[(i+2)%carCompany.cars.length].model}}</h4>
+              <div class="row justify-content-center">
+                <div class="col" >
+                  <div class="row" >
+                    <img src="../../../assets/images/team.png" class="icon-style">
+                    <label  class="label-style" >&nbsp;&nbsp;{{carCompany.cars[(i+2)%carCompany.cars.length].maxPassengers}}&nbsp;passengers</label>
+                  </div>
+                  <div class="row">
+                    <img src="../../../assets/images/gearshift.png" class="icon-style">
+                    <label *ngIf="carCompany.cars[(i+2)%carCompany.cars.length].hasAutomaticGearbox"  class="label-style" > &nbsp;&nbsp;A&nbsp;&nbsp;gearbox</label>
+                    <label  *ngIf="!carCompany.cars[(i+2)%carCompany.cars.length].hasAutomaticGearbox"  class="label-style" > &nbsp;&nbsp;M&nbsp;&nbsp;gearbox</label>
+                  </div>
+                 </div>
+
+                <div class="col" style="align-content: center;">
+                  <div class="row" style="justify-content: center;">
+                    <img src="../../../assets/images/car-door.png" class="icon-style">
+                    <label class="label-style" style="font-weight:500">&nbsp;&nbsp;{{carCompany.cars[(i+2)%carCompany.cars.length].doors}}&nbsp;&nbsp;doors</label>
+                  </div>
+                  <div class="row" style="margin-top: 3%;" *ngIf="carCompany.cars[(i+2)%carCompany.cars.length].hasAirCondition">
+                    <img src="../../../assets/images/freezer.png" class="icon-style">
+                    <label class="label-style" >&nbsp;&nbsp;Air condition</label>
+                  </div>
+                </div>
+              </div>
+            <p style="text-align: center;margin-top: 10px;font-size: smaller;" >price from</p>
+            <p class="price">{{carCompany.cars[(i+2)%carCompany.cars.length].pricePerDay | currency:'EUR'}}</p>
+             <a class="btn  btn-md btn-rounded button-style" style="display: block;">Rent</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="card ">
+          <img class="card-img-top main-image-style"  [src]="carCompany.cars[(i+3)%carCompany.cars.length].images[0]" alt="My image {{i + 1}} description">
+          <div class="card-body">
+            <h4 class="card-title font-weight-bold h-style" >{{carCompany.cars[(i+3)%carCompany.cars.length].brand}}&nbsp;{{carCompany.cars[(i+3)%carCompany.cars.length].model}}</h4>
+              <div class="row justify-content-center">
+                <div class="col" >
+                  <div class="row" >
+                    <img src="../../../assets/images/team.png" class="icon-style">
+                    <label  class="label-style" >&nbsp;&nbsp;{{carCompany.cars[(i+3)%carCompany.cars.length].maxPassengers}}&nbsp;passengers</label>
+                  </div>
+                  <div class="row">
+                    <img src="../../../assets/images/gearshift.png" class="icon-style">
+                    <label *ngIf="carCompany.cars[(i+3)%carCompany.cars.length].hasAutomaticGearbox"  class="label-style" > &nbsp;&nbsp;A&nbsp;&nbsp;gearbox</label>
+                    <label  *ngIf="!carCompany.cars[(i+3)%carCompany.cars.length].hasAutomaticGearbox"  class="label-style" > &nbsp;&nbsp;M&nbsp;&nbsp;gearbox</label>
+                  </div>
+                 </div>
+
+                <div class="col" style="align-content: center;">
+                  <div class="row" style="justify-content: center;">
+                    <img src="../../../assets/images/car-door.png" class="icon-style">
+                    <label class="label-style" style="font-weight:500">&nbsp;&nbsp;{{carCompany.cars[(i+3)%carCompany.cars.length].doors}}&nbsp;&nbsp;doors</label>
+                  </div>
+                  <div class="row" style="margin-top: 3%;" *ngIf="carCompany.cars[(i+3)%carCompany.cars.length].hasAirCondition">
+                    <img src="../../../assets/images/freezer.png" class="icon-style">
+                    <label class="label-style" >&nbsp;&nbsp;Air condition</label>
+                  </div>
+                </div>
+              </div>
+            <p style="text-align: center;margin-top: 10px;font-size: smaller;" >price from</p>
+            <p class="price">{{carCompany.cars[(i+3)%carCompany.cars.length].pricePerDay | currency:'EUR'}}</p>
+             <a class="btn  btn-md btn-rounded button-style" style="display: block;">Rent</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+</ngb-carousel>
+
+
+
