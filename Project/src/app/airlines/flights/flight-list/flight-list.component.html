@@ -1,8 +1,13 @@
-<!-- <div class="list-group" *ngFor="let flight of flights" style="margin-top: 5%;">
+<div *ngIf="flights.length!==0">
+  <div class="list-group" *ngFor="let flight of flights" style="margin-top: 5%;">
     <app-flight-item [flight]="flight"></app-flight-item>
-  </div> -->
+  </div> 
+</div>
 
+<div *ngIf="roundFlights.length!==0">
   <div class="list-group" *ngFor="let roundFlight of roundFlights" style="margin-top: 5%;">
     <app-round-flight-item [roundFlight]="roundFlight"></app-round-flight-item>
   </div> 
+</div>
+  
 

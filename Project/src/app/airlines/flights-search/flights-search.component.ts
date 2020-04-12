@@ -84,6 +84,7 @@ export class FlightsSearchComponent implements OnInit {
 
    // this.router.navigate(['/allCars'],{queryParams:searchParams});
 
+  
   }
 
 }
