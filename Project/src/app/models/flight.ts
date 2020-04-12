@@ -16,11 +16,12 @@ export class Flight {
     premiumEconomySeats:number;
     businessSeats:number;
     firstClassSeats:number;
+    airline:string;
 
   constructor(id:number,takeOffLocation:string, landingLocation:string, takeOffDate:string,landingDate:string,
                 takeOffTime:string,landingTime:string, duration:number, numberOfChangeovers:number,changeoverLocations:Array<string>,
                   price:number, rate:number,economySeats:number, premiumEconomySeats:number,businessSeats:number,
-                  firstClassSeats:number){
+                  firstClassSeats:number, airline:string){
 
     this.id = id;
     this.takeOffLocation=takeOffLocation;
@@ -38,5 +39,6 @@ export class Flight {
     this.premiumEconomySeats=premiumEconomySeats;
     this.businessSeats=businessSeats;
     this.firstClassSeats=firstClassSeats;
+    this.airline=airline;
   }
 }

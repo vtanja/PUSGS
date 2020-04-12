@@ -46,6 +46,9 @@ import { RentACarProfileComponent } from './rent-a-cars/rent-a-car-profile/rent-
 import { CarsCarouselComponent } from './rent-a-cars/rent-a-car-profile/cars-carousel/cars-carousel.component';
 import { CarProfileNavbarComponent } from './rent-a-cars/rent-a-car-profile/car-profile-navbar/car-profile-navbar.component';
 import { CarProfileOfficesComponent } from './rent-a-cars/rent-a-car-profile/car-profile-offices/car-profile-offices.component';
+import { FlightsFilterComponent } from './airlines/flights/flights-filter/flights-filter.component';
+import { FilterPipe } from './airlines/flights/filter.pipe';
+import { RoundFlightsFilterPipe } from './airlines/flights/round-flights-filter.pipe';
 
 @NgModule({
   declarations: [
@@ -81,7 +84,10 @@ import { CarProfileOfficesComponent } from './rent-a-cars/rent-a-car-profile/car
     RentACarProfileComponent,
     CarsCarouselComponent,
     CarProfileNavbarComponent,
-    CarProfileOfficesComponent
+    CarProfileOfficesComponent,
+    FlightsFilterComponent,
+    FilterPipe,
+    RoundFlightsFilterPipe,
   ],
   imports: [
     BrowserModule,

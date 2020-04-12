@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnChanges } from '@angular/core';
 import { Flight } from 'src/app/models/flight';
 import { AirlineService } from '../../airline.service';
 import { ActivatedRoute, Router, Params } from '@angular/router';
@@ -13,12 +13,41 @@ export class FlightListComponent implements OnInit {
   flights:Flight[]=[];
   roundFlights: {toFlight:Flight, backFlight:Flight}[]=[];
 
+   filterFlight:{
+    airlines:{name:string, isChecked:boolean}[],
+    duration:number,
+    price:number,
+    stops:number[]
+  };
+
+  filterFlightRound:{
+    airlines:{name:string, isChecked:boolean}[],
+    duration:number,
+    price:number,
+    stops:number[]
+  };
+
   params:{};
   
+ 
 
-  constructor(private airlineService:AirlineService, private route:ActivatedRoute, private router:Router) { }
+  constructor(private airlineService:AirlineService, private route:ActivatedRoute, private router:Router) {}
+  // ngOnChanges(changes: import("@angular/core").SimpleChanges): void {
+  //   this.airlineService.filter.subscribe((filter:{airlines:{name:string, isChecked:boolean}[], duration:number, price:number, stops:number[] })=>{
+  //     this.filterFlight=filter;
+  //     console.log(this.filterFlight+ " from changes");
+  //   });
+
+  // }
 
   ngOnInit(): void {
+
+    this.airlineService.filter.subscribe((filter:{airlines:{name:string, isChecked:boolean}[], duration:number, price:number, stops:number[] })=>{
+       this.filterFlight = {...filter};
+       //this.filterFlightRound = {...filter};
+      console.log(this.filterFlight);
+    });
+
     //this.flights=this.airlineService.getFlights();
     //this.roundFlights=this.airlineService.getRoundFlights();
     this.route.queryParams.subscribe((queryParams:Params)=>{

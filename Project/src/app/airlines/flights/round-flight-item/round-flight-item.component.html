@@ -1,4 +1,80 @@
-<div class="list-group-item">
+<!-- <div class="list-group-item">
     <app-flight-item [flight]="roundFlight.toFlight"></app-flight-item>
     <app-flight-item [flight]="roundFlight.backFlight"></app-flight-item>
-</div>
+</div> -->
+
+ 
+<a  class="list-group-item list-group-item-action " >
+    <div class="d-flex">
+        <div class="flex-col align-self-center" style="width: 20%;  text-align: center;" >
+            <div class="flex-row " style="height: 50%; ">
+                <img src="{{ roundFlight.toFlight.image }}" style="width: 100%; height: 50%;" >
+            </div>
+            <hr>
+            <div class="flex-row " style="height: 50%; ">
+                <img src="{{roundFlight.backFlight.image}}" style="width: 100%; height: 50%;" >
+            </div>
+        </div>
+        <div class="flex-column align-self-center " style="width: 20%; text-align: end; margin-right:1.5% " >
+            <div class="flex-row " style="height: 25%; ">
+                <img src="../../../../assets/images/flight.png" style="width: 20px; height: 20px; padding-bottom: 0%; padding-block-end: 0%;">
+                {{roundFlight.toFlight.takeOffTime}}
+            </div>
+            <div class="flex-row " style="height: 25%; ">
+                {{roundFlight.backFlight.takeOffLocation}}
+            </div>
+            <hr>
+            <div class="flex-row " style="height: 25%; ">
+                <img src="../../../../assets/images/flight.png" style="width: 20px; height: 20px; padding-bottom: 0%; padding-block-end: 0%;">
+                {{roundFlight.backFlight.takeOffTime}}
+            </div>
+            <div class="flex-row " style="height: 25%; ">
+                {{roundFlight.backFlight.takeOffLocation}}
+            </div>
+        </div>
+        <div class="flex-column " style="width: 20%; text-align: center;" >
+            <div class="flex-row " style="height: 16.6%;">
+                <small style="font-size: x-small; color: #fa9e1c; font-weight: bolder; "> Duration: {{roundFlight.toFlight.duration}}h</small>
+            </div>
+            <div class="flex-row " style="height: 16.6%;">
+                <img src="../../../../assets/images/minus.png" style="width: 80%; height: 20px;">
+                <img src="../../../../assets/images/airplane.png" style="width: 20%; height: 20px;">
+            </div>
+            <div class="flex-row" style="height: 16.6%;">
+                <small *ngIf="roundFlight.toFlight.numberOfChangeovers>0; else noStops" style="font-size: x-small; color: #fa9e1c; font-weight: bolder;" >{{roundFlight.toFlight.numberOfChangeovers}} stop</small>
+                <ng-template #noStops><small style="font-size: x-small; color: #fa9e1c; font-weight: bolder;">Direct</small></ng-template>
+            </div>
+            <div class="flex-row " style="height: 16.6%;">
+                <small style="font-size: x-small; color: #fa9e1c; font-weight: bolder; "> Duration: {{roundFlight.backFlight.duration}}h</small>
+            </div>
+            <div class="flex-row " style="height: 16.6%;">
+                <img src="../../../../assets/images/minus.png" style="width: 80%; height: 20px;">
+                <img src="../../../../assets/images/airplane.png" style="width: 20%; height: 20px;">
+            </div>
+            <div class="flex-row" style="height: 16.6%;">
+                <small *ngIf="roundFlight.backFlight.numberOfChangeovers>0; else noStops" style="font-size: x-small; color: #fa9e1c; font-weight: bolder;" >{{roundFlight.backFlight.numberOfChangeovers}} stop</small>
+                <ng-template #noStops><small style="font-size: x-small; color: #fa9e1c; font-weight: bolder;">Direct</small></ng-template>
+            </div>
+        </div>
+        <div class="flex-col align-self-center" style="width: 20%; text-align: left; margin-left: 1.5%; ">
+            <div class="flex-row " style="height: 25%;">
+                {{roundFlight.toFlight.landingTime}}
+                <img src="../../../../assets/images/flight (1).png" style="width: 20px; height: 20px; padding-bottom: 0%; padding-block-end: 0%;">
+            </div>
+            <div class="flex-row " style="height: 25%;">
+                {{roundFlight.toFlight.landingLocation}}
+            </div>
+            <hr>
+            <div class="flex-row " style="height: 25%;">
+                {{roundFlight.backFlight.landingTime}}
+                <img src="../../../../assets/images/flight (1).png" style="width: 20px; height: 20px; padding-bottom: 0%; padding-block-end: 0%;">
+            </div>
+            <div class="flex-row " style="height: 25%;">
+                {{roundFlight.backFlight.landingLocation}}
+            </div>
+        </div>
+        <div class="flex-col align-self-center" style="width: 20%;  text-align: center;">
+            {{(roundFlight.toFlight.price+roundFlight.backFlight.price) | currency:'EUR':true}}
+        </div>
+    </div>
+</a>  
