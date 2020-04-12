@@ -16,6 +16,7 @@ import { FlightListComponent } from './airlines/flights/flight-list/flight-list.
 import { FlightsComponent } from './airlines/flights/flights.component';
 import { RentACarProfileComponent } from './rent-a-cars/rent-a-car-profile/rent-a-car-profile.component';
 import { CarsComponent } from './rent-a-cars/cars/cars.component';
+import { AirlineProfileComponent } from './airlines/airline-profile/airline-profile.component';
 
 
 const routes: Routes = [
@@ -33,19 +34,20 @@ const routes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'register', component: RegisterComponent},
   {path: 'allCarCompanies',component: RentACarsComponent},
-  {path:'carProfile/:id',component: RentACarProfileComponent},
-  {path: 'allCars',component: CarsComponent},
-  {path: 'navbar', component:NavbarComponent },
-  {path: 'carProfile', component:RentACarProfileComponent},
   {path: 'allAirlineCompanies', component:AirlinesComponent},
+  {path: 'allCars',component: CarsComponent},
   {path: 'allFlights', component:FlightsComponent},
+  {path: 'navbar', component:NavbarComponent },
+  {path:'carProfile/:id',component: RentACarProfileComponent},
+  {path:'airlineProfile/:id',component: AirlineProfileComponent},
+  // {path: 'carProfile', component:RentACarProfileComponent},
   {path: '**',component:HomePageComponent}
 ];
 
 const routerOptions: ExtraOptions = {
   scrollPositionRestoration: 'enabled',
   anchorScrolling: 'enabled',
-  scrollOffset: [0, 64],
+   scrollOffset: [0, 24],
 };
 
 @NgModule({

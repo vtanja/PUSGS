@@ -1,0 +1,38 @@
+p{
+  width:70%;
+  color: grey;
+  margin-top: 2%;
+  font-size: 16px;
+  font-family: Poppins-Medium;
+}
+
+h4{
+  padding-top: 2%;
+  margin-bottom: 3%;
+  font-family: Poppins-Bold;
+  font-size: 22px;
+  text-align: center;
+  color:rgb(75, 74, 74);
+}
+
+span{
+  color: rgb(63, 60, 60);
+  font-size: 18px;
+  font-family: Poppins-Medium;
+}
+
+.star {
+  position: relative;
+  display: inline-block;
+  /* font-size: 2rem;*/
+  color: #d3d3d3;
+}
+.full {
+  color: #eea136;
+}
+.half {
+  position: absolute;
+  display: inline-block;
+  overflow: hidden;
+  color:#eea136;
+}

@@ -45,8 +45,8 @@ export class  RentCarService {
 
     const offices = {'Serbia': ["Belgrade","Novi Sad","Kragujevac","Nis"],
     'Montenegro':["Podgorica","Budva"],
-    'Ukraine':["Random Address 1"],
-    'United Kingdom':["Random Address 3","Random Address 4","Random Address 5"],
+    'Ukraine':["Kiev"],
+    'United Kingdom':["London","Birmingham","Liverpool"],
     'Croatia':["Dubrovnik","Split","Zagreb","Zadar","Osijek"],
     'Hungary':["Budapest"],
     'BiH' : ['Trebinje','Banja Luka','Mostar']};

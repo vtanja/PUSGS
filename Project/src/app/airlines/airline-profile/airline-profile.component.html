@@ -10,36 +10,37 @@
   </div>
   <br>
   <div class="d-flex justify-content-center">
-    <img src="{{carCompany.logo}}" width="240px" height="100px">
+    <img src="{{airlineCompany.image}}" width="240px" height="100px">
   </div>
 
   <div class="d-flex justify-content-between" style="margin-left:20%;margin-top: 3%;width: 60%;">
     <div>
     <i class="fa fa-map-marker" aria-hidden="true"></i>
-    <span>&nbsp;&nbsp;&nbsp;{{carCompany.address}}</span>
+    <span>&nbsp;&nbsp;&nbsp;{{airlineCompany.address}}</span>
   </div>
       <div>
-      <ngb-rating [(rate)]="carCompany.rate" [starTemplate]="t" [readonly]="true" [max]="5"></ngb-rating>
+      <ngb-rating [(rate)]="airlineCompany.rate" [starTemplate]="t" [readonly]="true" [max]="5"></ngb-rating>
       <hr style="margin-top: 0%;">
-      <pre style="margin-top: 0%;">Rate: <b>{{carCompany.rate}}</b></pre>
+      <pre style="margin-top: 0%;">Rate: <b>{{airlineCompany.rate}}</b></pre>
     </div>
   </div>
   <div class="d-flex justify-content-center">
-    <p >{{carCompany.description}}</p>
+    <p >{{airlineCompany.description}}</p>
   </div>
 
   <div style="background-color: whitesmoke; padding-bottom: 2%; margin-top: 2%;">
-    <h4>We have offices all around the world</h4>
-    <app-profile-offices [items]="carCompany.offices"></app-profile-offices>
+    <h4>Check our destinations</h4>
+    <app-profile-offices [items]="airlineCompany.destinations"></app-profile-offices>
   </div>
 
-  <div class="d-flex justify-content-center" style="margin-top: 5%;">
+  <!-- <div class="d-flex justify-content-center" style="margin-top: 5%;">
     <h4>Check our cars</h4>
-  </div>
+  </div> -->
 
-  <div class="d-flex justify-content-center" style="margin-top: 2%;">
-    <app-cars-carousel [carCompany]="carCompany"></app-cars-carousel>
-  </div>
+  <!-- <div class="d-flex justify-content-center" style="margin-top: 2%;">
+    <app-cars-carousel [airlineCompany]="airlineCompany"></app-cars-carousel>
+  </div> -->
 </div>
+
 
 
