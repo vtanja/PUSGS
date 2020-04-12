@@ -32,7 +32,7 @@
     "font-awesome": "^4.7.0",
     "fontawesome": "^5.6.3",
     "google-libphonenumber": "^3.2.8",
-    "intl-tel-input": "^16.0.15",
+    "intl-tel-input": "^16.1.0",
     "ng2-search-filter": "^0.5.1",
     "ng2-tel-input": "^2.3.0",
     "ngx-show-hide-password": "^2.2.4",

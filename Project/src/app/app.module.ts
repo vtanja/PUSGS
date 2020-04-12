@@ -44,11 +44,12 @@ import { FlightsComponent } from './airlines/flights/flights.component';
 import { RoundFlightItemComponent } from './airlines/flights/round-flight-item/round-flight-item.component';
 import { RentACarProfileComponent } from './rent-a-cars/rent-a-car-profile/rent-a-car-profile.component';
 import { CarsCarouselComponent } from './rent-a-cars/rent-a-car-profile/cars-carousel/cars-carousel.component';
-import { CarProfileNavbarComponent } from './rent-a-cars/rent-a-car-profile/car-profile-navbar/car-profile-navbar.component';
-import { CarProfileOfficesComponent } from './rent-a-cars/rent-a-car-profile/car-profile-offices/car-profile-offices.component';
 import { FlightsFilterComponent } from './airlines/flights/flights-filter/flights-filter.component';
 import { FilterPipe } from './airlines/flights/filter.pipe';
 import { RoundFlightsFilterPipe } from './airlines/flights/round-flights-filter.pipe';
+import { ProfileNavbarComponent } from './common/profile-navbar/profile-navbar.component';
+import { ProfileOfficesComponent } from './common/profile-offices/profile-offices.component';
+import { AirlineProfileComponent } from './airlines/airline-profile/airline-profile.component';
 
 @NgModule({
   declarations: [
@@ -83,11 +84,12 @@ import { RoundFlightsFilterPipe } from './airlines/flights/round-flights-filter.
     RoundFlightItemComponent,
     RentACarProfileComponent,
     CarsCarouselComponent,
-    CarProfileNavbarComponent,
-    CarProfileOfficesComponent,
     FlightsFilterComponent,
     FilterPipe,
     RoundFlightsFilterPipe,
+    ProfileNavbarComponent,
+    ProfileOfficesComponent,
+    AirlineProfileComponent
   ],
   imports: [
     BrowserModule,

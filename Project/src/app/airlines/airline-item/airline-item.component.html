@@ -3,8 +3,9 @@
       <span class="half" [style.width.%]="fill">&#9733;</span>&#9733;
     </span>
   </ng-template>
-  
-  <a  class="list-group-item list-group-item-action flex-column align-items-start">
+
+  <a  class="list-group-item list-group-item-action flex-column align-items-start"
+      routerLink='/airlineProfile/{{airline.id}}'>
     <div class="row">
       <div class="col-md-3">
         <img src={{airline.image}} style="width: 100%;height:140px">
@@ -31,4 +32,3 @@
       </div>
     </div>
   </a>
-  

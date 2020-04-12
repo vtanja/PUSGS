@@ -58,7 +58,7 @@ export class AirlineService{
         const f36 = new Flight(14, 'AMS', 'BGD', "10-4-2020", "10-4-2020",'10:00','11:00', 1, 0, [], 110, 4.5, 200, 50, 100, 70,  "Airline1");
         const f37= new Flight(15, 'ZAMSRH', 'BGD', "10-4-2020", "10-4-2020",'15:00','16:00', 1, 0, [], 110, 4.5, 200, 50, 100, 70,  "Airline1");
 
-        
+
         // const f4 = new Flight(3, 'BGD', 'TXL', '1.1.2001.', '1.1.2001.','10:00','12:00', 2, 0, [], 120, 5);
         // const f5 = new Flight(4, 'BGD', 'LHR', '1.1.2001.', '1.1.2001.','10:00', '14:00', 4, 0, [], 120, 5);
         // const f6 = new Flight(5, 'BGD', 'JFK', '1.1.2001.', '2.1.2001.','10:00','10:00', 16, 1, ['Frankfurt'], 600, 5);
@@ -66,8 +66,22 @@ export class AirlineService{
         // const f7 = new Flight(5, 'JFK', 'BGD', '2.1.2001.', '3.1.2001.','10:00','10:00', 16, 1, ['Frankfurt'], 600, 5);
         // const f8 = new Flight(4, 'LHR', 'BGD', '2.1.2001.', '2.1.2001.','10:00', '14:00', 4, 0, [], 120, 5);
 
-        const a1 = new Airline(0, 'Airline1', 'Belgrade, Serbia', 'Airline 1 description', 5, [f1, f12, f13, f14,f15,f16,f17,f18,f2,f21,f22,f23], ['Vienna', 'London','NewYork'], "../../assets/images/airlines/airline1.png" );
-        const a2 = new Airline(1, 'Airline2', 'Novi Sad, Serbia', 'Airline 2 description', 4, [f3,f31,f32,f33,f34,f35,f36,f37, f25,f26,f27], ['Zurich', 'London','NewYork'], "../../assets/images/airlines/airline2.png" );
+        const destinations1 = {
+          'Serbia':["Belgrade","Nis"],
+          'Austria' :["Linz","Salzburg","Graz"],
+          'Croatia':["Dubrovnik","Split","Zagreb"]
+        };
+
+        const destinations2 = {
+          'United Kingdom':["London","Liverpool","Manchester","Leeds","Birmingham"],
+          'Austria' :["Linz","Salzburg","Graz"],
+          'Croatia':["Dubrovnik","Split","Zagreb"],
+          'Germany':["Berlin","Munich","Frankfurt","Cologne"],
+          'Spain':["Barcelona","Madrid",",Malaga","Cordoba"]
+        };
+
+        const a1 = new Airline(0, 'Airline1', 'Belgrade, Serbia', 'Airline 1 description', 5, [f1, f12, f13, f14,f15,f16,f17,f18,f2,f21,f22,f23], destinations1, "../../assets/images/airlines/airline1.png" );
+        const a2 = new Airline(1, 'Airline2', 'Novi Sad, Serbia', 'Airline 2 description', 4, [f3,f31,f32,f33,f34,f35,f36,f37, f25,f26,f27], destinations2, "../../assets/images/airlines/airline2.png" );
 
         f1.image=a1.image;
         f12.image=a1.image;
@@ -98,6 +112,13 @@ export class AirlineService{
 
     getAirlines(){
         return this.airlines.slice();
+    }
+
+    getAirline(id:number){
+
+      var airline = this.airlines.find(a=>a.id===id);
+      console.log(airline);
+      return airline;
     }
 
     getFlights(params:any):Flight[]{
@@ -131,11 +152,11 @@ export class AirlineService{
                         continue;
                     }
                 }
-                
+
                 if(departureDate!='' && departureDate!=undefined){
                     if(flight.takeOffDate !== departureDate){
                          continue;
-                     }    
+                     }
                 }
 
                 if(landingLocation!='' && landingLocation!=undefined){
@@ -144,7 +165,7 @@ export class AirlineService{
                     }
                 }
 
-                
+
                 if(flightClass !='' && flightClass!=undefined && passengers!=NaN && passengers!=undefined){
                     if(flightClass.toLowerCase()==='economy' && flight.economySeats<passengers){
                         continue;
@@ -153,17 +174,17 @@ export class AirlineService{
                     if(flightClass.toLowerCase()==='premium economy' && flight.premiumEconomySeats<passengers){
                         continue;
                     }
-                    
+
                     if(flightClass.toLowerCase()==='business class' && flight.businessSeats<passengers){
                         continue;
                     }
-    
-                    
+
+
                     if(flightClass.toLowerCase()==='first class' && flight.firstClassSeats<passengers){
                         continue;
                     }
                 }
-                
+
                 result.push(flight);
                 ++j;
             }
@@ -173,9 +194,9 @@ export class AirlineService{
     }
 
     getRoundFlights(params:any):{toFlight:Flight, backFlight:Flight}[]{
-        
+
         var toFlights:Flight[]=[];
-        var returnFlights:Flight[]=[]; 
+        var returnFlights:Flight[]=[];
         var result:{toFlight:Flight,backFlight:Flight}[]=[];
         //console.log(params);
         toFlights=this.getTickets(params.departureDate, params.takeOffLocation,params.landingLocation, params.flightClass, +params.passengers);
@@ -206,11 +227,11 @@ export class AirlineService{
                         continue;
                     }
                 }
-                
+
                 if(takeOffDate!='' && takeOffDate!=undefined){
                     if(flight.takeOffDate !== takeOffDate){
                          continue;
-                     }    
+                     }
                 }
 
                 if(landingLocation!='' && landingLocation!=undefined){
@@ -219,7 +240,7 @@ export class AirlineService{
                     }
                 }
 
-                
+
                 if(flightClass !='' && flightClass!=undefined && passengers!=NaN && passengers!=undefined){
                     if(flightClass.toLowerCase()==='economy' && flight.economySeats<passengers){
                         continue;
@@ -228,17 +249,17 @@ export class AirlineService{
                     if(flightClass.toLowerCase()==='premium economy' && flight.premiumEconomySeats<passengers){
                         continue;
                     }
-                    
+
                     if(flightClass.toLowerCase()==='business class' && flight.businessSeats<passengers){
                         continue;
                     }
-    
-                    
+
+
                     if(flightClass.toLowerCase()==='first class' && flight.firstClassSeats<passengers){
                         continue;
                     }
                 }
-                
+
                 result.push(flight);
                 ++j;
             }
@@ -276,12 +297,12 @@ export class AirlineService{
                             continue;
                         }
                     }
-                   
+
                 }
 
                 result.push({toFlight:item1, backFlight:item2});
-                
-                
+
+
             }
         }
 

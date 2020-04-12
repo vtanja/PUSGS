@@ -24,7 +24,8 @@ export class RentACarProfileComponent implements OnInit,OnDestroy{
      this.mySubscription = this.route.params.subscribe((params:Params)=>{
       this.carCompany = this.rentCarsService.getRentCarCompany(params['id']);
       this.navItemInfo={'name':this.carCompany.name,
-                        'logo':this.carCompany.logo};
+                        'logo':this.carCompany.logo,
+                        'companyType':'RentCar'};
     })
   }
 
