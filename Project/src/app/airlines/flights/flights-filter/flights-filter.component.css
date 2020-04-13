@@ -1,0 +1,97 @@
+
+.btn{
+    width: 100%;
+    font-size: large;
+    font-weight: bold;
+    color: #31124b;
+    text-align: left;
+}
+
+.btn i{
+    text-align: right;
+}
+
+.btn:focus{
+    border: none;
+    outline: none;
+    box-shadow: none;
+}
+
+.card{
+    background-color: transparent;
+    border: none;
+    
+    font-weight: 500;
+    color: #31124b;
+    font-size: larger;
+}
+
+  input[type="checkbox"] {
+    visibility: hidden;
+  }
+  label {
+    cursor: pointer;
+  }
+  input[type="checkbox"] + label:before {
+    border: 1px solid #333;
+    content: "\00a0";
+    display: inline-block;
+    font: 16px/1em sans-serif;
+    height: 16px;
+    margin: 0 .25em 0 0;
+    padding: 0;
+    vertical-align: top;
+    width: 16px;
+  }
+  input[type="checkbox"]:checked + label:before {
+    background: #fff;
+    color: #333;
+    content: "\2713";
+    text-align: center;
+  }
+  input[type="checkbox"]:checked + label:after {
+    font-weight: bold;
+  }
+  
+  input[type="checkbox"]:focus + label::before {
+      outline: rgb(59, 153, 252) auto 5px;
+  }
+
+  input[type="range"] {
+ -webkit-appearance: none;
+}
+
+input[type="range"]:focus {
+ outline: none;
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+    background: white;
+    height: 5px;
+    border-radius: 20px;
+    margin: 0 .25em 0 0;
+   }
+   
+   input[type="range"]::-moz-range-track {
+    background: white;
+    height: 5px;
+    border-radius: 20px;
+    margin: 0 .25em 0 0;
+   }
+
+   input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    height: 15px;
+    width: 15px;
+    background: #31124b;
+    margin-top: -5px;
+    border-radius: 50%;
+   }
+   
+   input[type="range"]::-moz-range-thumb {
+    height: 15px;
+    width: 15px;
+    background: #31124b;
+    margin-top: -5px;
+    border-radius: 50%;
+   }

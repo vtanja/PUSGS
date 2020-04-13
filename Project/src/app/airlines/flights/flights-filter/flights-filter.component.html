@@ -1,0 +1,85 @@
+
+<br>
+    <button type="button" class="btn" (click)="isCollapsedStops = !isCollapsedStops"
+            [attr.aria-expanded]="!isCollapsedStops" aria-controls="stops">
+      Stops <i class="fa fa-chevron-down"></i>
+    </button>
+  <div id="stops" [ngbCollapse]="isCollapsedStops" >
+    <br>
+    <div class="card" >
+      <div class="content">
+        <div class="box">
+          <p>
+            <input type="checkbox" id="direct" name="direct" checked (change)="directChanged($event)">
+            <label for="direct">Direct</label>
+          </p>
+          <p>
+            <input type="checkbox" id="oneStop" name="oneStop" checked (change)="oneChanged($event)" >
+            <label for="oneStop">1 stop </label>
+          </p>
+          <p>
+            <input type="checkbox" id="twoPlusStops" name="twoPlusStops" checked (change)="twoPlusChanged($event)" >
+            <label for="twoPlusStops">2+ stops</label>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br>
+    <button type="button" class="btn" (click)="isCollapsedDuration = !isCollapsedDuration"
+            [attr.aria-expanded]="!isCollapsedDuration" aria-controls="duration">
+      Journey Duration <i class="fa fa-chevron-down"></i>
+    </button>
+  <div id="duration" [ngbCollapse]="isCollapsedDuration">
+      <div class="card" style="margin-left: 5%;">
+        <div class="content" >
+          <div class="d-flex justify-content-center my-4">
+            <span class="font-weight-bold indigo-text mr-2 mt-1">0</span>
+            <form class="range-field w-65">
+              <input type="range" name="duration" id="durSlider" min="0" max="30"  (change)="onDurationChanged($event)">
+            </form>
+            <span class="font-weight-bold indigo-text ml-2 mt-1">30</span>
+          </div>
+        </div>
+      </div>
+  </div>
+
+  <br>
+    <button type="button" class="btn" (click)="isCollapsedAirlines = !isCollapsedAirlines"
+            [attr.aria-expanded]="!isCollapsedAirlines" aria-controls="airlines">
+        Airlines <i class="fa fa-chevron-down"></i>
+    </button>
+  
+  <div id="airlines" [ngbCollapse]="isCollapsedAirlines">
+    <div class="card">
+      <br>
+      <div class="content">
+        <div class="box">
+          <p *ngFor="let company of companies; let i=index">
+            <input type="checkbox" id="c{{i}}" name="{{company.name}}" checked  (change)="onAirlineChange($event, i)" >
+            <label for="c{{i}}">{{company.name}}</label>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <br>
+    <button type="button" class="btn" (click)="isCollapsedPrice = !isCollapsedPrice"
+            [attr.aria-expanded]="!isCollapsedPrice" aria-controls="price">
+        Price <i class="fa fa-chevron-down"></i>
+    </button>
+    
+    <div id="price" [ngbCollapse]="isCollapsedPrice"  > 
+      <div class="card" style="margin-left: 5%;">
+        <div class="content" >
+          
+        <div class="d-flex justify-content-center my-4">
+          <span class="font-weight-bold indigo-text mr-2 mt-1">0</span>
+          <form class="range-field w-60">
+            <input type="range" name="price" id="slider" min="0" max="500" value=500 (change)="onPriceChanged($event)" >
+          </form>
+          <span class="font-weight-bold indigo-text ml-2 mt-1">500</span>
+        </div>
+      </div>
+    </div>

@@ -44,6 +44,9 @@ import { FlightsComponent } from './airlines/flights/flights.component';
 import { RoundFlightItemComponent } from './airlines/flights/round-flight-item/round-flight-item.component';
 import { RentACarProfileComponent } from './rent-a-cars/rent-a-car-profile/rent-a-car-profile.component';
 import { CarsCarouselComponent } from './rent-a-cars/rent-a-car-profile/cars-carousel/cars-carousel.component';
+import { FlightsFilterComponent } from './airlines/flights/flights-filter/flights-filter.component';
+import { FilterPipe } from './airlines/flights/filter.pipe';
+import { RoundFlightsFilterPipe } from './airlines/flights/round-flights-filter.pipe';
 import { ProfileNavbarComponent } from './common/profile-navbar/profile-navbar.component';
 import { ProfileOfficesComponent } from './common/profile-offices/profile-offices.component';
 import { AirlineProfileComponent } from './airlines/airline-profile/airline-profile.component';
@@ -82,6 +85,9 @@ import { CarsCardsComponent } from './rent-a-cars/rent-a-car-profile/cars-cards/
     RoundFlightItemComponent,
     RentACarProfileComponent,
     CarsCarouselComponent,
+    FlightsFilterComponent,
+    FilterPipe,
+    RoundFlightsFilterPipe,
     ProfileNavbarComponent,
     ProfileOfficesComponent,
     AirlineProfileComponent,

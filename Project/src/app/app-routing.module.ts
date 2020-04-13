@@ -13,9 +13,9 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { AirlinesListComponent } from './airlines/airlines-list/airlines-list.component';
 import {FlightsSearchComponent} from './airlines/flights-search/flights-search.component'
 import { FlightListComponent } from './airlines/flights/flight-list/flight-list.component';
-import { FlightsComponent } from './airlines/flights/flights.component';
 import { RentACarProfileComponent } from './rent-a-cars/rent-a-car-profile/rent-a-car-profile.component';
 import { CarsComponent } from './rent-a-cars/cars/cars.component';
+import { FlightsComponent } from './airlines/flights/flights.component';
 import { AirlineProfileComponent } from './airlines/airline-profile/airline-profile.component';
 
 
