@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Airline } from '../models/airline';
 import { Flight } from '../models/flight';
 import { Subject } from 'rxjs';
+import { Address } from '../models/address';
 
 @Injectable()
 export class AirlineService{
@@ -80,8 +81,8 @@ export class AirlineService{
           'Spain':["Barcelona","Madrid",",Malaga","Cordoba"]
         };
 
-        const a1 = new Airline(0, 'Airline1', 'Belgrade, Serbia', 'Airline 1 description', 5, [f1, f12, f13, f14,f15,f16,f17,f18,f2,f21,f22,f23], destinations1, "../../assets/images/airlines/airline1.png" );
-        const a2 = new Airline(1, 'Airline2', 'Novi Sad, Serbia', 'Airline 2 description', 4, [f3,f31,f32,f33,f34,f35,f36,f37, f25,f26,f27], destinations2, "../../assets/images/airlines/airline2.png" );
+        const a1 = new Airline(0, 'Airline1', new Address("Jevrejska 10", "Novi Sad", "Serbia"), 'Airline 1 description', 5, [f1, f12, f13, f14,f15,f16,f17,f18,f2,f21,f22,f23], destinations1, "../../assets/images/airlines/airline1.png" );
+        const a2 = new Airline(1, 'Birline2', new Address("Knez Mihailova 1", "Belgrade", "Serbia"), 'Airline 2 description', 4, [f3,f31,f32,f33,f34,f35,f36,f37, f25,f26,f27], destinations2, "../../assets/images/airlines/airline2.png" );
 
         f1.image=a1.image;
         f12.image=a1.image;
@@ -106,6 +107,8 @@ export class AirlineService{
         f36.image=a2.image;
         f37.image=a2.image;
 
+        
+        this.airlines.push(a2);
         this.airlines.push(a1);
         //this.airlines.push(a2);
     }

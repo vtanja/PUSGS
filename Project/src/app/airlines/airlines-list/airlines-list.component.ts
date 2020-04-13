@@ -9,6 +9,7 @@ import { AirlineService } from '../airline.service';
 })
 export class AirlinesListComponent implements OnInit {
   airlines:Airline[]=[];
+  sortCriteria:string='';
 
   constructor(private airlineService:AirlineService) { }
 
@@ -16,4 +17,5 @@ export class AirlinesListComponent implements OnInit {
     this.airlines = this.airlineService.getAirlines();
   }
 
+  
 }

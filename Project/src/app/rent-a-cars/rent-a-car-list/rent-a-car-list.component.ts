@@ -12,6 +12,7 @@ export class RentACarListComponent implements OnInit {
 
   rentCars: Array<RentCar>;
   paramsSubscription: Subscription;
+  sortCriteria:string='';
 
   constructor(private rentCarService:RentCarService) {
 
@@ -29,4 +30,5 @@ export class RentACarListComponent implements OnInit {
     this.paramsSubscription.unsubscribe();
   }
 
+  
 }

@@ -2,6 +2,7 @@ import { RentCar } from '../models/rent-a-car.model';
 import { Injectable} from '@angular/core';
 import { Car } from '../models/Car.model';
 import { Subject } from 'rxjs';
+import { Address } from '../models/address';
 
 @Injectable()
 export class  RentCarService {
@@ -52,11 +53,11 @@ export class  RentCarService {
     'Hungary':["Budapest"],
     'BiH' : ['Trebinje','Banja Luka','Mostar']};
 
-    const rc1 = new RentCar(1,"Firefly","Novi Sad,Serbia",description1,3.5,[c1,c6,c3,c2,c10],offices,"../../assets/images/rentCarLogos/logo1.png");
-    const rc2 = new RentCar(2,"Getaround","Belgrade,Serbia",description2,5,[c2,c7,c4,c5,c9],offices,"../../assets/images/rentCarLogos/logo2.png");
-    const rc3 = new RentCar(3,"Drivy","Trebinje,BiH",description3,2.9,[c3,c8,c6,c1,c4],offices,"../../assets/images/rentCarLogos/logo3.png");
-    const rc4 = new RentCar(4,"Drive","Budapest,Hungary",description4,4.7,[c4,c9,c2,c8,c10],offices,"../../assets/images/rentCarLogos/logo4.png");
-    const rc5 = new RentCar(5,"Solid","Dubrovnik,Croatia",description5,4.8,[c5,c10,c3,c7,c1],offices,"../../assets/images/rentCarLogos/logo6.png");
+    const rc1 = new RentCar(1,"Firefly",new Address("Jevrejska 10", "Novi Sad", "Serbia"),description1,3.5,[c1,c6,c3,c2,c10],offices,"../../assets/images/rentCarLogos/logo1.png");
+    const rc2 = new RentCar(2,"Getaround",new Address("Knez Mihailova 1", "Belgrade", "Serbia"),description2,5,[c2,c7,c4,c5,c9],offices,"../../assets/images/rentCarLogos/logo2.png");
+    const rc3 = new RentCar(3,"Drivy",new Address("Republike Srpske 9","Trebinje","BIH"),description3,2.9,[c3,c8,c6,c1,c4],offices,"../../assets/images/rentCarLogos/logo3.png");
+    const rc4 = new RentCar(4,"Drive",new Address("Vaci utca", "Budapest","Hungary"),description4,4.7,[c4,c9,c2,c8,c10],offices,"../../assets/images/rentCarLogos/logo4.png");
+    const rc5 = new RentCar(5,"Solid",new Address("Kneza Branimira 10", "Dubrovnik","Croatia"),description5,4.8,[c5,c10,c3,c7,c1],offices,"../../assets/images/rentCarLogos/logo6.png");
 
     this.rentCars.push(rc1);
     this.rentCars.push(rc2);
@@ -89,11 +90,11 @@ export class  RentCarService {
         }
       }
 
-      if(params.address!='' && params.address!=undefined ){
-        if(params.address.toUpperCase()!=item.address.toUpperCase()){
-          continue;
-        }
-      }
+      // if(params.address!='' && params.address!=undefined ){
+      //   if(params.address.toUpperCase()!=item.address.toUpperCase()){
+      //     continue;
+      //   }
+      // }
 
       if(params.rate!=undefined  && params.rate!=NaN){
         if(item.rate<params.rate){

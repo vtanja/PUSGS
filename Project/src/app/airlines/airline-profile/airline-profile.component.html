@@ -16,7 +16,7 @@
   <div class="d-flex justify-content-between" style="margin-left:20%;margin-top: 3%;width: 60%;">
     <div>
     <i class="fa fa-map-marker" aria-hidden="true"></i>
-    <span>&nbsp;&nbsp;&nbsp;{{airlineCompany.address}}</span>
+    <span>&nbsp;&nbsp;&nbsp;{{airlineCompany.address.toString()}}</span>
   </div>
       <div>
       <ngb-rating [(rate)]="airlineCompany.rate" [starTemplate]="t" [readonly]="true" [max]="5"></ngb-rating>

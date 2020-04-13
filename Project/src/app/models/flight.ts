@@ -17,6 +17,7 @@ export class Flight {
     businessSeats:number;
     firstClassSeats:number;
     airline:string;
+    
 
   constructor(id:number,takeOffLocation:string, landingLocation:string, takeOffDate:string,landingDate:string,
                 takeOffTime:string,landingTime:string, duration:number, numberOfChangeovers:number,changeoverLocations:Array<string>,
@@ -40,5 +41,6 @@ export class Flight {
     this.businessSeats=businessSeats;
     this.firstClassSeats=firstClassSeats;
     this.airline=airline;
+    
   }
 }

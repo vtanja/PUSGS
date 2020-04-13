@@ -51,6 +51,7 @@ import { ProfileNavbarComponent } from './common/profile-navbar/profile-navbar.c
 import { ProfileOfficesComponent } from './common/profile-offices/profile-offices.component';
 import { AirlineProfileComponent } from './airlines/airline-profile/airline-profile.component';
 import { CarsCardsComponent } from './rent-a-cars/rent-a-car-profile/cars-cards/cars-cards.component';
+import { SortByPipe } from './common/sort-by.pipe';
 
 @NgModule({
   declarations: [
@@ -91,7 +92,8 @@ import { CarsCardsComponent } from './rent-a-cars/rent-a-car-profile/cars-cards/
     ProfileNavbarComponent,
     ProfileOfficesComponent,
     AirlineProfileComponent,
-    CarsCardsComponent
+    CarsCardsComponent,
+    SortByPipe
   ],
   imports: [
     BrowserModule,
