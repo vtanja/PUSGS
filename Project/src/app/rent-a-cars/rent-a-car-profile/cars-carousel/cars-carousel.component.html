@@ -1,4 +1,4 @@
-<ngb-carousel style="width: 70%;margin-left: 15%;margin-bottom: 3%;" #carousel
+ <ngb-carousel style="width: 70%;margin-left: 15%;margin-bottom: 3%;" #carousel
 [interval]="4000" [pauseOnHover]="pauseOnHover" (slide)="onSlide($event)"
  [showNavigationIndicators]=false [showNavigationArrows]=true>
   <ng-template ngbSlide  *ngFor="let car of carCompany.cars; index as i">
@@ -35,7 +35,7 @@
                   </div>
                 <p style="text-align: center;margin-top: 10px;font-size: smaller;" >price from</p>
                 <p class="price">{{car.pricePerDay | currency:'EUR'}}</p>
-                 <a class="btn  btn-md btn-rounded button-style" style="display: block;">Rent</a>
+                <button class="btn  btn-md btn-rounded button-style" style="display: block;width: 100%;" >Rent</button>
               </div>
             </div>
           </div>
@@ -71,7 +71,7 @@
               </div>
             <p style="text-align: center;margin-top: 10px;font-size: smaller;" >price from</p>
             <p class="price">{{carCompany.cars[(i+1)%carCompany.cars.length].pricePerDay | currency:'EUR'}}</p>
-             <a class="btn  btn-md btn-rounded button-style" style="display: block;">Rent</a>
+             <button class="btn  btn-md btn-rounded button-style" style="display: block;width: 100%;" >Rent</button>
           </div>
         </div>
       </div>
@@ -107,7 +107,7 @@
               </div>
             <p style="text-align: center;margin-top: 10px;font-size: smaller;" >price from</p>
             <p class="price">{{carCompany.cars[(i+2)%carCompany.cars.length].pricePerDay | currency:'EUR'}}</p>
-             <a class="btn  btn-md btn-rounded button-style" style="display: block;">Rent</a>
+            <button class="btn  btn-md btn-rounded button-style" style="display: block;width: 100%;" >Rent</button>
           </div>
         </div>
       </div>
@@ -143,7 +143,7 @@
               </div>
             <p style="text-align: center;margin-top: 10px;font-size: smaller;" >price from</p>
             <p class="price">{{carCompany.cars[(i+3)%carCompany.cars.length].pricePerDay | currency:'EUR'}}</p>
-             <a class="btn  btn-md btn-rounded button-style" style="display: block;">Rent</a>
+            <button class="btn  btn-md btn-rounded button-style" style="display: block;width: 100%;" >Rent</button>
           </div>
         </div>
       </div>
@@ -151,6 +151,9 @@
   </div>
 </ng-template>
 </ngb-carousel>
+
+
+
 
 
 

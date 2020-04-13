@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import {NgbDateStruct, NgbDate} from '@ng-bootstrap/ng-bootstrap';
+import { RentCarService } from '../../rent-a-car.service';
 
 @Component({
   selector: 'app-cars-search-form',
@@ -15,7 +16,9 @@ export class CarsSearchFormComponent implements OnInit {
 
   searchForm:FormGroup;
 
-  constructor(private router:Router,private activeRoute:ActivatedRoute) { }
+  @Input('companyID') companyID:number;
+
+  constructor(private router:Router,private activeRoute:ActivatedRoute,private rentCarsService:RentCarService) { }
 
   ngOnInit(): void {
 
@@ -93,9 +96,21 @@ export class CarsSearchFormComponent implements OnInit {
     searchParams['carBrand'] = this.searchForm.get('carBrand').value;
     searchParams['passengers'] = this.searchForm.get('passengers').value;
 
+    if(this.companyID===undefined){
+    // searchParams['companyID'] = "";
+
+     this.router.navigate(['/allCars'],{queryParams:searchParams});
+    }
+    else{
+      searchParams['companyID'] = this.companyID;
+      this.rentCarsService.searchCarsParamsSubject.next(searchParams);
+
+     // this.router.navigate(['carProfile',this.companyID])
+    }
+
     console.log(searchParams);
 
-    this.router.navigate(['/allCars'],{queryParams:searchParams});
+
 
   }
 

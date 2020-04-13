@@ -36,10 +36,14 @@
   <div class="d-flex justify-content-center" style="margin-top: 5%;">
     <h4>Check our cars</h4>
   </div>
+  <div class="d-flex justify-content-center" style="margin-top: 2%;background-color: whitesmoke;">
+    <app-cars-search-form style="margin-bottom: 2%;" [companyID]="carCompany.id" ></app-cars-search-form>
+  </div>
 
   <div class="d-flex justify-content-center" style="margin-top: 2%;">
-    <app-cars-carousel [carCompany]="carCompany"></app-cars-carousel>
+    <app-cars-cards [cars]="carCompany.cars"></app-cars-cards>
   </div>
+
 </div>
 
 

@@ -8,6 +8,7 @@ export class  RentCarService {
 
   rentCars:Array<RentCar> = new Array<RentCar>();
   searchParamsSubject = new Subject<{}>();
+  searchCarsParamsSubject = new Subject<{}>();
 
   constructor(){
     this.loadRentCars();
@@ -66,7 +67,6 @@ export class  RentCarService {
   }
 
   getRentCars(){
-    console.log(this.rentCars);
     return this.rentCars.slice();
   }
 
@@ -183,6 +183,83 @@ export class  RentCarService {
      ++j;
     }
     return resultArray;
+  }
+
+  getCarsSearch(params:any):Array<Car>{
+
+    var resultArray = new Array<Car>();
+
+    if(params===undefined)
+    return resultArray;
+
+    const pickUpLocation = params.pickUpLocation.trim();
+    const dropOffLocation = params.dropOffLocation.trim();
+    const pickUpDate = params.pickUpDate.trim();
+    const dropOffDate = params.dropOffDate.trim();
+    const passengers = +params.passengers;
+    const brand = params.carBrand.trim();
+    const companyID = +params.companyID;
+
+    var i = 0;
+    var j = 0;
+
+      var company = this.rentCars.find(c=>c.id===companyID);
+
+      for(const car of  company.cars){
+        ++i;
+
+        if(pickUpLocation!='' && pickUpLocation!=undefined){
+
+          var locationParts=pickUpLocation.split(','); // town,state
+
+          if( company.offices[locationParts[1]]===undefined){
+            continue;
+          }else{
+            if (company.offices[locationParts[1]].indexOf(locationParts[0])===-1)
+            continue;
+          }
+        }
+
+        if(dropOffLocation !='' && dropOffLocation!=undefined){
+
+          var locationParts=dropOffLocation.split(','); // town,state
+
+          if( company.offices[locationParts[1]]===undefined){
+            continue;
+          }else{
+            if (company.offices[locationParts[1]].indexOf(locationParts[0])===-1)
+            continue;
+          }
+        }
+
+        if(pickUpDate !='' && pickUpDate!=undefined){
+          if(car.availableDates.indexOf(pickUpDate)===-1){
+              continue;
+          }
+        }
+
+        if(dropOffDate !='' && dropOffDate!=undefined){
+          if(car.availableDates.indexOf(dropOffDate)===-1){
+              continue;
+          }
+        }
+
+        if(brand !='' && brand!=undefined){
+          if(car.brand!=brand){
+              continue;
+          }
+        }
+
+        if(passengers !=NaN && passengers!=undefined){
+          if(car.maxPassengers<passengers){
+              continue;
+          }
+        }
+        resultArray.push(car);
+     }
+
+    return resultArray;
+
   }
 
 

@@ -40,7 +40,6 @@ const routes: Routes = [
   {path: 'navbar', component:NavbarComponent },
   {path:'carProfile/:id',component: RentACarProfileComponent},
   {path:'airlineProfile/:id',component: AirlineProfileComponent},
-  // {path: 'carProfile', component:RentACarProfileComponent},
   {path: '**',component:HomePageComponent}
 ];
 

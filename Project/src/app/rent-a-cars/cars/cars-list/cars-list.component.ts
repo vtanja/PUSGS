@@ -20,7 +20,6 @@ export class CarsListComponent implements OnInit {
 
     this.activeRoute.queryParams.subscribe((queryParams:Params)=>{
       this.cars=this.rentCarService.getCars(queryParams);
-      console.log(this.cars);
   });
 }
 

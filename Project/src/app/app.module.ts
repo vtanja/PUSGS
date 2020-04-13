@@ -47,6 +47,7 @@ import { CarsCarouselComponent } from './rent-a-cars/rent-a-car-profile/cars-car
 import { ProfileNavbarComponent } from './common/profile-navbar/profile-navbar.component';
 import { ProfileOfficesComponent } from './common/profile-offices/profile-offices.component';
 import { AirlineProfileComponent } from './airlines/airline-profile/airline-profile.component';
+import { CarsCardsComponent } from './rent-a-cars/rent-a-car-profile/cars-cards/cars-cards.component';
 
 @NgModule({
   declarations: [
@@ -83,7 +84,8 @@ import { AirlineProfileComponent } from './airlines/airline-profile/airline-prof
     CarsCarouselComponent,
     ProfileNavbarComponent,
     ProfileOfficesComponent,
-    AirlineProfileComponent
+    AirlineProfileComponent,
+    CarsCardsComponent
   ],
   imports: [
     BrowserModule,

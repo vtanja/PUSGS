@@ -1,8 +1,10 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, OnDestroy } from '@angular/core';
 import { RentCar } from 'src/app/models/rent-a-car.model';
 import { NgbCarousel, NgbSlideEvent, NgbSlideEventSource } from '@ng-bootstrap/ng-bootstrap';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Params } from '@angular/router';
 import { RentCarService } from '../../rent-a-car.service';
+import { Subscription } from 'rxjs';
+import { Car } from 'src/app/models/Car.model';
 
 @Component({
   selector: 'app-cars-carousel',
@@ -16,14 +18,13 @@ export class CarsCarouselComponent implements OnInit{
   pauseOnIndicator = false;
   pauseOnHover = true;
 
+
   @Input('carCompany') carCompany:RentCar;
 
   @ViewChild('carousel', {static : true}) carousel: NgbCarousel;
   constructor(private route:ActivatedRoute,private rentCarsService:RentCarService){}
 
   ngOnInit(){}
-
-
 
   togglePaused() {
     if (this.paused) {
