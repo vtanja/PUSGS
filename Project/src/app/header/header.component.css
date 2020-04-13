@@ -22,6 +22,26 @@ nav ul li a {
 	cursor: pointer;
 }
 
+.slika:hover{
+	color: #fa9e1c;
+}
+
+ .dugme{
+	background-color: #31124b;
+	color: white;
+	border: none;
+	border-radius: 8px;
+}
+
+.popoverClass{
+	width:30%;
+	background-color: #e3cff3;
+}
+
+td button:hover{
+	color: #fa9e1c;;
+}
+
 nav ul li a:hover {
 	color: #fa9e1c;
 }

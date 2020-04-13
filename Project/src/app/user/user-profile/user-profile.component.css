@@ -14,6 +14,35 @@
   text-transform: uppercase;
 }
 
+.inputfile {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+
+.inputfile + label {
+    font-size: 1.25em;
+	font-weight: 700;
+	background-color: #31124b;
+	border-radius: 12px;
+	color: white;
+	display: inline-block;
+	padding: 14px 28px;
+  font-size: 16px;
+  font-weight: bolder;
+  font-family: 'Segoe UI';
+  cursor: pointer;
+  text-transform: uppercase;
+}
+
+.inputfile:focus + label,
+.inputfile + label:hover {
+    color: #fa9e1c;
+}
+
 .btn:hover {
   color: #fa9e1c;
 }

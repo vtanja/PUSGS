@@ -18,6 +18,8 @@ export class UserProfileComponent implements OnInit {
   addressReadonly:boolean=true;
   loggedUser:User;
 
+  fileToUpload: File = null;
+
   constructor(private userService:UserService) { 
     this.loggedUser=this.userService.getUser();
   }
@@ -132,4 +134,7 @@ export class UserProfileComponent implements OnInit {
     }
   }
 
+  handleFileInput(files:FileList){
+    this.fileToUpload = files.item(0);
+  }
 }

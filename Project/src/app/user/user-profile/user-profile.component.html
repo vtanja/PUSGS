@@ -2,9 +2,14 @@
 
 	<div class="limiter">
 		<div class="container-login100">
-            <div class="wrap-login100" style="background: #31124b; opacity: 0.7; text-align: center; vertical-align: middle;">
-				<div><img src = "../../../assets/images/profil.jpg" class ="img-circle" style=" width:200px; height: 240px;" ></div>
-				<div><button class="btn btn-outline" >Change image...</button></div>
+			<div class="wrap-login100" style="background: #e3cff3; opacity: 0.7; text-align: center; vertical-align: middle;">
+				<br>
+				<div><img src = {{loggedUser.profileImage}} class ="img-circle" style=" width:200px; height: 240px;" ></div>
+				<br>
+					<input type="file" name="file" id="file" class="inputfile" />
+					<label for="file">Change image...</label>
+				<br>
+				<br>
 			</div>
 			
 			<div class="wrap-login100 p-l-50 p-r-50 p-t-50 p-b-50">

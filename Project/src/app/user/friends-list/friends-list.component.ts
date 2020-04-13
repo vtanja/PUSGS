@@ -17,6 +17,10 @@ export class FriendsListComponent implements OnInit {
   filterUser: string='';
   
   sortedData: User[]=[]; 
+  public imgSource = "https://randomuser.me/api/portraits/men/1.jpg";
+   public bgColor = "#0375be";
+  public color = "black";
+  public isCircular = true;
   
   constructor(private userService:UserService) { 
     this.sortedData = this.userService.getUser().friends.slice();
@@ -42,9 +46,25 @@ export class FriendsListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // this.loggedUser=this.userService.getUser();
+     this.loggedUser=this.userService.getUser();
     // this.filterData.push(...(this.loggedUser.friends))
     // console.log(this.filterData);
+  }
+
+  removeUser(user:User){
+    const index = this.loggedUser.friends.indexOf(user);
+    if(index>-1){
+      this.loggedUser.friends.splice(index,1);
+    }
+
+    this.sortedData.splice(index,1);
+
+    const index2=user.friends.indexOf(this.loggedUser);
+    if(index2>-1){
+      user.friends.splice(index2,1);
+    }
+
+    console.log('removed');
   }
 
 }

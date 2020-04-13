@@ -7,6 +7,8 @@ export class User {
      phoneNumber:string;
      address:string;
      friends:User[];
+     friendRequests:User[];
+     profileImage:string;
 
     constructor(firstName:string, lastName:string,
           email:string, username:string, password:string, phone:string, address:string, friends:User[] ){
@@ -18,5 +20,7 @@ export class User {
             this.phoneNumber=phone;
             this.address=address;
             this.friends=friends;
+            this.friendRequests=[];
+            this.profileImage="../../assets/images/profilna.png";
          }
 }

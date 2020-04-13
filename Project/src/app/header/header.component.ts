@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { UserService } from '../user/userService.service';
+import { User } from '../models/user';
 
 @Component({
   selector: 'app-header',
@@ -8,8 +9,9 @@ import { UserService } from '../user/userService.service';
 })
 export class HeaderComponent implements OnInit {
 
-  username:string ='';
   loggedIn:boolean=false;
+  loggedUser:User;
+  isCollapsedRequests:boolean=true;
 
   constructor(private userService:UserService) { }
 
@@ -17,9 +19,23 @@ export class HeaderComponent implements OnInit {
     this.userService.userLogged.subscribe(
       (username: string)=>{
         this.loggedIn=true;
-        this.username=username;
+        this.loggedUser=this.userService.getUser();
       });
   }
 
+  onAccept(user:User){
+    const toAddIndex = this.loggedUser.friendRequests.indexOf(user);
+    if(toAddIndex>-1){
+      this.loggedUser.friendRequests.splice(toAddIndex, 1);
+    }
+    this.loggedUser.friends.push(user);
+    user.friends.push(this.loggedUser);
+  }
 
+  onDecline(user:User){
+    const toRemoveIndex = this.loggedUser.friendRequests.indexOf(user);
+    if(toRemoveIndex>-1){
+      this.loggedUser.friendRequests.splice(toRemoveIndex, 1);
+    }
+  }
 }

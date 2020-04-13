@@ -1,9 +1,9 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule} from '@angular/core';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { NgModule } from '@angular/core';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { IgxAvatarModule } from 'igniteui-angular';
 
-
-import{FormsModule, ReactiveFormsModule} from '@angular/forms'
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
@@ -14,7 +14,7 @@ import { RegisterComponent } from './register/register.component';
 import { AirlinesComponent } from './airlines/airlines.component';
 import { RentACarsComponent } from './rent-a-cars/rent-a-cars.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { Ng2TelInputModule} from 'ng2-tel-input';
+import { Ng2TelInputModule } from 'ng2-tel-input';
 import { ShowHidePasswordModule } from 'ngx-show-hide-password';
 import { MatSortModule } from '@angular/material/sort';
 import { RentACarListComponent } from './rent-a-cars/rent-a-car-list/rent-a-car-list.component';
@@ -103,7 +103,8 @@ import { CarsCardsComponent } from './rent-a-cars/rent-a-car-profile/cars-cards/
     Ng2TelInputModule,
     ShowHidePasswordModule,
     Ng2SearchPipeModule,
-    MatSortModule
+    MatSortModule,
+    IgxAvatarModule
   ],
   providers: [
     UserService,
@@ -112,4 +113,5 @@ import { CarsCardsComponent } from './rent-a-cars/rent-a-car-profile/cars-cards/
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}

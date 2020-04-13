@@ -15,7 +15,8 @@ export class UserService{
             [new User('Andjela', 'Cickovic', 'andjela.ljuban@gmail.com', 'andjela123', 
             'andjela1sifra', '+38165432123', 'Trebinje', []),
             new User('Pera', 'Peric', 'pera@pera.com', 'pera123', 'pera1sifra', '+381987654321', 'Perina ulica 1, Novi Sad', [])] );
-
+        
+        this.loggedUser.friendRequests.push(new User("Natasa", "Lukic", "natasa.naca.lukic@gmail.com", "naca", "nata1sifra", "0657654355", "Adresa 1", []));
     }
 
     getUser(){
