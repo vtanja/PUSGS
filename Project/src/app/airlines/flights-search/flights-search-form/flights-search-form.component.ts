@@ -2,6 +2,8 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgbDate, NgbDatepickerConfig } from '@ng-bootstrap/ng-bootstrap';
+import airports from '../../../airports.json';
+import{startWith, map} from 'rxjs/operators';
 
 @Component({
   selector: 'app-flights-search-form',
@@ -16,14 +18,12 @@ export class FlightsSerachFormComponent implements OnInit {
 
   searchForm:FormGroup;
 
-  constructor(private router:Router,private activeRoute:ActivatedRoute,
-              private config: NgbDatepickerConfig) {
-
-      const current = new Date();
-      config.minDate = { year: current.getFullYear(), month:
-      current.getMonth() + 1, day: current.getDate() };
-      config.outsideDays = 'hidden';
-    }
+  airportObjs;
+  airports;
+  constructor(private router:Router,private activeRoute:ActivatedRoute) {
+    this.airports=airports;
+    //console.log(this.airportObjs);
+  }
 
   ngOnInit(): void {
 
@@ -71,7 +71,11 @@ export class FlightsSerachFormComponent implements OnInit {
       'class' : new FormControl(flightClass,Validators.required),
       'passengers' : new FormControl(passengers,Validators.required)
     });
+
+
+
   }
+
 
   onFormSubmit(){
 
