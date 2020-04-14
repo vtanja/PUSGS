@@ -5,7 +5,14 @@
   <input formControlName="name" class="input100" type="text" placeholder="Name..">
 </div>
 <div class="col">
-  <input formControlName="address" class="input100" type="text" placeholder="Address..">
+  <input formControlName="address" class="input100" type="text" placeholder="Address.." [matAutocomplete] ="autoGroup">
+  <mat-autocomplete #autoGroup="matAutocomplete">
+    <mat-optgroup *ngFor="let group of locationOptions | async" [label]="group.letter">
+      <mat-option *ngFor="let name of group.names" [value]="name">
+        {{name}}
+      </mat-option>
+      </mat-optgroup>
+      </mat-autocomplete>
 </div>
 <div class="col">
     <div class="input-icons">
@@ -17,6 +24,23 @@
 
 <div class="col" >
       <button class="search_button"[disabled]="searchForm.invalid">Search</button>
+
+</div>
+
+<div class="col" >
+  <div class="row">
+    <div class="col" style="padding: 0%;margin-left: -10%;">
+  <i class="fa fa-sort-alpha-asc"  aria-hidden="true"></i>
+</div>
+<div class="col" style="margin-right: 0%; margin-left: -95%;">
+  <select class="form-control select100" (change)=onChangeSort($event.target.value)>
+    <option style=" color: #31124b; " value="Sort by" selected hidden >Sort by...</option>
+    <option style=" color: #31124b; " value="name">Name</option>
+    <option style=" color: #31124b; " value="city">City</option>
+    <option style=" color: #31124b; " value="rate">Rate</option>
+  </select>
+</div>
+</div>
 </div>
 </div>
 </form>

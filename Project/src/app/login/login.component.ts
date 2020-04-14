@@ -13,6 +13,7 @@ export class LoginComponent implements OnInit {
   loginForm:FormGroup;
   loggedIn=false;
   loggedUsername='';
+  isHidden = true;
 
   constructor(private userService:UserService, private route:ActivatedRoute, private router:Router) { }
 
@@ -33,7 +34,7 @@ export class LoginComponent implements OnInit {
     }
     this.router.navigate(['/home'], {relativeTo:this.route});
 
-      
+
   }
 
 }

@@ -33,6 +33,7 @@
 .icon-style{
   width: 16%;
   height: 16%;
+  margin-top: 5%;
 }
 
 .label-style{
@@ -57,6 +58,7 @@
 .h-style{
   width:100% !important;
   text-align: center !important;
+  font-size:18px;
 }
 
 .main-image-style{
@@ -86,7 +88,7 @@
 /* Top right text */
 .text-block {
   position: absolute;
-  top:1.5px;
+  top:1px;
   right: 5px;
   background-color: #eea136;
   opacity: 0.8;
@@ -96,4 +98,45 @@
   padding-right: 10px;
   padding-top: 5px;
   height: 25%;
+  align-content: center;
 }
+
+.lbl-style{
+  display: block;
+  font-family: Poppins-Medium;
+}
+
+.valueStyle{
+  font-weight: bold;
+  padding-left: 3px;
+}
+
+.confirmBtnStyle{
+
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 20px;
+    min-width: 244px;
+    height: 50px;
+
+    font-family: Poppins-Medium;
+    font-size: 16px;
+    color: #fff;
+    line-height: 1.2;
+    background: #31124b;
+
+    border-width: 0cm;
+    border-radius: 10px;
+  }
+
+  .confirmBtnStyle:hover
+  {
+    opacity: 0.8;
+  }
+
+

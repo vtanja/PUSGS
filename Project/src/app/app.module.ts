@@ -2,7 +2,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { IgxAvatarModule } from 'igniteui-angular';
-
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -17,6 +16,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Ng2TelInputModule } from 'ng2-tel-input';
 import { ShowHidePasswordModule } from 'ngx-show-hide-password';
 import { MatSortModule } from '@angular/material/sort';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import{ MatInputModule } from '@angular/material/input'
 import { RentACarListComponent } from './rent-a-cars/rent-a-car-list/rent-a-car-list.component';
 import { RentACarItemComponent } from './rent-a-cars/rent-a-car-item/rent-a-car-item.component';
 import { CarsSearchComponent } from './rent-a-cars/cars-search/cars-search.component';
@@ -52,6 +53,8 @@ import { ProfileOfficesComponent } from './common/profile-offices/profile-office
 import { AirlineProfileComponent } from './airlines/airline-profile/airline-profile.component';
 import { CarsCardsComponent } from './rent-a-cars/rent-a-car-profile/cars-cards/cars-cards.component';
 import { SortByPipe } from './common/sort-by.pipe';
+import { HammerModule } from "@angular/platform-browser";
+import { IgxTimePickerModule } from 'igniteui-angular';
 
 @NgModule({
   declarations: [
@@ -93,7 +96,8 @@ import { SortByPipe } from './common/sort-by.pipe';
     ProfileOfficesComponent,
     AirlineProfileComponent,
     CarsCardsComponent,
-    SortByPipe
+    SortByPipe,
+
   ],
   imports: [
     BrowserModule,
@@ -106,7 +110,11 @@ import { SortByPipe } from './common/sort-by.pipe';
     ShowHidePasswordModule,
     Ng2SearchPipeModule,
     MatSortModule,
-    IgxAvatarModule
+    IgxAvatarModule,
+    MatAutocompleteModule,
+    MatInputModule,
+    HammerModule,
+    IgxTimePickerModule
   ],
   providers: [
     UserService,

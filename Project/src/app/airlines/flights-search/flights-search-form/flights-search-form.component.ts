@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { NgbDate } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDate, NgbDatepickerConfig } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-flights-search-form',
@@ -16,7 +16,14 @@ export class FlightsSerachFormComponent implements OnInit {
 
   searchForm:FormGroup;
 
-  constructor(private router:Router,private activeRoute:ActivatedRoute) { }
+  constructor(private router:Router,private activeRoute:ActivatedRoute,
+              private config: NgbDatepickerConfig) {
+
+      const current = new Date();
+      config.minDate = { year: current.getFullYear(), month:
+      current.getMonth() + 1, day: current.getDate() };
+      config.outsideDays = 'hidden';
+    }
 
   ngOnInit(): void {
 

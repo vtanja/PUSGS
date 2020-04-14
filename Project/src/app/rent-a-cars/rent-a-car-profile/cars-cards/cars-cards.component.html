@@ -12,17 +12,17 @@
         <div class="container c1">
           <img class="card-img-top main-image-style" [src]="car.images[0]" alt="My image {{i + 1}} description">
           <div class="text-block">
-            <p>{{car.rate}}</p>
+            <p style="margin-top:-25%">{{car.rate}}</p>
           </div>
         </div>
 
-        <div class="card-body">
+        <div class="card-body" style="margin-top: 0%;">
           <h4 class="card-title font-weight-bold h-style" >{{car.brand}}&nbsp;{{car.model}}</h4>
             <div class="row justify-content-center">
               <div class="col" >
                 <div class="row" >
                   <img src="../../../assets/images/team.png" class="icon-style">
-                  <label  class="label-style" >&nbsp;&nbsp;{{car.maxPassengers}}&nbsp;passengers</label>
+                  <label  class="label-style"  style="font-size: 12px;" >&nbsp;&nbsp;{{car.maxPassengers}}&nbsp;passengers</label>
                 </div>
                 <div class="row">
                   <img src="../../../assets/images/gearshift.png" class="icon-style">
@@ -45,11 +45,45 @@
           <div  class="d-flex justify-content-center">
             <ngb-rating [(rate)]="car.rate" [starTemplate]="t" [readonly]="true" [max]="5"></ngb-rating>
           </div>
-          <p style="text-align: center;margin-top: 10px;font-size: smaller;" >price from</p>
-          <p class="price">{{car.pricePerDay | currency:'EUR'}}</p>
-          <button class="btn  btn-md btn-rounded button-style" style="display: block;width: 100%;" >Rent</button>
+          <p *ngIf="!searched" style="text-align: center;margin-top: 10px;font-size: smaller;" >price from</p>
+          <p *ngIf="!searched" class="price">{{car.pricePerDay | currency:'EUR'}}</p>
+          <p *ngIf="searched" style="text-align: center;margin-top: 10px;font-size: smaller;" >price</p>
+          <p *ngIf="searched" class="price">{{car.pricePerDay*rentDays | currency:'EUR'}}</p>
+          <button [hidden]="!searched"  class="btn  btn-md btn-rounded button-style" style="display: block;width: 100%;"  (click)="open(mymodal) ; currentCar=car" >Rent</button>
         </div>
+
       </div>
     </div>
   </div>
   </div>
+
+
+  <ng-template #mymodal let-modal>
+    <div class="modal-header">
+      <h6 class="modal-title" id="modal-basic-title">Confirm reservation</h6>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">×</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <label class="lblStyle">Car: <span class="valueStyle"> {{currentCar.brand}}&nbsp;{{currentCar.model}} </span></label>
+      <br>
+      <label class="lblStyle">Rent a car company: <span class="valueStyle"> {{currentCar.companyName}}</span></label>
+      <br>
+      <label class="lblStyle">Pick up location: <span class="valueStyle"> {{params['pickUpLocation']}},&nbsp;{{params['pickUpTime']}} </span></label>
+      <br>
+      <label class="lblStyle">Pick up date:<span class="valueStyle">  {{params['pickUpDate']}},&nbsp;{{params['dropOffTime']}}</span></label>
+      <br>
+      <label class="lblStyle">Drop off location:<span class="valueStyle">  {{params['dropOffLocation']}}</span></label>
+      <br>
+      <label class="lblStyle">Drop off date:<span class="valueStyle">  {{params['dropOffDate']}}</span></label>
+      <br>
+      <label class="lblStyle">Total price: <span class="valueStyle"> {{currentCar.pricePerDay*rentDays | currency:'EUR' }}</span></label>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn confirmBtnStyle" (click)="modal.close('Save click')">Confirm</button>
+    </div>
+  </ng-template>
+
+
+

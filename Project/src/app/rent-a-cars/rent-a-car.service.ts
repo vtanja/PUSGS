@@ -10,6 +10,7 @@ export class  RentCarService {
   rentCars:Array<RentCar> = new Array<RentCar>();
   searchParamsSubject = new Subject<{}>();
   searchCarsParamsSubject = new Subject<{}>();
+  sortChange = new Subject<string>();
 
   constructor(){
     this.loadRentCars();
@@ -17,16 +18,18 @@ export class  RentCarService {
 
   loadRentCars(){
 
-    const c1 = new Car(1, 'Audi', 'Q3', 2020, 245,["10-4-2020","11-4-2020","12-4-2020","13-4-2020","14-4-2020","15-4-2020"],["../../assets/images/cars/audi-q3-car.png"],5,4,true,true,'My RC First',5);
-    const c2 = new Car(2, 'Citroen', 'M5', 2017, 175,["10-4-2020","11-4-2020","12-4-2020","13-4-2020","14-4-2020","15-4-2020"],["../../assets/images/cars/citroen-4.png"],5,4,true,true,'My RC Second',4);
-    const c3 = new Car(3, 'Ford', 'XY', 1991, 25,["10-4-2020","11-4-2020","12-4-2020","13-4-2020","14-4-2020","15-4-2020"],["../../assets/images/cars/ford-10.png"],7,4,false,false,'My RC Third',3.7);
-    const c4 = new Car(4, 'Kia', 'AMG', 2019, 437,["10-4-2020","11-4-2020","12-4-2020","13-4-2020","14-4-2020","15-4-2020"],["../../assets/images/cars/kia-37.png"],5,4,true,true,'My RC Fourth',5);
-    const c5 = new Car(5, 'Mercedes', 'YA', 2010, 86,["10-4-2020","11-4-2020","12-4-2020","13-4-2020","14-4-2020","15-4-2020"],["../../assets/images/cars/mercedes-2.png"],7,4,true,true,'My RC Fifth',4.9);
-    const c6 = new Car(6, 'Nissan', 'Y7', 2010, 86,["10-4-2020","11-4-2020","12-4-2020","13-4-2020","14-4-2020","15-4-2020"],["../../assets/images/cars/nissan57.png"],5,4,true,true,'My RC Fifth',4.9);
-    const c7 = new Car(7, 'Nissan', 'X9', 2010, 86,["10-4-2020","11-4-2020","12-4-2020","13-4-2020","14-4-2020","15-4-2020"],["../../assets/images/cars/nissan-19.png"],5,4,true,true,'My RC Fifth',4.9);
-    const c8 = new Car(8, 'Renault', 'R1', 2010, 86,["10-4-2020","11-4-2020","12-4-2020","13-4-2020","14-4-2020","15-4-2020"],["../../assets/images/cars/renault21.png"],5,4,true,true,'My RC Fifth',4.9);
-    const c9 = new Car(9, 'Renault', 'R2', 2010, 86,["10-4-2020","11-4-2020","12-4-2020","13-4-2020","14-4-2020","15-4-2020"],["../../assets/images/cars/renault24.png"],5,4,true,true,'My RC Fifth',4.9);
-    const c10 = new Car(10, 'Renault', 'R3', 2010, 86,["10-4-2020","11-4-2020","12-4-2020","13-4-2020","14-4-2020","15-4-2020"],["../../assets/images/cars/renault30.png"],5,4,true,true,'My RC Fifth',4.9);
+    const avDates = ["15-4-2020","16-4-2020","17-4-2020","18-4-2020","19-4-2020","20-4-2020"];
+
+    const c1 = new Car(1, 'Audi', 'Q3', 2020, 45,avDates,["../../assets/images/cars/audi-q3-car.png"],5,4,true,true,'Firefly',5.0);
+    const c2 = new Car(2, 'Citroen', 'M5', 2017, 35,avDates,["../../assets/images/cars/citroen-4.png"],5,4,true,true,'Getaround',4.1);
+    const c3 = new Car(3, 'Ford', 'XY', 1991, 25,avDates,["../../assets/images/cars/ford-10.png"],7,4,false,false,'Drivy',3.7);
+    const c4 = new Car(4, 'KIA', 'AMG', 2019, 37,avDates,["../../assets/images/cars/kia-37.png"],5,4,true,true,'Drive',5.0);
+    const c5 = new Car(5, 'Mercedes', 'YA', 2010, 56,avDates,["../../assets/images/cars/mercedes-2.png"],7,4,true,true,'Solid',4.9);
+    const c6 = new Car(6, 'Nissan', 'Y7', 2010, 46,avDates,["../../assets/images/cars/nissan57.png"],5,4,true,true,'Firefly',4.9);
+    const c7 = new Car(7, 'Nissan', 'X9', 2010, 48,avDates,["../../assets/images/cars/nissan-19.png"],5,4,true,true,'Getaround',4.9);
+    const c8 = new Car(8, 'Renault', 'R1', 2010, 26,avDates,["../../assets/images/cars/renault21.png"],5,4,true,true,'Drivy',4.9);
+    const c9 = new Car(9, 'Renault', 'R2', 2010, 36,avDates,["../../assets/images/cars/renault24.png"],5,4,true,true,'Drive',4.9);
+    const c10 = new Car(10, 'Renault', 'R3', 2010, 42,avDates,["../../assets/images/cars/renault30.png"],5,4,true,true,'Solid',4.9);
 
     const description1 = "Welcome to Europcar, a global leader in car rental "+
     "worldwide.With over 60 years of experience in the industry, you can be sure that Europcar "+
@@ -53,11 +56,11 @@ export class  RentCarService {
     'Hungary':["Budapest"],
     'BiH' : ['Trebinje','Banja Luka','Mostar']};
 
-    const rc1 = new RentCar(1,"Firefly",new Address("Jevrejska 10", "Novi Sad", "Serbia"),description1,3.5,[c1,c6,c3,c2,c10],offices,"../../assets/images/rentCarLogos/logo1.png");
-    const rc2 = new RentCar(2,"Getaround",new Address("Knez Mihailova 1", "Belgrade", "Serbia"),description2,5,[c2,c7,c4,c5,c9],offices,"../../assets/images/rentCarLogos/logo2.png");
-    const rc3 = new RentCar(3,"Drivy",new Address("Republike Srpske 9","Trebinje","BIH"),description3,2.9,[c3,c8,c6,c1,c4],offices,"../../assets/images/rentCarLogos/logo3.png");
-    const rc4 = new RentCar(4,"Drive",new Address("Vaci utca", "Budapest","Hungary"),description4,4.7,[c4,c9,c2,c8,c10],offices,"../../assets/images/rentCarLogos/logo4.png");
-    const rc5 = new RentCar(5,"Solid",new Address("Kneza Branimira 10", "Dubrovnik","Croatia"),description5,4.8,[c5,c10,c3,c7,c1],offices,"../../assets/images/rentCarLogos/logo6.png");
+    const rc1 = new RentCar(1,"Firefly",new Address("Jevrejska 10", "Novi Sad", "Serbia"),description1,3.5,[c1,c6],offices,"../../assets/images/rentCarLogos/logo1.png");
+    const rc2 = new RentCar(2,"Getaround",new Address("Knez Mihailova 1", "Belgrade", "Serbia"),description2,5,[c2,c7],offices,"../../assets/images/rentCarLogos/logo2.png");
+    const rc3 = new RentCar(3,"Drivy",new Address("Republike Srpske 9","Trebinje","BIH"),description3,2.9,[c3,c8],offices,"../../assets/images/rentCarLogos/logo3.png");
+    const rc4 = new RentCar(4,"Drive",new Address("Vaci utca", "Budapest","Hungary"),description4,4.7,[c4,c9],offices,"../../assets/images/rentCarLogos/logo4.png");
+    const rc5 = new RentCar(5,"Solid",new Address("Kneza Branimira 10", "Dubrovnik","Croatia"),description5,4.8,[c5,c10],offices,"../../assets/images/rentCarLogos/logo6.png");
 
     this.rentCars.push(rc1);
     this.rentCars.push(rc2);
@@ -90,11 +93,15 @@ export class  RentCarService {
         }
       }
 
-      // if(params.address!='' && params.address!=undefined ){
-      //   if(params.address.toUpperCase()!=item.address.toUpperCase()){
-      //     continue;
-      //   }
-      // }
+      if(params.address!='' && params.address!=undefined ){
+        var addressParts = params.address.split(',');
+        var city = addressParts[0].trim();
+        var country = addressParts[1].trim();
+
+        if(city.toUpperCase()!=item.address.city.toUpperCase() || item.address.country.toUpperCase()!=country.toUpperCase()){
+          continue;
+        }
+      }
 
       if(params.rate!=undefined  && params.rate!=NaN){
         if(item.rate<params.rate){
@@ -112,7 +119,7 @@ export class  RentCarService {
 
     var resultArray = new Array<Car>();
 
-    if(params===undefined)
+    if(params===undefined || params==={})
     return resultArray;
 
     const pickUpLocation = params.pickUpLocation.trim();
@@ -136,10 +143,10 @@ export class  RentCarService {
 
           var locationParts=pickUpLocation.split(','); // town,state
 
-          if( item.offices[locationParts[1]]===undefined){
+          if( item.offices[locationParts[1].trim()]===undefined){
             continue;
           }else{
-            if (item.offices[locationParts[1]].indexOf(locationParts[0])===-1)
+            if (item.offices[locationParts[1].trim()].indexOf(locationParts[0].trim())===-1)
             continue;
           }
         }
@@ -148,23 +155,11 @@ export class  RentCarService {
 
           var locationParts=dropOffLocation.split(','); // town,state
 
-          if( item.offices[locationParts[1]]===undefined){
+          if( item.offices[locationParts[1].trim()]===undefined){
             continue;
           }else{
-            if (item.offices[locationParts[1]].indexOf(locationParts[0])===-1)
+            if (item.offices[locationParts[1].trim()].indexOf(locationParts[0].trim())===-1)
             continue;
-          }
-        }
-
-        if(pickUpDate !='' && pickUpDate!=undefined){
-          if(car.availableDates.indexOf(pickUpDate)===-1){
-              continue;
-          }
-        }
-
-        if(dropOffDate !='' && dropOffDate!=undefined){
-          if(car.availableDates.indexOf(dropOffDate)===-1){
-              continue;
           }
         }
 
@@ -179,6 +174,34 @@ export class  RentCarService {
               continue;
           }
         }
+
+
+        var pickUpDateParts = pickUpDate.split('-');
+        var startDate = new Date(pickUpDateParts[2],pickUpDateParts[1]-1,pickUpDateParts[0]);
+
+        var dropOffDateParts = dropOffDate.split('-');
+        var endDate = new Date(dropOffDateParts[2],dropOffDateParts[1]-1,dropOffDateParts[0]);
+
+
+        // seconds * minutes * hours * milliseconds = 1 day
+         var dayy = 60 * 60 * 24 * 1000;
+        var continueCheck = true;
+
+        while(startDate<endDate){
+
+          var dateString = startDate.getDate() + "-" + (startDate.getMonth() + 1) + "-" + startDate.getFullYear();
+
+          if(car.availableDates.indexOf(dateString)===-1){
+            continueCheck=false;
+            break;
+          }
+
+          startDate = new Date(startDate.getTime() + dayy);
+        }
+
+        if(!continueCheck)
+        continue;
+
         resultArray.push(this.rentCars[j].cars[i]);
      }
      ++j;
@@ -213,10 +236,10 @@ export class  RentCarService {
 
           var locationParts=pickUpLocation.split(','); // town,state
 
-          if( company.offices[locationParts[1]]===undefined){
+          if( company.offices[locationParts[1].trim()]===undefined){
             continue;
           }else{
-            if (company.offices[locationParts[1]].indexOf(locationParts[0])===-1)
+            if (company.offices[locationParts[1].trim()].indexOf(locationParts[0].trim())===-1)
             continue;
           }
         }
@@ -225,10 +248,10 @@ export class  RentCarService {
 
           var locationParts=dropOffLocation.split(','); // town,state
 
-          if( company.offices[locationParts[1]]===undefined){
+          if( company.offices[locationParts[1].trim()]===undefined){
             continue;
           }else{
-            if (company.offices[locationParts[1]].indexOf(locationParts[0])===-1)
+            if (company.offices[locationParts[1].trim()].indexOf(locationParts[0].trim())===-1)
             continue;
           }
         }

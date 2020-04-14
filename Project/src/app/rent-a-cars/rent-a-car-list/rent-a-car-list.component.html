@@ -1,13 +1,3 @@
-<div class="form-group row" style="margin-left: 0.5%;" >
-  <label class="col-sm-1.6 col-form-label" style="font-size: larger; color: #31124b; font-weight: bolder;">Sort by:</label>&nbsp;
-  <select class="form-control" style="width: 20%; align-content: center;" (change)="sortCriteria=$event.target.value" [(ngModel)]="sortCriteria">
-    <option style=" color: #31124b; " value=""></option>
-    <option style=" color: #31124b; " value="name">Name</option>
-    <option style=" color: #31124b; " value="city">City</option>
-  </select>
-</div>
-
-<br>
 <div class="list-group" *ngFor="let rentCar of rentCars | sortBy:'asc':sortCriteria">
   <app-rent-a-car-item [rentCar]="rentCar"></app-rent-a-car-item>
 </div>
