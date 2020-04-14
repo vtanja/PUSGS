@@ -10,6 +10,6 @@ export class Address {
     }
 
     toString():string{
-        return this.streetAndNumber+', '+this.city+', '+this.country;
+        return this.streetAndNumber+' '+this.city+', '+this.country;
     }
 }

@@ -2,6 +2,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { IgxAvatarModule } from 'igniteui-angular';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import {MatInputModule} from '@angular/material/input'
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
@@ -106,7 +108,9 @@ import { SortByPipe } from './common/sort-by.pipe';
     ShowHidePasswordModule,
     Ng2SearchPipeModule,
     MatSortModule,
-    IgxAvatarModule
+    IgxAvatarModule,
+    MatAutocompleteModule,
+    MatInputModule,
   ],
   providers: [
     UserService,
