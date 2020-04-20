@@ -4,6 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { NgbDate, NgbDatepickerConfig } from '@ng-bootstrap/ng-bootstrap';
 import airports from '../../../airports.json';
 import{startWith, map} from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-flights-search-form',
@@ -18,11 +19,14 @@ export class FlightsSerachFormComponent implements OnInit {
 
   searchForm:FormGroup;
 
-  airportObjs;
-  airports;
-  constructor(private router:Router,private activeRoute:ActivatedRoute) {
-    this.airports=airports;
-    //console.log(this.airportObjs);
+  takeOffLocationOptions: Observable<{}[]>;
+  landingLocationOptions: Observable<{}[]>;
+
+  constructor(private router:Router,private activeRoute:ActivatedRoute, private config: NgbDatepickerConfig) {
+    const current = new Date();
+      config.minDate = { year: current.getFullYear(), month:
+      current.getMonth() + 1, day: current.getDate() };
+      config.outsideDays = 'hidden';
   }
 
   ngOnInit(): void {
@@ -72,9 +76,24 @@ export class FlightsSerachFormComponent implements OnInit {
       'passengers' : new FormControl(passengers,Validators.required)
     });
 
+    this.takeOffLocationOptions = this.searchForm.get('locations.takeOffLocation')!.valueChanges.pipe(
+      startWith(''),
+      map(value => this._filter(airports, value))
+    );
 
+    this.landingLocationOptions = this.searchForm.get('locations.landingLocation')!.valueChanges.pipe(
+      startWith(''),
+      map(value => this._filter(airports, value))
+    );
 
   }
+
+  private _filter(toFilter:{code:string, name:string, location:string}[], value: string): {code:string, name:string, location:string}[] {
+    const filterValue = value.toLowerCase();
+
+    return toFilter.filter(item => item.code.toLowerCase().includes(filterValue) || item.location.toLowerCase().includes(filterValue));
+  }
+
 
 
   onFormSubmit(){

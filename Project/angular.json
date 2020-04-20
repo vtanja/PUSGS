@@ -32,9 +32,7 @@
               "node_modules/igniteui-angular/styles/igniteui-angular.css"
             ],
             "scripts": [
-              "node_modules/intl-tel-input/build/js/intlTelInput.min.js",
-              "https://cdn.jsdelivr.net/npm/fuse.js/dist/fuse.js",
-              "https://cdn.jsdelivr.net/npm/airport-autocomplete-js@2.0.2/index.browser.min.js"
+              "node_modules/intl-tel-input/build/js/intlTelInput.min.js"
             ]
           },
           "configurations": {
