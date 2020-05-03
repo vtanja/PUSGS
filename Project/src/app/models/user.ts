@@ -1,3 +1,6 @@
+import { CarReservation } from './carReservation.model';
+import { FlightReservation } from './flightReservation.model';
+
 export class User {
      firstName:string;
      lastName:string;
@@ -9,6 +12,8 @@ export class User {
      friends:User[];
      friendRequests:User[];
      profileImage:string;
+     carReservations:CarReservation[];
+     flightReservations:FlightReservation[];
 
     constructor(firstName:string, lastName:string,
           email:string, username:string, password:string, phone:string, address:string, friends:User[] ){
@@ -22,5 +27,7 @@ export class User {
             this.friends=friends;
             this.friendRequests=[];
             this.profileImage="../../assets/images/profilna.png";
+            this.carReservations = [];
+            this.flightReservations=[];
          }
 }

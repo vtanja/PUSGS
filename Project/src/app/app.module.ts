@@ -55,6 +55,11 @@ import { CarsCardsComponent } from './rent-a-cars/rent-a-car-profile/cars-cards/
 import { SortByPipe } from './common/sort-by.pipe';
 import { HammerModule } from "@angular/platform-browser";
 import { IgxTimePickerModule } from 'igniteui-angular';
+import { ReservationsComponent } from './user/reservations/reservations.component';
+import { CarReservationListComponent } from './user/reservations/car-reservation-list/car-reservation-list.component';
+import { CarReservationItemComponent } from './user/reservations/car-reservation-item/car-reservation-item.component';
+import { FlightReservationItemComponent } from './user/reservations/flight-reservation-item/flight-reservation-item.component';
+import { FlightReservationListComponent } from './user/reservations/flight-reservation-list/flight-reservation-list.component';
 
 @NgModule({
   declarations: [
@@ -97,6 +102,11 @@ import { IgxTimePickerModule } from 'igniteui-angular';
     AirlineProfileComponent,
     CarsCardsComponent,
     SortByPipe,
+    ReservationsComponent,
+    CarReservationListComponent,
+    CarReservationItemComponent,
+    FlightReservationItemComponent,
+    FlightReservationListComponent,
 
   ],
   imports: [

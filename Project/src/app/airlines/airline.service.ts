@@ -15,6 +15,7 @@ export class AirlineService{
 
     }
 
+    
     loadAirlines(){
 
         this.airlines=[];
@@ -25,7 +26,7 @@ export class AirlineService{
         const flight4= new Flight(3, 'BEG', 'FCO', '19-4-2020', '19-4-2020', '18:05', '19:35', 1.5, 0, [], 50, 5,200,120,20,20,"Air Serbia");
         const flight5= new Flight(4, 'BEG', 'FCO', '20-4-2020', '20-4-2020', '18:05', '19:35', 1.5, 0, [], 50, 5,200,120,20,20,"Air Serbia");
 
-        
+         
         const flight26= new Flight(25, 'AMS', 'BEG', '16-4-2020', '16-4-2020', '07:00', '09:30', 2.5, 0, [], 130, 5,200,120,20,20,"Air Serbia");
         const flight27= new Flight(26, 'AMS', 'BEG', '17-4-2020', '17-4-2020', '07:00', '09:30', 2.5, 0, [], 130, 5,200,120,20,20,"Air Serbia");
         const flight28= new Flight(27, 'AMS', 'BEG', '18-4-2020', '18-4-2020', '07:00', '09:30', 2.5, 0, [], 130, 5,200,120,20,20,"Air Serbia");

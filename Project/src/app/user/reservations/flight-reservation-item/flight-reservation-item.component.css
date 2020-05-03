@@ -1,0 +1,15 @@
+.button-style{
+    background-color:  #fa871b;
+    color: white;
+    border-color: #fa871b;
+    margin-top: 10%;
+  }
+
+  .header{
+      color:  #fa871b;
+      font-weight: bolder;
+  }
+
+  .text{
+      color: #8d4fff;
+  }

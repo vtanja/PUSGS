@@ -113,4 +113,18 @@
   }
   
   
+  .select100 {
+    width: 80%;
+    padding-left: 25px;
+    text-align: left;
+    display: inline-block;
+    height: 35px;
+    background-color: white;
+    font-family: Poppins-Regular;
+    font-size: 13px;
+    color: #555555;
+    line-height: 1.2;
+    border: 1px solid transparent;
+    border-radius: 10px;
+  }
   

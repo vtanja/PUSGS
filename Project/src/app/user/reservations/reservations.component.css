@@ -1,0 +1,15 @@
+#wrapper{
+    height:auto; 
+    width:100%;
+    text-align: center;
+}
+#inner1{
+    width: 100%;
+    float:left; 
+}
+#inner2{
+    margin-top: 4.9%;
+    float:left; 
+    margin-left: 10%;
+    width: 81.4%;
+} 

@@ -18,7 +18,7 @@ export class  RentCarService {
 
   loadRentCars(){
 
-    const avDates = ["15-4-2020","16-4-2020","17-4-2020","18-4-2020","19-4-2020","20-4-2020"];
+    const avDates = ["15-4-2020","16-4-2020","17-4-2020","18-4-2020","19-4-2020","20-4-2020", "2-5-2020", "3-5-2020"];
 
     const c1 = new Car(1, 'Audi', 'Q3', 2020, 45,avDates,["../../assets/images/cars/audi-q3-car.png"],5,4,true,true,'Firefly',5.0);
     const c2 = new Car(2, 'Citroen', 'M5', 2017, 35,avDates,["../../assets/images/cars/citroen-4.png"],5,4,true,true,'Getaround',4.1);

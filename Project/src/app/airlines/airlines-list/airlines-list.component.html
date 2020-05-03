@@ -1,11 +1,22 @@
 <div class="form-group row" style="margin-left: 0.5%;" >
-  <label class="col-sm-1.6 col-form-label" style="font-size: larger; color: #31124b; font-weight: bolder;">Sort by:</label>&nbsp;
-  <select class="form-control" style="width: 20%; align-content: center;" (change)="sortCriteria=$event.target.value" [(ngModel)]="sortCriteria">
+  <!-- <label class="col-sm-1.6 col-form-label" style="font-size: larger; color: #31124b; font-weight: bolder;">Sort by:</label>&nbsp;
+  <select class="form-control" style="width: 20%;" (change)="sortCriteria=$event.target.value" [(ngModel)]="sortCriteria">
     <option style=" color: #31124b; " value=""></option>
     <option style=" color: #31124b; " value="name">Name</option>
     <option style=" color: #31124b; " value="city">City</option>
     <option style=" color: #31124b; " value="rate">Rate</option>
+  </select> -->
+    <div class="col" style="padding: 0.5%;">
+  <i class="fa fa-sort-alpha-asc"  aria-hidden="true"></i>
+</div>
+<div class="col" style="margin-right: 0%; margin-left: -95%;">
+  <select class="form-control select100" (change)="sortCriteria=$event.target.value" style="width: 20%;">
+    <option style=" color: #31124b; " value="Sort by" selected hidden >Sort by...</option>
+    <option style=" color: #31124b; " value="name">Name</option>
+    <option style=" color: #31124b; " value="city">City</option>
+    <option style=" color: #31124b; " value="rate">Rate</option>
   </select>
+</div>
 </div>
 <br>
 <div class="list-group" *ngFor="let airline of airlines | sortBy:'asc':sortCriteria">

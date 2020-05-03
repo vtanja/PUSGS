@@ -1,0 +1,13 @@
+<div class="container search" *ngIf="flightReservations.length>0">
+    <div class="row justify-content-center" style="padding-top: 1%;">
+        <p  class="socials-span" style="margin-top: 2%;">Your reservations: </p>
+      </div>
+    <ul class="list-group" *ngFor="let reservation of flightReservations">
+        <app-flight-reservation-item [flightReservation]=reservation></app-flight-reservation-item>
+    </ul> 
+</div>
+<div class="container search" *ngIf="flightReservations.length==0">
+    <div class="row justify-content-center" style="padding-top: 1%;">
+        <p  class="socials-span" style="margin-top: 2%;">You haven't made any reservations yet!</p>
+      </div>
+</div>
