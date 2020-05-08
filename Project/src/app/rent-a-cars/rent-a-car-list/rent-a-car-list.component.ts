@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { RentCarService } from '../rent-a-car.service';
+import { RentCarService } from '../../services/rent-a-car.service';
 import { RentCar } from 'src/app/models/rent-a-car.model';
 import { Subscription } from 'rxjs';
 

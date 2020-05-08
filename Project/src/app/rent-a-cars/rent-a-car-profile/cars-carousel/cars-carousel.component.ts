@@ -2,7 +2,7 @@ import { Component, OnInit, Input, ViewChild, OnDestroy } from '@angular/core';
 import { RentCar } from 'src/app/models/rent-a-car.model';
 import { NgbCarousel, NgbSlideEvent, NgbSlideEventSource } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute, Params } from '@angular/router';
-import { RentCarService } from '../../rent-a-car.service';
+import { RentCarService } from '../../../services/rent-a-car.service';
 import { Subscription } from 'rxjs';
 import { Car } from 'src/app/models/Car.model';
 

@@ -2,7 +2,7 @@ import { Component, OnInit, Input, ɵConsole } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import {NgbDateStruct, NgbDate, NgbDatepickerConfig} from '@ng-bootstrap/ng-bootstrap';
-import { RentCarService } from '../../rent-a-car.service';
+import { RentCarService } from '../../../services/rent-a-car.service';
 import { Observable } from 'rxjs/internal/Observable';
 import {startWith, map} from 'rxjs/operators';
 

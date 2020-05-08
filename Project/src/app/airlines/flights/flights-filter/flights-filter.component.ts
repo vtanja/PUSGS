@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Airline } from 'src/app/models/airline';
-import { AirlineService } from '../../airline.service';
+import { AirlineService } from '../../../services/airline.service';
 import { NumberValueAccessor } from '@angular/forms';
 
 @Component({
@@ -121,7 +121,7 @@ export class FlightsFilterComponent implements OnInit {
     this.airlineService.filter.next(this.filter);
   }
 
-  
+
   onDurationChanged(event){
     console.log(event.target.value);
     this.filter.duration=event.target.value;

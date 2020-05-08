@@ -1,6 +1,6 @@
 import { Component, OnInit, } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { UserService } from '../userService.service';
+import { UserService } from '../../services/userService.service';
 import { User } from 'src/app/models/user';
 
 @Component({
@@ -20,7 +20,7 @@ export class UserProfileComponent implements OnInit {
 
   fileToUpload: File = null;
 
-  constructor(private userService:UserService) { 
+  constructor(private userService:UserService) {
     this.loggedUser=this.userService.getUser();
   }
 
@@ -36,9 +36,9 @@ export class UserProfileComponent implements OnInit {
           'password': new FormControl(null,[Validators.required,
             Validators.pattern(new RegExp("^(?=.*[0-9]+.*)(?=.*[a-zA-Z]+.*)[0-9a-zA-Z]{8,}$"))]),
           'confirm': new FormControl(null,[Validators.required])
-           
+
         },this.passwordMatchValidator.bind(this)),
-          
+
     });
 
     this.editForm.setValue({
@@ -124,7 +124,7 @@ export class UserProfileComponent implements OnInit {
       this.lastNameReadonly=false;
     }
     else if(control === 'email'){
-      this.emailReadonly=false;   
+      this.emailReadonly=false;
     }
     else if(control === 'phone'){
       this.phoneReadonly=false;

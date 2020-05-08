@@ -1,110 +1,154 @@
-
-    <div class="list-group-item" style="margin-top: 1%; margin-bottom: 1%; cursor: pointer;" (click)="open(content)" >
-        <div class="row" style=" height: 70px;" >
-            <div class="col-md-2" style=" height: 100%; justify-content: center;">
-                <img  src={{company.image}} style="width: 100%; height: 100%;">
-            </div>
-            <div class="col-md-2" style="height: 100%; text-align: center; align-content: center;">
-               <div class="row header justify-content-center align-items-center" >Departure:</div>
-               <div class="row text justify-content-center align-items-center" >{{flight.takeOffLocation}}</div>
-               <div class="row text justify-content-center align-items-center" >{{flight.takeOffTime}}h</div>
-           </div>
-           <div class="col-md-2" style="height: 100%; text-align: center; align-content: center;">
-               <div class="row header justify-content-center align-items-center" >Landing:</div>
-               <div class="row text justify-content-center align-items-center" >{{flight.landingLocation}}</div>
-               <div class="row text justify-content-center align-items-center" >{{flight.landingTime}}h</div>
-           </div>
-           <div class="col-md-2" style="height: 100%; text-align: center; align-content: center;">
-            <div class="row header justify-content-center align-items-center"  >Number of passengers:</div>
-            <div class="row text justify-content-center align-items-center" style="margin-top: 19%;">{{flightReservation.passengers.length}}</div>
+<div class="list-group-item" style="margin-top: 1%; margin-bottom: 1%; cursor: pointer;">
+  <div class="row">
+    <div class="col" style="width: 100%;padding:0%; margin: 0%;" (click)="open(content)">
+      <div class="row" style=" height: 70px;">
+        <div class="col-md-2" style=" height: 100%; justify-content: center;">
+          <img src={{company.image}} style="width: 100%; height: 100%;">
         </div>
-           <div class="col-md-1" style="height: 100%; text-align: center; align-content: center;">
-            <div class="row header justify-content-center align-items-center" >Car included:</div>
-            <div class="row text justify-content-center align-items-center" style="margin-top: 45%;" *ngIf="flightReservation.carReservation.length===0">No</div>
-            <div class="row text justify-content-center align-items-center" style="margin-top: 45%;" *ngIf="flightReservation.carReservation.length>0">Yes</div>
+        <div class="col-md-2" style="height: 100%; text-align: center; align-content: center;">
+          <div class="row header justify-content-center align-items-center">Departure:</div>
+          <div class="row text justify-content-center align-items-center">{{flight.takeOffLocation}}</div>
+          <div class="row text justify-content-center align-items-center">{{flight.takeOffTime}}h</div>
         </div>
-           <div class="col-md-1" style="height: 100%; text-align: center; align-content: center;">
-               <div class="row header justify-content-center align-items-center" >Total price:</div>
-               <div class="row text justify-content-center align-items-center" style="margin-top: 45%;" >{{flightReservation.price | currency:'EUR'}}</div>
-           </div>
-           <div class="col-md-2" style="height: 100%; text-align: center; align-content: center;">
-               <div class="row d-flex justify-content-center align-items-center">
-                   <button class="btn btn-md btn-rounded button-style" >Cancel</button>
-               </div>
-           </div>
+        <div class="col-md-2" style="height: 100%; text-align: center; align-content: center;">
+          <div class="row header justify-content-center align-items-center">Landing:</div>
+          <div class="row text justify-content-center align-items-center">{{flight.landingLocation}}</div>
+          <div class="row text justify-content-center align-items-center">{{flight.landingTime}}h</div>
         </div>
-   </div>
-
-
-   <ng-template #content let-modal>
-    <div class="modal-header">
-      <h6 class="modal-title header" id="modal-basic-title">Reservation details...</h6>
-      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-        <span aria-hidden="true">&times;</span>
-      </button>
+        <div class="col-md-2" style="height: 100%; text-align: center; align-content: center;">
+          <div class="row header justify-content-center align-items-center">Passengers:</div>
+          <div class="row text justify-content-center align-items-center" style="vertical-align: center;">
+            {{flightReservation.passengers.length}}</div>
+        </div>
+        <div class="col-md-2" style="height: 100%; text-align: center; align-content: center;">
+          <div class="row header justify-content-center align-items-center">Car included:</div>
+          <div class="row text justify-content-center align-items-center"
+            *ngIf="flightReservation.carReservation.length===0">No</div>
+          <div class="row text justify-content-center align-items-center"
+            *ngIf="flightReservation.carReservation.length>0">Yes</div>
+        </div>
+        <div class="col-md-2" style="height: 100%; text-align: center; align-content: center;">
+          <div class="row header justify-content-center align-items-center">Total price:</div>
+          <div class="row text justify-content-center align-items-center">
+            {{flightReservation.price | currency:'EUR'}}</div>
+        </div>
+      </div>
     </div>
-    <div class="modal-body">
-        <img  src={{company.image}} style="width: 100%; height: 150px;">
-        <!-- <h6 class="lblStyle header" style="text-align: center;">Airline: <span class="valueStyle text"> {{company.name}}</span></h6> -->
-        <br>
-        <!-- <label class="lblStyle">Plane: <span class="valueStyle"> {{flight.plane}}</span></label>
+      <div class="col-2" style="height: 100%; text-align: center; align-content: center;">
+        <div *ngIf="!flightReservation.airlineRated && canRate"
+          class="row d-flex justify-content-center align-items-center row-btn-style">
+          <button class="btn btn-md btn-rounded button-style " (click)="openRateModal(mymodal,'airline')">Rate
+            company</button>
+        </div>
+        <div *ngIf="!flightReservation.flightRated && canRate"
+          class="row d-flex justify-content-center align-items-center row-btn-style">
+          <button class="btn btn-md btn-rounded button-style " (click)="openRateModal(mymodal,'flight')">Rate
+            flight</button>
+        </div>
+        <div class="row d-flex justify-content-center align-items-center row-btn-style">
+          <button class="btn btn-md btn-rounded button-style ">Cancel</button>
+        </div>
+
+    </div>
+  </div>
+</div>
+
+
+<ng-template #mymodal let-modal>
+  <div class="modal-header">
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">×</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <app-rate-dialog [reservationId]="flightReservation.flightID" [rateItem]="toRate"></app-rate-dialog>
+  </div>
+</ng-template>
+
+
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h6 class="modal-title header" id="modal-basic-title">Reservation details...</h6>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <img src={{company.image}} style="width: 100%; height: 150px;">
+    <!-- <h6 class="lblStyle header" style="text-align: center;">Airline: <span class="valueStyle text"> {{company.name}}</span></h6> -->
+    <br>
+    <!-- <label class="lblStyle">Plane: <span class="valueStyle"> {{flight.plane}}</span></label>
         <br>  -->
-        <div style="display: inline;">
-            <div style="display: inline-block; width: 50%; align-self: center;">
-                <h6 class="modal-title header" id="modal-basic-title">Departure:</h6>
-                <br>
-                <label class="lblStyle header">Airport: <span class="valueStyle text"> {{flight.takeOffLocation}}&nbsp; </span></label><br>
-                <label class="lblStyle header">Date: <span class="valueStyle text"> {{flight.takeOffDate}}&nbsp; </span></label><br>
-                <label class="lblStyle header">Time: <span class="valueStyle text"> {{flight.takeOffTime}}h &nbsp; </span></label>
-                
-            </div>
-            <div style="display: inline-block; width: 50%; align-self: center;">
-                <h6 class="modal-title header" id="modal-basic-title">Landing:</h6>
-                <br>
-                <label class="lblStyle header">Airport: <span class="valueStyle text"> {{flight.landingLocation}}&nbsp; </span></label><br>
-                <label class="lblStyle header">Date: <span class="valueStyle text"> {{flight.landingDate}}&nbsp; </span></label><br>
-                <label class="lblStyle header">Time: <span class="valueStyle text"> {{flight.landingTime}}h&nbsp; </span></label>
-                
-            </div>
-        </div>
+    <div style="display: inline;">
+      <div style="display: inline-block; width: 50%; align-self: center;">
+        <h6 class="modal-title header" id="modal-basic-title">Departure:</h6>
         <br>
-        <br>
-        <h6 class="modal-title header" id="modal-basic-title">Passengers:</h6>
-        <br>
-        <div  *ngFor="let passenger of flightReservation.passengers">
-            <label class="lblStyle header">First name: <span class="valueStyle text"> {{passenger.passenger.firstname}}&nbsp; </span></label>
-            <br>
-            <label class="lblStyle header">Last name: <span class="valueStyle text"> {{passenger.passenger.lastname}}&nbsp; </span></label>
-            <br>
-            <label class="lblStyle header">Passport number: <span class="valueStyle text"> {{passenger.passenger.passportNo}}&nbsp; </span></label>
-            <br>
-            <label class="lblStyle header">Seat: <span class="valueStyle text"> {{passenger.seat}}&nbsp; </span></label>
-            
-        <hr>
-        </div>
+        <label class="lblStyle header">Airport: <span class="valueStyle text"> {{flight.takeOffLocation}}&nbsp;
+          </span></label><br>
+        <label class="lblStyle header">Date: <span class="valueStyle text"> {{flight.takeOffDate}}&nbsp;
+          </span></label><br>
+        <label class="lblStyle header">Time: <span class="valueStyle text"> {{flight.takeOffTime}}h &nbsp;
+          </span></label>
 
-        <div *ngIf="flightReservation.carReservation.length>0">
-        <h6 class="modal-title header" id="modal-basic-title">Cars rented:</h6>
+      </div>
+      <div style="display: inline-block; width: 50%; align-self: center;">
+        <h6 class="modal-title header" id="modal-basic-title">Landing:</h6>
         <br>
-        <div  *ngFor="let car of flightReservation.carReservation; let i = index">
-            <label class="lblStyle header">Rental company: <span class="valueStyle text"> {{rentalCompany.name}} {{rentalCompany.address}}&nbsp; </span></label>
-            <br>
-            <label class="lblStyle header">Car: <span class="valueStyle text"> {{flightReservation.carReservation[i].carModel}} &nbsp; </span></label>
-            <br>
-            <label class="lblStyle header">Pick up: <span class="valueStyle text"> {{flightReservation.carReservation[i].startDate}} &nbsp; {{flightReservation.carReservation[0].pickUpTime}}h </span></label>
-            <br>
-            <label class="lblStyle header">Drop off: <span class="valueStyle text"> {{flightReservation.carReservation[i].returnDate}} &nbsp; {{flightReservation.carReservation[0].returnTime}}h </span></label>
-            <br>
-        </div>
-        </div>
+        <label class="lblStyle header">Airport: <span class="valueStyle text"> {{flight.landingLocation}}&nbsp;
+          </span></label><br>
+        <label class="lblStyle header">Date: <span class="valueStyle text"> {{flight.landingDate}}&nbsp;
+          </span></label><br>
+        <label class="lblStyle header">Time: <span class="valueStyle text"> {{flight.landingTime}}h&nbsp;
+          </span></label>
 
-        <br>
-        <div style="display: inline-block; width: 50%; align-self: center;">
-            <h6 class="modal-title header" id="modal-basic-title">Total price:</h6>
-            <span class="valueStyle text"> {{flightReservation.price | currency:'EUR'}}&nbsp; </span>
-        </div>
+      </div>
     </div>
-    
-    
-  </ng-template>
-  
+    <br>
+    <br>
+    <h6 class="modal-title header" id="modal-basic-title">Passengers:</h6>
+    <br>
+    <div *ngFor="let passenger of flightReservation.passengers">
+      <label class="lblStyle header">First name: <span class="valueStyle text"> {{passenger.passenger.firstname}}&nbsp;
+        </span></label>
+      <br>
+      <label class="lblStyle header">Last name: <span class="valueStyle text"> {{passenger.passenger.lastname}}&nbsp;
+        </span></label>
+      <br>
+      <label class="lblStyle header">Passport number: <span class="valueStyle text">
+          {{passenger.passenger.passportNo}}&nbsp; </span></label>
+      <br>
+      <label class="lblStyle header">Seat: <span class="valueStyle text"> {{passenger.seat}}&nbsp; </span></label>
+
+      <hr>
+    </div>
+
+    <div *ngIf="flightReservation.carReservation.length>0">
+      <h6 class="modal-title header" id="modal-basic-title">Cars rented:</h6>
+      <br>
+      <div *ngFor="let car of flightReservation.carReservation; let i = index">
+        <label class="lblStyle header">Rental company: <span class="valueStyle text"> {{rentalCompany.name}}
+            {{rentalCompany.address}}&nbsp; </span></label>
+        <br>
+        <label class="lblStyle header">Car: <span class="valueStyle text">
+            {{flightReservation.carReservation[i].carModel}} &nbsp; </span></label>
+        <br>
+        <label class="lblStyle header">Pick up: <span class="valueStyle text">
+            {{flightReservation.carReservation[i].startDate}} &nbsp; {{flightReservation.carReservation[0].pickUpTime}}h
+          </span></label>
+        <br>
+        <label class="lblStyle header">Drop off: <span class="valueStyle text">
+            {{flightReservation.carReservation[i].returnDate}} &nbsp;
+            {{flightReservation.carReservation[0].returnTime}}h </span></label>
+        <br>
+      </div>
+    </div>
+
+    <br>
+    <div style="display: inline-block; width: 50%; align-self: center;">
+      <h6 class="modal-title header" id="modal-basic-title">Total price:</h6>
+      <span class="valueStyle text"> {{flightReservation.price | currency:'EUR'}}&nbsp; </span>
+    </div>
+  </div>
+
+
+</ng-template>

@@ -9,13 +9,14 @@ export class AirlineService{
     private airlines:Airline[];
 
     filter=new Subject<{}>();
-    
+    rateModalClose = new Subject();
+
     constructor(){
         this.loadAirlines();
 
     }
 
-    
+
     loadAirlines(){
 
         this.airlines=[];
@@ -26,7 +27,7 @@ export class AirlineService{
         const flight4= new Flight(3, 'BEG', 'FCO', '19-4-2020', '19-4-2020', '18:05', '19:35', 1.5, 0, [], 50, 5,200,120,20,20,"Air Serbia");
         const flight5= new Flight(4, 'BEG', 'FCO', '20-4-2020', '20-4-2020', '18:05', '19:35', 1.5, 0, [], 50, 5,200,120,20,20,"Air Serbia");
 
-         
+
         const flight26= new Flight(25, 'AMS', 'BEG', '16-4-2020', '16-4-2020', '07:00', '09:30', 2.5, 0, [], 130, 5,200,120,20,20,"Air Serbia");
         const flight27= new Flight(26, 'AMS', 'BEG', '17-4-2020', '17-4-2020', '07:00', '09:30', 2.5, 0, [], 130, 5,200,120,20,20,"Air Serbia");
         const flight28= new Flight(27, 'AMS', 'BEG', '18-4-2020', '18-4-2020', '07:00', '09:30', 2.5, 0, [], 130, 5,200,120,20,20,"Air Serbia");
@@ -64,7 +65,7 @@ export class AirlineService{
         var montenegroFlights=[flight15, flight16, flight17, flight18, flight19];
 
         var lufthansaFlights=[flight20, flight21, flight22, flight23, flight24];
-        
+
         const serbiaDest={
             'Netherlands':["Amsterdam", ],
             'Greece':["Athens",],
@@ -97,7 +98,7 @@ export class AirlineService{
               'Germany':["Frankfurt"],
               'Hungary':["Budapest"]
           }
-          
+
           const croatiaDest={
             'Serbia':["Belgrade"],
             'Austria' :["Vienna"],
@@ -115,8 +116,8 @@ export class AirlineService{
             'United Kingdom':["London"]
         };
 
-        
-        
+
+
         const airline1 = new Airline(0, "Air Serbia", new Address(" ","Beograd","Serbia"), "Air Serbia je nacionalna avio kompanije Republike Srbije, nastala iz dotadašnje avio kompanije Jat Airways.",
         4.5, airSerbiaFlights, serbiaDest, "../../assets/images/airlines/air-serbia.png");
         const airline2 = new Airline(1, "FlyBosnia", new Address(" ","Sarajevo","Bosnia and Herzegovina"), "FlyBosnia je avio kompanija iz Bosne i Hercegovina sa sedištem u Sarajevu. Avio kompanija FlyBosnia trenutno leti na direktnim linijama iz Sarajeva za London, Riyadh i Kuvajt.",
@@ -147,7 +148,7 @@ export class AirlineService{
         flight27.image=airline1.image;
         flight28.image=airline1.image;
         flight29.image=airline1.image;
-        
+
         flight16.image=airline4.image;
         flight17.image=airline4.image;
         flight18.image=airline4.image;
@@ -165,7 +166,7 @@ export class AirlineService{
         this.airlines.push(airline3);
         this.airlines.push(airline4);
         this.airlines.push(airline5);
-        
+
     }
 
     getAirlines(){

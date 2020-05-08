@@ -1,0 +1,28 @@
+.star {
+  position: relative;
+  display: inline-block;
+  font-size: 300%;
+  color: #d3d3d3;
+}
+.full {
+  color: #eea136;
+}
+.half {
+  position: absolute;
+  display: inline-block;
+  overflow: hidden;
+  color:#eea136;
+}
+
+.header-style{
+  color: #6c36d1;
+  font-weight: bolder;
+}
+
+.save-btn{
+  background-color:  #fa871b;
+  color: white;
+  width: 25%;
+  margin-top: 5%;
+  margin-left: 3%;
+}

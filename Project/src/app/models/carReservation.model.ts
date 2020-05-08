@@ -1,4 +1,4 @@
-import { RentCarService } from '../rent-a-cars/rent-a-car.service';
+import { RentCarService } from '../services/rent-a-car.service';
 
 export class CarReservation{
 
@@ -12,6 +12,9 @@ export class CarReservation{
   companyId:number;
   carId:number;
   carModel:string;
+  companyRated:boolean;
+  carRated:boolean;
+  id:number;
 
   constructor(startDate:string,pickUpTime:string, returnDate:string, returnTime:string, numberOfDays:number, price:number, companyId:number, companyName:string, carId:number, carModel:string){
     this.startDate=startDate;
@@ -24,5 +27,7 @@ export class CarReservation{
     this.compayName =companyName;
     this.carId=carId;
     this.carModel = carModel;
+    this.carRated=false;
+    this.companyRated=false;
   }
 }

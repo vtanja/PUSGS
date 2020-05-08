@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Sort } from '@angular/material/sort';
-import { UserService } from '../userService.service';
+import { UserService } from '../../services/userService.service';
 import { User } from 'src/app/models/user';
 
 @Component({
@@ -15,14 +15,14 @@ export class FriendsListComponent implements OnInit {
   loggedUser:User;
   filterData: User[]=[];
   filterUser: string='';
-  
-  sortedData: User[]=[]; 
+
+  sortedData: User[]=[];
   public imgSource = "https://randomuser.me/api/portraits/men/1.jpg";
    public bgColor = "#0375be";
   public color = "black";
   public isCircular = true;
-  
-  constructor(private userService:UserService) { 
+
+  constructor(private userService:UserService) {
     this.sortedData = this.userService.getUser().friends.slice();
     console.log(this.sortedData);
   }

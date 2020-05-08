@@ -1,6 +1,6 @@
 import { Component, OnInit, OnChanges } from '@angular/core';
 import { Flight } from 'src/app/models/flight';
-import { AirlineService } from '../../airline.service';
+import { AirlineService } from '../../../services/airline.service';
 import { ActivatedRoute, Router, Params } from '@angular/router';
 
 @Component({
@@ -28,8 +28,8 @@ export class FlightListComponent implements OnInit {
   };
 
   params:{};
-  
- 
+
+
 
   constructor(private airlineService:AirlineService, private route:ActivatedRoute, private router:Router) {}
   // ngOnChanges(changes: import("@angular/core").SimpleChanges): void {
@@ -55,14 +55,14 @@ export class FlightListComponent implements OnInit {
       console.log(queryParams);
       if(queryParams['returnDate']==="undefined-undefined-undefined"){
         console.log('poziv funkcije one way')
-        this.flights=this.airlineService.getFlights(queryParams); 
+        this.flights=this.airlineService.getFlights(queryParams);
         this.roundFlights=[];
       }
       else{
-        this.roundFlights=this.airlineService.getRoundFlights(queryParams);  
+        this.roundFlights=this.airlineService.getRoundFlights(queryParams);
         this.flights=[];
       }
-      
+
       //console.log(this.flights);
     });
   }

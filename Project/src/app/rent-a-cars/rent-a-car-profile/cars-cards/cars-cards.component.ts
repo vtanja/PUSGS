@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { RentCarService } from '../../rent-a-car.service';
+import { RentCarService } from '../../../services/rent-a-car.service';
 import { Car } from 'src/app/models/Car.model';
 import { Subscription } from 'rxjs';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';

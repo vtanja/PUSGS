@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FlightReservation } from 'src/app/models/flightReservation.model';
-import { UserService } from '../../userService.service';
+import { UserService } from '../../../services/userService.service';
 
 @Component({
   selector: 'app-flight-reservation-list',

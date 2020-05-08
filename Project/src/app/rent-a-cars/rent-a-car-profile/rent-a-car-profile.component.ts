@@ -3,7 +3,7 @@ import { NgbCarousel } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute, Router, Params } from '@angular/router';
 import { RentCar } from 'src/app/models/rent-a-car.model';
 import { Subscription } from 'rxjs';
-import { RentCarService } from '../rent-a-car.service';
+import { RentCarService } from '../../services/rent-a-car.service';
 
 @Component({
   selector: 'app-rent-a-car-profile',

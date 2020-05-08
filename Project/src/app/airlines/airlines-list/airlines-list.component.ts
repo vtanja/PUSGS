@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Airline } from 'src/app/models/airline';
-import { AirlineService } from '../airline.service';
+import { AirlineService } from '../../services/airline.service';
 
 @Component({
   selector: 'app-airlines-list',
@@ -17,5 +17,5 @@ export class AirlinesListComponent implements OnInit {
     this.airlines = this.airlineService.getAirlines();
   }
 
-  
+
 }

@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule, NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap';
 import { IgxAvatarModule } from 'igniteui-angular';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
@@ -23,20 +23,20 @@ import { RentACarItemComponent } from './rent-a-cars/rent-a-car-item/rent-a-car-
 import { CarsSearchComponent } from './rent-a-cars/cars-search/cars-search.component';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { RentACarSearchComponent } from './rent-a-cars/rent-a-car-search/rent-a-car-search.component';
-import { RentCarService } from './rent-a-cars/rent-a-car.service';
+import { RentCarService } from './services/rent-a-car.service';
 import { CarsListComponent } from './rent-a-cars/cars/cars-list/cars-list.component';
 import { CarItemComponent } from './rent-a-cars/cars/car-item/car-item.component';
 import { UserComponent } from './user/user.component';
 import { UserProfileComponent } from './user/user-profile/user-profile.component';
 import { FriendsListComponent } from './user/friends-list/friends-list.component';
 import { SearchPipe } from './user/friends-list/search.pipe';
-import { UserService } from './user/userService.service';
+import { UserService } from './services/userService.service';
 import { NavbarComponent } from './navbar/navbar.component';
 import { CarsSearchFormComponent } from './rent-a-cars/cars-search/cars-search-form/cars-search-form.component';
 import { CarsComponent } from './rent-a-cars/cars/cars.component';
 import { AirlinesListComponent } from './airlines/airlines-list/airlines-list.component';
 import { AirlineItemComponent } from './airlines/airline-item/airline-item.component';
-import { AirlineService } from './airlines/airline.service';
+import { AirlineService } from './services/airline.service';
 import { FlightsSearchComponent } from './airlines/flights-search/flights-search.component';
 import { FlightsSerachFormComponent } from './airlines/flights-search/flights-search-form/flights-search-form.component';
 import { FlightListComponent } from './airlines/flights/flight-list/flight-list.component';
@@ -60,6 +60,9 @@ import { CarReservationListComponent } from './user/reservations/car-reservation
 import { CarReservationItemComponent } from './user/reservations/car-reservation-item/car-reservation-item.component';
 import { FlightReservationItemComponent } from './user/reservations/flight-reservation-item/flight-reservation-item.component';
 import { FlightReservationListComponent } from './user/reservations/flight-reservation-list/flight-reservation-list.component';
+import {NgbDateCustomParserFormatter} from './services/date-formatter.service';
+import { RateDialogComponent } from './user/reservations/rate-dialog/rate-dialog.component'
+import { CarReservationsService } from './services/car-reservations.service';
 
 @NgModule({
   declarations: [
@@ -107,6 +110,7 @@ import { FlightReservationListComponent } from './user/reservations/flight-reser
     CarReservationItemComponent,
     FlightReservationItemComponent,
     FlightReservationListComponent,
+    RateDialogComponent,
 
   ],
   imports: [
@@ -129,7 +133,9 @@ import { FlightReservationListComponent } from './user/reservations/flight-reser
   providers: [
     UserService,
     RentCarService,
-    AirlineService
+    AirlineService,
+    CarReservationsService,
+    {provide: NgbDateParserFormatter, useClass: NgbDateCustomParserFormatter}
   ],
   bootstrap: [AppComponent]
 })

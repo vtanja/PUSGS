@@ -2,7 +2,9 @@
     background-color:  #fa871b;
     color: white;
     border-color: #fa871b;
-    margin-top: 10%;
+    height: 100%;
+    width: 80%;
+    padding: 0%;
   }
 
   .header{
@@ -12,4 +14,9 @@
 
   .text{
       color: #8d4fff;
+  }
+
+  .row-btn-style{
+    margin-top: 3%;
+    height: 33%;
   }
