@@ -25,7 +25,8 @@
       <small style="height: 30px;">
         <ngb-rating [(rate)]="rentCar.rate" [starTemplate]="t" [readonly]="true" [max]="5"></ngb-rating>
         <hr>
-        <pre>Rate: <b>{{rentCar.rate}}</b></pre>
+        <pre *ngIf="rentCar.rate!=-1">Rate: <b>{{rentCar.rate}}</b></pre>
+        <pre style="color: orange;" *ngIf="rentCar.rate===-1"><b>No any rates yet.</b></pre>
       </small>
     </div>
   </div>

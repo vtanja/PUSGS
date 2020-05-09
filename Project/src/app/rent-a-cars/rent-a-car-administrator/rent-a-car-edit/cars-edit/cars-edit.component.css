@@ -1,0 +1,140 @@
+.carousel-inner {
+  overflow: visible;
+}
+
+.carousel-item {
+  display: flex !important;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 1.2s ease-in-out, visibility 1.2s;
+  z-index: -1;
+}
+
+.carousel-item.active{
+  opacity: 1;
+  visibility: visible;
+  z-index: 10;
+}
+
+.carousel-control-prev {
+   z-index: 20;
+}
+
+
+.carousel-control-next {
+   z-index: 20;
+}
+
+
+.carousel-indicators{
+  z-index: 20;
+}
+
+.icon-style{
+  width: 16%;
+  height: 16%;
+  margin-top: 5%;
+}
+
+.label-style{
+  font-size: smaller;
+  font-weight: 500;
+}
+
+.price{
+  margin-top: -10%;
+  text-align: center;
+  font-weight: bolder;
+  color:#31124b;
+  font-size: medium;
+}
+
+.button-style{
+  background-color:  #fa871b;
+  color: white;
+  border-color: #fa871b;
+}
+
+.h-style{
+  width:100% !important;
+  text-align: center !important;
+  font-size:18px;
+}
+
+.main-image-style{
+
+  height: 120px;
+}
+
+
+
+.c1 {
+  position: relative;
+}
+
+/* Top right text */
+.text-block {
+  position: absolute;
+  top:1px;
+  right: 5px;
+  background-color: #eea136;
+  opacity: 0.8;
+  border-radius: 18px;
+  color: white;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 5px;
+  height: 25%;
+  align-content: center;
+}
+
+.lbl-style{
+  display: block;
+  font-family: Poppins-Medium;
+}
+
+.valueStyle{
+  font-weight: bold;
+  padding-left: 3px;
+}
+
+.confirmBtnStyle:disabled{
+  background-color: lightslategray;
+  border-color: lightslategray;
+}
+
+.confirmBtnStyle{
+
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 20px;
+    width: 180px;
+    height: 50px;
+
+    font-family: Poppins-Medium;
+    font-size: 16px;
+    color: #fff;
+    line-height: 1.2;
+    background: #31124b;
+
+    border-width: 0cm;
+    border-radius: 10px;
+  }
+
+  .confirmBtnStyle:hover
+  {
+    opacity: 0.8;
+  }
+
+  .modal-input{
+    border-radius: 5px;
+    margin-left: 6%;
+    border-color: lightslategray;
+  }
+
+

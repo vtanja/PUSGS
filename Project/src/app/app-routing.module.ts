@@ -20,6 +20,7 @@ import { AirlineProfileComponent } from './airlines/airline-profile/airline-prof
 import { ReservationsComponent } from './user/reservations/reservations.component';
 import { CarReservationListComponent } from './user/reservations/car-reservation-list/car-reservation-list.component';
 import { FlightReservationListComponent } from './user/reservations/flight-reservation-list/flight-reservation-list.component';
+import { RentACarEditComponent } from './rent-a-cars/rent-a-car-administrator/rent-a-car-edit/rent-a-car-edit.component';
 
 
 const routes: Routes = [
@@ -33,7 +34,7 @@ const routes: Routes = [
     children:[
       {path: 'profile', component:UserProfileComponent},
       {path: 'friends', component:FriendsListComponent},
-      {path: 'reservations', component:ReservationsComponent, 
+      {path: 'reservations', component:ReservationsComponent,
         children:[
           {path: 'car-reservations', component:CarReservationListComponent},
           {path: 'flight-reservations', component:FlightReservationListComponent},
@@ -48,6 +49,7 @@ const routes: Routes = [
   {path: 'navbar', component:NavbarComponent },
   {path:'carProfile/:id',component: RentACarProfileComponent},
   {path:'airlineProfile/:id',component: AirlineProfileComponent},
+  {path:'editService',component:RentACarEditComponent},
   {path: '**',component:HomePageComponent}
 ];
 

@@ -6,7 +6,7 @@ import { Subject } from 'rxjs';
 export class CarReservationsService{
 
   ratingModalClose = new Subject();
-  constructor(private rentCarService: RentCarService){
+  constructor(){
 
   }
 

@@ -1,3 +1,6 @@
+import { CarReservation } from './carReservation.model';
+import { UsersRate } from './users-rate.model';
+
 export class Car{
 
   id:number;
@@ -13,10 +16,12 @@ export class Car{
   hasAutomaticGearbox:boolean;
   companyName:string;
   rate:number;
+  rates:UsersRate[];
+
 
   constructor(id:number,brand:string,model:string,year:number,pricePerDay:number,
     avDates:Array<string>,images:Array<string>,maxPassengers:number,
-    doors:number,hasAirCondition:boolean,hasAutomaticGearbox:boolean,companyName:string,rate:number){
+    doors:number,hasAirCondition:boolean,hasAutomaticGearbox:boolean,companyName:string){
 
     this.id=id;
     this.brand=brand;
@@ -31,6 +36,27 @@ export class Car{
     this.hasAirCondition=hasAirCondition;
     this.hasAutomaticGearbox=hasAutomaticGearbox;
     this.companyName=companyName;
-    this.rate = rate;
+    this.rate = -1;
+    this.rates=[];
+  }
+
+  updateRate():void{
+
+      var ret =0;
+      var i= 0
+      this.rates.forEach(element => {
+
+        ret+=element.rate;
+        ++i;
+
+      });
+      this.rate=+(ret/i).toFixed(1);
+
+  }
+
+  addRate(rate:UsersRate){
+    this.rates.push(rate);
+    this.updateRate();
   }
 }
+

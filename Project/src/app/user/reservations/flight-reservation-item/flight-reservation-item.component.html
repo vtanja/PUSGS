@@ -8,12 +8,12 @@
         <div class="col-md-2" style="height: 100%; text-align: center; align-content: center;">
           <div class="row header justify-content-center align-items-center">Departure:</div>
           <div class="row text justify-content-center align-items-center">{{flight.takeOffLocation}}</div>
-          <div class="row text justify-content-center align-items-center">{{flight.takeOffTime}}h</div>
+          <div class="row text justify-content-center align-items-center">{{flight.takeOffDate}}&nbsp;{{flight.takeOffTime}}h</div>
         </div>
         <div class="col-md-2" style="height: 100%; text-align: center; align-content: center;">
           <div class="row header justify-content-center align-items-center">Landing:</div>
           <div class="row text justify-content-center align-items-center">{{flight.landingLocation}}</div>
-          <div class="row text justify-content-center align-items-center">{{flight.landingTime}}h</div>
+          <div class="row text justify-content-center align-items-center">{{flight.landingDate}}&nbsp;{{flight.landingTime}}h</div>
         </div>
         <div class="col-md-2" style="height: 100%; text-align: center; align-content: center;">
           <div class="row header justify-content-center align-items-center">Passengers:</div>
@@ -35,12 +35,12 @@
       </div>
     </div>
       <div class="col-2" style="height: 100%; text-align: center; align-content: center;">
-        <div *ngIf="!flightReservation.airlineRated && canRate"
+        <div *ngIf="flightReservation.airlineRate===-1 "
           class="row d-flex justify-content-center align-items-center row-btn-style">
           <button class="btn btn-md btn-rounded button-style " (click)="openRateModal(mymodal,'airline')">Rate
             company</button>
         </div>
-        <div *ngIf="!flightReservation.flightRated && canRate"
+        <div *ngIf="flightReservation.flightRate===-1 "
           class="row d-flex justify-content-center align-items-center row-btn-style">
           <button class="btn btn-md btn-rounded button-style " (click)="openRateModal(mymodal,'flight')">Rate
             flight</button>

@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Airline } from 'src/app/models/airline';
+import { Airline } from 'src/app/models/airline.model';
 
 @Component({
   selector: 'app-airline-item',

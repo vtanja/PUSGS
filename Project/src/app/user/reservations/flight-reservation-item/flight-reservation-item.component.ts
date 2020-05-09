@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { FlightReservation } from 'src/app/models/flightReservation.model';
-import { Flight } from 'src/app/models/flight';
-import { Airline } from 'src/app/models/airline';
+import { Flight } from 'src/app/models/flight.model';
+import { Airline } from 'src/app/models/airline.model';
 import { AirlineService } from 'src/app/services/airline.service';
 import { NgbModal,ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { Car } from 'src/app/models/Car.model';
@@ -48,6 +48,8 @@ export class FlightReservationItemComponent implements OnInit,OnDestroy {
 
     if(landingDate<=today)
       this.canRate = true;
+
+    console.log(this.flightReservation);
 
   }
 

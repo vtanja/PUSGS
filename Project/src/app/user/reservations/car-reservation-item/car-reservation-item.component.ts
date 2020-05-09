@@ -25,6 +25,9 @@ export class CarReservationItemComponent implements OnInit,OnDestroy {
   constructor(private carsReservationsService:CarReservationsService, private rentCarService:RentCarService,private modalService: NgbModal) { }
 
   ngOnInit(): void {
+
+    console.log(this.reservation);
+
     this.car = this.rentCarService.getRentCarCompany(this.reservation.companyId).cars.find(c=>c.id==this.reservation.carId);
     this.company = this.rentCarService.getRentCarCompany(this.reservation.companyId);
     this.closeModalSubscription = this.carsReservationsService.ratingModalClose.subscribe(()=>{

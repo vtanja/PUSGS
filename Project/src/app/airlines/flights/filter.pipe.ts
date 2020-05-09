@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { Flight } from 'src/app/models/flight';
+import { Flight } from 'src/app/models/flight.model';
 
 @Pipe({
   name: 'filter'

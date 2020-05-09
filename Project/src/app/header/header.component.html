@@ -1,61 +1,65 @@
-  <nav class="navbar navbar-expand-md">
+<nav class="navbar navbar-expand-md">
 
-		<div class="mx-auto order-0">
-			<a class="navbar-brand mx-auto"  routerLink='/'><img src="../../assets/images/logo.png" alt="">
-			<span> TRAVELLIX</span>
-			</a>
-			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".dual-collapse2">
-				<span class="navbar-toggler-icon"></span>
-			</button>
-		</div>
-		<div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
-			<ul class="navbar-nav ml-auto">
-				<li class="nav-item" *ngIf="!loggedIn">
-					<a class="nav-link" routerLink="/login"><span>LOGIN</span></a>
-				</li>
-				<li class="nav-item" *ngIf="!loggedIn">
-					<a class="nav-link" routerLink="/register"><span>REGISTER</span></a>
-				</li>
-				<li class="nav-item" *ngIf="loggedIn">
-					<div class="list-group-item d-flex justify-content-between align-items-center" style="cursor: pointer;" placement="bottom"
-							[ngbPopover]="requests" data-container="body" data-toggle="popover" data-placement="bottom" data-content="requests" popoverClass="popoverClass">
-						<span  class="slika" style="color:white; font-size:large;">
-							<i class="fa fa-users"></i>
-						</span>
-						<span class="badge badge-pill" style="background-color: #fa9e1c; color: white;">{{loggedUser.friendRequests.length}}</span>
-					</div>
-					
-					
-				</li>
+  <div class="mx-auto order-0">
+    <a class="navbar-brand mx-auto" routerLink='/'><img src="../../assets/images/logo.png" alt="">
+      <span> TRAVELLIX</span>
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".dual-collapse2">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  </div>
+  <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item" *ngIf="!loggedIn">
+        <a class="nav-link" routerLink="/login"><span>LOGIN</span></a>
+      </li>
+      <li class="nav-item" *ngIf="!loggedIn">
+        <a class="nav-link" routerLink="/register"><span>REGISTER</span></a>
+      </li>
+      <li class="nav-item" *ngIf="loggedIn">
+        <div class="list-group-item d-flex justify-content-between align-items-center" style="cursor: pointer;"
+          placement="bottom" [ngbPopover]="requests" data-container="body" data-toggle="popover" data-placement="bottom"
+          data-content="requests" popoverClass="popoverClass">
+          <span class="slika" style="color:white; font-size:large;">
+            <i class="fa fa-users"></i>
+          </span>
+          <span class="badge badge-pill"
+            style="background-color: #fa9e1c; color: white;">{{loggedUser.friendRequests.length}}</span>
+        </div>
 
-				<ng-template #requests  style="background-color: #e3cff3;">
-					<tr *ngFor="let friend of loggedUser.friendRequests" style="width: 30%;">
-						<td>
-							<img src={{friend.profileImage}} style="width: 30px; height:30px; ">
-						</td>&nbsp;
-						<td style="font-size: larger; color: #31124b; vertical-align: middle; ">
-							{{friend.firstName}} {{friend.lastName}} </td>
-							&nbsp;
-						<td style="vertical-align: middle;">
-							<button (click)="onAccept(friend)"  class="dugme">Accept</button>
-						</td>
-						<td  style="vertical-align: middle;">
-							<button  (click)="onDecline(friend)" class="dugme">Decline</button>
-						</td>
-					</tr>
-				</ng-template>
-				<li class="nav-item" ngbDropdown display="dynamic" placement="bottom-right" *ngIf="loggedIn" >
-					<a class="nav-link"  style="cursor: pointer" ngbDropdownToggle id="navbarDropdown3" role="button" aria-expanded="false">
-					  {{loggedUser.username}}
-					</a>
-					<div ngbDropdownMenu aria-labelledby="navbarDropdown3" class="dropdown-menu">
-					  <a ngbDropdownItem routerLink="/user/profile">Profile</a>
-					  <a ngbDropdownItem routerLink="/user/reservations/car-reservations">My reservations</a>
-					  <a ngbDropdownItem routerLink="/user/friends">Friends</a>
-					  <hr style="border: 1px solid rgba(255, 255, 255, 0.3);">
-					  <a ngbDropdownItem href="#" (click)="$event.preventDefault()">Sign out</a>
-					</div>
-				  </li>
-			</ul>
-		</div>
-	</nav>
+
+      </li>
+
+      <ng-template #requests style="background-color: #e3cff3;">
+        <tr *ngFor="let friend of loggedUser.friendRequests" style="width: 30%;">
+          <td>
+            <img src={{friend.profileImage}} style="width: 30px; height:30px; ">
+          </td>&nbsp;
+          <td style="font-size: larger; color: #31124b; vertical-align: middle; ">
+            {{friend.firstName}} {{friend.lastName}} </td>
+          &nbsp;
+          <td style="vertical-align: middle;">
+            <button (click)="onAccept(friend)" class="dugme">Accept</button>
+          </td>
+          <td style="vertical-align: middle;">
+            <button (click)="onDecline(friend)" class="dugme">Decline</button>
+          </td>
+        </tr>
+      </ng-template>
+      <li class="nav-item" ngbDropdown display="dynamic" placement="bottom-right" *ngIf="loggedIn">
+        <a class="nav-link" style="cursor: pointer" ngbDropdownToggle id="navbarDropdown3" role="button"
+          aria-expanded="false">
+          {{loggedUser.username}}
+        </a>
+        <div ngbDropdownMenu aria-labelledby="navbarDropdown3" class="dropdown-menu">
+          <a ngbDropdownItem routerLink="/user/profile">Profile</a>
+          <a ngbDropdownItem routerLink="/user/reservations/car-reservations">My reservations</a>
+          <a ngbDropdownItem routerLink="/user/friends">Friends</a>
+          <a ngbDropdownItem routerLink="/editService">Edit service data</a>
+          <hr style="border: 1px solid rgba(255, 255, 255, 0.3);">
+          <a ngbDropdownItem href="#" (click)="$event.preventDefault()">Sign out</a>
+        </div>
+      </li>
+    </ul>
+  </div>
+</nav>

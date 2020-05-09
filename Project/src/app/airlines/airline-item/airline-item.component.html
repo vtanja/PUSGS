@@ -27,7 +27,8 @@
         <small style="height: 30px;">
           <ngb-rating [(rate)]="airline.rate" [starTemplate]="t" [readonly]="true" [max]="5"></ngb-rating>
           <hr>
-          <pre>Rate: <b>{{airline.rate}}</b></pre>
+          <pre *ngIf="airline.rate!=-1">Rate: <b>{{airline.rate}}</b></pre>
+          <pre *ngIf="airline.rate===-1" style="color: orange;"><b>No any rates yet</b></pre>
         </small>
       </div>
     </div>

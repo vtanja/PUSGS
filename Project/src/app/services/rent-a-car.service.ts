@@ -3,6 +3,8 @@ import { Injectable} from '@angular/core';
 import { Car } from '../models/Car.model';
 import { Subject } from 'rxjs';
 import { Address } from '../models/address';
+import { RateDialogComponent } from '../user/reservations/rate-dialog/rate-dialog.component';
+import { UsersRate } from '../models/users-rate.model';
 
 @Injectable()
 export class  RentCarService {
@@ -11,6 +13,7 @@ export class  RentCarService {
   searchParamsSubject = new Subject<{}>();
   searchCarsParamsSubject = new Subject<{}>();
   sortChange = new Subject<string>();
+  rentCarChangeSubject = new Subject<number>();
 
   constructor(){
     this.loadRentCars();
@@ -20,16 +23,18 @@ export class  RentCarService {
 
     const avDates = ["15-5-2020","16-5-2020","17-5-2020","18-5-2020","19-5-2020","20-5-2020"];
 
-    const c1 = new Car(1, 'Audi', 'Q3', 2020, 45,avDates,["../../assets/images/cars/audi-q3-car.png"],5,4,true,true,'Firefly',5.0);
-    const c2 = new Car(2, 'Citroen', 'M5', 2017, 35,avDates,["../../assets/images/cars/citroen-4.png"],5,4,true,true,'Getaround',4.1);
-    const c3 = new Car(3, 'Ford', 'XY', 1991, 25,avDates,["../../assets/images/cars/ford-10.png"],7,4,false,false,'Drivy',3.7);
-    const c4 = new Car(4, 'KIA', 'AMG', 2019, 37,avDates,["../../assets/images/cars/kia-37.png"],5,4,true,true,'Drive',5.0);
-    const c5 = new Car(5, 'Mercedes', 'YA', 2010, 56,avDates,["../../assets/images/cars/mercedes-2.png"],7,4,true,true,'Solid',4.9);
-    const c6 = new Car(6, 'Nissan', 'Y7', 2010, 46,avDates,["../../assets/images/cars/nissan57.png"],5,4,true,true,'Firefly',4.9);
-    const c7 = new Car(7, 'Nissan', 'X9', 2010, 48,avDates,["../../assets/images/cars/nissan-19.png"],5,4,true,true,'Getaround',4.9);
-    const c8 = new Car(8, 'Renault', 'R1', 2010, 26,avDates,["../../assets/images/cars/renault21.png"],5,4,true,true,'Drivy',4.9);
-    const c9 = new Car(9, 'Renault', 'R2', 2010, 36,avDates,["../../assets/images/cars/renault24.png"],5,4,true,true,'Drive',4.9);
-    const c10 = new Car(10, 'Renault', 'R3', 2010, 42,avDates,["../../assets/images/cars/renault30.png"],5,4,true,true,'Solid',4.9);
+    const c1 = new Car(1, 'Audi', 'Q3', 2020, 45,avDates,["../../assets/images/cars/audi-q3-car.png"],5,4,true,true,'Firefly');
+    const c2 = new Car(2, 'Citroen', 'M5', 2017, 35,avDates,["../../assets/images/cars/citroen-4.png"],5,4,true,true,'Getaround');
+    const c3 = new Car(3, 'Ford', 'XY', 1991, 25,avDates,["../../assets/images/cars/ford-10.png"],7,4,false,false,'Drivy');
+    const c4 = new Car(4, 'KIA', 'AMG', 2019, 37,avDates,["../../assets/images/cars/kia-37.png"],5,4,true,true,'Drive');
+    const c5 = new Car(5, 'Mercedes', 'YA', 2010, 56,avDates,["../../assets/images/cars/mercedes-2.png"],7,4,true,true,'Solid');
+    const c6 = new Car(6, 'Nissan', 'Y7', 2010, 46,avDates,["../../assets/images/cars/nissan57.png"],5,4,true,true,'Firefly');
+    const c7 = new Car(7, 'Nissan', 'X9', 2010, 48,avDates,["../../assets/images/cars/nissan-19.png"],5,4,true,true,'Getaround');
+    const c8 = new Car(8, 'Renault', 'R1', 2010, 26,avDates,["../../assets/images/cars/renault21.png"],5,4,true,true,'Drivy');
+    const c9 = new Car(9, 'Renault', 'R2', 2010, 36,avDates,["../../assets/images/cars/renault24.png"],5,4,true,true,'Drive');
+    const c10 = new Car(10, 'Renault', 'R3', 2010, 42,avDates,["../../assets/images/cars/renault30.png"],5,4,true,true,'Solid');
+
+
 
     const description1 = "Welcome to Europcar, a global leader in car rental "+
     "worldwide.With over 60 years of experience in the industry, you can be sure that Europcar "+
@@ -56,17 +61,21 @@ export class  RentCarService {
     'Hungary':["Budapest"],
     'BiH' : ['Trebinje','Banja Luka','Mostar']};
 
-    const rc1 = new RentCar(1,"Firefly",new Address("Jevrejska 10", "Novi Sad", "Serbia"),description1,3.5,[c1,c6],offices,"../../assets/images/rentCarLogos/logo1.png");
-    const rc2 = new RentCar(2,"Getaround",new Address("Knez Mihailova 1", "Belgrade", "Serbia"),description2,5,[c2,c7],offices,"../../assets/images/rentCarLogos/logo2.png");
-    const rc3 = new RentCar(3,"Drivy",new Address("Republike Srpske 9","Trebinje","BIH"),description3,2.9,[c3,c8],offices,"../../assets/images/rentCarLogos/logo3.png");
-    const rc4 = new RentCar(4,"Drive",new Address("Vaci utca", "Budapest","Hungary"),description4,4.7,[c4,c9],offices,"../../assets/images/rentCarLogos/logo4.png");
-    const rc5 = new RentCar(5,"Solid",new Address("Kneza Branimira 10", "Dubrovnik","Croatia"),description5,4.8,[c5,c10],offices,"../../assets/images/rentCarLogos/logo6.png");
+    const rc1 = new RentCar(1,"Firefly",new Address("Jevrejska 10", "Novi Sad", "Serbia"),description1,[c1,c6],offices,"../../assets/images/rentCarLogos/logo1.png");
+    const rc2 = new RentCar(2,"Getaround",new Address("Knez Mihailova 1", "Belgrade", "Serbia"),description2,[c2,c7],offices,"../../assets/images/rentCarLogos/logo2.png");
+    const rc3 = new RentCar(3,"Drivy",new Address("Republike Srpske 9","Trebinje","BIH"),description3,[c3,c8],offices,"../../assets/images/rentCarLogos/logo3.png");
+    const rc4 = new RentCar(4,"Drive",new Address("Vaci utca", "Budapest","Hungary"),description4,[c4,c9],offices,"../../assets/images/rentCarLogos/logo4.png");
+    const rc5 = new RentCar(5,"Solid",new Address("Kneza Branimira 10", "Dubrovnik","Croatia"),description5,[c5,c10],offices,"../../assets/images/rentCarLogos/logo6.png");
 
     this.rentCars.push(rc1);
     this.rentCars.push(rc2);
     this.rentCars.push(rc3);
     this.rentCars.push(rc4);
     this.rentCars.push(rc5);
+
+    this.addCarRate(1,1,new UsersRate(1,"Andjela",1));
+    this.addCarRate(1,1,new UsersRate(5,"Andjela",1));
+    this.addCarRate(1,1,new UsersRate(2,"Andjela",1));
 
   }
 
@@ -288,6 +297,38 @@ export class  RentCarService {
 
   getCar(companyID:number,carID:number){
    return this.rentCars.find(c=>c.id===companyID).cars.find(c=>c.id===carID);
+  }
+
+  getCompanyCars(companyID:number){
+    return this.rentCars.find(c=>c.id==companyID).cars;
+  }
+
+  changeCarPrice(companyID:number,carID:number,newPrice:number):boolean{
+    this.rentCars.find(company=>company.id===companyID).cars.find(c=>c.id===carID).pricePerDay = newPrice;
+    return true;
+  }
+
+  editCompanyData(companyID:number,name:string,description:string,address:string){
+
+    this.rentCars.find(c=>c.id===companyID).name=name;
+    this.rentCars.find(c=>c.id===companyID).description=description;
+    console.log(this.rentCars);
+    //this.rentCars.find(c=>c.id===companyID).address=address;
+    return true;
+  }
+
+  deleteCar(carID:number){
+
+    this.rentCars.find(c=>c.id===carID);
+
+  }
+
+  addCarRate(companyID:number,carID:number,carRate:UsersRate){
+    this.rentCars.find(r=>r.id===companyID).cars.find(c=>c.id===carID).addRate(carRate);
+  }
+
+  addCompanyRate(companyID:number,rate:UsersRate){
+    this.rentCars.find(r=>r.id===companyID).addRate(rate);
   }
 
 }

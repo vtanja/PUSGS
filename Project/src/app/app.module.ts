@@ -63,6 +63,10 @@ import { FlightReservationListComponent } from './user/reservations/flight-reser
 import {NgbDateCustomParserFormatter} from './services/date-formatter.service';
 import { RateDialogComponent } from './user/reservations/rate-dialog/rate-dialog.component'
 import { CarReservationsService } from './services/car-reservations.service';
+import { RentACarAdministratorComponent } from './rent-a-cars/rent-a-car-administrator/rent-a-car-administrator.component';
+import { RentACarEditComponent } from './rent-a-cars/rent-a-car-administrator/rent-a-car-edit/rent-a-car-edit.component';
+import { MainDataEditComponent } from './rent-a-cars/rent-a-car-administrator/rent-a-car-edit/main-data-edit/main-data-edit.component';
+import { CarsEditComponent } from './rent-a-cars/rent-a-car-administrator/rent-a-car-edit/cars-edit/cars-edit.component';
 
 @NgModule({
   declarations: [
@@ -111,6 +115,10 @@ import { CarReservationsService } from './services/car-reservations.service';
     FlightReservationItemComponent,
     FlightReservationListComponent,
     RateDialogComponent,
+    RentACarAdministratorComponent,
+    RentACarEditComponent,
+    MainDataEditComponent,
+    CarsEditComponent,
 
   ],
   imports: [

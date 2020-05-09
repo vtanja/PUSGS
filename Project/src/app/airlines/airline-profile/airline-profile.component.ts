@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Airline } from 'src/app/models/airline';
+import { Airline } from 'src/app/models/airline.model';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute, Params } from '@angular/router';
 import { AirlineService } from '../../services/airline.service';

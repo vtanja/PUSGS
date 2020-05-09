@@ -1,5 +1,6 @@
-import { Flight } from './flight';
+import { Flight } from './flight.model';
 import { Address } from './address';
+import { UsersRate } from './users-rate.model';
 
 export class Airline {
     id:number;
@@ -10,24 +11,45 @@ export class Airline {
     flights:Array<Flight>;
     destinations:{};
     image:string;
+    rates:UsersRate[];
     private city:string;
 
-  constructor(id:number,name:string,address:Address,description:string,rate:number,
+  constructor(id:number,name:string,address:Address,description:string,
       flights:Array<Flight>,destinations:{},image:string){
 
     this.id = id;
     this.name=name;
     this.address=address;
     this.description = description;
-    this.rate=rate;
+    this.rate=-1;
     this.flights=flights;
     this.destinations=destinations;
     this.image = image;
     this.city=address.city;
+    this.rates=[];
   }
 
 
   getAddress():string{
     return this.address.toString();
   }
+
+  updateRate():void{
+
+    var ret =0;
+    var i= 0
+    this.rates.forEach(element => {
+
+      ret+=element.rate;
+      ++i;
+
+    });
+    this.rate=+(ret/i).toFixed(1);
+
+}
+
+addRate(rate:UsersRate){
+  this.rates.push(rate);
+  this.updateRate();
+}
 }

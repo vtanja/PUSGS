@@ -4,7 +4,7 @@
   </span>
 </ng-template>
 
-<div style="width: 100%;" >
+<div style="width: 100%;">
   <div class=" sticky-top " style=" width: 100%; background-color:#e3cff3;opacity: 0.7;">
     <app-profile-navbar [company]="navItemInfo" style="width: 100%;"></app-profile-navbar>
   </div>
@@ -15,17 +15,18 @@
 
   <div class="d-flex justify-content-between" style="margin-left:20%;margin-top: 3%;width: 60%;">
     <div>
-    <i class="fa fa-map-marker" aria-hidden="true"></i>
-    <span>&nbsp;&nbsp;&nbsp;{{carCompany.address.toString()}}</span>
-  </div>
-      <div>
-      <ngb-rating [(rate)]="carCompany.rate" [starTemplate]="t" [readonly]="true" [max]="5"></ngb-rating>
+      <i class="fa fa-map-marker" aria-hidden="true"></i>
+      <span>&nbsp;&nbsp;&nbsp;{{carCompany.address.toString()}}</span>
+    </div>
+    <div>
+      <ngb-rating  [rate]="carCompany.rate" [starTemplate]="t" [readonly]="true" [max]="5"></ngb-rating>
       <hr style="margin-top: 0%;">
-      <pre style="margin-top: 0%;">Rate: <b>{{carCompany.rate}}</b></pre>
+      <pre style="margin-top: 0%;"  *ngIf="carCompany.rate!=-1">Rate: <b>{{carCompany.rate}}</b></pre>
+        <pre style="color: orange;margin-top: 0%;" *ngIf="carCompany.rate===-1"><b>No any rates yet.</b></pre>
     </div>
   </div>
   <div class="d-flex justify-content-center">
-    <p >{{carCompany.description}}</p>
+    <p>{{carCompany.description}}</p>
   </div>
 
   <div style="background-color: whitesmoke; padding-bottom: 2%; margin-top: 2%;">
@@ -37,7 +38,7 @@
     <h4>Check our cars</h4>
   </div>
   <div class="d-flex justify-content-center" style="margin-top: 2%;background-color: whitesmoke;">
-    <app-cars-search-form style="margin-bottom: 2%;" [companyID]="carCompany.id" ></app-cars-search-form>
+    <app-cars-search-form style="margin-bottom: 2%;" [companyID]="carCompany.id"></app-cars-search-form>
   </div>
 
   <div class="d-flex justify-content-center" style="margin-top: 2%;">
@@ -45,5 +46,3 @@
   </div>
 
 </div>
-
-

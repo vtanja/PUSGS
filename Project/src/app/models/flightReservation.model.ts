@@ -12,8 +12,8 @@ export class FlightReservation{
   price:number;
   passengers:Passenger[];
   carReservation:CarReservation[];
-  airlineRated:boolean;
-  flightRated:boolean;
+  airlineRate:number;
+  flightRate:number;
 
   constructor(code:string, flightID:number, companyID:number, price:number, passengers:Passenger[]){
     this.code=code;
@@ -22,7 +22,7 @@ export class FlightReservation{
     this.price = price;
     this.carReservation=[];
     this.passengers=passengers;
-    this.flightRated=false;
-    this.airlineRated=false;
+    this.flightRate=-1;
+    this.airlineRate=-1;
   }
 }

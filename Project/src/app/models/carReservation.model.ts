@@ -12,8 +12,8 @@ export class CarReservation{
   companyId:number;
   carId:number;
   carModel:string;
-  companyRated:boolean;
-  carRated:boolean;
+  companyRate:number;
+  carRate:number;
   id:number;
 
   constructor(startDate:string,pickUpTime:string, returnDate:string, returnTime:string, numberOfDays:number, price:number, companyId:number, companyName:string, carId:number, carModel:string){
@@ -27,7 +27,7 @@ export class CarReservation{
     this.compayName =companyName;
     this.carId=carId;
     this.carModel = carModel;
-    this.carRated=false;
-    this.companyRated=false;
+    this.carRate=-1;
+    this.companyRate=-1;
   }
 }
