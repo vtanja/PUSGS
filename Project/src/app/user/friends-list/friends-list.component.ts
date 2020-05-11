@@ -23,7 +23,7 @@ export class FriendsListComponent implements OnInit {
   public isCircular = true;
 
   constructor(private userService:UserService) {
-    this.sortedData = this.userService.getUser().friends.slice();
+    this.sortedData = this.userService.getLoggedUser().friends.slice();
     console.log(this.sortedData);
   }
 
@@ -46,7 +46,7 @@ export class FriendsListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-     this.loggedUser=this.userService.getUser();
+     this.loggedUser=this.userService.getLoggedUser();
     // this.filterData.push(...(this.loggedUser.friends))
     // console.log(this.filterData);
   }

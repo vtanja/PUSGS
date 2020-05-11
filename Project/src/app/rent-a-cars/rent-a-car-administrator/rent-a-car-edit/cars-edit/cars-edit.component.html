@@ -5,7 +5,8 @@
         <div class="container c1">
           <img class="card-img-top main-image-style" [src]="car.images[0]" alt="My image {{i + 1}} description">
           <div class="text-block">
-            <p style="margin-top:-25%">{{car.rate}}</p>
+            <p *ngIf="car.rate!=-1" style="margin-top:-25%">{{car.rate}}</p>
+            <p *ngIf="car.rate===-1" style="margin-top:-5%">No any rates yet.</p>
           </div>
         </div>
 
@@ -37,16 +38,15 @@
             </div>
           </div>
           <div class="d-flex justify-content-center">
-          <p style="margin-top: 8px;font-size: smaller;">Price: <b>{{car.pricePerDay | currency:'EUR'}}</b> </p>
-         </div>
-          <button class="btn  btn-md btn-rounded button-style" style="display: block;width: 100%;" (click)="open(changePriceModal) ; currentCar=car"
-            >Change price</button>
-            <button class="btn  btn-md btn-rounded button-style" style="display: block;width: 100%; margin-top: 1%;"
-            >Add discount</button>
-            <button class="btn  btn-md btn-rounded button-style" style="display: block;width: 100%; margin-top: 1%;"
-            >Delete car</button>
+            <p style="margin-top: 8px;font-size: smaller;">Price: <b>{{car.pricePerDay | currency:'EUR'}}</b> </p>
+          </div>
+          <button class="btn  btn-md btn-rounded button-style" style="display: block;width: 100%;"
+            (click)="openChangePrice(changePriceModal) ; currentCar=car">Change price</button>
+          <button class="btn  btn-md btn-rounded button-style" style="display: block;width: 100%; margin-top: 1%;"
+            (click)="openAddDiscount(addDiscountModal) ; currentCar=car">Add discount</button>
+          <button class="btn  btn-md btn-rounded button-style" style="display: block;width: 100%; margin-top: 1%;"
+          (click)="openDeleteCar(deleteCarModal) ; currentCar=car">Delete car</button>
         </div>
-
       </div>
     </div>
   </div>
@@ -55,18 +55,79 @@
 
 <ng-template #changePriceModal let-modal [formGroup]="changePriceForm">
   <div class="modal-header">
-    <h6 class="modal-title" id="modal-basic-title">Change price for {{currentCar.brand}}&nbsp;{{currentCar.model}}</h6>
+    <h6 class="modal-title" id="modal-basic-title-cpm">Change price for {{currentCar.brand}}&nbsp;{{currentCar.model}}
+    </h6>
     <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
       <span aria-hidden="true">×</span>
     </button>
   </div>
   <div class="modal-body">
-    <label class="lblStyle">Current price: <span class="valueStyle"> {{currentCar.pricePerDay| currency:'EUR'}}</span></label>
+    <label class="lblStyle">Current price: <span class="valueStyle">
+        {{currentCar.pricePerDay| currency:'EUR'}}</span></label>
+    <br>
     <br>
     <label class="lblStyle">New price: </label>
     <input class="modal-input" formControlName="newPrice" type="number">
   </div>
   <div class="modal-footer">
-    <button type="button" [disabled]="changePriceForm.invalid" class="btn confirmBtnStyle" (click)="modal.close('Save click'); changePrice()">Confirm</button>
+    <button type="button" [disabled]="changePriceForm.invalid" class="btn confirmBtnStyle"
+      (click)="modal.close('Save click'); changePrice()">Confirm</button>
+  </div>
+</ng-template>
+
+<ng-template #addDiscountModal let-modal [formGroup]="addDiscountForm">
+  <div class="modal-header">
+    <h6 class="modal-title" id="modal-basic-title-adm">Add discount for {{currentCar.brand}}&nbsp;{{currentCar.model}}
+    </h6>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">×</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <label class="lblStyle">Discount (%) : </label>
+    <input class="modal-input" formControlName="discount" type="number">
+    <pre  class="lblStyle">Price without discount: {{currentCar.pricePerDay|currency:'EUR' }} </pre>
+    <pre *ngIf="addDiscountForm.valid" class="lblStyle">Price with discount: {{getDiscountPrice()|currency:'EUR' }} </pre>
+    <br>
+    <label class="lblStyle"><b>Select dates for discount :</b> </label>
+    <ngb-datepicker #dp (dateSelect)="onDateSelection($event)" [displayMonths]="2" [dayTemplate]="t"
+      outsideDays="hidden">
+    </ngb-datepicker>
+
+    <ng-template #t let-date let-focused="focused">
+      <span class="custom-day" [class.focused]="focused" [class.range]="isRange(date)"
+        [class.faded]="isHovered(date) || isInside(date)" (mouseenter)="hoveredDate = date"
+        (mouseleave)="hoveredDate = null">
+        {{ date.day }}
+      </span>
+    </ng-template>
+
+    <hr>
+      <pre>
+        <b>&nbsp;From:&nbsp;</b>{{fromDate.day}}/{{fromDate.month}}/{{fromDate.year}}<b>&nbsp;To:&nbsp;</b>{{toDate.day}}/{{toDate.month}}/{{toDate.year}}</pre>
+
+    <div class="modal-footer">
+      <button type="button" [disabled]="addDiscountForm.invalid || !selectedDates" class="btn confirmBtnStyle"
+        (click)="modal.close('Save click'); addDiscount()">Confirm</button>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #deleteCarModal let-modal>
+  <div class="modal-header" >
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">×</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="d-flex align-content-center">
+    <label class="lblStyle"><b>Are you sure you want to delete {{currentCar.brand}}&nbsp;{{currentCar.model}}?</b></label>
+  </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn delete-btn"
+      (click)="modal.close('Confirm click') ; deleteCar()">Confirm</button>
+      <button type="button"  class="btn delete-btn"
+      (click)="modal.close('Cancel click')">Cancel</button>
   </div>
 </ng-template>

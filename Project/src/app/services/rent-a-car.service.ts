@@ -303,19 +303,10 @@ export class  RentCarService {
     return this.rentCars.find(c=>c.id==companyID).cars;
   }
 
-  changeCarPrice(companyID:number,carID:number,newPrice:number):boolean{
-    this.rentCars.find(company=>company.id===companyID).cars.find(c=>c.id===carID).pricePerDay = newPrice;
-    return true;
+  getCompanyCar(companyID:number,carID:number){
+    return this.rentCars.find(company=>company.id===companyID).cars.find(c=>c.id===carID);
   }
 
-  editCompanyData(companyID:number,name:string,description:string,address:string){
-
-    this.rentCars.find(c=>c.id===companyID).name=name;
-    this.rentCars.find(c=>c.id===companyID).description=description;
-    console.log(this.rentCars);
-    //this.rentCars.find(c=>c.id===companyID).address=address;
-    return true;
-  }
 
   deleteCar(carID:number){
 

@@ -1,5 +1,6 @@
 import { CarReservation } from './carReservation.model';
 import { UsersRate } from './users-rate.model';
+import { Discount } from './discount.model';
 
 export class Car{
 
@@ -17,6 +18,8 @@ export class Car{
   companyName:string;
   rate:number;
   rates:UsersRate[];
+  reservations:CarReservation[];
+  discounts:Discount[];
 
 
   constructor(id:number,brand:string,model:string,year:number,pricePerDay:number,
@@ -38,6 +41,8 @@ export class Car{
     this.companyName=companyName;
     this.rate = -1;
     this.rates=[];
+    this.discounts = [];
+    this.reservations=[];
   }
 
   updateRate():void{

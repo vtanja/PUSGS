@@ -67,6 +67,8 @@ import { RentACarAdministratorComponent } from './rent-a-cars/rent-a-car-adminis
 import { RentACarEditComponent } from './rent-a-cars/rent-a-car-administrator/rent-a-car-edit/rent-a-car-edit.component';
 import { MainDataEditComponent } from './rent-a-cars/rent-a-car-administrator/rent-a-car-edit/main-data-edit/main-data-edit.component';
 import { CarsEditComponent } from './rent-a-cars/rent-a-car-administrator/rent-a-car-edit/cars-edit/cars-edit.component';
+import { RentCarAdministratorService } from './services/rent-car-administrator.service';
+import { OfficesEditComponent } from './rent-a-cars/rent-a-car-administrator/rent-a-car-edit/offices-edit/offices-edit.component';
 
 @NgModule({
   declarations: [
@@ -119,6 +121,7 @@ import { CarsEditComponent } from './rent-a-cars/rent-a-car-administrator/rent-a
     RentACarEditComponent,
     MainDataEditComponent,
     CarsEditComponent,
+    OfficesEditComponent,
 
   ],
   imports: [
@@ -143,6 +146,7 @@ import { CarsEditComponent } from './rent-a-cars/rent-a-car-administrator/rent-a
     RentCarService,
     AirlineService,
     CarReservationsService,
+    RentCarAdministratorService,
     {provide: NgbDateParserFormatter, useClass: NgbDateCustomParserFormatter}
   ],
   bootstrap: [AppComponent]

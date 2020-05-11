@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormControlName, FormGroup, Validators } from '@angular/forms';
 import { RentCarService } from 'src/app/services/rent-a-car.service';
 import { RentCar } from 'src/app/models/rent-a-car.model';
+import { RentCarAdministratorService } from 'src/app/services/rent-car-administrator.service';
 
 @Component({
   selector: 'app-main-data-edit',
@@ -13,13 +14,13 @@ export class MainDataEditComponent implements OnInit {
   dataForm:FormGroup;
   rentCarCompany:RentCar;
 
-  constructor(private rentCarService:RentCarService) {
+  constructor(private rentCarAdminService:RentCarAdministratorService) {
 
    }
 
   ngOnInit(): void {
 
-    this.rentCarCompany = this.rentCarService.getRentCarCompany(1);
+    this.rentCarCompany = this.rentCarAdminService.getRentCarCompany();
 
     this.dataForm = new FormGroup({
       'name': new FormControl(this.rentCarCompany.name,Validators.required),
@@ -33,7 +34,7 @@ export class MainDataEditComponent implements OnInit {
     var newName = this.dataForm.get('name').value;
     var newAddress = this.dataForm.get('address').value;
     var newDescription = this.dataForm.get('description').value;
-    if(this.rentCarService.editCompanyData(this.rentCarCompany.id,newName,newDescription,newAddress)){
+    if(this.rentCarAdminService.editCompanyData(this.rentCarCompany.id,newName,newDescription,newAddress)){
       this.rentCarCompany.name=newName;
       this.rentCarCompany.address=newAddress;
       this.rentCarCompany.description=newDescription;

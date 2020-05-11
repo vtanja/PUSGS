@@ -21,7 +21,7 @@ export class UserProfileComponent implements OnInit {
   fileToUpload: File = null;
 
   constructor(private userService:UserService) {
-    this.loggedUser=this.userService.getUser();
+    this.loggedUser=this.userService.getLoggedUser();
   }
 
   ngOnInit(): void {
