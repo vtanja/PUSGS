@@ -69,6 +69,7 @@ import { MainDataEditComponent } from './rent-a-cars/rent-a-car-administrator/re
 import { CarsEditComponent } from './rent-a-cars/rent-a-car-administrator/rent-a-car-edit/cars-edit/cars-edit.component';
 import { RentCarAdministratorService } from './services/rent-car-administrator.service';
 import { OfficesEditComponent } from './rent-a-cars/rent-a-car-administrator/rent-a-car-edit/offices-edit/offices-edit.component';
+import { AddCarComponent } from './rent-a-cars/rent-a-car-administrator/rent-a-car-edit/add-car/add-car.component';
 
 @NgModule({
   declarations: [
@@ -122,6 +123,7 @@ import { OfficesEditComponent } from './rent-a-cars/rent-a-car-administrator/ren
     MainDataEditComponent,
     CarsEditComponent,
     OfficesEditComponent,
+    AddCarComponent,
 
   ],
   imports: [

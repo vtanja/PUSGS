@@ -1,22 +1,5 @@
-h4{
-  padding-top: 2%;
-  margin-bottom: 2%;
-  font-family: Poppins-SemiBold;
-  font-size: 22px;
-  text-align: center;
-  color:white;
-}
-
-.my-heading-div{
-  background: linear-gradient(to right, #fa9e1b, #8d4fff);
-  border-radius: 1%;
-  border-color: transparent;
-  padding-bottom: 1%;
-}
-
 .container-style{
-
-  margin-top:5%;
+  margin-top: 5%;
 }
 
 .wrap-input100 {
@@ -31,39 +14,67 @@ h4{
   color:  #555555;
   line-height: 1.2;
   padding-left: 5%;
+  width: 175px;
 }
 
 .input100 {
-  width: 60%;
+  width: 40%;
+  padding: 5px;
+  text-align: left;
+  display: inline-block;
+  height: 40px;
+  background: transparent;
+  font-family: Poppins-Regular;
+  font-size: 16px;
+  color: #555555;
+  line-height: 1.2;
+  margin-left: 3%;
+  border: 2px solid#7e4596;
+  border-radius: 10px;
+}
+
+.invalid-input-span{
+  font-weight: 600;
+  font-size: 12px;
+  color:  red;
+  position: relative;
+  margin-top:2%;
+  margin-left: 46%;
+}
+
+.invalid-input-span-min{
+  font-weight: 600;
+  font-size: 12px;
+  color:  red;
+  position: relative;
+  margin-top:2%;
+  margin-left: 43%;
+}
+
+.invalid-input-span-image{
+  font-weight: 600;
+  font-size: 12px;
+  color:  red;
+  position: relative;
+  margin-top:-7%;
+}
+
+.input-logo {
+  width: 30%;
   padding: 10px;
   text-align: left;
   display: inline-block;
   height: 40px;
   background: transparent;
   font-family: Poppins-Regular;
-  font-size: 18px;
+  font-size: 15px;
   color: #555555;
   line-height: 1.2;
-  margin-left: 3%;
-  border: 2px solid#7e4596;
   border-radius: 10px;
+  margin-left: -3%;
 
 }
 
-.input-margin{
-  margin-left: 12%;
-}
-
-.description-row{
-  height: 100px;
-}
-
-.icon-style{
-  margin-left: 2%;
-  height: 40px;
-}
-
-[ Button ]*/
 .container-form-btn {
   width: 100%;
   margin-left: 30%;
@@ -127,39 +138,7 @@ h4{
   border-color: transparent;
 }
 
-
-
-.wrap-form-btn:hover .login100-form-bgbtn {
-  bottom: 0;
-}
-
 .logo-img{
-  margin-left: 5%;
-  margin-top: -10px;
-  height: 60px;
-  width: 40%;
-}
-
-.input100-logo {
-  width: 60%;
-  padding: 10px;
-  text-align: left;
-  display: inline-block;
-  height: 40px;
-  background: transparent;
-  font-family: Poppins-Regular;
-  font-size: 12px;
-  color: #555555;
-  line-height: 1.2;
-  /* margin-left: 3%; */
-
-}
-
-.label-logo {
-  font-family: Poppins-SemiBold;
-  font-size: 14px;
-  font-style: italic;
-  color: #999999;
-  line-height: 1.2;
-  padding-left: 10%;
+  width: 200px;
+  height: 80px;
 }

@@ -30,7 +30,7 @@ export class UserService{
             new User('Pera', 'Peric', 'pera@pera.com', 'pera123', 'pera1sifra', '+381987654321', 'Perina ulica 1, Novi Sad', [])] ));
 
         this.users[0].friendRequests.push(new User("Natasa", "Lukic", "natasa.naca.lukic@gmail.com", "naca", "nata1sifra", "0657654355", "Adresa 1", []));
-        this.users[0].carReservations.push(new CarReservation("3-5-2020","10:00","4-5-2020","10:00", 2, 90, 1, "Firefly", 1, "Audi"));
+        this.users[0].carReservations.push(new CarReservation("3-5-2020","10:00","4-5-2020","10:00", 2, 90, 1, "Firefly", 1, "Audi","Q3"));
         this.users[0].role="USER";
 
         let passenger1: Passenger = {seat: 101, passenger:{firstname:"Tanja", lastname:"Vukmirovic", passportNo:"123456785"}};
@@ -49,6 +49,13 @@ export class UserService{
         this.users.push(rentCarAdmin);
         this.users.push(airlineAdmin);
       }
+
+
+    isUserLogged():boolean{
+      if(localStorage.getItem('loggedUser')!=undefined)
+        return true;
+      return false;
+    }
 
     login(username:string,password:string):boolean{
       let user = this.users.find(u=>u.username===username);

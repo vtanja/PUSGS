@@ -1,0 +1,107 @@
+<div class="container container-style" [formGroup]="addCarForm">
+  <div class="row">
+    <div class="col" style="margin-left: 6%;">
+      <div class="wrap-input100">
+        <label class="label-input100">Brand: </label>
+        <select class="input100" formControlName="brand">
+          <option *ngFor="let brand of brands" value={{brand}}>{{brand}}</option>
+        </select>
+        <span class="invalid-input-span" *ngIf="addCarForm.get('brand').invalid && addCarForm.get('brand').touched">This
+          field is
+          required !</span>
+      </div>
+      <div class="wrap-input100">
+        <label class="label-input100">Year: </label>
+        <select class="input100" formControlName="year">
+          <option *ngFor="let year of years" value={{year}}>{{year}}</option>
+        </select>
+        <span class="invalid-input-span" *ngIf="addCarForm.get('year').invalid && addCarForm.get('year').touched">This
+          field is
+          required !</span>
+      </div>
+      <div class="wrap-input100">
+        <label class="label-input100">Max passengers: </label>
+        <select class="input100" formControlName="maxPassengers">
+          <option *ngFor="let pass of passengersNumbers" value={{pass}}>{{pass}}</option>
+        </select>
+        <span class="invalid-input-span"
+          *ngIf="addCarForm.get('maxPassengers').invalid && addCarForm.get('maxPassengers').touched">This field is
+          required !</span>
+      </div>
+      <div class="wrap-input100">
+        <label class="label-input100">Gearbox type: </label>
+        <select class="input100" formControlName="gearboxType">
+          <option value="automatic">Automatic</option>
+          <option value="manual">Manual</option>
+        </select>
+        <span class="invalid-input-span"
+          *ngIf="addCarForm.get('gearboxType').invalid && addCarForm.get('gearboxType').touched">This field is
+          required !</span>
+      </div>
+    </div>
+    <div class="col">
+      <div class="wrap-input100">
+        <label class="label-input100">Model: </label>
+        <input type="text" class="input100" formControlName="model">
+        <span class="invalid-input-span" *ngIf="addCarForm.get('model').invalid && addCarForm.get('model').touched">This
+          field is
+          required !</span>
+      </div>
+      <div class="wrap-input100">
+        <label class="label-input100">Price: </label>
+        <input type="number" class="input100" formControlName="price">
+        <span class="invalid-input-span-min"
+          *ngIf="addCarForm.get('price').invalid && addCarForm.get('price').touched && addCarForm.get('price').hasError('min')">
+          Price should be greater than 0 !</span>
+        <span class="invalid-input-span"
+          *ngIf="addCarForm.get('price').invalid && addCarForm.get('price').touched && addCarForm.get('price').hasError('required')">This
+          field is
+          required !</span>
+      </div>
+      <div class="wrap-input100">
+        <label class="label-input100">Number of doors: </label>
+        <select class="input100" formControlName="doors">
+          <option *ngFor="let door of doorsNumber" value={{door}}>{{door}}</option>
+        </select>
+        <span class="invalid-input-span" *ngIf="addCarForm.get('doors').invalid && addCarForm.get('doors').touched">This
+          field is
+          required !</span>
+      </div>
+      <div class="wrap-input100">
+        <label class="label-input100">Has air condition: </label>
+        <select class="input100" formControlName="hasAircondition">
+          <option value="Yes">Yes</option>
+          <option value="No">No</option>
+        </select>
+        <span class="invalid-input-span"
+          *ngIf="addCarForm.get('hasAircondition').invalid && addCarForm.get('hasAircondition').touched">This field is
+          required !</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="d-flex justify-content-center" style="margin-left: 20%;">
+    <div class="wrap-input100 ">
+      <label class="label-input100">Car image:</label>
+      <input formControlName="imageFile" accept='image/*' id="file" type="file" class="input-logo"
+        (change)="onFileChange($event)">
+      <img class="logo-img" [src]="imgPreview" *ngIf="imgPreview!=undefined">
+    </div>
+  </div>
+  <div class="row" style="margin-left: 34%;">
+    <span class="invalid-input-span-image"
+      *ngIf="addCarForm.get('imageFile').invalid && addCarForm.get('imageFile').touched">Image upload is
+      required !</span>
+  </div>
+
+
+  <div class="d-flex justify-content-center" style="margin-top: 2%;margin-bottom: 5%;margin-left: 13%;">
+    <div class="container-form-btn" style="align-self: center;">
+      <div class="wrap-form-btn">
+        <div class="form-bgbtn"></div>
+        <button class="form-btn" [disabled]="addCarForm.invalid" (click)="onAddCar()">
+          Add car
+        </button>
+      </div>
+    </div>
+  </div>

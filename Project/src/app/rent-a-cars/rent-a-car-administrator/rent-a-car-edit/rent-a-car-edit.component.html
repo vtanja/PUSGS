@@ -1,12 +1,11 @@
-<div class="my-heading-div">
-  <h4>Main data</h4>
-</div>
-<app-main-data-edit></app-main-data-edit>
-<div class="my-heading-div">
-  <h4>Cars</h4>
-</div>
-<app-cars-edit [companyId]="company.id"></app-cars-edit>
-<div class="my-heading-div">
-  <h4>Offices</h4>
-  <app-offices-edit [companyId]="company.id"></app-offices-edit>
-</div>
+
+        <div id="wrapper2" >
+          <div id="inner21">
+            <app-navbar></app-navbar>
+          </div>
+          <div id="inner22">
+            <router-outlet></router-outlet>
+          </div>
+      </div>
+
+

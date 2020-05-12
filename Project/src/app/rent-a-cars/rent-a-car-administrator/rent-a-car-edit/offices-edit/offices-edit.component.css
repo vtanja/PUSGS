@@ -1,0 +1,15 @@
+h4{
+  padding-top: 2%;
+  margin-bottom: 2%;
+  font-family: Poppins-SemiBold;
+  font-size: 22px;
+  text-align: center;
+  color:white;
+}
+
+.my-heading-div{
+  background: linear-gradient(to right, #fa9e1b, #8d4fff);
+  border-radius: 2%;
+  border-color: transparent;
+  padding-bottom: 1%;
+}

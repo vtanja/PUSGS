@@ -57,7 +57,9 @@
             reservations</a>
           <a *ngIf="loggedUser.role==='USER'" ngbDropdownItem routerLink="/user/friends">Friends</a>
 
-          <a *ngIf="loggedUser.role==='CARADMIN'" ngbDropdownItem routerLink="/editService">Edit service data</a>
+          <a *ngIf="loggedUser.role==='CARADMIN'" ngbDropdownItem routerLink="/company-data">Company data and offices</a>
+          <a *ngIf="loggedUser.role==='CARADMIN'" ngbDropdownItem routerLink="/companyCars">Cars</a>
+
           <hr style="border: 1px solid rgba(255, 255, 255, 0.3);">
           <a ngbDropdownItem href="#" (click)="onLogout()">Sign out</a>
         </div>

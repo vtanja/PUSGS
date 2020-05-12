@@ -36,3 +36,12 @@
   width: 17%;
   height: 35%;
 }
+
+.button-style{
+  background-color:  #eea136;
+  color: white;
+  border-color: #eea136;
+  height: 20%;
+  font-weight: 500;
+  font-size: larger;
+}

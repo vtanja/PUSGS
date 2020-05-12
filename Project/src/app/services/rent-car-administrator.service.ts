@@ -11,12 +11,23 @@ export class RentCarAdministratorService{
   constructor(private rentCarService:RentCarService,private usersService:UserService,private calendar: NgbCalendar){
 
   }
+
+  getCompanyId():number{
+    let loggedUser = this.usersService.getLoggedUser();
+    return this.rentCarService.getRentCarCompany(loggedUser.carCompany).id;
+  }
+
   getRentCarCompany():RentCar{
     let loggedUser = this.usersService.getLoggedUser();
     return this.rentCarService.getRentCarCompany(loggedUser.carCompany);
   }
 
-  editCompanyData(companyID:number,name:string,description:string,address:string):boolean{
+  getCars():Car[]{
+    let loggedUser = this.usersService.getLoggedUser();
+    return this.rentCarService.getCompanyCars(loggedUser.carCompany);
+  }
+
+  editCompanyData(companyID:number,name:string,description:string,address:string,logo:string):boolean{
 
     let company = this.rentCarService.getRentCarCompany(companyID);
     company.name=name;
@@ -36,12 +47,12 @@ export class RentCarAdministratorService{
   }
 
   deleteCar(carID:number,companyID:number):boolean{
-    let company = this.rentCarService.getRentCarCompany(companyID);
-    let car = company.cars.find(c=>c.id===carID);
-    if(this.canBeDeleted(car)){
-    company.cars.splice(company.cars.indexOf(car),1);
-    return true;
-    }
+    // let company = this.rentCarService.getRentCarCompany(companyID);
+    // let car = company.cars.find(c=>c.id===carID);
+    // if(this.canBeDeleted(car)){
+    // company.cars.splice(company.cars.indexOf(car),1);
+    // return true;
+    // }
     return false;
   }
 
@@ -71,4 +82,12 @@ export class RentCarAdministratorService{
 
   }
 
+  addCar(newCar:Car):boolean{
+    let loggedUser = this.usersService.getLoggedUser();
+    let carCompany = this.rentCarService.getRentCarCompany(loggedUser.carCompany);
+    newCar.companyName = carCompany.name;
+    newCar.id = carCompany.cars.length+1;
+    carCompany.cars.push(newCar);
+    return true;
+  }
 }

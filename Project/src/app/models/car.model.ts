@@ -10,7 +10,7 @@ export class Car{
   year:number;
   pricePerDay:number;
   availableDates:Array<string>;
-  images: Array<string>;
+  image: string;
   maxPassengers:number;
   doors:number;
   hasAirCondition:boolean;
@@ -23,7 +23,7 @@ export class Car{
 
 
   constructor(id:number,brand:string,model:string,year:number,pricePerDay:number,
-    avDates:Array<string>,images:Array<string>,maxPassengers:number,
+    avDates:Array<string>,image:string,maxPassengers:number,
     doors:number,hasAirCondition:boolean,hasAutomaticGearbox:boolean,companyName:string){
 
     this.id=id;
@@ -32,7 +32,7 @@ export class Car{
     this.year=year;
     this.pricePerDay = pricePerDay;
     this.availableDates = avDates;
-    this.images = images;
+    this.image = image;
     this.maxPassengers = maxPassengers;
     this.doors = doors;
     this.doors=doors;

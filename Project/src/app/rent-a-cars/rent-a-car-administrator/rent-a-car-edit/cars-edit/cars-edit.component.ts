@@ -6,6 +6,8 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { NgbDate, NgbCalendar, NgbDatepickerConfig} from '@ng-bootstrap/ng-bootstrap';
 import { RentCarAdministratorService } from 'src/app/services/rent-car-administrator.service';
 import { MatDialogRef } from '@angular/material/dialog';
+import Swal from 'sweetalert2';
+import { fadeIn } from 'igniteui-angular';
 
 @Component({
   selector: 'app-cars-edit',
@@ -14,12 +16,12 @@ import { MatDialogRef } from '@angular/material/dialog';
 })
 export class CarsEditComponent implements OnInit {
 
-  @Input('companyId')companyId;
   cars:Car[]
   currentCar:Car;
   closeResult: string;
   changePriceForm:FormGroup;
   addDiscountForm:FormGroup;
+  companyId:number;
 
   hoveredDate: NgbDate | null = null;
   fromDate: NgbDate;
@@ -35,14 +37,14 @@ export class CarsEditComponent implements OnInit {
 
   ngOnInit(): void {
 
-   this.selectedDates = false;
+    this.cars = this.rentCarAdminService.getCars();
+    this.companyId = this.rentCarAdminService.getCompanyId();
 
-    this.cars = this.rentCarService.getCompanyCars(this.companyId);
     this.changePriceForm = new FormGroup({
-      'newPrice':new FormControl(null,Validators.required)
+      'newPrice':new FormControl(null,[Validators.required,Validators.min(1)])
     });
     this.addDiscountForm = new FormGroup({
-      'discount':new FormControl(null,[Validators.required,Validators.min(0),Validators.max(100)])
+      'discount':new FormControl(null,[Validators.required,Validators.min(1),Validators.max(100)])
     })
   }
 
@@ -86,7 +88,7 @@ export class CarsEditComponent implements OnInit {
     })
     this.fromDate = this.calendar.getToday();
     this.toDate = this.calendar.getNext(this.calendar.getToday(), 'd', 10);
-    this.selectedDates=false;
+    this.selectedDates=true;
   }
 
   private getDismissReason(reason: any): string {
@@ -101,20 +103,29 @@ export class CarsEditComponent implements OnInit {
 
    changePrice():void{
      var newPrice = +this.changePriceForm.get('newPrice').value;
-     if (this.rentCarAdminService.changeCarPrice(this.companyId,this.currentCar.id,newPrice))
-      this.cars.find(c=>c.id===this.currentCar.id).pricePerDay=newPrice
+     if (this.rentCarAdminService.changeCarPrice(this.companyId,this.currentCar.id,newPrice)){
+      this.cars.find(c=>c.id===this.currentCar.id).pricePerDay=newPrice;
+      Swal.fire({
+        text: 'Price successfully changed!',
+        icon: 'success',
+        showConfirmButton: false,
+        timer: 1500
+      })
+     }
 
    }
 
    onDateSelection(date: NgbDate) {
     if (!this.fromDate && !this.toDate) {
       this.fromDate = date;
+      this.selectedDates=false;
     } else if (this.fromDate && !this.toDate && date.after(this.fromDate)) {
       this.toDate = date;
       this.selectedDates=true;
     } else {
       this.toDate = null;
       this.fromDate = date;
+      this.selectedDates=false;
     }
   }
 
@@ -140,16 +151,38 @@ export class CarsEditComponent implements OnInit {
   }
 
   addDiscount():void{
-    this.rentCarAdminService.addDiscount(this.companyId,this.currentCar.id,this.fromDate,this.toDate,this.getDiscountPrice());
+    if(this.rentCarAdminService.addDiscount(this.companyId,this.currentCar.id,this.fromDate,this.toDate,this.getDiscountPrice())){
+      Swal.fire({
+        text: 'Discount successfully added!',
+        icon: 'success',
+        showConfirmButton: false,
+        timer: 1500
+      });
+    }
   }
 
   deleteCar():void{
+
     if (this.rentCarAdminService.deleteCar(this.currentCar.id,this.companyId)){
       this.cars = this.rentCarService.getCompanyCars(this.companyId);
+      Swal.fire({
+        text: 'Car successfully deleted!',
+        icon: 'success',
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    }else{
+      Swal.fire({
+        text: 'Unable to delete car, there are active reservations!',
+        icon: 'error',
+        showConfirmButton: true,
+        confirmButtonColor: "#de8e26"
+      });
+
     }
 
-    console.log("deleted car");
-   // this.modalService.dismissAll();
+
+
   }
 
 

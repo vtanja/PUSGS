@@ -13,6 +13,7 @@ export class MainDataEditComponent implements OnInit {
 
   dataForm:FormGroup;
   rentCarCompany:RentCar;
+  imgPreview:string | ArrayBuffer;
 
   constructor(private rentCarAdminService:RentCarAdministratorService) {
 
@@ -21,23 +22,28 @@ export class MainDataEditComponent implements OnInit {
   ngOnInit(): void {
 
     this.rentCarCompany = this.rentCarAdminService.getRentCarCompany();
-
+    this.imgPreview = this.rentCarCompany.logo;
     this.dataForm = new FormGroup({
       'name': new FormControl(this.rentCarCompany.name,Validators.required),
       'address' : new FormControl(this.rentCarCompany.address,Validators.required),
-      'description' : new FormControl(this.rentCarCompany.description,Validators.required)
+      'description' : new FormControl(this.rentCarCompany.description,Validators.required),
+      'file': new FormControl('', [Validators.required]),
+       'fileSource': new FormControl('', [Validators.required])
     })
 
   }
 
-  editCompanyData(){
+  editCompanyData():void{
     var newName = this.dataForm.get('name').value;
     var newAddress = this.dataForm.get('address').value;
     var newDescription = this.dataForm.get('description').value;
-    if(this.rentCarAdminService.editCompanyData(this.rentCarCompany.id,newName,newDescription,newAddress)){
+    var newLogo = this.dataForm.get('fileSource').value;
+
+    if(this.rentCarAdminService.editCompanyData(this.rentCarCompany.id,newName,newDescription,newAddress,newLogo)){
       this.rentCarCompany.name=newName;
       this.rentCarCompany.address=newAddress;
       this.rentCarCompany.description=newDescription;
+      this.rentCarCompany.logo = newLogo;
   }
 
     this.dataForm.reset();
@@ -50,6 +56,31 @@ export class MainDataEditComponent implements OnInit {
       'address':this.rentCarCompany.address,
       'description' : this.rentCarCompany.description
     })
+  }
+
+  onFileChange(event) {
+
+    if (event.target.files.length > 0) {
+
+      const file = event.target.files[0];
+
+      if (file.type.match('image\/*') == null) {
+      console.log("Not supported");
+        return;
+      }
+
+      var reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = (_event) => {
+        this.imgPreview = reader.result;
+        console.log(this.imgPreview);
+      }
+
+      this.dataForm.patchValue({
+        fileSource: file
+      });
+
+    }
   }
 }
 

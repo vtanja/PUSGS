@@ -1,3 +1,23 @@
+div-body-style{
+  padding-right: 0 !important;
+}
+
+
+h4{
+  /* padding-top: 2%; */
+  margin-bottom: 3%;
+  font-family: Poppins-Bold;
+  font-size: 22px;
+  text-align: center;
+  color:rgb(75, 74, 74);
+  margin-top: 0%;
+}
+
+.my-heading-div{
+  background-color: whitesmoke;
+  padding-bottom: 1%;
+}
+
 .carousel-inner {
   overflow: visible;
 }

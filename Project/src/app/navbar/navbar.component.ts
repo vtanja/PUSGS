@@ -9,15 +9,37 @@ import { HomePageComponent } from '../home-page/home-page.component';
 })
 export class NavbarComponent implements OnInit {
   carActive:boolean=true;
+  navbarFirst:string;
+  navbarSecond:string;
+  iconFirst:string;
+  iconSecond:string;
 
   constructor(private router:Router, private route:ActivatedRoute) { }
 
   ngOnInit(): void {
+    if(this.route.snapshot.routeConfig.path==="company-data"){
+
+        this.navbarFirst = 'MAIN DATA';
+        this.navbarSecond = 'OFFICES';
+
+        this.iconFirst = "../../assets/images/mainData.png";
+        this.iconSecond = "../../assets/images/office.png";
+
+    } else{
+
+      this.navbarFirst = 'CAR RENTALS';
+      this.navbarSecond = 'FLIGHTS';
+
+      this.iconFirst = "../../assets/images/car.png";
+      this.iconSecond = "../../assets/images/departure.png";
+    }
   }
 
-  onCarsClick(){
+  onFirstItemClick(){
     if(this.route.snapshot.routeConfig.path==="reservations"){
       this.router.navigate(['car-reservations'], {relativeTo:this.route});
+    } else if(this.route.snapshot.routeConfig.path==="company-data"){
+      this.router.navigate(['edit-main-data'], {relativeTo:this.route});
     }
     else{
       if(this.route.snapshot.routeConfig.path==="home"){
@@ -26,13 +48,15 @@ export class NavbarComponent implements OnInit {
       else{
         this.router.navigate(['home', 'search-cars']);
       }
-      
+
     }
   }
 
-  onFlightsClick(){
+  onSecondItemClick(){
     if(this.route.snapshot.routeConfig.path==="reservations"){
       this.router.navigate(['flight-reservations'], {relativeTo:this.route});
+    }else if(this.route.snapshot.routeConfig.path==="company-data"){
+      this.router.navigate(['edit-offices'], {relativeTo:this.route});
     }
     else{
       if(this.route.snapshot.routeConfig.path==="home"){
@@ -41,7 +65,7 @@ export class NavbarComponent implements OnInit {
       else{
         this.router.navigate(['home', 'search-flights']);
       }
-      
+
     }
   }
 }
