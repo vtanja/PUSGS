@@ -56,6 +56,8 @@
 
 <ng-template #mymodal let-modal>
   <div class="modal-header">
+    <h6 *ngIf="toRate==='flight'"   class="modal-title" id="modal-basic-title">Add rate for flight </h6>
+    <h6 *ngIf="toRate==='airline'" class="modal-title" id="modal-basic-title">Add rate for airline company </h6>
     <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
       <span aria-hidden="true">×</span>
     </button>

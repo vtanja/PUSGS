@@ -7,6 +7,7 @@ import { FlightReservation } from '../models/flightReservation.model';
 import { RentCarService } from './rent-a-car.service';
 import { AirlineService } from './airline.service';
 import { UsersRate } from '../models/users-rate.model';
+import { LoggedUser } from '../models/logged-user.model';
 
 interface Passenger {
     seat: number;
@@ -15,78 +16,129 @@ interface Passenger {
 
 @Injectable()
 export class UserService{
-    userLogged = new Subject<string>();
-    isLogged = new Subject<boolean>();
-    loggedUser:User;
+    userLogged = new Subject<boolean>();
+    users:User[];
 
     constructor(private rentCarService:RentCarService,private airlineService:AirlineService){
-        this.loggedUser=new User('Tanja', 'Vukmirovic', 'tanja.vukmirovic8@gmail.com',
+
+      this.users = [];
+
+      this.users.push(new User('Tanja', 'Vukmirovic', 'tanja.vukmirovic8@gmail.com',
             'tanja123', 'tanja1sifra', '+38165432156', 'Zdravka Celara 185, Futog',
             [new User('Andjela', 'Cickovic', 'andjela.ljuban@gmail.com', 'andjela123',
             'andjela1sifra', '+38165432123', 'Trebinje', []),
-            new User('Pera', 'Peric', 'pera@pera.com', 'pera123', 'pera1sifra', '+381987654321', 'Perina ulica 1, Novi Sad', [])] );
+            new User('Pera', 'Peric', 'pera@pera.com', 'pera123', 'pera1sifra', '+381987654321', 'Perina ulica 1, Novi Sad', [])] ));
 
-        this.loggedUser.friendRequests.push(new User("Natasa", "Lukic", "natasa.naca.lukic@gmail.com", "naca", "nata1sifra", "0657654355", "Adresa 1", []));
-        this.loggedUser.carReservations.push(new CarReservation("3-5-2020","10:00","4-5-2020","10:00", 2, 90, 1, "Firefly", 1, "Audi"));
+        this.users[0].friendRequests.push(new User("Natasa", "Lukic", "natasa.naca.lukic@gmail.com", "naca", "nata1sifra", "0657654355", "Adresa 1", []));
+        this.users[0].carReservations.push(new CarReservation("3-5-2020","10:00","4-5-2020","10:00", 2, 90, 1, "Firefly", 1, "Audi","Q3"));
+        this.users[0].role="USER";
 
         let passenger1: Passenger = {seat: 101, passenger:{firstname:"Tanja", lastname:"Vukmirovic", passportNo:"123456785"}};
         let passenger2: Passenger = {seat: 102, passenger:{firstname:"Andjela", lastname:"Cickovic", passportNo:"123456775"}};
-        this.loggedUser.flightReservations.push(new FlightReservation("rez1", 1, 0, 150, [passenger1, passenger2]));
+        this.users[0].flightReservations.push(new FlightReservation("rez1", 1, 0, 150, [passenger1, passenger2]));
         // this.loggedUser.flightReservations[0].carReservation.push(new CarReservation("3-5-2020","10:00","4-5-2020","10:00", 2, 90, 1, "Firefly", 1, "Audi"));
+
+        let rentCarAdmin = new User('caradmin','caradmin','email@gmail.com','c','c','123456789','My address',[]);
+        rentCarAdmin.role= "CARADMIN";
+        rentCarAdmin.carCompany = 1;
+
+        let airlineAdmin = new User('airlineadmin','airlineadmin','email@gmail.com','a','a','123456789','My address',[]);
+        airlineAdmin.role= "AIRLINEADMIN";
+        airlineAdmin.airlineCompany = 1;
+
+        this.users.push(rentCarAdmin);
+        this.users.push(airlineAdmin);
+      }
+
+
+    isUserLogged():boolean{
+      if(localStorage.getItem('loggedUser')!=undefined)
+        return true;
+      return false;
     }
 
     getUserFromName(name:string){
-      return this.loggedUser.friends.find(x=>x.name===name);
+      return JSON.parse(localStorage.getItem('loggedUser')).name;
+    }
+
+    login(username:string,password:string):boolean{
+      let user = this.users.find(u=>u.username===username);
+      if(user!=undefined){
+        let userLogged = new LoggedUser(user.username,user.role);
+        localStorage.setItem('loggedUser', JSON.stringify(userLogged));
+        this.userLogged.next(true);
+        return true;
+      }
+        return false;
+    }
+
+    logout():boolean{
+      localStorage.clear();
+      this.userLogged.next(false);
+      return true;
+    }
+
+    getLoggedUser():User{
+      let username = JSON.parse(localStorage.getItem('loggedUser')).username;
+      console.log(JSON.parse(localStorage.getItem('loggedUser')));
+      console.log(username);
+      return this.users.find(u=>u.username===username);
     }
 
     getFlightReservations(){
-        return this.loggedUser.flightReservations.slice();
+      let username = JSON.parse(localStorage.getItem('loggedUser')).username;
+      return this.users.find(u=>u.username===username).flightReservations.slice();
     }
 
     getCarReservations(){
-        return this.loggedUser.carReservations.slice();
-    }
-
-    getUser(){
-        return this.loggedUser;
+      let username = JSON.parse(localStorage.getItem('loggedUser')).username;
+      return this.users.find(u=>u.username===username).carReservations.slice();
     }
 
     addCarRate(reservationId:number,rate:number){
 
-      var reservation = this.loggedUser.carReservations.find(r=>r.id===reservationId);
-      this.loggedUser.carReservations.find(r=>r.id===reservationId).carRate=rate;
+      let username = JSON.parse(localStorage.getItem('loggedUser')).username;
 
-      var carRate = new UsersRate(rate,this.loggedUser.username,reservationId);
+      var reservation = this.users.find(u=>u.username===username).carReservations.find(r=>r.id===reservationId);
+      this.users.find(u=>u.username===username).carReservations.find(r=>r.id===reservationId).carRate=rate;
+
+      var carRate = new UsersRate(rate,username,reservationId);
       this.rentCarService.addCarRate(reservation.companyId,reservation.carId,carRate);
 
     }
 
     addCarCompanyRate(reservationId:number,rate:number){
 
-      var reservation = this.loggedUser.carReservations.find(r=>r.id===reservationId);
-      this.loggedUser.carReservations.find(r=>r.id===reservationId).companyRate=rate;
+      let username = JSON.parse(localStorage.getItem('loggedUser')).username;
 
-      var companyRate = new UsersRate(rate,this.loggedUser.username,reservationId);
+      let reservation = this.users.find(u=>u.username===username).carReservations.find(r=>r.id===reservationId);
+      this.users.find(u=>u.username===username).carReservations.find(r=>r.id===reservationId).companyRate=rate;
+
+      let companyRate = new UsersRate(rate,username,reservationId);
       this.rentCarService.addCompanyRate(reservation.companyId,companyRate);
 
     }
 
     addFlightRate(reservationId:number,rate:number){
 
-      var reservation = this.loggedUser.flightReservations.find(r=>r.flightID===reservationId);
-      this.loggedUser.flightReservations.find(r=>r.flightID===reservationId).flightRate=rate;
+      let username = JSON.parse(localStorage.getItem('loggedUser')).username;
 
-      var flightRate = new UsersRate(rate,this.loggedUser.username,reservationId);
+      let reservation = this.users.find(u=>u.username===username).flightReservations.find(r=>r.flightID===reservationId);
+      this.users.find(u=>u.username===username).flightReservations.find(r=>r.flightID===reservationId).flightRate=rate;
+
+      let flightRate = new UsersRate(rate,username,reservationId);
       this.airlineService.addFlightRate(reservation.companyID,reservation.flightID,flightRate);
 
     }
 
     addAirlineRate(reservationId:number,rate:number){
 
-      var reservation = this.loggedUser.flightReservations.find(r=>r.flightID===reservationId);
-      this.loggedUser.flightReservations.find(r=>r.flightID===reservationId).airlineRate=rate;
+      let username = JSON.parse(localStorage.getItem('loggedUser')).username;
 
-      var companyRate = new UsersRate(rate,this.loggedUser.username,reservationId);
+      let reservation = this.users.find(u=>u.username===username).flightReservations.find(r=>r.flightID===reservationId);
+      this.users.find(u=>u.username===username).flightReservations.find(r=>r.flightID===reservationId).airlineRate=rate;
+
+      let companyRate = new UsersRate(rate,username,reservationId);
       this.airlineService.addCompanyRate(reservation.companyID,companyRate);
 
     }

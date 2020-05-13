@@ -10,6 +10,7 @@ export class RentACarItemComponent implements OnInit {
 
   @Input('rentCar') rentCar:RentCar;
 
+
   constructor() { }
 
   ngOnInit(): void {

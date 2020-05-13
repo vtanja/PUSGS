@@ -1,7 +1,7 @@
 <div class="list-group-item" style="margin-top: 1%; margin-bottom: 1%;">
   <div class="row" style=" height: 100px;">
     <div class="col-md-2" style=" height: 100%; justify-content: center;">
-      <img src={{car.images[0]}} style="width: 100%; height: 100%;">
+      <img src={{car.image}} style="width: 100%; height: 100%;">
     </div>
     <div class="col-md-3" style="height: 100%; text-align: center; align-content: center;">
       <div class="row header">Rental company:</div>
@@ -50,6 +50,8 @@
 
 <ng-template #mymodal let-modal>
   <div class="modal-header">
+    <h6 *ngIf="toRate==='car'" class="modal-title" id="modal-basic-title">Add rate for car </h6>
+    <h6 *ngIf="toRate==='carCompany'" class="modal-title" id="modal-basic-title">Add rate for rent a car company </h6>
     <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
       <span aria-hidden="true">×</span>
     </button>

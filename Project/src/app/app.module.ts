@@ -73,6 +73,9 @@ import { MatSelectModule } from '@angular/material/select';
 import { CreateFlightReservationComponent } from './create-flight-reservation/create-flight-reservation.component';
 import {MatChipsModule} from '@angular/material/chips';
 import { CreateCarReservationComponent } from './create-car-reservation/create-car-reservation.component';
+import { RentCarAdministratorService } from './services/rent-car-administrator.service';
+import { OfficesEditComponent } from './rent-a-cars/rent-a-car-administrator/rent-a-car-edit/offices-edit/offices-edit.component';
+import { AddCarComponent } from './rent-a-cars/rent-a-car-administrator/rent-a-car-edit/add-car/add-car.component';
 
 @NgModule({
   declarations: [
@@ -128,6 +131,9 @@ import { CreateCarReservationComponent } from './create-car-reservation/create-c
     PlaneLayoutComponent,
     CreateFlightReservationComponent,
     CreateCarReservationComponent,
+    OfficesEditComponent,
+    AddCarComponent,
+
   ],
   imports: [
     BrowserModule,
@@ -154,6 +160,7 @@ import { CreateCarReservationComponent } from './create-car-reservation/create-c
     RentCarService,
     AirlineService,
     CarReservationsService,
+    RentCarAdministratorService,
     {provide: NgbDateParserFormatter, useClass: NgbDateCustomParserFormatter}
   ],
   bootstrap: [AppComponent]

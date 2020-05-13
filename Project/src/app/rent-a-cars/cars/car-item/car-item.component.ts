@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Car } from 'src/app/models/Car.model';
+import { UserService } from 'src/app/services/userService.service';
 
 @Component({
   selector: 'app-car-item',
@@ -9,9 +10,15 @@ import { Car } from 'src/app/models/Car.model';
 export class CarItemComponent implements OnInit {
 
   @Input('car') car:Car;
-  constructor() { }
+  @Input('daysBetween')daysBetween:number;
+
+  isUserLogged:boolean;
+  constructor(private usersService:UserService) { }
 
   ngOnInit(): void {
+    this.isUserLogged = this.usersService.isUserLogged();
   }
+
+
 
 }

@@ -23,6 +23,10 @@ import { FlightReservationListComponent } from './user/reservations/flight-reser
 import { RentACarEditComponent } from './rent-a-cars/rent-a-car-administrator/rent-a-car-edit/rent-a-car-edit.component';
 import { CreateFlightReservationComponent } from './create-flight-reservation/create-flight-reservation.component';
 import { CreateCarReservationComponent } from './create-car-reservation/create-car-reservation.component';
+import { MainDataEditComponent } from './rent-a-cars/rent-a-car-administrator/rent-a-car-edit/main-data-edit/main-data-edit.component';
+import { CarsEditComponent } from './rent-a-cars/rent-a-car-administrator/rent-a-car-edit/cars-edit/cars-edit.component';
+import { OfficesEditComponent } from './rent-a-cars/rent-a-car-administrator/rent-a-car-edit/offices-edit/offices-edit.component';
+import { AddCarComponent } from './rent-a-cars/rent-a-car-administrator/rent-a-car-edit/add-car/add-car.component';
 
 
 const routes: Routes = [
@@ -56,6 +60,16 @@ const routes: Routes = [
   {path:'create-reservation/:id/create-car-reservation/:carid', component:CreateCarReservationComponent},
   {path: '**',component:HomePageComponent},
 
+  {path:'company-data',component:RentACarEditComponent ,children : [
+    {path:'edit-main-data',component:MainDataEditComponent},
+    {path:'edit-offices',component:OfficesEditComponent},
+
+  ]},
+
+  {path:'companyCars',component:CarsEditComponent},
+  {path:'addCar',component:AddCarComponent},
+
+  {path: '**',component:HomePageComponent}
 ];
 
 const routerOptions: ExtraOptions = {

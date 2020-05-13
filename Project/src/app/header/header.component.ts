@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { UserService } from '../services/user-service.service';
 import { User } from '../models/user';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -13,14 +14,19 @@ export class HeaderComponent implements OnInit {
   loggedUser:User;
   isCollapsedRequests:boolean=true;
 
-  constructor(private userService:UserService) { }
+  constructor(private userService:UserService,private router:Router) { }
 
   ngOnInit(): void {
-    this.userService.userLogged.subscribe(
-      (username: string)=>{
-        this.loggedIn=true;
-        this.loggedUser=this.userService.getUser();
-      });
+
+    this.userService.userLogged.subscribe((isLogged:boolean)=>{
+        if(isLogged){
+          this.loggedUser = this.userService.getLoggedUser();
+          this.loggedIn=true;
+        }else{
+          this.loggedIn=false;
+          this.loggedUser=null;
+        }
+    })
   }
 
   onAccept(user:User){
@@ -37,5 +43,12 @@ export class HeaderComponent implements OnInit {
     if(toRemoveIndex>-1){
       this.loggedUser.friendRequests.splice(toRemoveIndex, 1);
     }
+  }
+
+  onLogout():void{
+    if(this.userService.logout()){
+      this.router.navigate(['/home']);
+    }
+
   }
 }

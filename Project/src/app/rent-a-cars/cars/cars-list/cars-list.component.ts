@@ -12,6 +12,7 @@ export class CarsListComponent implements OnInit {
 
   cars:Array<Car> = new Array<Car>();
   params:{};
+  daysBetween:number;
 
   constructor(private rentCarService:RentCarService,
               private activeRoute:ActivatedRoute) { }
@@ -20,7 +21,22 @@ export class CarsListComponent implements OnInit {
 
     this.activeRoute.queryParams.subscribe((queryParams:Params)=>{
       this.cars=this.rentCarService.getCars(queryParams);
+      this.daysBetween = this.getDaysBetween(queryParams.pickUpDate,queryParams.dropOffDate);
   });
+}
+
+getDaysBetween(start:string,end:string):number{
+
+  const ONE_DAY = 1000 * 60 * 60 * 24;
+
+  var startParts = start.split('-');
+  var endParts = end.split('-');
+
+  var date1 = new Date(+startParts[2],+startParts[1]-1,+startParts[0]);
+  var date2 = new Date(+endParts[2],+endParts[1]-1,+endParts[0]);
+
+  const diffDays = Math.round(Math.abs((+date1 - +date2) / ONE_DAY));
+  return diffDays;
 }
 
 }

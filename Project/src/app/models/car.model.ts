@@ -1,5 +1,6 @@
 import { CarReservation } from './carReservation.model';
 import { UsersRate } from './users-rate.model';
+import { Discount } from './discount.model';
 
 export class Car{
 
@@ -9,7 +10,7 @@ export class Car{
   year:number;
   pricePerDay:number;
   availableDates:Array<string>;
-  images: Array<string>;
+  image: string;
   maxPassengers:number;
   doors:number;
   hasAirCondition:boolean;
@@ -17,10 +18,12 @@ export class Car{
   companyName:string;
   rate:number;
   rates:UsersRate[];
+  reservations:CarReservation[];
+  discounts:Discount[];
 
 
   constructor(id:number,brand:string,model:string,year:number,pricePerDay:number,
-    avDates:Array<string>,images:Array<string>,maxPassengers:number,
+    avDates:Array<string>,image:string,maxPassengers:number,
     doors:number,hasAirCondition:boolean,hasAutomaticGearbox:boolean,companyName:string){
 
     this.id=id;
@@ -29,7 +32,7 @@ export class Car{
     this.year=year;
     this.pricePerDay = pricePerDay;
     this.availableDates = avDates;
-    this.images = images;
+    this.image = image;
     this.maxPassengers = maxPassengers;
     this.doors = doors;
     this.doors=doors;
@@ -38,6 +41,8 @@ export class Car{
     this.companyName=companyName;
     this.rate = -1;
     this.rates=[];
+    this.discounts = [];
+    this.reservations=[];
   }
 
   updateRate():void{

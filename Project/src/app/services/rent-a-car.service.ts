@@ -23,16 +23,16 @@ export class  RentCarService {
 
     const avDates = ["15-5-2020","16-5-2020","17-5-2020","18-5-2020","19-5-2020","20-5-2020"];
 
-    const c1 = new Car(1, 'Audi', 'Q3', 2020, 45,avDates,["../../assets/images/cars/audi-q3-car.png"],5,4,true,true,'Firefly');
-    const c2 = new Car(2, 'Citroen', 'M5', 2017, 35,avDates,["../../assets/images/cars/citroen-4.png"],5,4,true,true,'Getaround');
-    const c3 = new Car(3, 'Ford', 'XY', 1991, 25,avDates,["../../assets/images/cars/ford-10.png"],7,4,false,false,'Drivy');
-    const c4 = new Car(4, 'KIA', 'AMG', 2019, 37,avDates,["../../assets/images/cars/kia-37.png"],5,4,true,true,'Drive');
-    const c5 = new Car(5, 'Mercedes', 'YA', 2010, 56,avDates,["../../assets/images/cars/mercedes-2.png"],7,4,true,true,'Solid');
-    const c6 = new Car(6, 'Nissan', 'Y7', 2010, 46,avDates,["../../assets/images/cars/nissan57.png"],5,4,true,true,'Firefly');
-    const c7 = new Car(7, 'Nissan', 'X9', 2010, 48,avDates,["../../assets/images/cars/nissan-19.png"],5,4,true,true,'Getaround');
-    const c8 = new Car(8, 'Renault', 'R1', 2010, 26,avDates,["../../assets/images/cars/renault21.png"],5,4,true,true,'Drivy');
-    const c9 = new Car(9, 'Renault', 'R2', 2010, 36,avDates,["../../assets/images/cars/renault24.png"],5,4,true,true,'Drive');
-    const c10 = new Car(10, 'Renault', 'R3', 2010, 42,avDates,["../../assets/images/cars/renault30.png"],5,4,true,true,'Solid');
+    const c1 = new Car(1, 'Audi', 'Q3', 2020, 45,avDates,"../../assets/images/cars/audi-q3-car.png",5,4,true,true,'Firefly');
+    const c2 = new Car(2, 'Citroen', 'M5', 2017, 35,avDates,"../../assets/images/cars/citroen-4.png",5,4,true,true,'Getaround');
+    const c3 = new Car(3, 'Ford', 'XY', 1991, 25,avDates,"../../assets/images/cars/ford-10.png",7,4,false,false,'Drivy');
+    const c4 = new Car(4, 'KIA', 'AMG', 2019, 37,avDates,"../../assets/images/cars/kia-37.png",5,4,true,true,'Drive');
+    const c5 = new Car(5, 'Mercedes', 'YA', 2010, 56,avDates,"../../assets/images/cars/mercedes-2.png",7,4,true,true,'Solid');
+    const c6 = new Car(6, 'Nissan', 'Y7', 2010, 46,avDates,"../../assets/images/cars/nissan57.png",5,4,true,true,'Firefly');
+    const c7 = new Car(7, 'Nissan', 'X9', 2010, 48,avDates,"../../assets/images/cars/nissan-19.png",5,4,true,true,'Getaround');
+    const c8 = new Car(8, 'Renault', 'R1', 2010, 26,avDates,"../../assets/images/cars/renault21.png",5,4,true,true,'Drivy');
+    const c9 = new Car(9, 'Renault', 'R2', 2010, 36,avDates,"../../assets/images/cars/renault24.png",5,4,true,true,'Drive');
+    const c10 = new Car(10, 'Renault', 'R3', 2010, 42,avDates,"../../assets/images/cars/renault30.png",5,4,true,true,'Solid');
 
 
 
@@ -338,19 +338,10 @@ export class  RentCarService {
     return this.rentCars.find(c=>c.id==companyID).cars;
   }
 
-  changeCarPrice(companyID:number,carID:number,newPrice:number):boolean{
-    this.rentCars.find(company=>company.id===companyID).cars.find(c=>c.id===carID).pricePerDay = newPrice;
-    return true;
+  getCompanyCar(companyID:number,carID:number){
+    return this.rentCars.find(company=>company.id===companyID).cars.find(c=>c.id===carID);
   }
 
-  editCompanyData(companyID:number,name:string,description:string,address:string){
-
-    this.rentCars.find(c=>c.id===companyID).name=name;
-    this.rentCars.find(c=>c.id===companyID).description=description;
-    console.log(this.rentCars);
-    //this.rentCars.find(c=>c.id===companyID).address=address;
-    return true;
-  }
 
   deleteCar(carID:number){
 

@@ -15,6 +15,9 @@ export class User {
      carReservations:CarReservation[];
      flightReservations:FlightReservation[];
      name:string;
+     role:string;
+     carCompany:number;
+     airlineCompany:number;
 
     constructor(firstName:string, lastName:string,
           email:string, username:string, password:string, phone:string, address:string, friends:User[] ){

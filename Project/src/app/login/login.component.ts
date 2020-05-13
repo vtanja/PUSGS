@@ -11,9 +11,6 @@ import { UserService } from '../services/user-service.service';
 export class LoginComponent implements OnInit {
 
   loginForm:FormGroup;
-  loggedIn=false;
-  loggedUsername='';
-  isHidden = true;
 
   constructor(private userService:UserService, private route:ActivatedRoute, private router:Router) { }
 
@@ -25,15 +22,11 @@ export class LoginComponent implements OnInit {
   }
 
   onLogin(){
-    this.loggedIn=true;
-    this.loggedUsername=this.loginForm.get('username').value;
 
-    if(this.loggedIn){
-      this.userService.userLogged.next(this.loggedUsername);
-      this.userService.isLogged.next(true);
+    if(this.userService.login(this.loginForm.get('username').value,this.loginForm.get('password').value)){
+
+        this.router.navigate(['/home'], {relativeTo:this.route});
     }
-    this.router.navigate(['/home'], {relativeTo:this.route});
-
 
   }
 
