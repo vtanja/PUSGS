@@ -7,12 +7,12 @@
         </div>
         <div class="col-md-2" style="height: 100%; text-align: center; align-content: center;">
           <div class="row header justify-content-center align-items-center">Departure:</div>
-          <div class="row text justify-content-center align-items-center">{{flight.takeOffLocation}}</div>
+          <div class="row text justify-content-center align-items-center">{{flight.takeOffLocation.code}}</div>
           <div class="row text justify-content-center align-items-center">{{flight.takeOffDate}}&nbsp;{{flight.takeOffTime}}h</div>
         </div>
         <div class="col-md-2" style="height: 100%; text-align: center; align-content: center;">
           <div class="row header justify-content-center align-items-center">Landing:</div>
-          <div class="row text justify-content-center align-items-center">{{flight.landingLocation}}</div>
+          <div class="row text justify-content-center align-items-center">{{flight.landingLocation.code}}</div>
           <div class="row text justify-content-center align-items-center">{{flight.landingDate}}&nbsp;{{flight.landingTime}}h</div>
         </div>
         <div class="col-md-2" style="height: 100%; text-align: center; align-content: center;">
@@ -83,7 +83,7 @@
       <div style="display: inline-block; width: 50%; align-self: center;">
         <h6 class="modal-title header" id="modal-basic-title">Departure:</h6>
         <br>
-        <label class="lblStyle header">Airport: <span class="valueStyle text"> {{flight.takeOffLocation}}&nbsp;
+        <label class="lblStyle header">Airport: <span class="valueStyle text"> {{flight.takeOffLocation.code}}&nbsp;
           </span></label><br>
         <label class="lblStyle header">Date: <span class="valueStyle text"> {{flight.takeOffDate}}&nbsp;
           </span></label><br>
@@ -94,7 +94,7 @@
       <div style="display: inline-block; width: 50%; align-self: center;">
         <h6 class="modal-title header" id="modal-basic-title">Landing:</h6>
         <br>
-        <label class="lblStyle header">Airport: <span class="valueStyle text"> {{flight.landingLocation}}&nbsp;
+        <label class="lblStyle header">Airport: <span class="valueStyle text"> {{flight.landingLocation.code}}&nbsp;
           </span></label><br>
         <label class="lblStyle header">Date: <span class="valueStyle text"> {{flight.landingDate}}&nbsp;
           </span></label><br>

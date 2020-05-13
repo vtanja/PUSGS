@@ -1,4 +1,8 @@
-    <div class="list-group" *ngFor="let car of cars" style="margin-top: 5%;">
+<div *ngIf="cars.length===0 || cars===undefined">
+  <h3>We haven't found any cars for you...</h3>
+</div>
+<div *ngIf="cars.length!==0">
+  <div class="list-group" *ngFor="let car of cars" style="margin-top: 5%;">
       <app-car-item [car]="car"></app-car-item>
     </div>
-
+</div>

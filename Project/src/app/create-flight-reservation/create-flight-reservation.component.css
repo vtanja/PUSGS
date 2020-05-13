@@ -1,0 +1,43 @@
+h5{
+    margin-top: 2%;
+    font-weight: bold;
+    font-size: x-large;
+    color: #31124b;
+    text-align: center;
+  }
+
+  ::ng-deep .mat-step-header .mat-step-icon-selected {
+    background-color:  #fa871b; 
+  }
+  
+  .button-style{
+    background-color:  #fa871b;
+    color: white;
+    border-color: #fa871b;
+    height: 100%;
+    width: 80%;
+    padding: 0%;
+  }
+
+  .control-label{
+    color:#fa871b;
+    font-weight: bold;
+  }
+
+
+hr{
+  border: 2px solid #fa871b;
+}
+
+  .form-group input{
+    color: #31124b;
+    width: 50%;
+  }
+
+input.ng-invalid.ng-touched {
+  border: 1px solid red;
+}
+
+  .has-error{
+    color: red;
+  }

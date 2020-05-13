@@ -1,4 +1,9 @@
-
+h3{
+  margin-top: 2%;
+  font-weight: bold;
+  font-size: xx-large;
+  color: #31124b;
+}
 
 .input100 {
   width: 100%;

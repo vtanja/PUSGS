@@ -79,6 +79,31 @@ export class  RentCarService {
 
   }
 
+  getCarsAtLocation(location:string) : Car[]{
+    var result:Car[]=[];
+    var places:any[] = location.split(',');
+    console.log(places);
+    for(let rentCar of this.rentCars){
+      {
+        var cars = rentCar.cars;
+        if(rentCar.offices[places[1].trim()]!==undefined){
+          var offices:string[] = rentCar.offices[places[1].trim()];
+          console.log(undefined);
+          if(offices!==undefined){
+            if(offices.indexOf(places[0].trim())!==-1){
+              result.push(...cars);
+               
+             }
+          }
+          
+        
+        }
+      }
+      
+    }
+    return result;
+  }
+
   getRentCars(){
     return this.rentCars.slice();
   }
@@ -297,6 +322,16 @@ export class  RentCarService {
 
   getCar(companyID:number,carID:number){
    return this.rentCars.find(c=>c.id===companyID).cars.find(c=>c.id===carID);
+  }
+
+  getCarFromId(id:number){
+    for(let company of this.rentCars){
+      let car = company.cars.find(c=>c.id===id);
+      if(car !== undefined){
+        console.log(car);
+        return company.cars.find(c=>c.id===id);
+      }
+    }
   }
 
   getCompanyCars(companyID:number){

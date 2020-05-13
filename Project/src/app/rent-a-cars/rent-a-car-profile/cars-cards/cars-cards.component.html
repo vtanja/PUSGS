@@ -44,13 +44,14 @@
             </div>
           <div  class="d-flex justify-content-center">
             <ngb-rating *ngIf="car.rate!=-1" [rate]="car.rate" [starTemplate]="t" [readonly]="true" [max]="5"></ngb-rating>
-            <p *ngIf="car.rate===-1" style="text-align: center;font-size: smaller;margin-top: 0px;margin-bottom: 0px; color: orange;" ><b>No any rates yet.</b></p>
+            <p *ngIf="car.rate===-1" style="text-align: center;font-size: smaller;margin-top: 0px;margin-bottom: 0px; color: orange;" ><b>No rates yet.</b></p>
           </div>
           <p *ngIf="!searched" style="text-align: center;margin-top: 10px;font-size: smaller;" >price from</p>
           <p *ngIf="!searched" class="price">{{car.pricePerDay | currency:'EUR'}}</p>
           <p *ngIf="searched" style="text-align: center;margin-top: 10px;font-size: smaller;" >price</p>
           <p *ngIf="searched" class="price">{{car.pricePerDay*rentDays | currency:'EUR'}}</p>
           <button [hidden]="!searched"  class="btn  btn-md btn-rounded button-style" style="display: block;width: 100%;"  (click)="open(mymodal) ; currentCar=car" >Rent</button>
+          <button [hidden]="notFlightRes" class="btn btn-md btn-rounded button-style" style="display: block;width: 1000%;"  [routerLink]="'create-car-reservation/'+car.id">Rent</button>
         </div>
 
       </div>
@@ -88,3 +89,4 @@
 
 
 
+  

@@ -14,6 +14,7 @@ export class User {
      profileImage:string;
      carReservations:CarReservation[];
      flightReservations:FlightReservation[];
+     name:string;
 
     constructor(firstName:string, lastName:string,
           email:string, username:string, password:string, phone:string, address:string, friends:User[] ){
@@ -29,5 +30,6 @@ export class User {
             this.profileImage="../../assets/images/profilna.png";
             this.carReservations = [];
             this.flightReservations=[];
+            this.name=this.firstName+' '+this.lastName;
          }
 }

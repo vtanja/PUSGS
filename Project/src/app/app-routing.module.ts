@@ -21,6 +21,8 @@ import { ReservationsComponent } from './user/reservations/reservations.componen
 import { CarReservationListComponent } from './user/reservations/car-reservation-list/car-reservation-list.component';
 import { FlightReservationListComponent } from './user/reservations/flight-reservation-list/flight-reservation-list.component';
 import { RentACarEditComponent } from './rent-a-cars/rent-a-car-administrator/rent-a-car-edit/rent-a-car-edit.component';
+import { CreateFlightReservationComponent } from './create-flight-reservation/create-flight-reservation.component';
+import { CreateCarReservationComponent } from './create-car-reservation/create-car-reservation.component';
 
 
 const routes: Routes = [
@@ -50,7 +52,10 @@ const routes: Routes = [
   {path:'carProfile/:id',component: RentACarProfileComponent},
   {path:'airlineProfile/:id',component: AirlineProfileComponent},
   {path:'editService',component:RentACarEditComponent},
-  {path: '**',component:HomePageComponent}
+  {path: 'create-reservation/:id', component:CreateFlightReservationComponent},
+  {path:'create-reservation/:id/create-car-reservation/:carid', component:CreateCarReservationComponent},
+  {path: '**',component:HomePageComponent},
+
 ];
 
 const routerOptions: ExtraOptions = {

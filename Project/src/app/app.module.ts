@@ -30,7 +30,7 @@ import { UserComponent } from './user/user.component';
 import { UserProfileComponent } from './user/user-profile/user-profile.component';
 import { FriendsListComponent } from './user/friends-list/friends-list.component';
 import { SearchPipe } from './user/friends-list/search.pipe';
-import { UserService } from './services/userService.service';
+import { UserService } from './services/user-service.service';
 import { NavbarComponent } from './navbar/navbar.component';
 import { CarsSearchFormComponent } from './rent-a-cars/cars-search/cars-search-form/cars-search-form.component';
 import { CarsComponent } from './rent-a-cars/cars/cars.component';
@@ -67,6 +67,12 @@ import { RentACarAdministratorComponent } from './rent-a-cars/rent-a-car-adminis
 import { RentACarEditComponent } from './rent-a-cars/rent-a-car-administrator/rent-a-car-edit/rent-a-car-edit.component';
 import { MainDataEditComponent } from './rent-a-cars/rent-a-car-administrator/rent-a-car-edit/main-data-edit/main-data-edit.component';
 import { CarsEditComponent } from './rent-a-cars/rent-a-car-administrator/rent-a-car-edit/cars-edit/cars-edit.component';
+import {MatStepperModule} from '@angular/material/stepper';
+import { PlaneLayoutComponent } from './plane-layout/plane-layout.component';
+import { MatSelectModule } from '@angular/material/select';
+import { CreateFlightReservationComponent } from './create-flight-reservation/create-flight-reservation.component';
+import {MatChipsModule} from '@angular/material/chips';
+import { CreateCarReservationComponent } from './create-car-reservation/create-car-reservation.component';
 
 @NgModule({
   declarations: [
@@ -119,7 +125,9 @@ import { CarsEditComponent } from './rent-a-cars/rent-a-car-administrator/rent-a
     RentACarEditComponent,
     MainDataEditComponent,
     CarsEditComponent,
-
+    PlaneLayoutComponent,
+    CreateFlightReservationComponent,
+    CreateCarReservationComponent,
   ],
   imports: [
     BrowserModule,
@@ -136,7 +144,10 @@ import { CarsEditComponent } from './rent-a-cars/rent-a-car-administrator/rent-a
     MatAutocompleteModule,
     MatInputModule,
     HammerModule,
-    IgxTimePickerModule
+    IgxTimePickerModule,
+    MatStepperModule,
+    MatSelectModule,
+    MatChipsModule,
   ],
   providers: [
     UserService,

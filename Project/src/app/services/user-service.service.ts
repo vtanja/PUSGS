@@ -35,6 +35,10 @@ export class UserService{
         // this.loggedUser.flightReservations[0].carReservation.push(new CarReservation("3-5-2020","10:00","4-5-2020","10:00", 2, 90, 1, "Firefly", 1, "Audi"));
     }
 
+    getUserFromName(name:string){
+      return this.loggedUser.friends.find(x=>x.name===name);
+    }
+
     getFlightReservations(){
         return this.loggedUser.flightReservations.slice();
     }

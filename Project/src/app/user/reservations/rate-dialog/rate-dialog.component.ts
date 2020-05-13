@@ -6,7 +6,7 @@ import { Airline } from 'src/app/models/airline.model';
 import { Flight } from 'src/app/models/flight.model';
 import { CarReservationsService } from 'src/app/services/car-reservations.service';
 import { AirlineService } from 'src/app/services/airline.service';
-import { UserService } from 'src/app/services/userService.service';
+import { UserService } from 'src/app/services/user-service.service';
 
 @Component({
   selector: 'app-rate-dialog',

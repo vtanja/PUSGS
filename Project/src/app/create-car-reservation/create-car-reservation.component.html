@@ -1,0 +1,59 @@
+
+      <h5>Create reservation...</h5>
+<br>
+<div style="margin-left: 40%;">
+        <form [formGroup]="reservationForm"> 
+            <div class="form-group">
+                <label class="lblStyle">Car: <span class="valueStyle"> {{car.brand}}&nbsp;{{car.model}} </span></label>
+            </div>
+            <div class="form-group">
+                <label class="lblStyle">Rent a car company: <span class="valueStyle"> {{car.companyName}}</span></label>
+            </div>
+            <div class="form-group">
+                <label class="lblStyle">Pick up location: <span class="valueStyle"> {{flight.landingLocation.place}}&nbsp; </span></label>
+            </div>
+            <div class="form-group">
+                <label class="lblStyle">Pick up date:<span class="valueStyle">  {{flight.landingDate}}&nbsp;</span></label>
+            </div>
+            <div class="form-group">
+                <label class="lblStyle">Drop off location:</label>
+                <div class="wrap-input100" >
+                    <div class="input-icons">
+                         <i class="fa fa-map-marker" style="margin-top:8px; margin-left:7px" aria-hidden="true"></i>
+                         <input formControlName="dropOffLocation"  class="input100"
+                                [matAutocomplete]="autoGroup" type="text" name="dropOffLocation"
+                                placeholder="Drop off location...">
+                    </div>
+                    <mat-autocomplete #autoGroup="matAutocomplete">
+                      <mat-optgroup *ngFor="let group of dropOffLocationOptions | async" [label]="group.letter">
+                        <mat-option *ngFor="let name of group.names" [value]="name">
+                          {{name}}
+                        </mat-option>
+                        </mat-optgroup>
+                        </mat-autocomplete>
+                    <span class="invalid-input-span" *ngIf="reservationForm.get('dropOffLocation').invalid && reservationForm.get('dropOffLocation').touched">Drop off location is required</span>
+                    </div>
+            </div>
+            <div class="row" style="width: 20%;" >
+                <div class="col" >
+                    <label class="lblStyle">Drop off date:</label>
+                    <div class="wrap-input100" >
+                        <div class="input-icons">
+                            <div class="input-group" >
+                                
+                                <input formControlName="dropOffDate" class="form-control input100"  placeholder="Drop off.."
+                                      name="dp"  ngbDatepicker #d="ngbDatepicker" >
+                                <div class="input-group-append append_style" style="margin-left: -10px;padding-left: 10px;" >
+                                    <button class="btn calendar"  (click)="d.toggle()" type="button"></button>
+                                </div>
+                                <i class="fa fa-calendar" aria-hidden="true" ></i>
+                            </div>
+                        </div>
+                    </div>
+                    <span class="invalid-input-span" *ngIf="reservationForm.get('dropOffDate').invalid && reservationForm.get('dropOffDate').touched">This field is required</span>
+                </div>
+            </div>
+        </form>
+</div>
+    <br>
+      <button type="button" class="btn confirmBtnStyle" style="margin-left: 40%;" [disabled]="reservationForm.invalid" (click)="createReservation()" >Confirm</button>
