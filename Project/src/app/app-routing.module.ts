@@ -58,7 +58,6 @@ const routes: Routes = [
   {path:'editService',component:RentACarEditComponent},
   {path: 'create-reservation/:id', component:CreateFlightReservationComponent},
   {path:'create-reservation/:id/create-car-reservation/:carid', component:CreateCarReservationComponent},
-  {path: '**',component:HomePageComponent},
 
   {path:'company-data',component:RentACarEditComponent ,children : [
     {path:'edit-main-data',component:MainDataEditComponent},

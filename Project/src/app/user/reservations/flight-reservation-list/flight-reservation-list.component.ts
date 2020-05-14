@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FlightReservation } from 'src/app/models/flightReservation.model';
+import { FlightReservation } from 'src/app/models/flight-reservation.model';
 import { UserService } from '../../../services/user-service.service';
 
 @Component({

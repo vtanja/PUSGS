@@ -26,11 +26,11 @@ export class AirlineService{
         var airport1=new Airport('BEG', 'Belgrade,Serbia');
         var airport2=new Airport('FCO', 'Rome,Italy');
 
-        const flight1= new Flight(0, airport1, airport2, '16-5-2020', '16-5-2020', '18:05', '19:35', 1.5, 0, [], 50,200,120,20,20,"Air Serbia");
-        const flight2= new Flight(1, airport1, airport2, '17-5-2020', '17-5-2020', '18:05', '19:35', 1.5, 0, [], 50,200,120,20,20,"Air Serbia");
-        const flight3= new Flight(2, airport1, airport2, '18-4-2020', '18-4-2020', '18:05', '19:35', 1.5, 0, [], 50,200,120,20,20,"Air Serbia");
-        const flight4= new Flight(3, airport1, airport2, '19-4-2020', '19-4-2020', '18:05', '19:35', 1.5, 0, [], 50,200,120,20,20,"Air Serbia");
-        const flight5= new Flight(4, airport1, airport2, '20-4-2020', '20-4-2020', '18:05', '19:35', 1.5, 0, [], 50,200,120,20,20,"Air Serbia");
+        const flight1= new Flight(0, airport1, airport2, '16-5-2020', '16-5-2020', '18:05', '19:35', 1.5, 0, [], 50,200,120,20,20);
+        const flight2= new Flight(1, airport1, airport2, '17-5-2020', '17-5-2020', '18:05', '19:35', 1.5, 0, [], 50,200,120,20,20);
+        const flight3= new Flight(2, airport1, airport2, '18-4-2020', '18-4-2020', '18:05', '19:35', 1.5, 0, [], 50,200,120,20,20);
+        const flight4= new Flight(3, airport1, airport2, '19-4-2020', '19-4-2020', '18:05', '19:35', 1.5, 0, [], 50,200,120,20,20);
+        const flight5= new Flight(4, airport1, airport2, '20-4-2020', '20-4-2020', '18:05', '19:35', 1.5, 0, [], 50,200,120,20,20);
 
 
         // const flight26= new Flight(25, 'AMS', 'BEG', '16-4-2020', '16-4-2020', '07:00', '09:30', 2.5, 0, [], 130,200,120,20,20,"Air Serbia");
@@ -140,6 +140,12 @@ export class AirlineService{
         flight3.image=airline1.image;
         flight4.image=airline1.image;
         flight5.image=airline1.image;
+
+        flight1.airline=airline1;
+        flight2.airline=airline1;
+        flight3.airline=airline1;
+        flight4.airline=airline1;
+        flight5.airline=airline1;
         //flight6.image=airline1.image;
         //flight7.image=airline1.image;
         //flight8.image=airline1.image;

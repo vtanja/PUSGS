@@ -51,7 +51,7 @@
           <p *ngIf="searched" style="text-align: center;margin-top: 10px;font-size: smaller;" >price</p>
           <p *ngIf="searched" class="price">{{car.pricePerDay*rentDays | currency:'EUR'}}</p>
           <button [hidden]="!searched"  class="btn  btn-md btn-rounded button-style" style="display: block;width: 100%;"  (click)="open(mymodal) ; currentCar=car" >Rent</button>
-          <button [hidden]="notFlightRes" class="btn btn-md btn-rounded button-style" style="display: block;width: 1000%;"  [routerLink]="'create-car-reservation/'+car.id">Rent</button>
+          <button [hidden]="notFlightRes" class="btn btn-md btn-rounded button-style" style="display: block;width: 100%;"  [routerLink]="'create-car-reservation/'+car.id">Rent</button>
         </div>
 
       </div>

@@ -207,3 +207,27 @@ i{
   line-height: 1.2;
 
 }
+
+.button-style{
+  background-color:  #fa871b;
+  color: white;
+  border-color: #fa871b;
+  height: 100%;
+  width: 80%;
+  padding: 0%;
+}
+
+.header{
+    color:  #fa871b;
+    font-weight: bolder;
+}
+
+.text{
+    color: #8d4fff;
+}
+
+.row-btn-style{
+  margin-top: 3%;
+  height: 33%;
+}
+

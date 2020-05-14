@@ -61,6 +61,8 @@ export class  RentCarService {
     'Hungary':["Budapest"],
     'BiH' : ['Trebinje','Banja Luka','Mostar']};
 
+
+
     const rc1 = new RentCar(1,"Firefly",new Address("Jevrejska 10", "Novi Sad", "Serbia"),description1,[c1,c6],offices,"../../assets/images/rentCarLogos/logo1.png");
     const rc2 = new RentCar(2,"Getaround",new Address("Knez Mihailova 1", "Belgrade", "Serbia"),description2,[c2,c7],offices,"../../assets/images/rentCarLogos/logo2.png");
     const rc3 = new RentCar(3,"Drivy",new Address("Republike Srpske 9","Trebinje","BIH"),description3,[c3,c8],offices,"../../assets/images/rentCarLogos/logo3.png");

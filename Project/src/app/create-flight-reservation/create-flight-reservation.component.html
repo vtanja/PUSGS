@@ -15,7 +15,8 @@
       <ng-template matStepLabel >
           <span [ngStyle]="{'color': '#31124b'}">Invite friends...</span>
       </ng-template>
-      <h5 style="text-align: center; color:red;" [hidden]="!(toBeAdded.length===1 || toBeAdded.length===0 || toBeAdded===undefined)">You can invite friends if you choose more than one seat. Please choose more seats or skip this step.</h5>
+      <p [hidden]="!(toBeAdded.length===1 || toBeAdded.length===0 || toBeAdded===undefined)"><ngb-alert [dismissible]="false"><strong>Notice!</strong> You can invite friends if you choose more than one seat. Please choose more seats or skip this step.</ngb-alert></p>
+      
       <br>
         <mat-form-field class="example-chip-list" style="margin-left: 10%; width: 80%;">
           <mat-chip-list #chipList aria-label="Invited friends...">
@@ -52,20 +53,23 @@
   <!-- </form> -->
   </mat-step>
   
-  <mat-step [stepControl]="thirdFormGroup"  optional>
+  <mat-step [stepControl]="thirdFormGroup" >
     <ng-template matStepLabel >
       <span [ngStyle]="{'color': '#31124b'}">Fill in passengers' data...</span>
    </ng-template>
    <br>
-   <form [formGroup]="thirdFormGroup">
+   
+   <form [formGroup]="thirdFormGroup" [hidden]="toBeAdded.length===0">
+    
      <div class="col" formGroupName="passenger1">
+      <label style="color: #31124b; font-weight: bolder;">Passenger 1 of {{toBeAdded.length}}</label>
       <div class="form-group" [ngClass]="{'has-error': thirdFormGroup.get('passenger1.seati').invalid && thirdFormGroup.get('passenger1.seati').touched}">
         <label class="control-label" >Seat:</label>
         <input
           type="text"
           class="form-control"
           [id]="'seati'"
-          formControlName="seati" readonly>
+          formControlName="seati" >
           <span class="help-block" *ngIf="thirdFormGroup.get('passenger1.seati').errors?.required && thirdFormGroup.get('passenger1.seati').touched">Seat is required!</span>
       </div>
       <div class="form-group" [ngClass]="{'has-error': thirdFormGroup.get('passenger1.firstNamei').invalid && thirdFormGroup.get('passenger1.firstNamei').touched}">
@@ -95,7 +99,7 @@
           formControlName="passporti">
           <span class="help-block" *ngIf="thirdFormGroup.get('passenger1.passporti').errors?.required && thirdFormGroup.get('passenger1.passporti').touched">Passport is required!</span>
       </div>
-      <button class="btn btn-rounded button-style" (click)="initThirdForm()" [hidden]="toBeAdded.length===1 || toBeAdded.length===0 || hiddenButton" >Fill in other passengers personal data</button>
+      <button class="btn btn-rounded button-style" style="width: 30%;" (click)="initThirdForm()" [hidden]="toBeAdded.length===1 || toBeAdded.length===0 || hiddenButton" >Fill in other passengers personal data</button>
      </div>
     <div class="col" formArrayName="passengers" >
       <div
@@ -103,6 +107,7 @@
         [formGroupName]="i"
         style="margin-top: 10px;">
         <hr>
+        <label  style="color: #31124b; font-weight: bolder;">Passenger {{i+2}} of {{toBeAdded.length}}</label>
         <div class="form-group" [ngClass]="{'has-error': passengerCtrl.get('seat').invalid && passengerCtrl.get('seat').touched}">
           <label class="control-label" [attr.for]="'seat'+i">Seat:</label>
           <input
@@ -110,7 +115,7 @@
           [attr.name]="'seat'+i"
             type="text"
             class="form-control"
-            formControlName="seat" readonly>
+            formControlName="seat" >
             <span class="help-block" *ngIf="passengerCtrl.get('seat').errors?.invalid && passengerCtrl.get('seat').touched">Seat is required!</span>
         </div>
         <div class="form-group" [ngClass]="{'has-error': passengerCtrl.get('firstName').invalid && passengerCtrl.get('firstName').touched}">
@@ -148,7 +153,7 @@
    </form>
    <br>
       <div style="text-align: right;">
-        <button mat-button matStepperNext class="btn  btn-md btn-rounded button-style" style="width: 20%; " [disabled]="thirdFormGroup.invalid">Next</button>
+        <button mat-button matStepperNext class="btn  btn-md btn-rounded button-style" style="width: 20%; " [disabled]="thirdFormGroup.invalid"  (click)="getPassengers()">Next</button>
       </div>
 
   </mat-step>
@@ -173,10 +178,32 @@
                 <span [ngStyle]="{'color': '#31124b'}">Done...</span>
             </ng-template>
             <br>
-              <h5 style="text-align: center;">Please check your email. Information about your reservation has been sent on your email!</h5>
+              <h6 style="text-align: center; color:#fa871b;">If you have finished your reservation, please confirm it!</h6>
               <br>
               <div style="text-align: center;" >
-                <button mat-button class="btn  btn-md btn-rounded button-style" style="width: 20%;" routerLink="/user/reservations/flight-reservations">OK</button>
+                <button mat-button class="btn  btn-md btn-rounded button-style" style="width: 20%;" (click)="confirmReservation()">Confirm</button>
+                &nbsp;
+                <button mat-button class="btn  btn-md btn-rounded button-style" style="width: 20%;" (click)="openSm(content)">Abort</button>
               </div>
               </mat-step>
 </mat-horizontal-stepper>
+
+
+<ng-template #content let-modal>
+  <div class="modal-header" >
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">×</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="d-flex align-content-center">
+    <label class="lblStyle"><b>Your reservation won't be saved if you leave. Are you sure you want to leave?</b></label>
+  </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn delete-btn"
+      (click)="abortReservation();modal.close('Confirm click') ">Yes</button>
+      <button type="button"  class="btn delete-btn"
+      (click)="modal.close('Cancel click')">Cancel</button>
+  </div>
+</ng-template>

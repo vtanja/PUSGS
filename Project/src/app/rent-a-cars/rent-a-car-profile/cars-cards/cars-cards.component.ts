@@ -8,6 +8,7 @@ import { AirlineService } from 'src/app/services/airline.service';
 import { Flight } from 'src/app/models/flight.model';
 import { startWith, map } from 'rxjs/operators';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FlightReservation } from 'src/app/models/flight-reservation.model';
 
 
 
@@ -71,14 +72,6 @@ export class CarsCardsComponent implements OnInit,OnDestroy {
   }
 
   open(content) {
-    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
-      this.closeResult = `Closed with: ${result}`;
-    }, (reason) => {
-      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-    });
-  }
-
-  resCar(content) {
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {

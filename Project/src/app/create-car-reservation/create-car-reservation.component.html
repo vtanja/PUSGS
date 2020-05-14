@@ -56,4 +56,100 @@
         </form>
 </div>
     <br>
-      <button type="button" class="btn confirmBtnStyle" style="margin-left: 40%;" [disabled]="reservationForm.invalid" (click)="createReservation()" >Confirm</button>
+      <button type="button" class="btn confirmBtnStyle" style="margin-left: 40%;" [disabled]="reservationForm.invalid" (click)="createReservation(); open(content); " >Confirm</button>
+
+      
+<ng-template #content let-modal>
+    <div class="modal-header">
+      <h6 class="modal-title header" id="modal-basic-title">Reservation details...</h6>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <img src={{company.image}} style="width: 100%; height: 150px;">
+      <!-- <h6 class="lblStyle header" style="text-align: center;">Airline: <span class="valueStyle text"> {{company.name}}</span></h6> -->
+      <br>
+      <!-- <label class="lblStyle">Plane: <span class="valueStyle"> {{flight.plane}}</span></label>
+          <br>  -->
+      <div style="display: inline;">
+        <div style="display: inline-block; width: 50%; align-self: center;">
+          <h6 class="modal-title header" id="modal-basic-title">Departure:</h6>
+          <br>
+          <label class="lblStyle header">Airport: <span class="valueStyle text"> {{flight.takeOffLocation.code}}&nbsp;
+            </span></label><br>
+          <label class="lblStyle header">Date: <span class="valueStyle text"> {{flight.takeOffDate}}&nbsp;
+            </span></label><br>
+          <label class="lblStyle header">Time: <span class="valueStyle text"> {{flight.takeOffTime}}h &nbsp;
+            </span></label>
+  
+        </div>
+        <div style="display: inline-block; width: 50%; align-self: center;">
+          <h6 class="modal-title header" id="modal-basic-title">Landing:</h6>
+          <br>
+          <label class="lblStyle header">Airport: <span class="valueStyle text"> {{flight.landingLocation.code}}&nbsp;
+            </span></label><br>
+          <label class="lblStyle header">Date: <span class="valueStyle text"> {{flight.landingDate}}&nbsp;
+            </span></label><br>
+          <label class="lblStyle header">Time: <span class="valueStyle text"> {{flight.landingTime}}h&nbsp;
+            </span></label>
+  
+        </div>
+      </div>
+      <br>
+      <br>
+      <h6 class="modal-title header" id="modal-basic-title">Passengers:</h6>
+      <br>
+      <div *ngFor="let passenger of flightReservation.passengers">
+        <label class="lblStyle header">First name: <span class="valueStyle text"> {{passenger.passenger.firstname}}&nbsp;
+          </span></label>
+        <br>
+        <label class="lblStyle header">Last name: <span class="valueStyle text"> {{passenger.passenger.lastname}}&nbsp;
+          </span></label>
+        <br>
+        <label class="lblStyle header">Passport number: <span class="valueStyle text">
+            {{passenger.passenger.passportNo}}&nbsp; </span></label>
+        <br>
+        <label class="lblStyle header">Seat: <span class="valueStyle text"> {{passenger.seat}}&nbsp; </span></label>
+  
+        <hr>
+      </div>
+  
+      <div *ngIf="flightReservation.carReservation!==undefined">
+        <h6 class="modal-title header" id="modal-basic-title">Cars rented:</h6>
+        <br>
+        <div >
+          <label class="lblStyle header">Rental company: <span class="valueStyle text"> {{rentalCompany.name}}
+               </span></label>
+          <br>
+          <label class="lblStyle header">Address: <span class="valueStyle text"> {{rentalCompany.address}}
+               </span></label>
+          <br>
+          <label class="lblStyle header">Car: <span class="valueStyle text">
+              {{flightReservation.carReservation.carModel}} &nbsp; </span></label>
+          <br>
+          <label class="lblStyle header">Pick up: <span class="valueStyle text">
+              {{flightReservation.carReservation.startDate}} &nbsp; {{flightReservation.carReservation.pickUpTime}}h
+            </span></label>
+          <br>
+          <label class="lblStyle header">Drop off: <span class="valueStyle text">
+              {{flightReservation.carReservation.returnDate}} &nbsp;
+              {{flightReservation.carReservation.returnTime}}h </span></label>
+          <br>
+        </div>
+      </div>
+  
+      <br>
+      <div style="display: inline-block; width: 50%; align-self: center;">
+        <h6 class="modal-title header" id="modal-basic-title">Total price:</h6>
+        <span class="valueStyle text"> {{flightReservation.price | currency:'EUR'}}&nbsp; </span>
+      </div>
+    </div>
+    
+    <div class="modal-footer">
+      <button type="button" class="btn confirmBtnStyle" (click)="abortReservation(); modal.close('Quit click');">Quit reservation</button>
+      <button type="button" class="btn confirmBtnStyle" (click)="modal.close('Save click'); saveReservation()">Confirm reservation</button>
+    </div>
+  
+  </ng-template>
+  

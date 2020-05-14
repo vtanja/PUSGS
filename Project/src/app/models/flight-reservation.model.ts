@@ -1,4 +1,4 @@
-import { CarReservation } from './carReservation.model';
+import { CarReservation } from './car-reservation.model';
 
 interface Passenger {
   seat: number;
@@ -11,7 +11,7 @@ export class FlightReservation{
   companyID:number;
   price:number;
   passengers:Passenger[];
-  carReservation:CarReservation[];
+  carReservation:CarReservation;
   airlineRate:number;
   flightRate:number;
 
@@ -20,7 +20,6 @@ export class FlightReservation{
     this.flightID=flightID;
     this.companyID= companyID;
     this.price = price;
-    this.carReservation=[];
     this.passengers=passengers;
     this.flightRate=-1;
     this.airlineRate=-1;

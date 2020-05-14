@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
-import { FlightReservation } from 'src/app/models/flightReservation.model';
+import { FlightReservation } from 'src/app/models/flight-reservation.model';
 import { Flight } from 'src/app/models/flight.model';
 import { Airline } from 'src/app/models/airline.model';
 import { AirlineService } from 'src/app/services/airline.service';
@@ -31,13 +31,19 @@ export class FlightReservationItemComponent implements OnInit,OnDestroy {
   ngOnInit(): void {
     this.flight = this.airlineService.getAirline(this.flightReservation.companyID).flights.find(c=>c.id==this.flightReservation.flightID);
     this.company = this.airlineService.getAirline(this.flightReservation.companyID);
+    console.log(this.company);
+    if(this.flightReservation.carReservation!==undefined){
+      this.rentalCompany = this.rentCarService.getRentCarCompany(this.flightReservation.carReservation.companyId); 
+      console.log(this.rentalCompany);
+    }
+    
     this.modalCloseSubscription = this.airlineService.rateModalClose.subscribe(()=>{
       this.modalService.dismissAll();
     })
 
     var i = 0;
-    if(this.flightReservation.carReservation.length>0){
-        this.rentalCompany=this.rentCarService.getRentCarCompany(this.flightReservation.carReservation[0].companyId);
+    if(this.flightReservation.carReservation!==undefined){
+        this.rentalCompany=this.rentCarService.getRentCarCompany(this.flightReservation.carReservation.companyId);
     }
 
     var today = new Date();

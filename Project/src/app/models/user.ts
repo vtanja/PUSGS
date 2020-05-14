@@ -1,5 +1,5 @@
-import { CarReservation } from './carReservation.model';
-import { FlightReservation } from './flightReservation.model';
+import { CarReservation } from './car-reservation.model';
+import { FlightReservation } from './flight-reservation.model';
 
 export class User {
      firstName:string;
