@@ -3,7 +3,7 @@ import { MapsAPILoader, AgmMap, AgmMarker } from '@agm/core';
 import { GoogleMapsAPIWrapper } from '@agm/core';
 import { Address } from '../models/address';
 import { Subscription } from 'rxjs';
-import { UserService } from '../services/userService.service';
+import { UserService } from '../services/user-service.service';
 
 declare var google: any;
 

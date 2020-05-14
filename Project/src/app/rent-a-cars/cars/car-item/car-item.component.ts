@@ -1,9 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Car } from 'src/app/models/Car.model';
-import { UserService } from 'src/app/services/userService.service';
+import { UserService } from 'src/app/services/user-service.service';
 import { RentCarService } from 'src/app/services/rent-a-car.service';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
-import { CarReservation } from 'src/app/models/carReservation.model';
+import { CarReservation } from 'src/app/models/car-reservation.model';
 import Swal from 'sweetalert2';
 
 @Component({

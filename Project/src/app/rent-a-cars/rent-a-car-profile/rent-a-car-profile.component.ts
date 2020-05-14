@@ -4,7 +4,7 @@ import { ActivatedRoute, Router, Params } from '@angular/router';
 import { RentCar } from 'src/app/models/rent-a-car.model';
 import { Subscription, Subject } from 'rxjs';
 import { RentCarService } from '../../services/rent-a-car.service';
-import { UserService } from 'src/app/services/userService.service';
+import { UserService } from 'src/app/services/user-service.service';
 import { Address } from 'src/app/models/address';
 
 @Component({

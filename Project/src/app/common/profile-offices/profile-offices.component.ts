@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { KeyValue } from '@angular/common';
-import { UserService } from 'src/app/services/userService.service';
+import { UserService } from 'src/app/services/user-service.service';
 import { Address } from 'src/app/models/address';
 
 @Component({
