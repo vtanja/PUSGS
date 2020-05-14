@@ -5,6 +5,9 @@
     <app-flight-item [flight]="flight"></app-flight-item>
   </div> 
 </div>
+<div *ngIf="(flights.length===0 || flights===undefined) || ((flights.length===0 || flights===undefined) && roundFlights.length===0 || roundFlights===undefined)">
+  <h3>We haven't found any flights for you...</h3>
+</div>
 
  <div *ngIf="roundFlights.length!==0">
   <input class="form-control" type="text" [(ngModel)]="filterFlight" hidden>
@@ -12,6 +15,5 @@
   <div class="list-group" *ngFor="let roundFlight of roundFlights | roundFlightsFilter:filterFlight" style="margin-top: 5%;">
     <app-round-flight-item [roundFlight]="roundFlight"></app-round-flight-item>
   </div> 
-</div> 
-  
+</div>   
 

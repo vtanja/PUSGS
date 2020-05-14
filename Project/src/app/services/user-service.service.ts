@@ -2,8 +2,8 @@
 import { Subject } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { User } from '../models/user';
-import { CarReservation } from '../models/carReservation.model';
-import { FlightReservation } from '../models/flightReservation.model';
+import { CarReservation } from '../models/car-reservation.model';
+import { FlightReservation } from '../models/flight-reservation.model';
 import { RentCarService } from './rent-a-car.service';
 import { AirlineService } from './airline.service';
 import { UsersRate } from '../models/users-rate.model';
@@ -58,6 +58,10 @@ export class UserService{
       if(localStorage.getItem('loggedUser')!=undefined)
         return true;
       return false;
+    }
+
+    getUserFromName(name:string){
+      return JSON.parse(localStorage.getItem('loggedUser')).name;
     }
 
     login(username:string,password:string):boolean{

@@ -1,0 +1,209 @@
+<h5 style="text-align: center;">Make a reservation...</h5>
+<br>
+<mat-horizontal-stepper linear #stepper >
+  <mat-step [stepControl]="firstFormGroup">
+    <ng-template matStepLabel >
+       <span [ngStyle]="{'color': '#31124b'}">Choose seats...</span>
+    </ng-template>
+    <app-plane-layout [seatsLayout]="seatsLayout" [toBeAdded]="toBeAdded" ></app-plane-layout>
+    <div style="text-align: right;">
+        <button mat-button matStepperNext class="btn  btn-md btn-rounded button-style" style="width: 20%; " [disabled]="toBeAdded.length===0">Next</button>
+    </div>
+  </mat-step>
+  <mat-step [stepControl]="secondFormGroup" optional >
+    <!-- <form [formGroup]="secondFormGroup" style="text-align: center;"> -->
+      <ng-template matStepLabel >
+          <span [ngStyle]="{'color': '#31124b'}">Invite friends...</span>
+      </ng-template>
+      <p [hidden]="!(toBeAdded.length===1 || toBeAdded.length===0 || toBeAdded===undefined)"><ngb-alert [dismissible]="false"><strong>Notice!</strong> You can invite friends if you choose more than one seat. Please choose more seats or skip this step.</ngb-alert></p>
+      
+      <br>
+        <mat-form-field class="example-chip-list" style="margin-left: 10%; width: 80%;">
+          <mat-chip-list #chipList aria-label="Invited friends...">
+            <mat-chip
+              *ngFor="let friend of invitedFriends"
+              [selectable]="selectable"
+              [removable]="removable"
+              (removed)="remove(friend)">
+              {{friend}}
+              <div matChipRemove *ngIf="removable"><i class="fa fa-times" style="color: #31124b;"></i></div>
+            </mat-chip>
+            <input
+              placeholder="Find a friend..."
+              #fruitInput
+              [formControl]="fruitCtrl"
+              [matAutocomplete]="auto"
+              [matChipInputFor]="chipList"
+              [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+              (matChipInputTokenEnd)="add($event)"
+              [readonly]="toBeAdded.length===1 || toBeAdded.length===0 || toBeAdded===undefined || toBeAdded.length-1===invitedFriends.length">
+          </mat-chip-list>
+          <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+            <mat-option *ngFor="let option of filteredOptions | async" [value]="option.name">
+              {{option.name}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+        
+        &nbsp;
+
+    <div style="text-align: right;">
+      <button mat-button matStepperNext class="btn  btn-md btn-rounded button-style" style="width: 20%; " >Next</button>
+    </div>
+  <!-- </form> -->
+  </mat-step>
+  
+  <mat-step [stepControl]="thirdFormGroup" >
+    <ng-template matStepLabel >
+      <span [ngStyle]="{'color': '#31124b'}">Fill in passengers' data...</span>
+   </ng-template>
+   <br>
+   
+   <form [formGroup]="thirdFormGroup" [hidden]="toBeAdded.length===0">
+    
+     <div class="col" formGroupName="passenger1">
+      <label style="color: #31124b; font-weight: bolder;">Passenger 1 of {{toBeAdded.length}}</label>
+      <div class="form-group" [ngClass]="{'has-error': thirdFormGroup.get('passenger1.seati').invalid && thirdFormGroup.get('passenger1.seati').touched}">
+        <label class="control-label" >Seat:</label>
+        <input
+          type="text"
+          class="form-control"
+          [id]="'seati'"
+          formControlName="seati" >
+          <span class="help-block" *ngIf="thirdFormGroup.get('passenger1.seati').errors?.required && thirdFormGroup.get('passenger1.seati').touched">Seat is required!</span>
+      </div>
+      <div class="form-group" [ngClass]="{'has-error': thirdFormGroup.get('passenger1.firstNamei').invalid && thirdFormGroup.get('passenger1.firstNamei').touched}">
+        <label class="control-label">First name:</label>
+        <input
+          type="text"
+          class="form-control"
+          [id]="'firstNamei'"
+          formControlName="firstNamei" readonly>
+          <span class="help-block" *ngIf="thirdFormGroup.get('passenger1.firstNamei').errors?.required && thirdFormGroup.get('passenger1.firstNamei').touched">First name is required!</span>
+      </div>
+      <div class="form-group" [ngClass]="{'has-error': thirdFormGroup.get('passenger1.lastNamei').invalid && thirdFormGroup.get('passenger1.lastNamei').touched}">
+        <label class="control-label" >Last name:</label>
+        <input
+          type="text"
+          class="form-control"
+          [id]="'lastNamei'"
+          formControlName="lastNamei" readonly>
+          <span class="help-block" *ngIf="thirdFormGroup.get('passenger1.lastNamei').errors?.required && thirdFormGroup.get('passenger1.lastNamei').touched">Last name is required!</span>
+      </div>
+      <div class="form-group" [ngClass]="{'has-error': thirdFormGroup.get('passenger1.passporti').invalid && thirdFormGroup.get('passenger1.passporti').touched}">
+        <label class="control-label" >Passport:</label>
+        <input
+          type="text"
+          class="form-control"
+          [id]="'passporti'"
+          formControlName="passporti">
+          <span class="help-block" *ngIf="thirdFormGroup.get('passenger1.passporti').errors?.required && thirdFormGroup.get('passenger1.passporti').touched">Passport is required!</span>
+      </div>
+      <button class="btn btn-rounded button-style" style="width: 30%;" (click)="initThirdForm()" [hidden]="toBeAdded.length===1 || toBeAdded.length===0 || hiddenButton" >Fill in other passengers personal data</button>
+     </div>
+    <div class="col" formArrayName="passengers" >
+      <div
+        *ngFor="let passengerCtrl of passengersControls; let i = index"
+        [formGroupName]="i"
+        style="margin-top: 10px;">
+        <hr>
+        <label  style="color: #31124b; font-weight: bolder;">Passenger {{i+2}} of {{toBeAdded.length}}</label>
+        <div class="form-group" [ngClass]="{'has-error': passengerCtrl.get('seat').invalid && passengerCtrl.get('seat').touched}">
+          <label class="control-label" [attr.for]="'seat'+i">Seat:</label>
+          <input
+          [id]="'seat'+i"
+          [attr.name]="'seat'+i"
+            type="text"
+            class="form-control"
+            formControlName="seat" >
+            <span class="help-block" *ngIf="passengerCtrl.get('seat').errors?.invalid && passengerCtrl.get('seat').touched">Seat is required!</span>
+        </div>
+        <div class="form-group" [ngClass]="{'has-error': passengerCtrl.get('firstName').invalid && passengerCtrl.get('firstName').touched}">
+          <label class="control-label" [attr.for]="'firstName'+i">First name:</label>
+          <input
+          [id]="'firstName'+i"
+          [attr.name]="'firstName'+i"
+            type="text"
+            class="form-control"
+            formControlName="firstName">
+            <span class="help-block" *ngIf="passengerCtrl.get('firstName').errors?.invalid && passengerCtrl.get('firstName').touched">First name is required!</span>
+        </div>
+        <div class="form-group" [ngClass]="{'has-error': passengerCtrl.get('lastName').invalid && passengerCtrl.get('lastName').touched}">
+          <label class="control-label" [attr.for]="'lastName'+i">Last name:</label>
+          <input
+          [id]="'lastName'+i"
+          [attr.name]="'lastName'+i"
+            type="text"
+            class="form-control"
+            formControlName="lastName">
+            <span class="help-block" *ngIf="passengerCtrl.get('lastName').errors?.invalid && passengerCtrl.get('lastName').touched">Last name is required!</span>
+        </div>
+        <div class="form-group" [ngClass]="{'has-error': passengerCtrl.get('passport').invalid && passengerCtrl.get('passport').touched}">
+          <label class="control-label" [attr.for]="'passport'+i">Passport:</label>
+          <input
+          [id]="'passport'+i"
+          [attr.name]="'passport'+i"
+            type="text"
+            class="form-control"
+            formControlName="passport">
+            <span class="help-block" *ngIf="passengerCtrl.get('passport').errors?.invalid && passengerCtrl.get('passport').touched">Passport is required!</span>
+        </div>
+      </div>
+    </div>
+   </form>
+   <br>
+      <div style="text-align: right;">
+        <button mat-button matStepperNext class="btn  btn-md btn-rounded button-style" style="width: 20%; " [disabled]="thirdFormGroup.invalid"  (click)="getPassengers()">Next</button>
+      </div>
+
+  </mat-step>
+  <mat-step [stepControl]="fourthFormGroup" optional >
+    <ng-template matStepLabel >
+      <span [ngStyle]="{'color': '#31124b'}">Rent a car...</span>
+   </ng-template>
+      <div *ngIf="cars.length===0">
+        <h5 style="color:red;">We're sorry, there are no cars to offer for rent on your landing location.</h5>
+      </div>
+      <div class="d-flex justify-content-center" style="margin-top: 2%;" *ngIf="cars.length!==0"> 
+        <app-cars-cards [cars]="cars"></app-cars-cards>
+      </div>
+      
+      <br>
+      <div style="text-align: right;">
+        <button mat-button matStepperNext class="btn  btn-md btn-rounded button-style" style="width: 20%; ">Next</button>
+      </div>
+  </mat-step>
+  <mat-step >
+              <ng-template matStepLabel >
+                <span [ngStyle]="{'color': '#31124b'}">Done...</span>
+            </ng-template>
+            <br>
+              <h6 style="text-align: center; color:#fa871b;">If you have finished your reservation, please confirm it!</h6>
+              <br>
+              <div style="text-align: center;" >
+                <button mat-button class="btn  btn-md btn-rounded button-style" style="width: 20%;" (click)="confirmReservation()">Confirm</button>
+                &nbsp;
+                <button mat-button class="btn  btn-md btn-rounded button-style" style="width: 20%;" (click)="openSm(content)">Abort</button>
+              </div>
+              </mat-step>
+</mat-horizontal-stepper>
+
+
+<ng-template #content let-modal>
+  <div class="modal-header" >
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">×</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="d-flex align-content-center">
+    <label class="lblStyle"><b>Your reservation won't be saved if you leave. Are you sure you want to leave?</b></label>
+  </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn delete-btn"
+      (click)="abortReservation();modal.close('Confirm click') ">Yes</button>
+      <button type="button"  class="btn delete-btn"
+      (click)="modal.close('Cancel click')">Cancel</button>
+  </div>
+</ng-template>

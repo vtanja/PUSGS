@@ -1,4 +1,4 @@
-import { CarReservation } from './carReservation.model';
+import { CarReservation } from './car-reservation.model';
 import { UsersRate } from './users-rate.model';
 import { Discount } from './discount.model';
 

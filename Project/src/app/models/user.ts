@@ -1,5 +1,5 @@
-import { CarReservation } from './carReservation.model';
-import { FlightReservation } from './flightReservation.model';
+import { CarReservation } from './car-reservation.model';
+import { FlightReservation } from './flight-reservation.model';
 
 export class User {
      firstName:string;
@@ -14,6 +14,7 @@ export class User {
      profileImage:string;
      carReservations:CarReservation[];
      flightReservations:FlightReservation[];
+     name:string;
      role:string;
      carCompany:number;
      airlineCompany:number;
@@ -32,5 +33,6 @@ export class User {
             this.profileImage="../../assets/images/profilna.png";
             this.carReservations = [];
             this.flightReservations=[];
+            this.name=this.firstName+' '+this.lastName;
          }
 }

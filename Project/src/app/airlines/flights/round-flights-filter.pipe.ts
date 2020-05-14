@@ -36,7 +36,7 @@ export class RoundFlightsFilterPipe implements PipeTransform {
 
       console.log(flight.airline);
       for(const company of filter.airlines){
-        if(flight.airline===company.name){
+        if(flight.airline.name===company.name){
 
           if(!company.isChecked){
             return false;

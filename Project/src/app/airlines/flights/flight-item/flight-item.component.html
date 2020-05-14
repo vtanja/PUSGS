@@ -7,45 +7,63 @@
  
 <a  class="list-group-item list-group-item-action ">
     <div class="d-flex">
-        <div class="flex-col align-self-center" style="width: 20%;  text-align: center;" >
-            <img src="{{flight.image}}" style="width: 100%; height: 100%;" >
+        <div class="row" style="width: 80%; cursor:pointer" (click)="moreInfo(content)">
+            <div class="flex-col align-self-center" style="width: 20%;  text-align: center;" >
+                <img src="{{flight.image}}" style="width: 100%; height: 100%;" >
+            </div>
+            <div class="flex-column align-self-center " style="width: 20%; text-align: end; margin-right:1.5% " >
+                <div class="flex-row " style="height: 50%; ">
+                    <img src="../../../../assets/images/flight.png" style="width: 20px; height: 20px; padding-bottom: 0%; padding-block-end: 0%;">
+                    {{flight.takeOffTime}}
+                </div>
+                <div class="flex-row " style="height: 50%; ">
+                    {{flight.takeOffLocation.code}}
+                </div>
+              </div>
+            <div class="flex-column " style="width: 20%; text-align: center;" >
+                <div class="flex-row " style="height: 33.3%;">
+                    <small style="font-size: x-small; color: #fa9e1c; font-weight: bolder; "> Duration: {{flight.duration}}h</small>
+                </div>
+                <div class="flex-row " style="height: 33.3%;">
+                    <img src="../../../../assets/images/minus.png" style="width: 80%; height: 20px;">
+                    <img src="../../../../assets/images/airplane.png" style="width: 20%; height: 20px;">
+                </div>
+                <div class="flex-row" style="height: 33.3%;">
+                    <small *ngIf="flight.numberOfChangeovers>0; else noStops" style="font-size: x-small; color: #fa9e1c; font-weight: bolder;" >{{flight.numberOfChangeovers}} stop</small>
+                    <ng-template #noStops><small style="font-size: x-small; color: #fa9e1c; font-weight: bolder;">Direct</small></ng-template>
+                </div>
+              </div>
+            <div class="flex-col align-self-center" style="width: 20%; text-align: left; margin-left: 1.5%; ">
+                <div class="flex-row " style="height: 50%;">
+                    {{flight.landingTime}}
+                    <img src="../../../../assets/images/flight (1).png" style="width: 20px; height: 20px; padding-bottom: 0%; padding-block-end: 0%;">
+                </div>
+                <div class="flex-row " style="height: 50%;">
+                    {{flight.landingLocation.code}}
+                </div>
+            </div>
         </div>
-        <div class="flex-column align-self-center " style="width: 20%; text-align: end; margin-right:1.5% " >
-            <div class="flex-row " style="height: 50%; ">
-                <img src="../../../../assets/images/flight.png" style="width: 20px; height: 20px; padding-bottom: 0%; padding-block-end: 0%;">
-                {{flight.takeOffTime}}
-            </div>
-            <div class="flex-row " style="height: 50%; ">
-                {{flight.takeOffLocation}}
-            </div>
-          </div>
-        <div class="flex-column " style="width: 20%; text-align: center;" >
-            <div class="flex-row " style="height: 33.3%;">
-                <small style="font-size: x-small; color: #fa9e1c; font-weight: bolder; "> Duration: {{flight.duration}}h</small>
-            </div>
-            <div class="flex-row " style="height: 33.3%;">
-                <img src="../../../../assets/images/minus.png" style="width: 80%; height: 20px;">
-                <img src="../../../../assets/images/airplane.png" style="width: 20%; height: 20px;">
-            </div>
-            <div class="flex-row" style="height: 33.3%;">
-                <small *ngIf="flight.numberOfChangeovers>0; else noStops" style="font-size: x-small; color: #fa9e1c; font-weight: bolder;" >{{flight.numberOfChangeovers}} stop</small>
-                <ng-template #noStops><small style="font-size: x-small; color: #fa9e1c; font-weight: bolder;">Direct</small></ng-template>
-            </div>
-          </div>
-        <div class="flex-col align-self-center" style="width: 20%; text-align: left; margin-left: 1.5%; ">
-            <div class="flex-row " style="height: 50%;">
-                {{flight.landingTime}}
-                <img src="../../../../assets/images/flight (1).png" style="width: 20px; height: 20px; padding-bottom: 0%; padding-block-end: 0%;">
-            </div>
-            <div class="flex-row " style="height: 50%;">
-                {{flight.landingLocation}}
-            </div>
-        </div>
+        
         <div class="flex-col align-self-center" style="width: 20%;  text-align: center;">
                 {{flight.price | currency:'EUR':true}}
+                <div class="flex-row " style="height: 50%;  padding-top: 5%;">
+                    <button class="btn  btn-md btn-rounded button-style" style="display: block;width: 100%;" routerLink='/create-reservation/{{flight.id}}'>Buy ticket</button>
+                </div>
         </div>
     </div>
 </a>  
 
+
+  
+<ng-template #content let-modal>
+    <div class="modal-header">Flight details...
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">×</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <p>These are flight detsils.</p>
+    </div>
+  </ng-template>
 
   

@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Sort } from '@angular/material/sort';
-import { UserService } from '../../services/userService.service';
+import { UserService } from '../../services/user-service.service';
 import { User } from 'src/app/models/user';
 
 @Component({
@@ -57,7 +57,7 @@ export class FriendsListComponent implements OnInit {
       this.loggedUser.friends.splice(index,1);
     }
 
-    this.sortedData.splice(index,1);
+    this.sortedData.splice(index,1); 
 
     const index2=user.friends.indexOf(this.loggedUser);
     if(index2>-1){

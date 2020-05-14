@@ -1,7 +1,6 @@
 import { Injectable, OnInit } from '@angular/core';
 import { RentCar } from '../models/rent-a-car.model';
 import { RentCarService } from './rent-a-car.service';
-import { UserService } from './userService.service';
 import { Car } from '../models/Car.model';
 import { NgbDate, NgbCalendar } from '@ng-bootstrap/ng-bootstrap';
 import { Address } from '../models/address';

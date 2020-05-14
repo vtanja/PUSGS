@@ -1,9 +1,11 @@
 import { UsersRate } from './users-rate.model';
+import { Airport } from './airport';
+import { Airline } from './airline.model';
 
 export class Flight {
     id:number;
-    takeOffLocation:string;
-    landingLocation:string;
+    takeOffLocation:Airport;
+    landingLocation:Airport;
     takeOffDate:string;
     landingDate:string;
     takeOffTime:string;
@@ -14,18 +16,19 @@ export class Flight {
     price:number;
     rate:number;
     image:string;
+    freeSeats:number[];
     economySeats:number;
     premiumEconomySeats:number;
     businessSeats:number;
     firstClassSeats:number;
-    airline:string;
+    airline:Airline;
     rates:UsersRate[];
 
 
-  constructor(id:number,takeOffLocation:string, landingLocation:string, takeOffDate:string,landingDate:string,
+  constructor(id:number,takeOffLocation:Airport, landingLocation:Airport, takeOffDate:string,landingDate:string,
                 takeOffTime:string,landingTime:string, duration:number, numberOfChangeovers:number,changeoverLocations:Array<string>,
                   price:number, economySeats:number, premiumEconomySeats:number,businessSeats:number,
-                  firstClassSeats:number, airline:string){
+                  firstClassSeats:number){
 
     this.id = id;
     this.takeOffLocation=takeOffLocation;
@@ -43,7 +46,6 @@ export class Flight {
     this.premiumEconomySeats=premiumEconomySeats;
     this.businessSeats=businessSeats;
     this.firstClassSeats=firstClassSeats;
-    this.airline=airline;
     this.rates=[];
 
   }

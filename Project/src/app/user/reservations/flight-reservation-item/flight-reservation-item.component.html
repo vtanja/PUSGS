@@ -7,12 +7,12 @@
         </div>
         <div class="col-md-2" style="height: 100%; text-align: center; align-content: center;">
           <div class="row header justify-content-center align-items-center">Departure:</div>
-          <div class="row text justify-content-center align-items-center">{{flight.takeOffLocation}}</div>
+          <div class="row text justify-content-center align-items-center">{{flight.takeOffLocation.code}}</div>
           <div class="row text justify-content-center align-items-center">{{flight.takeOffDate}}&nbsp;{{flight.takeOffTime}}h</div>
         </div>
         <div class="col-md-2" style="height: 100%; text-align: center; align-content: center;">
           <div class="row header justify-content-center align-items-center">Landing:</div>
-          <div class="row text justify-content-center align-items-center">{{flight.landingLocation}}</div>
+          <div class="row text justify-content-center align-items-center">{{flight.landingLocation.code}}</div>
           <div class="row text justify-content-center align-items-center">{{flight.landingDate}}&nbsp;{{flight.landingTime}}h</div>
         </div>
         <div class="col-md-2" style="height: 100%; text-align: center; align-content: center;">
@@ -23,9 +23,9 @@
         <div class="col-md-2" style="height: 100%; text-align: center; align-content: center;">
           <div class="row header justify-content-center align-items-center">Car included:</div>
           <div class="row text justify-content-center align-items-center"
-            *ngIf="flightReservation.carReservation.length===0">No</div>
+            *ngIf="flightReservation.carReservation===undefined">No</div>
           <div class="row text justify-content-center align-items-center"
-            *ngIf="flightReservation.carReservation.length>0">Yes</div>
+            *ngIf="flightReservation.carReservation!==undefined">Yes</div>
         </div>
         <div class="col-md-2" style="height: 100%; text-align: center; align-content: center;">
           <div class="row header justify-content-center align-items-center">Total price:</div>
@@ -85,7 +85,7 @@
       <div style="display: inline-block; width: 50%; align-self: center;">
         <h6 class="modal-title header" id="modal-basic-title">Departure:</h6>
         <br>
-        <label class="lblStyle header">Airport: <span class="valueStyle text"> {{flight.takeOffLocation}}&nbsp;
+        <label class="lblStyle header">Airport: <span class="valueStyle text"> {{flight.takeOffLocation.code}}&nbsp;
           </span></label><br>
         <label class="lblStyle header">Date: <span class="valueStyle text"> {{flight.takeOffDate}}&nbsp;
           </span></label><br>
@@ -96,7 +96,7 @@
       <div style="display: inline-block; width: 50%; align-self: center;">
         <h6 class="modal-title header" id="modal-basic-title">Landing:</h6>
         <br>
-        <label class="lblStyle header">Airport: <span class="valueStyle text"> {{flight.landingLocation}}&nbsp;
+        <label class="lblStyle header">Airport: <span class="valueStyle text"> {{flight.landingLocation.code}}&nbsp;
           </span></label><br>
         <label class="lblStyle header">Date: <span class="valueStyle text"> {{flight.landingDate}}&nbsp;
           </span></label><br>
@@ -124,23 +124,23 @@
       <hr>
     </div>
 
-    <div *ngIf="flightReservation.carReservation.length>0">
+    <div *ngIf="flightReservation.carReservation!==undefined">
       <h6 class="modal-title header" id="modal-basic-title">Cars rented:</h6>
       <br>
-      <div *ngFor="let car of flightReservation.carReservation; let i = index">
+      <div >
         <label class="lblStyle header">Rental company: <span class="valueStyle text"> {{rentalCompany.name}}
             {{rentalCompany.address}}&nbsp; </span></label>
         <br>
         <label class="lblStyle header">Car: <span class="valueStyle text">
-            {{flightReservation.carReservation[i].carModel}} &nbsp; </span></label>
+            {{flightReservation.carReservation.carModel}} &nbsp; </span></label>
         <br>
         <label class="lblStyle header">Pick up: <span class="valueStyle text">
-            {{flightReservation.carReservation[i].startDate}} &nbsp; {{flightReservation.carReservation[0].pickUpTime}}h
+            {{flightReservation.carReservation.startDate}} &nbsp; {{flightReservation.carReservation.pickUpTime}}h
           </span></label>
         <br>
         <label class="lblStyle header">Drop off: <span class="valueStyle text">
-            {{flightReservation.carReservation[i].returnDate}} &nbsp;
-            {{flightReservation.carReservation[0].returnTime}}h </span></label>
+            {{flightReservation.carReservation.returnDate}} &nbsp;
+            {{flightReservation.carReservation.returnTime}}h </span></label>
         <br>
       </div>
     </div>

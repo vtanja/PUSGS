@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
-import { CarReservation } from 'src/app/models/carReservation.model';
+import { CarReservation } from 'src/app/models/car-reservation.model';
 import { RentCarService } from 'src/app/services/rent-a-car.service';
 import { Car } from 'src/app/models/Car.model';
 import { RentCar } from 'src/app/models/rent-a-car.model';
