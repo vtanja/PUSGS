@@ -122,8 +122,8 @@ export class CarsSearchFormComponent implements OnInit {
       }),
 
       'times' : new FormGroup({
-        'pickUpTime': new FormControl(pickUpTime),
-        'dropOffTime' : new FormControl(dropOffTime)
+        'pickUpTime': new FormControl(pickUpTime,Validators.required),
+        'dropOffTime' : new FormControl(dropOffTime,Validators.required)
       }),
 
       'carBrand' : new FormControl(carBrand),

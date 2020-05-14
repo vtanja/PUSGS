@@ -16,6 +16,7 @@ export class Car{
   hasAirCondition:boolean;
   hasAutomaticGearbox:boolean;
   companyName:string;
+  companyId:number;
   rate:number;
   rates:UsersRate[];
   reservations:CarReservation[];
@@ -24,7 +25,7 @@ export class Car{
 
   constructor(id:number,brand:string,model:string,year:number,pricePerDay:number,
     avDates:Array<string>,image:string,maxPassengers:number,
-    doors:number,hasAirCondition:boolean,hasAutomaticGearbox:boolean,companyName:string){
+    doors:number,hasAirCondition:boolean,hasAutomaticGearbox:boolean,companyName:string,companyId:number){
 
     this.id=id;
     this.brand=brand;
@@ -39,6 +40,7 @@ export class Car{
     this.hasAirCondition=hasAirCondition;
     this.hasAutomaticGearbox=hasAutomaticGearbox;
     this.companyName=companyName;
+    this.companyId=companyId;
     this.rate = -1;
     this.rates=[];
     this.discounts = [];

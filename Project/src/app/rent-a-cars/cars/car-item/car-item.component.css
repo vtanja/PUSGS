@@ -45,3 +45,41 @@
   font-weight: 500;
   font-size: larger;
 }
+.lbl-style{
+  display: block;
+  font-family: Poppins-Medium;
+}
+
+.valueStyle{
+  font-weight: bold;
+  padding-left: 3px;
+}
+
+.confirmBtnStyle{
+
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 20px;
+    min-width: 244px;
+    height: 50px;
+
+    font-family: Poppins-Medium;
+    font-size: 16px;
+    color: #fff;
+    line-height: 1.2;
+    background: #31124b;
+
+    border-width: 0cm;
+    border-radius: 10px;
+  }
+
+  .confirmBtnStyle:hover
+  {
+    opacity: 0.8;
+  }
+

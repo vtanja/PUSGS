@@ -1,12 +1,14 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnInit } from '@angular/core';
 import { RentCar } from '../models/rent-a-car.model';
 import { RentCarService } from './rent-a-car.service';
 import { UserService } from './userService.service';
 import { Car } from '../models/Car.model';
 import { NgbDate, NgbCalendar } from '@ng-bootstrap/ng-bootstrap';
+import { Address } from '../models/address';
+import { Subscription, Subject } from 'rxjs';
 
 @Injectable()
-export class RentCarAdministratorService{
+export class RentCarAdministratorService {
 
   constructor(private rentCarService:RentCarService,private usersService:UserService,private calendar: NgbCalendar){
 
@@ -27,12 +29,18 @@ export class RentCarAdministratorService{
     return this.rentCarService.getCompanyCars(loggedUser.carCompany);
   }
 
-  editCompanyData(companyID:number,name:string,description:string,address:string,logo:string):boolean{
+  editCompanyData(companyID:number,name:string,description:string,address:Address,logo:string){
 
     let company = this.rentCarService.getRentCarCompany(companyID);
     company.name=name;
     company.description=description;
-    //this.rentCars.find(c=>c.id===companyID).address=address;
+    company.address = address;
+    this.reverseGeocode(address).then(()=>{
+      console.log("reerse geocode true");
+    },()=>{
+      console.log("reerse geocode false");
+    });
+
     return true;
   }
 
@@ -85,9 +93,25 @@ export class RentCarAdministratorService{
   addCar(newCar:Car):boolean{
     let loggedUser = this.usersService.getLoggedUser();
     let carCompany = this.rentCarService.getRentCarCompany(loggedUser.carCompany);
+    newCar.companyId = carCompany.id;
     newCar.companyName = carCompany.name;
     newCar.id = carCompany.cars.length+1;
     carCompany.cars.push(newCar);
     return true;
   }
+
+  async reverseGeocode(address:Address) {
+    let city = address.city.replace(' ','+');
+    let street = address.street.replace(' ','+');
+    let country = address.country.replace(' ','+');
+    const data = await fetch('https://nominatim.openstreetmap.org/search?q=' + address.num + '+'+street+',+'+city + ',+' + country+'&format=json',{
+       headers:{
+         'Accept-Language' : 'en-US'
+       }
+     });
+             const res = await data.json();
+             address.longitude = +res[0].lon;
+             address.latitude=+res[0].lat;
+             console.log(address);
+   }
 }

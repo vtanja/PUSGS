@@ -82,7 +82,7 @@
       <label class="lblStyle">Total price: <span class="valueStyle"> {{currentCar.pricePerDay*rentDays | currency:'EUR' }}</span></label>
     </div>
     <div class="modal-footer">
-      <button type="button" class="btn confirmBtnStyle" (click)="modal.close('Save click')">Confirm</button>
+      <button type="button" class="btn confirmBtnStyle" (click)="makeReservation();modal.close('Save click')">Confirm</button>
     </div>
   </ng-template>
 

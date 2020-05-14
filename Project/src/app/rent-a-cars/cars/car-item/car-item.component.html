@@ -63,8 +63,35 @@
             style="margin-top: -10%;background-color: #bba280; text-align: center; font-size: small;color:white"><b>No any rates yet.</b></pre>
         </small>
       </div>
-      <button *ngIf="isUserLogged" class="btn btn-md btn-rounded button-style" style="display: block;width: 100%;margin-top: 25%;">Rent</button>
+      <button *ngIf="isUserLogged" class="btn btn-md btn-rounded button-style" style="display: block;width: 100%;margin-top: 25%;" (click)="open(mymodal)">Rent</button>
       <a *ngIf="!isUserLogged" routerLink="/register" style="color: #eea136;display: block;width: 100%;margin-top: 25%;" >Register and rent a car afterwards.</a>
     </div>
   </div>
 </a>
+
+<ng-template #mymodal let-modal>
+  <div class="modal-header">
+    <h6 class="modal-title" id="modal-basic-title">Confirm reservation</h6>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">×</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <label class="lblStyle">Car: <span class="valueStyle"> {{car.brand}}&nbsp;{{car.model}} </span></label>
+    <br>
+    <label class="lblStyle">Rent a car company: <span class="valueStyle"> {{car.companyName}}</span></label>
+    <br>
+    <label class="lblStyle">Pick up location: <span class="valueStyle"> {{params['pickUpLocation']}},&nbsp;{{params['pickUpTime']}} </span></label>
+    <br>
+    <label class="lblStyle">Pick up date:<span class="valueStyle">  {{params['pickUpDate']}},&nbsp;{{params['dropOffTime']}}</span></label>
+    <br>
+    <label class="lblStyle">Drop off location:<span class="valueStyle">  {{params['dropOffLocation']}}</span></label>
+    <br>
+    <label class="lblStyle">Drop off date:<span class="valueStyle">  {{params['dropOffDate']}}</span></label>
+    <br>
+    <label class="lblStyle">Total price: <span class="valueStyle"> {{car.pricePerDay*daysBetween | currency:'EUR' }}</span></label>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn confirmBtnStyle" (click)="makeReservation();modal.close('Save click')">Confirm</button>
+  </div>
+</ng-template>

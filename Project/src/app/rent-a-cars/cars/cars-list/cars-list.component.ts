@@ -20,8 +20,9 @@ export class CarsListComponent implements OnInit {
   ngOnInit(): void {
 
     this.activeRoute.queryParams.subscribe((queryParams:Params)=>{
-      this.cars=this.rentCarService.getCars(queryParams);
+      this.params=queryParams;
       this.daysBetween = this.getDaysBetween(queryParams.pickUpDate,queryParams.dropOffDate);
+      this.cars=this.rentCarService.getCars(queryParams);
   });
 }
 

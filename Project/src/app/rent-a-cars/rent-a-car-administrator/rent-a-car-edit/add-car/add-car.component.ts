@@ -4,6 +4,7 @@ import { Car } from 'src/app/models/Car.model';
 import Swal from 'sweetalert2';
 import { RentCarAdministratorService } from 'src/app/services/rent-car-administrator.service';
 import { Router } from '@angular/router';
+import { Address } from 'src/app/models/address';
 
 @Component({
   selector: 'app-add-car',
@@ -90,7 +91,7 @@ export class AddCarComponent implements OnInit {
     let hasAirCondition = this.addCarForm.get('hasAircondition').value==='No'?false:true;
     let image = this.addCarForm.get('imageSrc').value;
 
-    let newCar = new Car(0,brand,model,year,price,[],image,passengers,doors,hasAirCondition,hasAutomationGearbox,'');
+    let newCar = new Car(0,brand,model,year,price,[],image,passengers,doors,hasAirCondition,hasAutomationGearbox,'',-1);
 
 
     if(this.rentCarAdminService.addCar(newCar)){
@@ -109,3 +110,5 @@ export class AddCarComponent implements OnInit {
   }
 
 }
+
+

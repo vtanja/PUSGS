@@ -49,4 +49,15 @@ export class RentCar{
     this.rates.push(rate);
     this.updateRate();
   }
+
+  getOfficesAddresses():Address[]{
+    let keys = Object.keys(this.offices);
+    let ret:Address[] = [];
+    keys.forEach(country=>{
+      this.offices[country].forEach(address => {
+      ret.push(address);
+      });
+    });
+    return ret;
+  }
 }

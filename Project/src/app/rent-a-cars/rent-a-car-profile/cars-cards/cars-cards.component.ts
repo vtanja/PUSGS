@@ -4,6 +4,9 @@ import { RentCarService } from '../../../services/rent-a-car.service';
 import { Car } from 'src/app/models/Car.model';
 import { Subscription } from 'rxjs';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import { CarReservation } from 'src/app/models/carReservation.model';
+import { UserService } from 'src/app/services/userService.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-cars-cards',
@@ -21,7 +24,7 @@ export class CarsCardsComponent implements OnInit,OnDestroy {
   rentDays:number;
   closeResult: string;
 
-  constructor(private route:ActivatedRoute,private rentCarsService:RentCarService,private modalService: NgbModal){}
+  constructor(private route:ActivatedRoute,private rentCarsService:RentCarService,private usersService:UserService,private modalService: NgbModal){}
 
   ngOnInit(){
 
@@ -69,6 +72,28 @@ export class CarsCardsComponent implements OnInit,OnDestroy {
     } else {
       return  `with: ${reason}`;
     }
+  }
+
+  makeReservation():void{
+
+    let pickUpDate = this.params['pickUpDate'];
+    let pickUpTime = this.params['pickUpTime'];
+    let dropOffDate = this.params['dropOffDate'];
+    let dropOffTime = this.params['dropOffTime'];
+    let daysBetween = this.getDaysBetween(pickUpDate,dropOffDate);
+    let totalPrice = this.currentCar.pricePerDay * daysBetween;
+
+    let carReservation = new CarReservation(pickUpDate,pickUpTime,dropOffDate,dropOffTime,daysBetween,totalPrice,this.currentCar.companyId,this.currentCar.companyName,this.currentCar.id,'',this.currentCar.model);
+
+    if(this.usersService.makeCarReservation(carReservation)){
+      Swal.fire({
+        text: 'Reservation successfully made!',
+        icon: 'success',
+        showConfirmButton: false,
+        timer:1500,
+      })
+    }
+
   }
 
 }

@@ -119,15 +119,15 @@ export class AirlineService{
 
 
 
-        const airline1 = new Airline(0, "Air Serbia", new Address(" ","Beograd","Serbia"), "Air Serbia je nacionalna avio kompanije Republike Srbije, nastala iz dotadašnje avio kompanije Jat Airways.",
+        const airline1 = new Airline(0, "Air Serbia", new Address(0," ","Beograd","Serbia",1,1), "Air Serbia je nacionalna avio kompanije Republike Srbije, nastala iz dotadašnje avio kompanije Jat Airways.",
          airSerbiaFlights, serbiaDest, "../../assets/images/airlines/air-serbia.png");
-        const airline2 = new Airline(1, "FlyBosnia", new Address(" ","Sarajevo","Bosnia and Herzegovina"), "FlyBosnia je avio kompanija iz Bosne i Hercegovina sa sedištem u Sarajevu. Avio kompanija FlyBosnia trenutno leti na direktnim linijama iz Sarajeva za London, Riyadh i Kuvajt.",
+        const airline2 = new Airline(1, "FlyBosnia", new Address(0," ","Sarajevo","Bosnia and Herzegovina",1,1), "FlyBosnia je avio kompanija iz Bosne i Hercegovina sa sedištem u Sarajevu. Avio kompanija FlyBosnia trenutno leti na direktnim linijama iz Sarajeva za London, Riyadh i Kuvajt.",
          [], destBosnia, "../../assets/images/airlines/Logo-FlyBosnia.png");
-        const airline3 = new Airline(2, "Croatia Airlines", new Address(" ","Zagreb","Croatia"), "Croatia Airlines je nacionalna avio kompanija Republike Hrvatske, osnovana 1989. godine pod nazivom Zagal, Zagreb Airlines, a 1990. godine menja ime u Croatia Airlines.",
+        const airline3 = new Airline(2, "Croatia Airlines", new Address(0," ","Zagreb","Croatia",1,1), "Croatia Airlines je nacionalna avio kompanija Republike Hrvatske, osnovana 1989. godine pod nazivom Zagal, Zagreb Airlines, a 1990. godine menja ime u Croatia Airlines.",
          [], croatiaDest, "../../assets/images/airlines/croatia.png");
-        const airline4 = new Airline(3, "Montenegro Airlines", new Address(" ","Podgorica","Montenegro"), "Montenegro Airlines je nacionalna avio kompanija Crne Gore, sa sedištem u Podgorici, osnovana je u oktobru 1994. godine, a postala članica IATA 5. marta 2003. godine.",
+        const airline4 = new Airline(3, "Montenegro Airlines", new Address(0," ","Podgorica","Montenegro",1,1), "Montenegro Airlines je nacionalna avio kompanija Crne Gore, sa sedištem u Podgorici, osnovana je u oktobru 1994. godine, a postala članica IATA 5. marta 2003. godine.",
          montenegroFlights, montenegroDest, "../../assets/images/airlines/montenegro.jpg");
-        const airline5 = new Airline(4, "Lufthansa", new Address(" ","Frankfurt","Germany"), "Lufthansa (nem. Deutsche Lufthansa AG) je nacionalna avio-kompanija Nemačke. Sedište joj je u Frankfurtu. Trenutno je najveća aviokompanija u Evropi po broju prevezenih putnika i druga po veličini flote (posle Air France-KLM).",
+        const airline5 = new Airline(4, "Lufthansa", new Address(0," ","Frankfurt","Germany",1,1), "Lufthansa (nem. Deutsche Lufthansa AG) je nacionalna avio-kompanija Nemačke. Sedište joj je u Frankfurtu. Trenutno je najveća aviokompanija u Evropi po broju prevezenih putnika i druga po veličini flote (posle Air France-KLM).",
          lufthansaFlights, lufthansaDest, "../../assets/images/airlines/airline1.png");
 
         flight1.image=airline1.image;

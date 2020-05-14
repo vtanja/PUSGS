@@ -70,6 +70,8 @@ import { CarsEditComponent } from './rent-a-cars/rent-a-car-administrator/rent-a
 import { RentCarAdministratorService } from './services/rent-car-administrator.service';
 import { OfficesEditComponent } from './rent-a-cars/rent-a-car-administrator/rent-a-car-edit/offices-edit/offices-edit.component';
 import { AddCarComponent } from './rent-a-cars/rent-a-car-administrator/rent-a-car-edit/add-car/add-car.component';
+import { MapComponent } from './map/map.component';
+import { AgmCoreModule, GoogleMapsAPIWrapper } from '@agm/core';
 
 @NgModule({
   declarations: [
@@ -124,6 +126,7 @@ import { AddCarComponent } from './rent-a-cars/rent-a-car-administrator/rent-a-c
     CarsEditComponent,
     OfficesEditComponent,
     AddCarComponent,
+    MapComponent,
 
   ],
   imports: [
@@ -141,7 +144,9 @@ import { AddCarComponent } from './rent-a-cars/rent-a-car-administrator/rent-a-c
     MatAutocompleteModule,
     MatInputModule,
     HammerModule,
-    IgxTimePickerModule
+    IgxTimePickerModule,
+    AgmCoreModule.forRoot({apiKey: 'AIzaSyAdtC28jUsGI3OLfTvoocC32_XqBVcXAes'}),
+    FormsModule,
   ],
   providers: [
     UserService,
@@ -149,7 +154,8 @@ import { AddCarComponent } from './rent-a-cars/rent-a-car-administrator/rent-a-c
     AirlineService,
     CarReservationsService,
     RentCarAdministratorService,
-    {provide: NgbDateParserFormatter, useClass: NgbDateCustomParserFormatter}
+    {provide: NgbDateParserFormatter, useClass: NgbDateCustomParserFormatter},
+    GoogleMapsAPIWrapper
   ],
   bootstrap: [AppComponent]
 })

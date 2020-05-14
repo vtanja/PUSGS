@@ -8,6 +8,7 @@ import { RentCarService } from './rent-a-car.service';
 import { AirlineService } from './airline.service';
 import { UsersRate } from '../models/users-rate.model';
 import { LoggedUser } from '../models/logged-user.model';
+import { Address } from '../models/address';
 
 interface Passenger {
     seat: number;
@@ -18,10 +19,12 @@ interface Passenger {
 export class UserService{
     userLogged = new Subject<boolean>();
     users:User[];
+    changeMap:Subject<Address>;
 
     constructor(private rentCarService:RentCarService,private airlineService:AirlineService){
 
       this.users = [];
+      this.changeMap = new Subject<Address>();
 
       this.users.push(new User('Tanja', 'Vukmirovic', 'tanja.vukmirovic8@gmail.com',
             'tanja123', 'tanja1sifra', '+38165432156', 'Zdravka Celara 185, Futog',
@@ -139,5 +142,15 @@ export class UserService{
 
     }
 
+    makeCarReservation(reservation:CarReservation):boolean{
+
+      let username = JSON.parse(localStorage.getItem('loggedUser')).username;
+      reservation.username=username;
+      console.log(reservation);
+      this.users.find(u=>u.username===username).carReservations.push(reservation);
+
+      return true;
+
+    }
 
 }
