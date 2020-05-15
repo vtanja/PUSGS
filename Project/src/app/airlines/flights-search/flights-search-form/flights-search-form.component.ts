@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators, ValidationErrors } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgbDate, NgbDatepickerConfig } from '@ng-bootstrap/ng-bootstrap';
 import airports from '../../../airports.json';
@@ -93,8 +93,6 @@ export class FlightsSerachFormComponent implements OnInit {
 
     return toFilter.filter(item => item.code.toLowerCase().includes(filterValue) || item.location.toLowerCase().includes(filterValue));
   }
-
-
 
   onFormSubmit(){
 

@@ -1,10 +1,10 @@
 h4{
-  padding-top: 2%;
-  margin-bottom: 2%;
+  margin-bottom: 10%;
   font-family: Poppins-SemiBold;
   font-size: 22px;
   text-align: center;
   color:white;
+  margin-top: 0%;
 }
 
 .my-heading-div{
@@ -12,4 +12,76 @@ h4{
   border-radius: 2%;
   border-color: transparent;
   padding-bottom: 1%;
+  margin-top: 2%;
+  height:120px;
 }
+
+.button-style{
+  background-color:  #fa871b;
+  color: white;
+  border-color: #fa871b;
+  display: block;
+  width: 15%;
+   margin-top: 2%;
+    margin-right: 3%;
+}
+
+.button-style:hover{
+  opacity: 0.8;
+  color: #31124b;
+  font-weight: 600;
+}
+
+lbl-style{
+  width:100px;
+  font-family: Poppins-Medium;
+  margin-bottom: 10px;
+
+}
+
+.modal-input{
+  border-radius: 5px;
+  margin-left: 15px;
+  margin-bottom: 10px;
+  border-color:#7e4596;
+  width: 52%;
+}
+
+.modal-input-street{
+  width:40%;
+  border-radius: 5px;
+  margin-left: 15px;
+  margin-bottom: 10px;
+  border-color: #7e4596;
+}
+
+.confirmBtnStyle{
+
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 20px;
+  width: 180px;
+  height: 50px;
+
+  font-family: Poppins-Medium;
+  font-size: 16px;
+  color: #fff;
+  line-height: 1.2;
+  background: #31124b;
+
+  border-width: 0cm;
+  border-radius: 10px;
+}
+
+.confirmBtnStyle:hover:enabled
+{
+  opacity: 0.8;
+  color: #fa9e1c;
+}
+
+

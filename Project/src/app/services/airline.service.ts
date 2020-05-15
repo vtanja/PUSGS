@@ -124,11 +124,11 @@ export class AirlineService{
 
 
 
-        const airline1 = new Airline(0, "Air Serbia", new Address(0," ","Beograd","Serbia",1,1), "Air Serbia je nacionalna avio kompanije Republike Srbije, nastala iz dotadašnje avio kompanije Jat Airways.",
+        const airline1 = new Airline(0, "Air Serbia", new Address(30,"Dedinjska","Beograd","Serbia",20.4583696,44.7736563), "Air Serbia je nacionalna avio kompanije Republike Srbije, nastala iz dotadašnje avio kompanije Jat Airways.",
          airSerbiaFlights, serbiaDest, "../../assets/images/airlines/air-serbia.png");
-        const airline2 = new Airline(1, "FlyBosnia", new Address(0," ","Sarajevo","Bosnia and Herzegovina",1,1), "FlyBosnia je avio kompanija iz Bosne i Hercegovina sa sedištem u Sarajevu. Avio kompanija FlyBosnia trenutno leti na direktnim linijama iz Sarajeva za London, Riyadh i Kuvajt.",
+        const airline2 = new Airline(1, "FlyBosnia", new Address(12,"Alije Djerzeleza","Sarajevo","Bosnia and Herzegovina",18.4293267,43.8644973), "FlyBosnia je avio kompanija iz Bosne i Hercegovina sa sedištem u Sarajevu. Avio kompanija FlyBosnia trenutno leti na direktnim linijama iz Sarajeva za London, Riyadh i Kuvajt.",
          [], destBosnia, "../../assets/images/airlines/Logo-FlyBosnia.png");
-        const airline3 = new Airline(2, "Croatia Airlines", new Address(0," ","Zagreb","Croatia",1,1), "Croatia Airlines je nacionalna avio kompanija Republike Hrvatske, osnovana 1989. godine pod nazivom Zagal, Zagreb Airlines, a 1990. godine menja ime u Croatia Airlines.",
+        const airline3 = new Airline(2, "Croatia Airlines", new Address(39,"Hebrangova ul.","Zagreb","Croatia",15.9711975,45.8088368), "Croatia Airlines je nacionalna avio kompanija Republike Hrvatske, osnovana 1989. godine pod nazivom Zagal, Zagreb Airlines, a 1990. godine menja ime u Croatia Airlines.",
          [], croatiaDest, "../../assets/images/airlines/croatia.png");
         //const airline4 = new Airline(3, "Montenegro Airlines", new Address(" ","Podgorica","Montenegro"), "Montenegro Airlines je nacionalna avio kompanija Crne Gore, sa sedištem u Podgorici, osnovana je u oktobru 1994. godine, a postala članica IATA 5. marta 2003. godine.",
         // montenegroFlights, montenegroDest, "../../assets/images/airlines/montenegro.jpg");

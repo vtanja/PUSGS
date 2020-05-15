@@ -157,4 +157,12 @@ export class UserService{
 
     }
 
+    getAllAdministrators():User[]{
+      let ret:User[] = [];
+      this.users.forEach(user=>{
+        if(user.role==='CARADMIN'|| user.role==='AIRLINEADMIN')
+        ret.push(user);
+      })
+      return ret;
+    }
 }

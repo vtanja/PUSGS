@@ -82,6 +82,33 @@ export class RentCarAdministratorService {
     return true;
   }
 
+  addOffice(address:Address):boolean{
+    this.reverseGeocode(address);
+    let user = this.usersService.getLoggedUser();
+    let company = this.rentCarService.getRentCarCompany(user.carCompany);
+
+    if(company.offices[address.country]!=undefined){
+      company.offices[address.country].push(address);
+    }else{
+      let addresses = [];
+      addresses.push(address);
+      company.offices[address.country] = addresses;
+    }
+    return(true);
+  }
+
+  deleteOffice(address:Address):boolean{
+    let user = this.usersService.getLoggedUser();
+    let company = this.rentCarService.getRentCarCompany(user.carCompany);
+    console.log(company.offices);
+    let index = company.offices[address.country].indexOf(address);
+    company.offices[address.country].splice(index,1);
+    if(company.offices[address.country].length===0){
+      delete company.offices[address.country];
+    }
+    return true;
+  }
+
   stringToNgbDate(date:string):NgbDate{
 
     let dateParts = date.split('-');
@@ -112,6 +139,5 @@ export class RentCarAdministratorService {
              const res = await data.json();
              address.longitude = +res[0].lon;
              address.latitude=+res[0].lat;
-             console.log(address);
    }
 }

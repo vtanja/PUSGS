@@ -9,12 +9,12 @@
       <div class="wrap-input100" >
         <div class="input-icons">
           <i class="fa fa-map-marker" style="margin-top:8px; margin-left:7px" aria-hidden="true"></i>
-            <input  
-              formControlName="takeOffLocation" 
+            <input
+              formControlName="takeOffLocation"
               id="takeOffLocation"
                class="input100"
                 type="text"
-                 name="username" 
+                 name="username"
                  placeholder="From"
                  matInput [matAutocomplete]="auto">
         </div>
@@ -25,16 +25,16 @@
      </mat-autocomplete>
         <span class="invalid-input-span" *ngIf="searchForm.get('locations.takeOffLocation').invalid && searchForm.get('locations.takeOffLocation').touched">This field is required.</span>
       </div>
-      
+
     </div>
     <div class="col" >
       <div class="wrap-input100" >
         <div class="input-icons">
           <i class="fa fa-map-marker" style="margin-top:8px; margin-left:7px" aria-hidden="true"></i>
-        <input 
-            formControlName="landingLocation" 
-            id="landingLocation" class="input100" 
-            type="text" name="username" 
+        <input
+            formControlName="landingLocation"
+            id="landingLocation" class="input100"
+            type="text" name="username"
             placeholder="To..."
             matInput [matAutocomplete]="autoLanding">
         </div>
@@ -53,9 +53,9 @@
       <div class="wrap-input100" >
             <div class="input-icons">
               <div class="input-group">
-                <input formControlName="departureDate" class="form-control input100"  placeholder="Depart.."
+                <input formControlName="departureDate" readonly="readonly" class="form-control date-input100"  placeholder="Depart.."
                       name="dp"  ngbDatepicker #d="ngbDatepicker">
-                <div class="input-group-append append_style" style="margin-left: -10px;padding-left: 10px;">
+                <div class="input-group-append append_style">
                   <button class="btn calendar"  (click)="d.toggle()" type="button"></button>
                 </div>
                 <i class="fa fa-calendar" aria-hidden="true"></i>
@@ -68,7 +68,7 @@
       <div class="wrapinput100" style="padding-right: 20%;" >
         <div class="input-icons">
           <div class="input-group"  >
-            <input formControlName="returnDate" class="form-control input100" #returnDateInput
+            <input formControlName="returnDate" readonly="readonly" class="form-control date-input100" #returnDateInput
              placeholder="Return.."
                   name="dp"  ngbDatepicker #r="ngbDatepicker">
             <div class="input-group-append append_style" style="margin-left: -10px;padding-left: 10px;">

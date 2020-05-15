@@ -70,9 +70,9 @@ export class  RentCarService {
     const addr14 = new Address(42,"Splitska ul","Zadar","Croatia",15.2451547,44.1191606);
     const addr15 = new Address(22,"Ul. Svete Ane","Osijek","Croatia",18.6719137,45.5599917);
     const addr16 = new Address(12,"Serleg u.","Budapest","Hungary",19.037678,47.4819775);
-    const addr17 = new Address(4,"Svetosavska","Trebinje","BiH",18.3452457,42.7078162);
-    const addr18 = new Address(46,"Vase Pelagica","Banja Luka","BiH",17.1965471,44.7724927);
-    const addr19 = new Address(21,"Kralja Tvrtka","Mostar","BiH",17.8042078,43.3459761);
+    const addr17 = new Address(4,"Svetosavska","Trebinje","Bosnia and Herzegovina",18.3452457,42.7078162);
+    const addr18 = new Address(46,"Vase Pelagica","Banja Luka","Bosnia and Herzegovina",17.1965471,44.7724927);
+    const addr19 = new Address(21,"Kralja Tvrtka","Mostar","Bosnia and Herzegovina",17.8042078,43.3459761);
 
     const offices = {'Serbia': [addr1,addr2,addr3,addr4],
     'Montenegro':[addr5,addr6],
@@ -80,7 +80,7 @@ export class  RentCarService {
     'United Kingdom':[addr8,addr9,addr10],
     'Croatia':[addr11,addr12,addr13,addr14,addr15],
     'Hungary':[addr16],
-    'BiH' : [addr17,addr18,addr19]};
+    'Bosnia and Herzegovina' : [addr17,addr18,addr19]};
 
     const rc1 = new RentCar(1,"Firefly",new Address(10,"Jevrejska", "Novi Sad", "Serbia",19.8412788,45.2537165),description1,[c1,c6],offices,"../../assets/images/rentCarLogos/logo1.png");
     const rc2 = new RentCar(2,"Getaround",new Address(1,"Kneza Mihaila", "Belgrade", "Serbia",20.4576212,44.8148958),description2,[c2,c7],offices,"../../assets/images/rentCarLogos/logo2.png");

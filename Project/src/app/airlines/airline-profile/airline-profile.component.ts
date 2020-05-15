@@ -14,10 +14,13 @@ export class AirlineProfileComponent implements OnInit,OnDestroy {
   airlineCompany:Airline;
   mySubscription:Subscription;
   navItemInfo:any;
+  showMapToggled:boolean;
 
   constructor(private activeRoute:ActivatedRoute, private airlineService:AirlineService) { }
 
   ngOnInit(): void {
+
+    this.showMapToggled = false;
 
     this.mySubscription = this.activeRoute.params.subscribe((params:Params)=>
       {

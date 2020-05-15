@@ -20,6 +20,8 @@
   /* color: lightgrey; */
 }
 
+
+
 .search_button {
   display: -webkit-box;
   display: -webkit-flex;
@@ -63,6 +65,23 @@
   border: 2px solid white;
   border-radius: 10px;
 }
+
+.date-input100 {
+
+  width: 80%;
+  padding-left: 25px;
+  text-align: left;
+  display: inline-block;
+  height: 35px;
+  background-color: white;
+  font-family: Poppins-Regular;
+  font-size: 13px;
+   color: #555555;
+  line-height: 1.2;
+  border: 2px solid white;
+  border-radius: 10px;
+}
+
 
 
 
@@ -118,13 +137,15 @@ i{
   background-size: contain;
   background-repeat: no-repeat;
   margin-top: 3px;
-  /* margin-left: 5%; */
 }
 
 .append_style{
   background-color: white;
   width: 35px;
   border-radius: 10px;
+  margin-left: -10px;
+  padding-left: 10px;
+  display: inline-block;
 }
 
 .socials-span{

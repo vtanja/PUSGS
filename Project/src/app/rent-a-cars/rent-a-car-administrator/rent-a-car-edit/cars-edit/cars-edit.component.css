@@ -75,6 +75,11 @@ h4{
   border-color: #fa871b;
 }
 
+.button-style:hover {
+  opacity: 0.8;
+  color:  #31124b;
+  font-weight: 600;
+}
 .h-style{
   width:100% !important;
   text-align: center !important;
@@ -118,10 +123,6 @@ h4{
   padding-left: 3px;
 }
 
-.confirmBtnStyle:disabled{
-  background-color: lightslategray;
-  border-color: lightslategray;
-}
 
 .confirmBtnStyle{
 
@@ -146,15 +147,17 @@ h4{
     border-radius: 10px;
   }
 
-  .confirmBtnStyle:hover
+  .confirmBtnStyle:hover:enabled
   {
     opacity: 0.8;
+    color: #fa9e1c;
+
   }
 
   .modal-input{
     border-radius: 5px;
     margin-left: 6%;
-    border-color: lightslategray;
+    border-color: #7e4596;
   }
 
   .custom-day {

@@ -44,9 +44,9 @@
           <div class="wrap-input100" >
             <div class="input-icons">
               <div class="input-group">
-                <input formControlName="pickUpDate" class="form-control input100"  placeholder="Pick up date..."
+                <input formControlName="pickUpDate" class="form-control date-input100"  placeholder="Pick up date..."
                       name="dp"  ngbDatepicker #p="ngbDatepicker">
-                <div class="input-group-append append_style" style="margin-left: -10px;padding-left: 10px;">
+                <div class="input-group-append append_style">
                   <button class="btn calendar"  (click)="p.toggle()" type="button"></button>
                 </div>
                 <i class="fa fa-calendar" aria-hidden="true"></i>
@@ -59,9 +59,9 @@
           <div class="wrap-input100" >
             <div class="input-icons">
               <div class="input-group">
-                <input formControlName="dropOffDate" class="form-control input100"  placeholder="Drop off date..."
-                      name="dp"  ngbDatepicker #d="ngbDatepicker">
-                <div class="input-group-append append_style" style="margin-left: -10px;padding-left: 10px;">
+                <input  formControlName="dropOffDate" readonly="readonly" class="form-control date-input100"  placeholder="Drop off date..."
+                        aria-autocomplete="none" name="dp"  ngbDatepicker #d="ngbDatepicker">
+                <div class="input-group-append append_style">
                   <button class="btn calendar"  (click)="d.toggle()" type="button"></button>
                 </div>
                 <i class="fa fa-calendar" aria-hidden="true"></i>
@@ -125,6 +125,5 @@
   </div>
   <div class="row justify-content-center">
     <button class="button search_button"  [disabled]="searchForm.invalid">Search</button>
-    <!-- <button *ngIf="currentRoute!='/home/search-cars'" class="button search_button" style="margin-left: 5%;" [disabled]="!searched" (click)=onClear()>Clear</button> -->
   </div>
 </form>
