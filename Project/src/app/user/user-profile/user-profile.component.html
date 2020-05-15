@@ -4,9 +4,11 @@
 		<div class="container-login100">
 			<div class="wrap-login100" style="background: #e3cff3; opacity: 0.7; text-align: center; vertical-align: middle;">
 				<br>
-				<div><img src = {{loggedUser.profileImage}} class ="img-circle" style=" width:200px; height: 240px;" ></div>
+				<div><img [src]="profileImage"  class ="img-circle" style=" width:200px; height: 240px;" ></div>
 				<br>
-					<input type="file" name="file" id="file" class="inputfile" />
+					<!-- <input type="file" name="file" id="file" class="inputfile" />  -->
+					<input formControlName="file" accept='image/*' id="file" type="file" class="inputfile"
+            (change)="onFileChange($event)">
 					<label for="file">Change image...</label>
 				<br>
 				<br>
@@ -20,9 +22,10 @@
 							<div class="wrap-input100 validate-input" >
 								<span class="label-input100">First name:</span>
 								<div class="input-icons">
-									<input [readonly]="firstNameReadonly" formControlName="firstName" class="input100" type="text" name="firstName" placeholder="First name...">    
-									<i class="fa fa-edit" (click)="onEdit('firstName')"></i>
-									<span class="focus-input100"></span>
+									<input formControlName="firstName" class="input100" type="text" id="firstNameInput" placeholder="First name...">    
+									<i id="icon" class="fa fa-pencil-square-o icon-style" aria-hidden="true"
+										(click)="onLogoClick('firstNameInput')"></i>
+										<span class="focus-input100"></span>
 								</div>
 								<span class="invalid-input-span" *ngIf="editForm.get('firstName').invalid && editForm.get('firstName').touched">First name is required</span> 
 							</div>
@@ -32,8 +35,8 @@
 									  <span class="label-input100">Password</span>
 									  <div class="input-icons">
 										<show-hide-password size="sm" btnStyle="light" [btnOutline]="false"  >
-											<input formControlName="password" class="input100" type="text" name="pass" placeholder="*************">
-										</show-hide-password>
+											<input formControlName="password" class="input100" type="text" id="pass" placeholder="*************">
+										</show-hide-password>  
 										<!-- <i *ngIf="registerForm.get('passwordData.password').invalid && registerForm.get('passwordData.password').touched" class="fa fa-exclamation"></i> -->
 										<span class="focus-input100"></span>
 									  </div>
@@ -47,7 +50,7 @@
 									  <span class="label-input100">Confirm Password</span>
 									  <div class="input-icons">
 										<show-hide-password size="sm" btnStyle="light"  [btnOutline]="false" >
-											<input formControlName="confirm" class="input100" type="text" name="confirm-pass" placeholder="*************">
+											<input formControlName="confirm" class="input100" type="text" id="confirm-pass" placeholder="*************">
 										  </show-hide-password>
 										   <!-- <i *ngIf="doPasswordsMatch() || (registerForm.get('passwordData.confirm').invalid && registerForm.get('passwordData.confirm').touched)" class="fa fa-exclamation"></i> -->
 										<span class="focus-input100"></span>
@@ -60,8 +63,9 @@
 								  <div class="wrap-input100 validate-input">
 									<span class="label-input100">Address:</span>
 								   <div class="input-icons">
-										<input [readonly]="addressReadonly"  formControlName="address" class="input100" type="text" name="address" placeholder="Address...">
-										  <i class="fa fa-edit" (click)="onEdit('address')"></i>
+										<input formControlName="address" class="input100" type="text" id="address" placeholder="Address...">
+										<i id="icon" class="fa fa-pencil-square-o icon-style" aria-hidden="true"
+										(click)="onLogoClick('address')"></i>
 										  <span class="focus-input100"></span>
 									</div>
 									<span class="invalid-input-span" *ngIf="editForm.get('address').invalid && editForm.get('address').touched">Address is required</span>
@@ -72,8 +76,9 @@
 							<div class="wrap-input100 validate-input">
 								<span class="label-input100">Last name:</span>
 							   <div class="input-icons">
-									<input [readonly]="lastNameReadonly"  formControlName="lastName" class="input100" type="text" name="lastName" placeholder="Last name...">
-									  <i class="fa fa-edit" (click)="onEdit('lastName')"></i>
+									<input formControlName="lastName" class="input100" type="text" ID="lastName" placeholder="Last name...">
+									<i id="icon" class="fa fa-pencil-square-o icon-style" aria-hidden="true"
+									(click)="onLogoClick('lastName')"></i>
 									  <span class="focus-input100"></span>
 								</div>
 								<span class="invalid-input-span" *ngIf="editForm.get('lastName').invalid && editForm.get('lastName').touched">Last name is required</span>
@@ -82,8 +87,9 @@
 							<div class="wrap-input100 validate-input" >
 								<span class="label-input100">Email:</span>
 							   <div class="input-icons">
-									<input [readonly]="emailReadonly"  formControlName="email" class="input100" type="text" name="email" placeholder="Email...">
-									  <i class="fa fa-edit" (click)="onEdit('email')"></i>
+									<input formControlName="email" class="input100" type="text" id="email" placeholder="Email...">
+									<i id="icon" class="fa fa-pencil-square-o icon-style" aria-hidden="true"
+									(click)="onLogoClick('email')"></i>
 									  <span class="focus-input100"></span>
 								</div>
 								<span class="invalid-input-span" *ngIf="editForm.get('email').invalid && editForm.get('email').touched">Email is required</span>
@@ -95,7 +101,9 @@
 								  <input formControlName="phone" class="input100" ng2TelInput
 				  
 								  (countryChange)="onCountryChange($event)"
-								  type="text" name="phone" placeholder="Phone number">
+								  type="text" id="phone" placeholder="Phone number">
+								  <i id="icon" class="fa fa-pencil-square-o icon-style" aria-hidden="true"
+									(click)="onLogoClick('phone')"></i>
 								  <i *ngIf="editForm.get('phone').invalid && editForm.get('phone').touched" class="fa fa-exclamation"></i>
 								  <span class="focus-input100"></span>
 								</div>
