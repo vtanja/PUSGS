@@ -11,11 +11,8 @@ import { User } from 'src/app/models/user';
 export class UserProfileComponent implements OnInit {
 
   editForm:FormGroup;
-  firstNameReadonly:boolean=true;
-  lastNameReadonly:boolean=true;
-  emailReadonly:boolean=true;
-  phoneReadonly:boolean=true;
-  addressReadonly:boolean=true;
+  profileImage:string | ArrayBuffer;
+  
   loggedUser:User;
 
   fileToUpload: File = null;
@@ -31,7 +28,7 @@ export class UserProfileComponent implements OnInit {
       'email': new FormControl(null, [Validators.required, Validators.email]),
       'phone': new FormControl(null, [Validators.required, Validators.pattern(new RegExp('(([+][(]?[0-9]{1,3}[)]?)|([(]?[0-9]{4}[)]?))\s*[)]?[-\s\.]?[(]?[0-9]{1,3}[)]?([-\s\.]?[0-9]{3})([-\s\.]?[0-9]{3,4})'))]),
       'address': new FormControl(null, Validators.required),
-
+      'file': new FormControl('', [Validators.required]),
       'passwordData' : new FormGroup({
           'password': new FormControl(null,[Validators.required,
             Validators.pattern(new RegExp("^(?=.*[0-9]+.*)(?=.*[a-zA-Z]+.*)[0-9a-zA-Z]{8,}$"))]),
@@ -40,6 +37,8 @@ export class UserProfileComponent implements OnInit {
         },this.passwordMatchValidator.bind(this)),
 
     });
+
+
 
     this.editForm.setValue({
       'firstName':this.loggedUser.firstName,
@@ -53,7 +52,37 @@ export class UserProfileComponent implements OnInit {
       'address': this.loggedUser.address,
     });
 
+    this.profileImage=this.loggedUser.profileImage;
     console.log(this.editForm);
+  }
+
+  onFileChange(event) {
+
+    if (event.target.files.length > 0) {
+
+      const file = event.target.files[0];
+
+      if (file.type.match('image\/*') == null) {
+      console.log("Not supported");
+        return;
+      }
+
+      var reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = (_event) => {
+        this.profileImage = reader.result;
+        console.log(this.profileImage);
+      }
+
+      this.editForm.patchValue({
+        fileSource: file
+      });
+
+    }
+  }
+
+  onLogoClick(name:string){
+    document.getElementById(name).focus();
   }
 
   onCountryChange(event:any){
@@ -116,25 +145,4 @@ export class UserProfileComponent implements OnInit {
   }
 
 
-  onEdit(control: string){
-    if(control==='firstName'){
-      this.firstNameReadonly=false;
-    }
-    else if(control === 'lastName'){
-      this.lastNameReadonly=false;
-    }
-    else if(control === 'email'){
-      this.emailReadonly=false;
-    }
-    else if(control === 'phone'){
-      this.phoneReadonly=false;
-    }
-    else if(control === 'address'){
-      this.addressReadonly=false;
-    }
-  }
-
-  handleFileInput(files:FileList){
-    this.fileToUpload = files.item(0);
-  }
 }

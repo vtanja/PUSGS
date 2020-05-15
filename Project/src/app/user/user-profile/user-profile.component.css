@@ -2,6 +2,11 @@
   border-radius: 50%;
 }
 
+.icon-style{
+  margin-left: 2%;
+  height: 40px;
+}
+
 .btn {
   background-color: rgba(255, 255, 255, 0.3);
   border-radius: 12px;
