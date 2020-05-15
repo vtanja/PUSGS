@@ -78,6 +78,9 @@ import { OfficesEditComponent } from './rent-a-cars/rent-a-car-administrator/ren
 import { AddCarComponent } from './rent-a-cars/rent-a-car-administrator/rent-a-car-edit/add-car/add-car.component';
 import { MapComponent } from './map/map.component';
 import { AgmCoreModule, GoogleMapsAPIWrapper } from '@agm/core';
+import { AirlineEditComponent } from './airlines/airline-administrator/airline-edit/airline-edit.component';
+import { EditAirlineMainDataComponent } from './airlines/airline-administrator/airline-edit/edit-airline-main-data/edit-airline-main-data.component';
+import { EditDestinationsComponent } from './airlines/airline-administrator/airline-edit/edit-destinations/edit-destinations.component';
 
 @NgModule({
   declarations: [
@@ -136,6 +139,9 @@ import { AgmCoreModule, GoogleMapsAPIWrapper } from '@agm/core';
     OfficesEditComponent,
     AddCarComponent,
     MapComponent,
+    AirlineEditComponent,
+    EditAirlineMainDataComponent,
+    EditDestinationsComponent,
 
   ],
   imports: [

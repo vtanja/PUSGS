@@ -25,7 +25,16 @@ export class NavbarComponent implements OnInit {
         this.iconFirst = "../../assets/images/mainData.png";
         this.iconSecond = "../../assets/images/office.png";
 
-    } else{
+    }
+    else if(this.route.snapshot.routeConfig.path==="airline-company-data"){
+
+      this.navbarFirst = 'MAIN DATA';
+      this.navbarSecond = 'DESTINATIONS';
+
+      this.iconFirst = "../../assets/images/mainData.png";
+      this.iconSecond = "../../assets/images/island.png";
+
+  } else{
 
       this.navbarFirst = 'CAR RENTALS';
       this.navbarSecond = 'FLIGHTS';
@@ -40,6 +49,8 @@ export class NavbarComponent implements OnInit {
       this.router.navigate(['car-reservations'], {relativeTo:this.route});
     } else if(this.route.snapshot.routeConfig.path==="company-data"){
       this.router.navigate(['edit-main-data'], {relativeTo:this.route});
+    }else if(this.route.snapshot.routeConfig.path==="airline-company-data"){
+      this.router.navigate(['edit-airline-main-data'], {relativeTo:this.route});
     }
     else{
       if(this.route.snapshot.routeConfig.path==="home"){
@@ -57,6 +68,8 @@ export class NavbarComponent implements OnInit {
       this.router.navigate(['flight-reservations'], {relativeTo:this.route});
     }else if(this.route.snapshot.routeConfig.path==="company-data"){
       this.router.navigate(['edit-offices'], {relativeTo:this.route});
+    }else if(this.route.snapshot.routeConfig.path==="airline-company-data"){
+      this.router.navigate(['edit-destinations'], {relativeTo:this.route});
     }
     else{
       if(this.route.snapshot.routeConfig.path==="home"){
