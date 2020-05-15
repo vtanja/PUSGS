@@ -1,0 +1,44 @@
+h4{
+    padding-top: 2%;
+    margin-bottom: 3%;
+    font-family: Poppins-Bold;
+    font-size: 22px;
+    text-align: center;
+    color:rgb(75, 74, 74);
+  }
+  
+  .my-heading-div{
+    background-color: whitesmoke;
+    padding-bottom: 1%;
+  }
+  
+  #wrapper2{
+    height:auto;
+    width:100%;
+    text-align: center;
+    align-content: center;
+    justify-content: center;
+  }
+  #inner21{
+    float:center;
+    width: 80.4%;
+    margin-left: 1.4%;
+  
+  }
+  #inner22{
+    width: 78%;
+    padding: 0%;
+    float:left;
+    margin-top: 5%;
+    margin-left: 11%;
+  }
+  
+  #inner1{
+    height: 50px;
+    background-color: lightgray;
+  }
+  #inner2{
+    margin-top:0%
+  }
+  
+  

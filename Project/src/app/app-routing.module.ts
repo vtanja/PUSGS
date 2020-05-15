@@ -27,6 +27,9 @@ import { MainDataEditComponent } from './rent-a-cars/rent-a-car-administrator/re
 import { CarsEditComponent } from './rent-a-cars/rent-a-car-administrator/rent-a-car-edit/cars-edit/cars-edit.component';
 import { OfficesEditComponent } from './rent-a-cars/rent-a-car-administrator/rent-a-car-edit/offices-edit/offices-edit.component';
 import { AddCarComponent } from './rent-a-cars/rent-a-car-administrator/rent-a-car-edit/add-car/add-car.component';
+import { AirlineEditComponent } from './airlines/airline-administrator/airline-edit/airline-edit.component';
+import { EditAirlineMainDataComponent } from './airlines/airline-administrator/airline-edit/edit-airline-main-data/edit-airline-main-data.component';
+import { EditDestinationsComponent } from './airlines/airline-administrator/airline-edit/edit-destinations/edit-destinations.component';
 
 
 const routes: Routes = [
@@ -64,7 +67,10 @@ const routes: Routes = [
     {path:'edit-offices',component:OfficesEditComponent},
 
   ]},
-
+  {path:'airline-company-data', component:AirlineEditComponent, children:[
+    {path:'edit-airline-main-data', component:EditAirlineMainDataComponent},
+    {path:'edit-destinations', component:EditDestinationsComponent}
+  ]},
   {path:'companyCars',component:CarsEditComponent},
   {path:'addCar',component:AddCarComponent},
 
