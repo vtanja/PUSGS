@@ -1,6 +1,7 @@
 nav{
 	height: 10%;
-	background-color: #31124b;
+  background-color: #31124b;
+  z-index: 2000 !important;
 }
 
 nav a {
@@ -48,7 +49,7 @@ nav ul li a:hover {
 
 ul li a span{
 	text-align: bottom;
-} 	
+}
 
 li div{
 	background-color: #31124b;

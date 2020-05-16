@@ -12,7 +12,7 @@ export class UserProfileComponent implements OnInit {
 
   editForm:FormGroup;
   profileImage:string | ArrayBuffer;
-  
+
   loggedUser:User;
 
   fileToUpload: File = null;

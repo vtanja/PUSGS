@@ -1,5 +1,5 @@
 import { Component, OnInit} from '@angular/core';
-import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
+import { FormGroup, FormControl, Validators, FormBuilder, ValidationErrors } from '@angular/forms';
 import { RentCarService } from '../../services/rent-a-car.service';
 import { Observable } from 'rxjs';
 import { startWith, map } from 'rxjs/operators';
@@ -29,7 +29,7 @@ export class RentACarSearchComponent implements OnInit {
   locationGroups: LocationGroup[] =[
   {
     letter: 'B',
-    names: ['Belgrade, Serbia','Budapest, Hungary','Banja Luka, BiH']
+    names: ['Belgrade, Serbia','Budapest, Hungary','Banja Luka, Bosnia and Herzegovina']
 
   },
    {
@@ -37,13 +37,13 @@ export class RentACarSearchComponent implements OnInit {
     names: ['Dubrovnik, Croatia']
   }, {
     letter: 'M',
-    names: ['Mostar, BiH','Munich, Germany']
+    names: ['Mostar, Bosnia and Herzegovina','Munich, Germany']
   }, {
     letter: 'N',
     names: ['Novi Sad, Serbia','Novo Mesto, Slovenia']
   }, {
     letter: 'T',
-    names: ['Trebinje, BiH']
+    names: ['Trebinje, Bosnia and Herzegovina']
   }];
 
   locationOptions: Observable<LocationGroup[]>;
@@ -55,7 +55,7 @@ export class RentACarSearchComponent implements OnInit {
   ngOnInit(): void {
     this.searchForm = new FormGroup({
       'name' : new FormControl(''),
-      'address' : new FormControl(''),
+      'address' : new FormControl('',this.requireMatch.bind(this)),
       'rate' : new FormControl('',[Validators.min(1),Validators.max(5)])
     });
 
@@ -89,6 +89,22 @@ export class RentACarSearchComponent implements OnInit {
 
   onChangeSort(value:string){
     this.rentCarService.sortChange.next(value);
+  }
+
+  private requireMatch(control: FormControl): ValidationErrors | null {
+    const selection: string = control.value;
+
+    if (selection != undefined && selection != '') {
+      let group = this.locationGroups.find(
+        (e) => e.letter === selection.substring(0, 1).toUpperCase()
+      );
+      if (group != undefined) {
+        if (group.names.indexOf(selection) < 0) {
+          return { requireMatch: true };
+        }
+      }
+      return null;
+    }
   }
 
 }

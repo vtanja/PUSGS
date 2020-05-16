@@ -26,31 +26,31 @@ export class UserService{
       this.users = [];
       this.changeMap = new Subject<Address>();
 
-      this.users.push(new User('Tanja', 'Vukmirovic', 'tanja.vukmirovic8@gmail.com',
+      this.users.push(new User('Tanja', 'Vukmirovic', 'tanja.vukmirovic8@gmail.com','USER',
             'tanja123', 'tanja1sifra', '+38165432156', 'Zdravka Celara 185, Futog',
-            [new User('Andjela', 'Cickovic', 'andjela.ljuban@gmail.com', 'andjela123',
+            [new User('Andjela', 'Cickovic', 'andjela.ljuban@gmail.com',"USER", 'andjela123',
             'andjela1sifra', '+38165432123', 'Trebinje', []),
-            new User('Pera', 'Peric', 'pera@pera.com', 'pera123', 'pera1sifra', '+381987654321', 'Perina ulica 1, Novi Sad', [])] ));
+            new User('Pera', 'Peric', 'pera@pera.com','USER', 'pera123', 'pera1sifra', '+381987654321', 'Perina ulica 1, Novi Sad', [])] ));
 
-        this.users[0].friendRequests.push(new User("Natasa", "Lukic", "natasa.naca.lukic@gmail.com", "naca", "nata1sifra", "0657654355", "Adresa 1", []));
+        this.users[0].friendRequests.push(new User("Natasa", "Lukic", "natasa.naca.lukic@gmail.com",'USER', "naca", "nata1sifra", "0657654355", "Adresa 1", []));
         this.users[0].carReservations.push(new CarReservation("3-5-2020","10:00","4-5-2020","10:00", 2, 90, 1, "Firefly", 1, "Audi","Q3"));
-        this.users[0].role="USER";
 
         let passenger1: Passenger = {seat: 101, passenger:{firstname:"Tanja", lastname:"Vukmirovic", passportNo:"123456785"}};
         let passenger2: Passenger = {seat: 102, passenger:{firstname:"Andjela", lastname:"Cickovic", passportNo:"123456775"}};
         this.users[0].flightReservations.push(new FlightReservation("rez1", 1, 0, 150, [passenger1, passenger2]));
         // this.loggedUser.flightReservations[0].carReservation.push(new CarReservation("3-5-2020","10:00","4-5-2020","10:00", 2, 90, 1, "Firefly", 1, "Audi"));
 
-        let rentCarAdmin = new User('caradmin','caradmin','email@gmail.com','c','c','123456789','My address',[]);
-        rentCarAdmin.role= "CARADMIN";
+        let rentCarAdmin = new User('caradmin','caradmin','email@gmail.com','CARADMIN','c','c','123456789','My address',[]);
         rentCarAdmin.carCompany = 1;
 
-        let airlineAdmin = new User('airlineadmin','airlineadmin','email@gmail.com','a','a','123456789','My address',[]);
-        airlineAdmin.role= "AIRLINEADMIN";
+        let airlineAdmin = new User('airlineadmin','airlineadmin','email@gmail.com',"AIRLINEADMIN",'a','a','123456789','My address',[]);
         airlineAdmin.airlineCompany = 1;
+
+        let admin = new User('admin','admin','email@gmail.com','ADMINISTRATOR','admin','admin','123456789','My address',[]);
 
         this.users.push(rentCarAdmin);
         this.users.push(airlineAdmin);
+        this.users.push(admin);
       }
 
 
@@ -83,8 +83,6 @@ export class UserService{
 
     getLoggedUser():User{
       let username = JSON.parse(localStorage.getItem('loggedUser')).username;
-      console.log(JSON.parse(localStorage.getItem('loggedUser')));
-      console.log(username);
       return this.users.find(u=>u.username===username);
     }
 
@@ -150,19 +148,13 @@ export class UserService{
 
       let username = JSON.parse(localStorage.getItem('loggedUser')).username;
       reservation.username=username;
-      console.log(reservation);
       this.users.find(u=>u.username===username).carReservations.push(reservation);
 
       return true;
 
     }
 
-    getAllAdministrators():User[]{
-      let ret:User[] = [];
-      this.users.forEach(user=>{
-        if(user.role==='CARADMIN'|| user.role==='AIRLINEADMIN')
-        ret.push(user);
-      })
-      return ret;
+    getAllUsers():User[]{
+      return this.users;
     }
 }

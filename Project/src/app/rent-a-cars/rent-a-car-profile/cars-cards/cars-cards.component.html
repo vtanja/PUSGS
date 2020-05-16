@@ -74,13 +74,13 @@
       <br>
       <label class="lblStyle">Pick up location: <span class="valueStyle"> {{params['pickUpLocation']}},&nbsp;{{params['pickUpTime']}} </span></label>
       <br>
-      <label class="lblStyle">Pick up date:<span class="valueStyle">  {{params['pickUpDate']}},&nbsp;{{params['dropOffTime']}}</span></label>
+      <label class="lblStyle">Pick up date:<span class="valueStyle">  {{params['pickUpDate']}},&nbsp;{{params['pickUpTime']}}</span></label>
       <br>
       <label class="lblStyle">Drop off location:<span class="valueStyle">  {{params['dropOffLocation']}}</span></label>
       <br>
-      <label class="lblStyle">Drop off date:<span class="valueStyle">  {{params['dropOffDate']}}</span></label>
+      <label class="lblStyle">Drop off date:<span class="valueStyle">  {{params['dropOffDate']}}&nbsp;&nbsp;{{params['dropOffTime']}}</span></label>
       <br>
-      <label class="lblStyle">Total price: <span class="valueStyle"> {{currentCar.pricePerDay*rentDays | currency:'EUR' }}</span></label>
+      <label class="lblStyle">Total price: <span class="valueStyle"> {{currentCar.pricePerDay*(rentDays===0?1:rentDays) | currency:'EUR' }}</span></label>
     </div>
     <div class="modal-footer">
       <button type="button" class="btn confirmBtnStyle" (click)="makeReservation();modal.close('Save click')">Confirm</button>
@@ -89,4 +89,3 @@
 
 
 
-  

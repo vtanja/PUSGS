@@ -5,6 +5,7 @@ export class User {
      firstName:string;
      lastName:string;
      email:string;
+     role:string;
      username:string;
      password:string;
      phoneNumber:string;
@@ -15,17 +16,18 @@ export class User {
      carReservations:CarReservation[];
      flightReservations:FlightReservation[];
      name:string;
-     role:string;
+
      carCompany:number;
      airlineCompany:number;
 
     constructor(firstName:string, lastName:string,
-          email:string, username:string, password:string, phone:string, address:string, friends:User[] ){
+          email:string,role:string, username:string, password:string, phone:string, address:string, friends:User[] ){
             this.firstName=firstName;
             this.lastName=lastName;
             this.email=email;
             this.username=username;
             this.password=password;
+            this.role=role;
             this.phoneNumber=phone;
             this.address=address;
             this.friends=friends;
@@ -34,5 +36,6 @@ export class User {
             this.carReservations = [];
             this.flightReservations=[];
             this.name=this.firstName+' '+this.lastName;
+
          }
 }

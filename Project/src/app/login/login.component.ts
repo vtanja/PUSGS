@@ -25,7 +25,16 @@ export class LoginComponent implements OnInit {
 
     if(this.userService.login(this.loginForm.get('username').value,this.loginForm.get('password').value)){
 
+      let userRole = this.userService.getLoggedUser().role;
+      if(userRole==='USER'){
         this.router.navigate(['/home'], {relativeTo:this.route});
+      } else if(userRole === 'CARADMIN'){
+        this.router.navigate(['/user/profile'], {relativeTo:this.route});
+      } else if( userRole === 'ADMINISTRATOR'){
+        this.router.navigate(['/all-users'], {relativeTo:this.route});
+      }
+    }else{
+      console.log('FALSE');
     }
 
   }

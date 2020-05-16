@@ -1,7 +1,7 @@
 <div *ngIf="rentCars.length===0 || rentCars===undefined">
   <h3>We haven't found any Rent a car companies for you...</h3>
 </div>
-<div *ngIf="rentCars.length!==0">
+<div *ngIf="rentCars.length!=0">
   <div class="list-group" *ngFor="let rentCar of rentCars | sortBy:'asc':sortCriteria">
     <app-rent-a-car-item [rentCar]="rentCar"></app-rent-a-car-item>
 </div>

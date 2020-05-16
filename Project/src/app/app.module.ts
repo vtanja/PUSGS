@@ -81,6 +81,11 @@ import { AgmCoreModule, GoogleMapsAPIWrapper } from '@agm/core';
 import { AirlineEditComponent } from './airlines/airline-administrator/airline-edit/airline-edit.component';
 import { EditAirlineMainDataComponent } from './airlines/airline-administrator/airline-edit/edit-airline-main-data/edit-airline-main-data.component';
 import { EditDestinationsComponent } from './airlines/airline-administrator/airline-edit/edit-destinations/edit-destinations.component';
+import { AddUserComponent } from './administrator/add-user/add-user.component';
+import { AdministratorService } from './services/administrator.service';
+import { FooterComponent } from './footer/footer.component';
+import { UsersListComponent } from './administrator/users-list/users-list.component';
+import { UsersItemComponent } from './administrator/users-item/users-item.component';
 
 @NgModule({
   declarations: [
@@ -142,6 +147,10 @@ import { EditDestinationsComponent } from './airlines/airline-administrator/airl
     AirlineEditComponent,
     EditAirlineMainDataComponent,
     EditDestinationsComponent,
+    AddUserComponent,
+    FooterComponent,
+    UsersListComponent,
+    UsersItemComponent,
 
   ],
   imports: [
@@ -172,6 +181,7 @@ import { EditDestinationsComponent } from './airlines/airline-administrator/airl
     AirlineService,
     CarReservationsService,
     RentCarAdministratorService,
+    AdministratorService,
     {provide: NgbDateParserFormatter, useClass: NgbDateCustomParserFormatter},
     GoogleMapsAPIWrapper
   ],

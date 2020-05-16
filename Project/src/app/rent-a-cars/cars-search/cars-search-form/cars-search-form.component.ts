@@ -40,7 +40,7 @@ export class CarsSearchFormComponent implements OnInit {
   locationGroups: LocationGroup[] = [
     {
       letter: 'B',
-      names: ['Belgrade, Serbia', 'Budapest, Hungary', 'Banja Luka, BiH'],
+      names: ['Belgrade, Serbia', 'Budapest, Hungary', 'Banja Luka, Bosnia and Herzegovina'],
     },
     {
       letter: 'D',
@@ -56,7 +56,7 @@ export class CarsSearchFormComponent implements OnInit {
     },
     {
       letter: 'T',
-      names: ['Trebinje, BiH'],
+      names: ['Trebinje, Bosnia and Herzegovina'],
     },
   ];
 
@@ -251,7 +251,6 @@ export class CarsSearchFormComponent implements OnInit {
       this.rentCarsService.searchCarsParamsSubject.next(searchParams);
     }
 
-    console.log(searchParams);
   }
 
   onClear() {
@@ -285,10 +284,7 @@ export class CarsSearchFormComponent implements OnInit {
   private requireMatch(control: FormControl): ValidationErrors | null {
     const selection: string = control.value;
 
-    console.log(selection);
-
     if (selection != undefined && selection != '') {
-      console.log(selection.substring(0, 1).toUpperCase());
       let group = this.locationGroups.find(
         (e) => e.letter === selection.substring(0, 1).toUpperCase()
       );
