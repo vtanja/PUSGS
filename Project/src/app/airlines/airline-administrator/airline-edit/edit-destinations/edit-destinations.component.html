@@ -1,1 +1,29 @@
-<p>edit-destinations works!</p>
+<div class="my-heading-div">
+    <div class="d-flex justify-content-end">
+      <button class="btn  btn-md btn-rounded button-style"
+              (click)="openModal(addDestinationModal)">Add new destination</button>
+      </div>
+    <h4>Destinations</h4>
+  </div>
+  <app-profile-offices style="margin-top: 4%;" [items]="this.company.destinations"></app-profile-offices>
+  
+  <ng-template #addDestinationModal let-modal [formGroup]="addDestinationForm">
+    <div class="modal-header">
+      <h6 class="modal-title" id="modal-basic-title-cpm">Add new destination</h6>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">×</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <label class="lblStyle">City: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+      <input class="modal-input" formControlName="city" type="text">
+      <br>
+      <label class="lblStyle">Country: </label>
+      <input class="modal-input" formControlName="country" type="text">
+    </div>
+    <div class="modal-footer">
+      <button type="button" [disabled]="addDestinationForm.invalid" class="btn confirmBtnStyle"
+        (click)="modal.close('Save click'); addDestination()">Confirm</button>
+    </div>
+  </ng-template>
+  

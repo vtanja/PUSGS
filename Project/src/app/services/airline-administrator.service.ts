@@ -45,4 +45,32 @@ export class AirlineAdministratorService {
              address.latitude=+res[0].lat;
              console.log(address);
    }
+
+   addDestination(country:string, city:string):boolean{
+    let user = this.userService.getLoggedUser();
+    let company = this.airlineService.getAirline(user.airlineCompany);
+
+    if(company.destinations[country]!=undefined){
+      company.destinations[country].push(city);
+    }else{
+      let destinations = [];
+      destinations.push(city);
+      company.destinations[country] = destinations;
+    }
+    return(true);
+  }
+
+  deleteDestination(country:string, city:string):boolean{
+    let user = this.userService.getLoggedUser();
+    let company = this.airlineService.getAirline(user.airlineCompany);
+    console.log(company.destinations);
+    console.log(country);
+    let index = company.destinations[country].indexOf(city);
+    company.destinations[country].splice(index,1);
+    if(company.destinations[country].length===0){
+      delete company.destinations[country];
+    }
+    return true;
+  }
+
 }

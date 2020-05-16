@@ -4,6 +4,7 @@ import { KeyValue } from '@angular/common';
 import { UserService } from 'src/app/services/user-service.service';
 import { Address } from 'src/app/models/address';
 import { RentCarAdministratorService } from 'src/app/services/rent-car-administrator.service';
+import { AirlineAdministratorService } from 'src/app/services/airline-administrator.service';
 
 @Component({
   selector: 'app-profile-offices',
@@ -19,11 +20,13 @@ export class ProfileOfficesComponent implements OnInit {
   offices: any;
   isCarCompany: boolean;
   isCarCompanyEdit:boolean;
+  isArlineCompany: boolean;
+  isAirlineCompanyEdit:boolean;
   currentOffice: {};
 
   images: {};
 
-  constructor(private router: ActivatedRoute,private usersService:UserService,private rentCarAdminService:RentCarAdministratorService) {}
+  constructor(private router: ActivatedRoute,private usersService:UserService,private rentCarAdminService:RentCarAdministratorService, private airlineAdminService:AirlineAdministratorService) {}
 
   ngOnInit(): void {
     if (this.router.snapshot.routeConfig.path.includes('carProfile')) {
@@ -32,6 +35,10 @@ export class ProfileOfficesComponent implements OnInit {
     } else if( this.router.snapshot.routeConfig.path.includes('edit-offices')){
        this.isCarCompanyEdit = true;
        this.isCarCompany = true;
+    }
+    else if(this.router.snapshot.routeConfig.path.includes('edit-destinations')){
+      this.isAirlineCompanyEdit=true;
+      this.isArlineCompany=true;
     }
     else {
       this.isCarCompany = false;
@@ -124,6 +131,12 @@ export class ProfileOfficesComponent implements OnInit {
         delete this.items[address.country]
     }
   }
+
+  removeDestination(country:string, city:string){
+    if(this.airlineAdminService.deleteDestination(country, city)){
+      console.log(this.items[country]);
+    }
+    }
 
   changeMap(address:Address):void{
     this.usersService.changeMap.next(address);
