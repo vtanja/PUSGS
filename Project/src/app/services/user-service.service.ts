@@ -9,6 +9,7 @@ import { AirlineService } from './airline.service';
 import { UsersRate } from '../models/users-rate.model';
 import { LoggedUser } from '../models/logged-user.model';
 import { Address } from '../models/address';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 interface Passenger {
     seat: number;
@@ -20,8 +21,11 @@ export class UserService{
     userLogged = new Subject<boolean>();
     users:User[];
     changeMap:Subject<Address>;
+    readonly baseUri = 'http://localhost:51474/api/';
 
-    constructor(private rentCarService:RentCarService,private airlineService:AirlineService){
+    constructor(private rentCarService:RentCarService,private airlineService:AirlineService,private httpClient:HttpClient){
+
+
 
       this.users = [];
       this.changeMap = new Subject<Address>();
@@ -58,25 +62,22 @@ export class UserService{
       if(localStorage.getItem('loggedUser')!=undefined)
         return true;
       return false;
+
+    //   if(localStorage.getItem('token')!=undefined)
+    //   return true;
+    // return false;
     }
 
     getUserFromName(name:string){
       return JSON.parse(localStorage.getItem('loggedUser')).name;
     }
 
-    login(username:string,password:string):boolean{
-      let user = this.users.find(u=>u.username===username);
-      if(user!=undefined){
-        let userLogged = new LoggedUser(user.username,user.role);
-        localStorage.setItem('loggedUser', JSON.stringify(userLogged));
-        this.userLogged.next(true);
-        return true;
-      }
-        return false;
+    login(loginData:{}){
+      return this.httpClient.post(this.baseUri + 'User/Login',loginData);
     }
 
     logout():boolean{
-      localStorage.clear();
+      localStorage.removeItem('token');
       this.userLogged.next(false);
       return true;
     }
@@ -157,4 +158,32 @@ export class UserService{
     getAllUsers():User[]{
       return this.users;
     }
+
+    register(userData:{}){
+     return this.httpClient.post(this.baseUri + 'User/Register',userData);
+    }
+
+    getUserProfile(){
+      return this.httpClient.get(this.baseUri + 'User/Profile');
+    }
+
+    getUserRole(){
+      let payload = JSON.parse(window.atob(localStorage.getItem('token').split('.')[1]));
+      let role = payload.role;
+      return role;
+    }
+
+    getUserName(){
+      let payload = JSON.parse(window.atob(localStorage.getItem('token').split('.')[1]));
+      let role = payload.UserName;
+      return role;
+    }
+
+    isUserLoggedIn(){
+         if(localStorage.getItem('token')!=undefined)
+      return true;
+    return false;
+    }
+
+
 }

@@ -26,7 +26,7 @@
             <span class="label-input100">Password</span>
             <div class="input-icons">
               <show-hide-password size="sm"   btnStyle="light" [btnOutline]="false"  >
-							  <input id='pass' formControlName="password" class="input100" type="text" name="pass" placeholder="*************">
+							  <input id='pass' formControlName="password" class="input100" type="password" name="pass" placeholder="*************">
                 </show-hide-password>
             <i *ngIf="loginForm.get('password').invalid && loginForm.get('password').touched" class="fa fa-exclamation"></i>
           </div>

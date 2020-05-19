@@ -46,21 +46,21 @@
               <div class="wrap-input100 validate-input">
                 <span class="label-input100">Username</span>
                 <div class="input-icons">
-                  <input formControlName="username" class="input100" type="text" name="username"
+                  <input formControlName="userName" class="input100" type="text" name="userName"
                     placeholder="Username...">
-                  <i *ngIf="registerForm.get('username').invalid && registerForm.get('username').touched"
+                  <i *ngIf="registerForm.get('userName').invalid && registerForm.get('userName').touched"
                     class="fa fa-exclamation"></i>
                   <span class="focus-input100"></span>
                 </div>
                 <span class="invalid-input-span"
-                  *ngIf="registerForm.get('username').invalid && registerForm.get('username').touched">Username is
+                  *ngIf="registerForm.get('userName').invalid && registerForm.get('userName').touched">Username is
                   required</span>
               </div>
 
               <div class="wrap-input100 validate-input">
                 <span class="label-input100">Email</span>
                 <div class="input-icons">
-                  <input formControlName="email" class="input100" type="text" name="username" placeholder="Email...">
+                  <input formControlName="email" class="input100" type="text" name="userName" placeholder="Email...">
                   <i *ngIf="registerForm.get('email').invalid && registerForm.get('email').touched"
                     class="fa fa-exclamation"></i>
                   <span class="focus-input100"></span>
@@ -81,7 +81,7 @@
                   <span class="label-input100">Password</span>
                   <div class="input-icons">
                     <show-hide-password size="sm" btnStyle="light" [btnOutline]="false">
-                      <input formControlName="password" class="input100" type="text" name="pass"
+                      <input formControlName="password" class="input100" type="password" name="pass"
                         placeholder="*************">
                     </show-hide-password>
                     <span class="focus-input100"></span>
@@ -98,7 +98,7 @@
                   <span class="label-input100">Confirm Password</span>
                   <div class="input-icons">
                     <show-hide-password size="sm" btnStyle="light" [btnOutline]="false">
-                      <input formControlName="confirm" class="input100" type="text" name="confirm-pass"
+                      <input formControlName="confirm" class="input100" type="password" name="confirm-pass"
                         placeholder="*************">
                     </show-hide-password>
                     <span class="focus-input100"></span>
@@ -117,30 +117,31 @@
               <div class="wrap-input100 validate-input">
                 <span class="label-input100">City/Town</span>
                 <div class="input-icons">
-                  <input formControlName="city" class="input100" type="text" name="city" placeholder="City/Town..">
-                  <i *ngIf="registerForm.get('city').invalid && registerForm.get('city').touched"
+                  <input formControlName="address" class="input100" type="text" name="address" placeholder="address/Town..">
+                  <i *ngIf="registerForm.get('address').invalid && registerForm.get('address').touched"
                     class="fa fa-exclamation"></i>
                   <span class="focus-input100"></span>
                 </div>
                 <span class="invalid-input-span"
-                  *ngIf="registerForm.get('city').invalid && registerForm.get('city').touched">City name is
+                  *ngIf="registerForm.get('address').invalid && registerForm.get('address').touched">address name is
                   required</span>
               </div>
 
               <div class="wrap-input100 validate-input">
                 <span class="label-input100">Phone number</span>
                 <div class="input-icons">
-                  <input formControlName="phone" class="input100" ng2TelInput (countryChange)="onCountryChange($event)"
+                  <input formControlName="phoneNumber" class="input100" ng2TelInput [ng2TelInputOptions]="{initialCountry: 'rs'}"
+                   (countryChange)="onCountryChange($event)"
                     type="text" name="phone-num" placeholder="Phone number">
-                  <i *ngIf="registerForm.get('phone').invalid && registerForm.get('phone').touched"
+                  <i *ngIf="registerForm.get('phoneNumber').invalid && registerForm.get('phoneNumber').touched"
                     class="fa fa-exclamation"></i>
                   <span class="focus-input100"></span>
                 </div>
                 <span class="invalid-input-span"
-                  *ngIf="registerForm.get('phone').invalid && registerForm.get('phone').touched && hasRequiredError('phone')">Phone
+                  *ngIf="registerForm.get('phoneNumber').invalid && registerForm.get('phoneNumber').touched && hasRequiredError('phoneNumber')">Phone
                   number is required</span>
                 <span class="invalid-input-span"
-                  *ngIf="registerForm.get('phone').invalid && registerForm.get('phone').touched && hasRegExpError('phone')">Please
+                  *ngIf="registerForm.get('phoneNumber').invalid && registerForm.get('phoneNumber').touched && hasRegExpError('phoneNumber')">Please
                   enter valid phone number</span>
               </div>
             </div>
@@ -150,7 +151,7 @@
             <div class="container-login100-form-btn">
               <div class="wrap-login100-form-btn">
                 <div class="login100-form-bgbtn"></div>
-                <button class="login100-form-btn" [disabled]="registerForm.invalid">
+                <button class="login100-form-btn" [disabled]="registerForm.invalid" (click)="onRegister()">
                   Register
                 </button>
               </div>

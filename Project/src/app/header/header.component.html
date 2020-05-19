@@ -16,22 +16,22 @@
       <li class="nav-item" *ngIf="!loggedIn">
         <a class="nav-link" routerLink="/register"><span>REGISTER</span></a>
       </li>
-      <li class="nav-item" *ngIf="loggedIn && loggedUser.role==='USER'">
+      <li class="nav-item" *ngIf="loggedIn && userRole==='USER'">
         <div class="list-group-item d-flex justify-content-between align-items-center" style="cursor: pointer;"
           placement="bottom" [ngbPopover]="requests" data-container="body" data-toggle="popover" data-placement="bottom"
           data-content="requests" popoverClass="popoverClass">
           <span class="slika" style="color:white; font-size:large;">
             <i class="fa fa-users"></i>
           </span>
-          <span class="badge badge-pill"
-            style="background-color: #fa9e1c; color: white;">{{loggedUser.friendRequests.length}}</span>
+          <!-- <span class="badge badge-pill"
+            style="background-color: #fa9e1c; color: white;">{{loggedUser.friendRequests.length}}</span> -->
         </div>
 
 
       </li>
 
       <ng-template #requests style="background-color: #e3cff3;">
-        <tr *ngFor="let friend of loggedUser.friendRequests" style="width: 30%;">
+        <!-- <tr *ngFor="let friend of loggedUser.friendRequests" style="width: 30%;">
           <td>
             <img src={{friend.profileImage}} style="width: 30px; height:30px; ">
           </td>&nbsp;
@@ -44,27 +44,25 @@
           <td style="vertical-align: middle;">
             <button (click)="onDecline(friend)" class="dugme">Decline</button>
           </td>
-        </tr>
+        </tr> -->
       </ng-template>
       <li class="nav-item" ngbDropdown display="dynamic" placement="bottom-right" *ngIf="loggedIn">
         <a class="nav-link" style="cursor: pointer" ngbDropdownToggle id="navbarDropdown3" role="button"
           aria-expanded="false">
-          {{loggedUser.username}}
+          {{userName}}
         </a>
         <div ngbDropdownMenu aria-labelledby="navbarDropdown3" class="dropdown-menu">
           <a ngbDropdownItem routerLink="/user/profile">Profile</a>
-          <a *ngIf="loggedUser.role==='USER'" ngbDropdownItem routerLink="/user/reservations/car-reservations">My
+          <a *ngIf="userRole==='USER'" ngbDropdownItem routerLink="/user/reservations/car-reservations">My
             reservations</a>
-          <a *ngIf="loggedUser.role==='USER'" ngbDropdownItem routerLink="/user/friends">Friends</a>
+          <a *ngIf="userRole==='USER'" ngbDropdownItem routerLink="/user/friends">Friends</a>
 
-          <a *ngIf="loggedUser.role==='ADMINISTRATOR'" ngbDropdownItem routerLink="/all-users">All users</a>
+          <a *ngIf="userRole==='ADMINISTRATOR'" ngbDropdownItem routerLink="/all-users">All users</a>
 
-          <a *ngIf="loggedUser.role==='CARADMIN'" ngbDropdownItem routerLink="/company-data/edit-main-data">Company data and offices</a>
-          <a *ngIf="loggedUser.role==='CARADMIN'" ngbDropdownItem routerLink="/companyCars">Cars</a>
+          <a *ngIf="userRole==='CARADMIN'" ngbDropdownItem routerLink="/company-data/edit-main-data">Company data and offices</a>
+          <a *ngIf="userRole==='CARADMIN'" ngbDropdownItem routerLink="/companyCars">Cars</a>
 
-          <a *ngIf="loggedUser.role==='AIRLINEADMIN'" ngbDropdownItem routerLink="/airline-company-data/edit-airline-main-data">Company data and destinations</a>
-          <!-- <a *ngIf="loggedUser.role==='AIRLINEADMIN'" ngbDropdownItem routerLink="/companyFlights">Flights</a> -->
-
+          <a *ngIf="userRole==='AIRLINEADMIN'" ngbDropdownItem routerLink="/airline-company-data/edit-airline-main-data">Company data and destinations</a>
 
           <hr style="border: 1px solid rgba(255, 255, 255, 0.3);">
           <a ngbDropdownItem href="#" (click)="onLogout()">Sign out</a>

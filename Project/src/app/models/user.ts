@@ -21,11 +21,11 @@ export class User {
      airlineCompany:number;
 
     constructor(firstName:string, lastName:string,
-          email:string,role:string, username:string, password:string, phone:string, address:string, friends:User[] ){
+          email:string,role:string, userName:string, password:string, phone:string, address:string, friends:User[] ){
             this.firstName=firstName;
             this.lastName=lastName;
             this.email=email;
-            this.username=username;
+            this.username=userName;
             this.password=password;
             this.role=role;
             this.phoneNumber=phone;

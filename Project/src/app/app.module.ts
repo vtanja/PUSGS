@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgbModule, NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap';
 import { IgxAvatarModule } from 'igniteui-angular';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -54,6 +55,7 @@ import { AirlineProfileComponent } from './airlines/airline-profile/airline-prof
 import { CarsCardsComponent } from './rent-a-cars/rent-a-car-profile/cars-cards/cars-cards.component';
 import { SortByPipe } from './common/sort-by.pipe';
 import { HammerModule } from "@angular/platform-browser";
+import { ToastrModule } from 'ngx-toastr';
 import { IgxTimePickerModule } from 'igniteui-angular';
 import { ReservationsComponent } from './user/reservations/reservations.component';
 import { CarReservationListComponent } from './user/reservations/car-reservation-list/car-reservation-list.component';
@@ -86,6 +88,7 @@ import { AdministratorService } from './services/administrator.service';
 import { FooterComponent } from './footer/footer.component';
 import { UsersListComponent } from './administrator/users-list/users-list.component';
 import { UsersItemComponent } from './administrator/users-item/users-item.component';
+import { HttpTokenInterceptor } from './interceptors/http-token.interceptor';
 
 @NgModule({
   declarations: [
@@ -156,6 +159,7 @@ import { UsersItemComponent } from './administrator/users-item/users-item.compon
   imports: [
     BrowserModule,
     AppRoutingModule,
+    HttpClientModule,
     NgbModule,
     FormsModule,
     ReactiveFormsModule,
@@ -174,6 +178,7 @@ import { UsersItemComponent } from './administrator/users-item/users-item.compon
     MatStepperModule,
     MatSelectModule,
     MatChipsModule,
+    ToastrModule.forRoot()
   ],
   providers: [
     UserService,
@@ -183,6 +188,7 @@ import { UsersItemComponent } from './administrator/users-item/users-item.compon
     RentCarAdministratorService,
     AdministratorService,
     {provide: NgbDateParserFormatter, useClass: NgbDateCustomParserFormatter},
+    {provide: HTTP_INTERCEPTORS, useClass:HttpTokenInterceptor,multi:true},
     GoogleMapsAPIWrapper
   ],
   bootstrap: [AppComponent]
