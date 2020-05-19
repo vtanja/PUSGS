@@ -15,9 +15,6 @@ import { RentACarsComponent } from './rent-a-cars/rent-a-cars.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Ng2TelInputModule } from 'ng2-tel-input';
 import { ShowHidePasswordModule } from 'ngx-show-hide-password';
-import { MatSortModule } from '@angular/material/sort';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import{ MatInputModule } from '@angular/material/input'
 import { RentACarListComponent } from './rent-a-cars/rent-a-car-list/rent-a-car-list.component';
 import { RentACarItemComponent } from './rent-a-cars/rent-a-car-item/rent-a-car-item.component';
 import { CarsSearchComponent } from './rent-a-cars/cars-search/cars-search.component';
@@ -29,7 +26,6 @@ import { CarItemComponent } from './rent-a-cars/cars/car-item/car-item.component
 import { UserComponent } from './user/user.component';
 import { UserProfileComponent } from './user/user-profile/user-profile.component';
 import { FriendsListComponent } from './user/friends-list/friends-list.component';
-import { SearchPipe } from './user/friends-list/search.pipe';
 import { UserService } from './services/user-service.service';
 import { NavbarComponent } from './navbar/navbar.component';
 import { CarsSearchFormComponent } from './rent-a-cars/cars-search/cars-search-form/cars-search-form.component';
@@ -46,13 +42,10 @@ import { RoundFlightItemComponent } from './airlines/flights/round-flight-item/r
 import { RentACarProfileComponent } from './rent-a-cars/rent-a-car-profile/rent-a-car-profile.component';
 import { CarsCarouselComponent } from './rent-a-cars/rent-a-car-profile/cars-carousel/cars-carousel.component';
 import { FlightsFilterComponent } from './airlines/flights/flights-filter/flights-filter.component';
-import { FilterPipe } from './airlines/flights/filter.pipe';
-import { RoundFlightsFilterPipe } from './airlines/flights/round-flights-filter.pipe';
 import { ProfileNavbarComponent } from './common/profile-navbar/profile-navbar.component';
 import { ProfileOfficesComponent } from './common/profile-offices/profile-offices.component';
 import { AirlineProfileComponent } from './airlines/airline-profile/airline-profile.component';
 import { CarsCardsComponent } from './rent-a-cars/rent-a-car-profile/cars-cards/cars-cards.component';
-import { SortByPipe } from './common/sort-by.pipe';
 import { HammerModule } from "@angular/platform-browser";
 import { IgxTimePickerModule } from 'igniteui-angular';
 import { ReservationsComponent } from './user/reservations/reservations.component';
@@ -67,11 +60,8 @@ import { RentACarAdministratorComponent } from './rent-a-cars/rent-a-car-adminis
 import { RentACarEditComponent } from './rent-a-cars/rent-a-car-administrator/rent-a-car-edit/rent-a-car-edit.component';
 import { MainDataEditComponent } from './rent-a-cars/rent-a-car-administrator/rent-a-car-edit/main-data-edit/main-data-edit.component';
 import { CarsEditComponent } from './rent-a-cars/rent-a-car-administrator/rent-a-car-edit/cars-edit/cars-edit.component';
-import {MatStepperModule} from '@angular/material/stepper';
 import { PlaneLayoutComponent } from './plane-layout/plane-layout.component';
-import { MatSelectModule } from '@angular/material/select';
 import { CreateFlightReservationComponent } from './create-flight-reservation/create-flight-reservation.component';
-import {MatChipsModule} from '@angular/material/chips';
 import { CreateCarReservationComponent } from './create-car-reservation/create-car-reservation.component';
 import { RentCarAdministratorService } from './services/rent-car-administrator.service';
 import { OfficesEditComponent } from './rent-a-cars/rent-a-car-administrator/rent-a-car-edit/offices-edit/offices-edit.component';
@@ -88,6 +78,22 @@ import { EditPlaneComponent } from './airlines/airline-administrator/airline-edi
 import { AddFlightComponent } from './airlines/airline-administrator/airline-edit/admin-flights/add-flight/add-flight.component';
 import { AdminFlightsComponent } from './airlines/airline-administrator/airline-edit/admin-flights/admin-flights.component';
 import { AdminFlightListComponent } from './airlines/airline-administrator/airline-edit/admin-flights/admin-flight-list/admin-flight-list.component';
+import { AddUserComponent } from './administrator/add-user/add-user.component';
+import { AdministratorService } from './services/administrator.service';
+import { FooterComponent } from './footer/footer.component';
+import { UsersListComponent } from './administrator/users-list/users-list.component';
+import { UsersItemComponent } from './administrator/users-item/users-item.component';
+import { SearchPipe } from './pipes/search.pipe';
+import { FilterPipe } from './pipes/filter.pipe';
+import { RoundFlightsFilterPipe } from './pipes/round-flights-filter.pipe';
+import { SortByPipe } from './pipes/sort-by.pipe';
+import { MatSortModule } from '@angular/material/sort';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatChipsModule } from '@angular/material/chips';
+import {MatInputModule} from '@angular/material/input';
+import {MatStepperModule} from '@angular/material/stepper';
+import {MatSelectModule} from '@angular/material/select';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -155,6 +161,10 @@ import { AdminFlightListComponent } from './airlines/airline-administrator/airli
     AddFlightComponent,
     AdminFlightListComponent,
     AdminFlightsComponent,
+    AddUserComponent,
+    FooterComponent,
+    UsersListComponent,
+    UsersItemComponent,
 
   ],
   imports: [
@@ -185,6 +195,7 @@ import { AdminFlightListComponent } from './airlines/airline-administrator/airli
     AirlineService,
     CarReservationsService,
     RentCarAdministratorService,
+    AdministratorService,
     {provide: NgbDateParserFormatter, useClass: NgbDateCustomParserFormatter},
     GoogleMapsAPIWrapper
   ],

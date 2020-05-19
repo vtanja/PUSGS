@@ -11,7 +11,7 @@ import { FriendsListComponent } from './user/friends-list/friends-list.component
 import { UserComponent } from './user/user.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { AirlinesListComponent } from './airlines/airlines-list/airlines-list.component';
-import {FlightsSearchComponent} from './airlines/flights-search/flights-search.component'
+import { FlightsSearchComponent } from './airlines/flights-search/flights-search.component';
 import { FlightListComponent } from './airlines/flights/flight-list/flight-list.component';
 import { RentACarProfileComponent } from './rent-a-cars/rent-a-car-profile/rent-a-car-profile.component';
 import { CarsComponent } from './rent-a-cars/cars/cars.component';
@@ -37,42 +37,78 @@ import { AdminFlightListComponent } from './airlines/airline-administrator/airli
 import { AddFlightComponent } from './airlines/airline-administrator/airline-edit/admin-flights/add-flight/add-flight.component';
 import { AdminFlightsComponent } from './airlines/airline-administrator/airline-edit/admin-flights/admin-flights.component';
 
+import { AddUserComponent } from './administrator/add-user/add-user.component';
+import { UsersListComponent } from './administrator/users-list/users-list.component';
 
 const routes: Routes = [
-  {path: '', component:HomePageComponent, pathMatch:'full'},
-  {path: 'home', component: HomePageComponent,
-    children:[
-      {path: 'search-cars', component:CarsSearchComponent},
-      {path: 'search-flights', component:FlightsSearchComponent}
-    ]},
-  {path: 'user', component: UserComponent,
-    children:[
-      {path: 'profile', component:UserProfileComponent},
-      {path: 'friends', component:FriendsListComponent},
-      {path: 'reservations', component:ReservationsComponent,
-        children:[
-          {path: 'car-reservations', component:CarReservationListComponent},
-          {path: 'flight-reservations', component:FlightReservationListComponent},
-        ]},
-    ]},
-  {path: 'login', component: LoginComponent},
-  {path: 'register', component: RegisterComponent},
-  {path: 'allCarCompanies',component: RentACarsComponent},
-  {path: 'allAirlineCompanies', component:AirlinesComponent},
-  {path: 'allCars',component: CarsComponent},
-  {path: 'allFlights', component:FlightsComponent},
-  {path: 'navbar', component:NavbarComponent },
-  {path:'carProfile/:id',component: RentACarProfileComponent},
-  {path:'airlineProfile/:id',component: AirlineProfileComponent},
-  {path:'editService',component:RentACarEditComponent},
-  {path: 'create-reservation/:id', component:CreateFlightReservationComponent},
-  {path:'create-reservation/:id/create-car-reservation/:carid', component:CreateCarReservationComponent},
+  { path: '', component: HomePageComponent, pathMatch: 'full' },
+  {
+    path: 'home',
+    component: HomePageComponent,
+    children: [
+      { path: 'search-cars', component: CarsSearchComponent },
+      { path: 'search-flights', component: FlightsSearchComponent },
+    ],
+  },
+  {
+    path: 'user',
+    component: UserComponent,
+    children: [
+      { path: 'profile', component: UserProfileComponent },
+      { path: 'friends', component: FriendsListComponent },
+      {
+        path: 'reservations',
+        component: ReservationsComponent,
+        children: [
+          { path: 'car-reservations', component: CarReservationListComponent },
+          {
+            path: 'flight-reservations',
+            component: FlightReservationListComponent,
+          },
+        ],
+      },
+    ],
+  },
+  { path: 'login', component: LoginComponent },
+  { path: 'register', component: RegisterComponent },
+  { path: 'allCarCompanies', component: RentACarsComponent },
+  { path: 'allAirlineCompanies', component: AirlinesComponent },
+  { path: 'allCars', component: CarsComponent },
+  { path: 'allFlights', component: FlightsComponent },
+  { path: 'navbar', component: NavbarComponent },
+  { path: 'carProfile/:id', component: RentACarProfileComponent },
+  { path: 'airlineProfile/:id', component: AirlineProfileComponent },
+  { path: 'editService', component: RentACarEditComponent },
+  {
+    path: 'create-reservation/:id',
+    component: CreateFlightReservationComponent,
+  },
+  {
+    path: 'create-reservation/:id/create-car-reservation/:carid',
+    component: CreateCarReservationComponent,
+  },
 
-  {path:'company-data',component:RentACarEditComponent ,children : [
-    {path:'edit-main-data',component:MainDataEditComponent},
-    {path:'edit-offices',component:OfficesEditComponent},
-
-  ]},
+  {
+    path: 'company-data',
+    component: RentACarEditComponent,
+    children: [
+      { path: 'edit-main-data', component: MainDataEditComponent },
+      { path: 'edit-offices', component: OfficesEditComponent },
+    ],
+  },
+  { path: 'companyCars', component: CarsEditComponent },
+  { path: 'addCar', component: AddCarComponent },
+  {
+    path: 'airline-company-data',
+    component: AirlineEditComponent,
+    children: [
+      {
+        path: 'edit-airline-main-data',
+        component: EditAirlineMainDataComponent,
+      },
+      { path: 'edit-destinations', component: EditDestinationsComponent },
+    ]
+  },
   {path:'airline-company-data', component:AirlineEditComponent, children:[
     {path:'edit-airline-main-data', component:EditAirlineMainDataComponent},
     {path:'edit-destinations', component:EditDestinationsComponent},
@@ -84,18 +120,24 @@ const routes: Routes = [
     {path:'add-plane', component:AddPlaneComponent},
   {path:'companyCars',component:CarsEditComponent},
   {path:'addCar',component:AddCarComponent},
+  {
+    path: 'all-users',
+    component: UsersListComponent
+  },
+  { path: 'add-user', component: AddUserComponent },
 
-  {path: '**',component:HomePageComponent}
+  { path: '**', component: HomePageComponent },
+
 ];
 
 const routerOptions: ExtraOptions = {
   scrollPositionRestoration: 'enabled',
   anchorScrolling: 'enabled',
-   scrollOffset: [0, 24],
+  scrollOffset: [0, 24],
 };
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes,routerOptions)],
-  exports: [RouterModule]
+  imports: [RouterModule.forRoot(routes, routerOptions)],
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

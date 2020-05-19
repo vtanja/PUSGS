@@ -1,0 +1,148 @@
+<div class="d-flex justify-content-center" style="width: 80%;margin-left: 10%;">
+<form class="login100-form validate-form" [formGroup]="addUserForm">
+  <div class="row" style="width: 100%;">
+    <span class="login100-form-title p-b-50">
+      Add an administrator
+    </span>
+  </div>
+
+  <div class="row" style="width: 100%;">
+    <div class="col" style="width: 100%">
+
+      <div class="wrap-input100 validate-input">
+        <span class="label-input100">First Name</span>
+        <div class="input-icons">
+          <input formControlName="firstName" class="input100" type="text" name="firstName" placeholder="First name...">
+          <i *ngIf="addUserForm.get('firstName').invalid && addUserForm.get('firstName').touched"
+            class="fa fa-exclamation"></i>
+          <span class="focus-input100"></span>
+        </div>
+        <span class="invalid-input-span"
+          *ngIf="addUserForm.get('firstName').invalid && addUserForm.get('firstName').touched">First name is
+          required</span>
+      </div>
+
+      <div class="wrap-input100 validate-input">
+        <span class="label-input100">Last Name</span>
+        <div class="input-icons">
+          <input formControlName="lastName" class="input100" type="text" name="lastName" placeholder="Last name...">
+          <i *ngIf="addUserForm.get('lastName').invalid && addUserForm.get('lastName').touched"
+            class="fa fa-exclamation"></i>
+          <span class="focus-input100"></span>
+        </div>
+        <span class="invalid-input-span"
+          *ngIf="addUserForm.get('lastName').invalid && addUserForm.get('lastName').touched">Last name is
+          required</span>
+      </div>
+
+      <div class="wrap-input100 validate-input">
+        <span class="label-input100">Email</span>
+        <div class="input-icons">
+          <input formControlName="email" class="input100" type="text" name="username" placeholder="Email...">
+          <i *ngIf="addUserForm.get('email').invalid && addUserForm.get('email').touched" class="fa fa-exclamation"></i>
+          <span class="focus-input100"></span>
+        </div>
+        <span class="invalid-input-span"
+          *ngIf="addUserForm.get('email').invalid && addUserForm.get('email').touched && hasRequiredError('email')">Email
+          is required</span>
+        <span class="invalid-input-span"
+          *ngIf="addUserForm.get('email').invalid && addUserForm.get('email').touched && hasEmailError('email')">Email
+          adrress format in not valid</span>
+      </div>
+
+      <div class="wrap-input100 validate-input">
+        <span class="label-input100">Administartor type</span>
+        <div class="input-icons">
+          <select formControlName="adminType" class="select100"  name="adminType">
+            <option value="" selected disabled hidden >Administrator type...</option>
+            <option value="AIRLINEADMIN">Airline company administartor</option>
+            <option value="CARADMIN">Rent a car company administartor</option>
+          </select>
+            <i *ngIf="addUserForm.get('adminType').invalid && addUserForm.get('adminType').touched"
+              class="fa fa-exclamation"></i>
+
+        </div>
+        <span class="invalid-input-span"
+          *ngIf="addUserForm.get('adminType').invalid && addUserForm.get('adminType').touched">Administrator type is
+          required</span>
+      </div>
+    </div>
+
+
+
+    <div class="col" style="width: 100%; margin-left: 10%;">
+      <div class="wrap-input100 validate-input">
+        <span class="label-input100">Username</span>
+        <div class="input-icons">
+          <input formControlName="username" class="input100" type="text" name="username" placeholder="Username...">
+          <i *ngIf="addUserForm.get('username').invalid && addUserForm.get('username').touched"
+            class="fa fa-exclamation"></i>
+          <span class="focus-input100"></span>
+        </div>
+        <span class="invalid-input-span"
+          *ngIf="addUserForm.get('username').invalid && addUserForm.get('username').touched">Username is
+          required</span>
+      </div>
+
+
+      <div class="wrap-input100 validate-input">
+        <span class="label-input100">Password</span>
+        <div class="input-icons">
+          <show-hide-password size="sm" btnStyle="light" [btnOutline]="false">
+            <input formControlName="password" class="input100" type="text" name="pass" placeholder="*************">
+          </show-hide-password>
+          <span class="focus-input100"></span>
+        </div>
+        <span class="invalid-input-span"
+          *ngIf="addUserForm.get('password').invalid && addUserForm.get('password').touched && !hasRegExpError('password')">Password
+          is required</span>
+        <span class="invalid-input-span"
+          *ngIf="addUserForm.get('password').invalid && addUserForm.get('password').touched && hasRegExpError('passwordData.password')">
+          Password must have minimum eight characters, at least one letter and one number: </span>
+      </div>
+
+
+      <div class="wrap-input100 validate-input">
+        <span class="label-input100">City/Town</span>
+        <div class="input-icons">
+          <input formControlName="city" class="input100" type="text" name="city" placeholder="City/Town..">
+          <i *ngIf="addUserForm.get('city').invalid && addUserForm.get('city').touched" class="fa fa-exclamation"></i>
+          <span class="focus-input100"></span>
+        </div>
+        <span class="invalid-input-span" *ngIf="addUserForm.get('city').invalid && addUserForm.get('city').touched">City
+          name is
+          required</span>
+      </div>
+
+      <div class="wrap-input100 validate-input">
+        <span class="label-input100">Phone number</span>
+        <div class="input-icons">
+          <input formControlName="phone" class="input100" ng2TelInput (countryChange)="onCountryChange($event)"
+            type="text" name="phone-num" placeholder="Phone number">
+          <i *ngIf="addUserForm.get('phone').invalid && addUserForm.get('phone').touched" class="fa fa-exclamation"></i>
+          <span class="focus-input100"></span>
+        </div>
+        <span class="invalid-input-span"
+          *ngIf="addUserForm.get('phone').invalid && addUserForm.get('phone').touched && hasRequiredError('phone')">Phone
+          number is required</span>
+        <span class="invalid-input-span"
+          *ngIf="addUserForm.get('phone').invalid && addUserForm.get('phone').touched && hasRegExpError('phone')">Please
+          enter valid phone number</span>
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="d-flex justify-content-center" style="width: 100%;margin-left: 13%;">
+    <div class="container-login100-form-btn">
+      <div class="wrap-login100-form-btn">
+        <div class="login100-form-bgbtn"></div>
+        <button class="login100-form-btn" [disabled]="addUserForm.invalid" (click)="onAddAdmin()">
+          Register
+        </button>
+      </div>
+    </div>
+  </div>
+</form>
+</div>
