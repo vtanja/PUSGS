@@ -79,7 +79,7 @@ namespace Server.Controllers
 
                 var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                 var confirmationLink = Url.Action(nameof(ConfirmEmail), "User", new { UserId = user.Id,Code = token}, protocol:HttpContext.Request.Scheme);
-                await _emailSender.SendEmailAsync( user.Email , "Travellix - Confirmation email link", "Please confirm your email by clicking on this link: <a href=\"" +confirmationLink + "\">click herer</a>");
+                await _emailSender.SendEmailAsync( user.Email , "Travellix - Confirmation email link", "Please confirm your email by clicking on this link: <a href=\"" +confirmationLink + "\">click here.</a>");
 
 
                 return Ok(result);
@@ -100,10 +100,10 @@ namespace Server.Controllers
             if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
             {
 
-                //if(!await _userManager.IsEmailConfirmedAsync(user))
-                //{
-                //    return Unauthorized(new { message = "We sent you an email with confirmation link. Please confirm your registration with Travellix to log in. " });
-                //}
+                if (!await _userManager.IsEmailConfirmedAsync(user))
+                {
+                    return Unauthorized(new { message = "We sent you an email with confirmation link. Please confirm your registration with Travellix to log in. " });
+                }
 
                 var role = await _userManager.GetRolesAsync(user);
                 IdentityOptions _options = new IdentityOptions();

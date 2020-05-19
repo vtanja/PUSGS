@@ -28,7 +28,6 @@ export class HeaderComponent implements OnInit {
 
     this.userService.userLogged.subscribe((isLogged:boolean)=>{
         if(isLogged){
-
             this.getUserData();
             this.loggedIn=true;
 

@@ -38,12 +38,10 @@ export class LoginComponent implements OnInit {
       'UserName' : this.loginForm.get('username').value,
       'Password' : this.loginForm.get('password').value
     }
-    console.log(loginData);
 
     this.userService.login(loginData).subscribe((res:any)=>{
 
         localStorage.setItem('token', res.token);
-        console.log('success');
         this.userService.userLogged.next(true);
         this.loginForm.reset();
         this.router.navigateByUrl('/home');

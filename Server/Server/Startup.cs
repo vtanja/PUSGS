@@ -17,7 +17,6 @@ using Server.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using Server.CustomTokenProviders;
 using Server.Email;
 
 namespace Server
@@ -47,7 +46,6 @@ namespace Server
             services.AddDefaultIdentity<User>()
                     .AddRoles<IdentityRole>()
                    .AddEntityFrameworkStores<DataBaseContext>();
-                  // .AddTokenProvider<EmailConfirmationTokenProvider<User>>("emailconfirmation"); ;
 
             services.Configure<IdentityOptions>(options =>
             {
@@ -57,9 +55,7 @@ namespace Server
                 options.Password.RequireUppercase = false;
                 options.Password.RequiredLength = 1;
 
-                //options.SignIn.RequireConfirmedEmail = true;
-
-                //options.Tokens.EmailConfirmationTokenProvider = "emailconfirmation";
+                options.SignIn.RequireConfirmedEmail = true;
             }
             );
 
