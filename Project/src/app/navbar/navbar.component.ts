@@ -11,8 +11,11 @@ export class NavbarComponent implements OnInit {
   carActive:boolean=true;
   navbarFirst:string;
   navbarSecond:string;
+  navbarThird:string;
   iconFirst:string;
   iconSecond:string;
+  iconThird:string;
+  hideThird:boolean=true;
 
   constructor(private router:Router, private route:ActivatedRoute) { }
 
@@ -28,11 +31,14 @@ export class NavbarComponent implements OnInit {
     }
     else if(this.route.snapshot.routeConfig.path==="airline-company-data"){
 
+      this.hideThird=false;
       this.navbarFirst = 'MAIN DATA';
       this.navbarSecond = 'DESTINATIONS';
+      this.navbarThird = 'PRICELIST';
 
       this.iconFirst = "../../assets/images/mainData.png";
       this.iconSecond = "../../assets/images/island.png";
+      this.iconThird = "../../assets/images/euro2.svg";
 
   } else{
 
@@ -81,4 +87,6 @@ export class NavbarComponent implements OnInit {
 
     }
   }
+
+  
 }

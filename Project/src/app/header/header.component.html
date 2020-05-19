@@ -61,6 +61,8 @@
           <a *ngIf="loggedUser.role==='CARADMIN'" ngbDropdownItem routerLink="/companyCars">Cars</a>
 
           <a *ngIf="loggedUser.role==='AIRLINEADMIN'" ngbDropdownItem routerLink="/airline-company-data/edit-airline-main-data">Company data and destinations</a>
+          <a *ngIf="loggedUser.role==='AIRLINEADMIN'" ngbDropdownItem routerLink="/planes">Planes</a>
+          <a *ngIf="loggedUser.role==='AIRLINEADMIN'" ngbDropdownItem routerLink="/admin-flights">Flights</a>
           <!-- <a *ngIf="loggedUser.role==='AIRLINEADMIN'" ngbDropdownItem routerLink="/companyFlights">Flights</a> -->
 
 

@@ -1,21 +1,47 @@
-<div class="plane">
+<div class="plane" style="width: 40%;">
 
     <div class="exit exit--front fuselage">
-  
+        
     </div>
-    <ol class="cabin fuselage">
-      <li *ngFor="let seats of rows" class="row row--1">
-        <ol class="seats" type="A">
-          <li *ngFor="let seat of seats" class="seat">
-            <input (click)="seatAction(seat)" type="checkbox" [disabled]="seatsLayout?.booked?.includes(seat)" [checked]="toBeAdded?.includes(seat)" [id]="seat" />
-            <label [for]="seat">{{seat}}</label>
-          </li>
-        </ol>
-      </li>
-    </ol>
-    
+
+    <div class="cabin fuselage">
+      <div *ngIf="firstRows.length!==0 && firstRows!==undefined">
+        <div style="text-align: center;" >FIRST CLASS</div>
+        <div class="row"  *ngFor="let seats of firstRows">
+          <div class="col" *ngFor="let seat of seats" class="seat">
+            <input *ngIf="!settingConfig" (click)="seatAction(seat)" type="checkbox" [disabled]="plane?.booked?.includes(seat)" [checked]="toBeAdded?.includes(seat)" [id]="seat" />
+              <label [for]="seat">{{seat}}</label>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="businessRows.length!==0 && businessRows!==undefined">
+        <div style="text-align: center;" >BUSINESS CLASS</div>
+        <div class="row"  *ngFor="let seats of businessRows">
+          <div class="col" *ngFor="let seat of seats" class="seat">
+            <input *ngIf="!settingConfig" (click)="seatAction(seat)" type="checkbox" [disabled]="plane?.booked?.includes(seat)" [checked]="toBeAdded?.includes(seat)" [id]="seat" />
+              <label [for]="seat">{{seat}}</label>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="economyRows.length!==0 && economyRows!==undefined">
+        <div class="exit exit--front " *ngIf="firstRows.length!==0 && firstRows!==undefined && businessRows.length!==0 && businessRows!==undefined">
+        
+        </div>
+        <div style="text-align: center;" >ECONOMY CLASS</div>
+        <div class="row"  *ngFor="let seats of economyRows">
+          <div class="col" *ngFor="let seat of seats" class="seat"   >
+            <input *ngIf="!settingConfig" (click)="seatAction(seat)" type="checkbox" [disabled]="plane?.booked?.includes(seat)" [checked]="toBeAdded?.includes(seat)" [id]="seat" />
+            <input *ngIf="settingConfig" (click)="seatActionConfig(seat)" type="checkbox" [disabled]="plane?.booked?.includes(seat)" [checked]="toBePremium?.includes(seat)" [id]="seat" />
+              <label  [for]="seat" [ngStyle]="{backgroundColor:plane?.premiumSeats?.includes(seat) && !toBePremium?.includes(seat)?'green':toBePremium?.includes(seat)?'orange':'#31124b'}"  >{{seat}}</label>
+          </div>
+        </div>
+      </div>
+    </div>
   <div class="exit exit--back fuselage">
 
 </div>
   </div>
+
   

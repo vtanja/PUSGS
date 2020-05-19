@@ -23,6 +23,7 @@ export class Flight {
     firstClassSeats:number;
     airline:Airline;
     rates:UsersRate[];
+    planename:string;
 
 
   constructor(id:number,takeOffLocation:Airport, landingLocation:Airport, takeOffDate:string,landingDate:string,

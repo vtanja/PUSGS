@@ -1,6 +1,7 @@
 import { Flight } from './flight.model';
 import { Address } from './address';
 import { UsersRate } from './users-rate.model';
+import { Plane } from './plane';
 
 export class Airline {
     id:number;
@@ -13,6 +14,7 @@ export class Airline {
     image:string;
     rates:UsersRate[];
     private city:string;
+    planes:Plane[];
 
   constructor(id:number,name:string,address:Address,description:string,
       flights:Array<Flight>,destinations:{},image:string){
@@ -27,6 +29,7 @@ export class Airline {
     this.image = image;
     this.city=address.city;
     this.rates=[];
+    this.planes=[];
   }
 
 

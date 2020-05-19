@@ -1,0 +1,8 @@
+<div class="list-group" style="width: 40%; margin-left: 30%; margin-top: 5%;">
+    <div class="list-group-item d-flex justify-content-between" *ngFor="let plane of planes" >
+        <div class="col" style="width: 80%; text-align: start; color: #31124b; font-weight: bolder; font-size: larger; cursor: pointer;" routerLink="/edit-plane/{{plane.id}}">{{plane.name}}</div>
+        <div class="col" style="margin-right: 5%; width: 20%; text-align: end;" >
+            <button type="button" class="delete-button"  title="Remove this destination" (click)="removePlane(plane.id)"></button>
+          </div>
+    </div>
+</div>

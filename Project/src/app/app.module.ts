@@ -81,7 +81,13 @@ import { AgmCoreModule, GoogleMapsAPIWrapper } from '@agm/core';
 import { AirlineEditComponent } from './airlines/airline-administrator/airline-edit/airline-edit.component';
 import { EditAirlineMainDataComponent } from './airlines/airline-administrator/airline-edit/edit-airline-main-data/edit-airline-main-data.component';
 import { EditDestinationsComponent } from './airlines/airline-administrator/airline-edit/edit-destinations/edit-destinations.component';
-
+import { PlanesComponent } from './airlines/airline-administrator/airline-edit/planes/planes.component';
+import { PlaneListComponent } from './airlines/airline-administrator/airline-edit/planes/plane-list/plane-list.component';
+import { AddPlaneComponent } from './airlines/airline-administrator/airline-edit/planes/add-plane/add-plane.component';
+import { EditPlaneComponent } from './airlines/airline-administrator/airline-edit/planes/edit-plane/edit-plane.component';
+import { AddFlightComponent } from './airlines/airline-administrator/airline-edit/admin-flights/add-flight/add-flight.component';
+import { AdminFlightsComponent } from './airlines/airline-administrator/airline-edit/admin-flights/admin-flights.component';
+import { AdminFlightListComponent } from './airlines/airline-administrator/airline-edit/admin-flights/admin-flight-list/admin-flight-list.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -142,6 +148,13 @@ import { EditDestinationsComponent } from './airlines/airline-administrator/airl
     AirlineEditComponent,
     EditAirlineMainDataComponent,
     EditDestinationsComponent,
+    PlanesComponent,
+    PlaneListComponent,
+    AddPlaneComponent,
+    EditPlaneComponent,
+    AddFlightComponent,
+    AdminFlightListComponent,
+    AdminFlightsComponent,
 
   ],
   imports: [
