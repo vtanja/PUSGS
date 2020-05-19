@@ -1,0 +1,254 @@
+<h5 style="text-align: center;">Add flight...</h5>
+<br>
+<form [formGroup]="addFlightForm" style="margin-left: 10%;">
+    <div class="row">
+        <div class="col">
+            <div class="wrap-input100" >
+                <label class="label-input100">Plane: </label>
+                <div class="input-icons" style="width: 48%;">
+                    <i class="fa fa-plane" style="margin-top:8px; margin-left:7px" aria-hidden="true"></i>
+                    <select formControlName="plane"class="input100">
+                        <option value="" disabled selected hidden>Plane...</option>
+                        <option *ngFor="let plane of planes" [value]="plane.name">{{plane.name}}</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" formGroupName="locations">
+        <div class="col" >
+            <div class="wrap-input100" >
+                <label class="label-input100">Departure location: </label>
+                <div class="input-icons">
+                    <i class="fa fa-map-marker" style="margin-top:8px; margin-left:7px" aria-hidden="true"></i>
+                    <input
+                    formControlName="takeOffLocation"
+                    id="takeOffLocation"
+                    class="input100"
+                        type="text"
+                        name="username"
+                        placeholder="From..."
+                        matInput [matAutocomplete]="auto"
+                    >
+                </div>
+                <mat-autocomplete #auto="matAutocomplete">
+                    <mat-option style="height: fit-content;"  *ngFor="let option of takeOffLocationOptions | async" [value]="option.code">
+                        {{option.code}} - {{option.location}}
+                    </mat-option>
+                </mat-autocomplete>
+                <span class="invalid-input-span" *ngIf="addFlightForm.get('locations.takeOffLocation').invalid && addFlightForm.get('locations.takeOffLocation').touched">This field is required.</span>
+            </div>
+        </div>
+        <div class="col" >
+            <div class="wrap-input100" >
+                <label class="label-input100">Landing location: </label>
+                <div class="input-icons">
+                    <i class="fa fa-map-marker" style="margin-top:8px; margin-left:7px" aria-hidden="true"></i>
+                    <input
+                        formControlName="landingLocation"
+                        id="landingLocation" class="input100"
+                        type="text" name="username"
+                        placeholder="To..."
+                        matInput [matAutocomplete]="autoLanding">
+                </div>
+                <mat-autocomplete #autoLanding="matAutocomplete">
+                    <mat-option style="height: fit-content;"  *ngFor="let option of landingLocationOptions | async" [value]="option.code">
+                        {{option.code}} - {{option.location}}
+                    </mat-option>
+                </mat-autocomplete>
+                <span class="invalid-input-span" *ngIf="addFlightForm.get('locations.landingLocation').invalid && addFlightForm.get('locations.landingLocation').touched">This field is required.</span>
+            </div>
+        </div>
+    </div>
+    
+
+      
+    <div class="row" >
+        <div class="col" >
+            <div class="wrap-input100" >
+                <label class="label-input100">Departure date: </label>
+                <div class="input-icons2">
+                    <div class="input-group" style="width: 45%;">
+                        <input formControlName="departureDate" readonly="readonly" class="form-control date-input100"  placeholder="Depart.."
+                            name="dp"  ngbDatepicker #d="ngbDatepicker">
+                        <div class="input-group-append append_style">
+                            <button class="btn calendar"  (click)="d.toggle()" type="button"></button>
+                        </div>
+                        <i class="fa fa-calendar" aria-hidden="true"></i>
+                    </div>
+                </div>
+                <span class="invalid-input-span" *ngIf="addFlightForm.get('departureDate').invalid && addFlightForm.get('departureDate').touched">This field is required</span>
+            </div>
+        </div>
+        <div class="col" >
+            <div class="wrap-input100"  >
+                <label class="label-input100">Landing date: </label>
+                <div class="input-icons2">
+                    <div class="input-group"  style="width: 45%;">
+                        <input formControlName="returnDate" readonly="readonly" class="form-control date-input100" #returnDateInput
+                            placeholder="Return.."
+                            name="dp"  ngbDatepicker #r="ngbDatepicker">
+                        <div class="input-group-append append_style" style="margin-left: -10px;padding-left: 10px;">
+                            <button class="btn calendar" (click)="r.toggle()" type="button"></button>
+                        </div>
+                        <i class="fa fa-calendar" aria-hidden="true"></i>
+                    </div>
+                </div>
+                <span class="invalid-input-span" *ngIf="addFlightForm.get('returnDate').invalid && addFlightForm.get('returnDate').touched">This field is required</span>
+            </div>
+        </div>
+    </div>
+    <div class="row" formGroupName="times">
+        <div class="col">
+            <div class="wrap-input100" >
+                <label class="label-input100">Departure time: </label>
+                <div class="input-icons">
+                    <i class="fa fa-clock-o" aria-hidden="true"></i>
+                    <select formControlName="departureTimeHour" name="departureTimeHour" class="input100" >
+                        <option value="" disabled selected hidden>Departure time...</option>
+                        <option *ngFor="let time of hours" value="{{time}}">{{time}}</option>
+                    </select> &nbsp;:&nbsp;
+                    <select formControlName="departureTimeMin" name="departureTimeMin" class="input100" >
+                        <option value="" disabled selected hidden>Departure time...</option>
+                        <option *ngFor="let time of minutes" value="{{time}}">{{time}}</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="wrap-input100" >
+                <label class="label-input100">Landing time: </label>
+                <div class="input-icons">
+                    <i class="fa fa-clock-o" aria-hidden="true"></i>
+                    <select formControlName="landingTimeHour" name="landingTimehour" class="input100" >
+                        <option value="" disabled selected hidden>Landing time...</option>
+                        <option *ngFor="let time of hours" value="{{time}}">{{time}}</option>
+                    </select> &nbsp;:&nbsp;
+                    <select formControlName="landingTimeMin" name="landingTimeMin" class="input100" >
+                        <option value="" disabled selected hidden>Departure time...</option>
+                        <option *ngFor="let time of minutes" value="{{time}}">{{time}}</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row " style="padding-top: 4%; margin-left: 0.5%;" >
+        <label class="radio-inline"><input type="radio" #noStopsRadio name="optradio" id="noStops" value="noStops" (click)="noStopsSelect()" checked>&nbsp;No stops&nbsp;&nbsp;</label>
+        <label class="radio-inline"><input type="radio" #withStopsRadio name="optradio2" id="withStops" value="withStops" (click)="withStopsSelect()" >&nbsp;With stops&nbsp;&nbsp;</label>
+      </div>
+
+      <!-- <div class="row">
+        <mat-form-field class="example-chip-list" style="margin-left: 10%; width: 80%; margin-top: 5%;">
+            <mat-chip-list #chipList aria-label="Stops...">
+              <mat-chip
+                *ngFor="let airport of chosenAirports"
+                [selectable]="selectable"
+                [removable]="removable"
+                (removed)="remove(airport)">
+                {{airport.name}}
+                <div matChipRemove *ngIf="removable"><i class="fa fa-times" style="color: #31124b;"></i></div>
+              </mat-chip>
+              <input 
+                placeholder="Choose stop..."
+                #segmentInput
+                [formControl]="segmentCtrl"
+                [matAutocomplete]="auto"
+                [matChipInputFor]="chipList"
+              (matChipInputTokenEnd)="add($event)"
+                [matChipInputSeparatorKeyCodes]="separatorKeysCodes">
+            </mat-chip-list>
+            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+              <mat-option *ngFor="let airport of filteredAirports | async" [value]="airport">
+                {{airport.name}}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+   
+    </div> -->
+
+    
+        <div class="row" formGroupName="prices">
+            <div class="col" *ngIf="planeSegments?.includes('Economy class')">
+                <div class="wrap-input100" >
+                    <label class="label-input100">Economy class ticket price: </label>
+                    <div class="input-icons">
+                        <input
+                        formControlName="economyPrice"
+                        id="economyPrice"
+                        class="input100"
+                            type="number"
+                            name="economyPrice"
+                            placeholder="Economy class price..."
+                        >
+                    </div>
+                    <span class="invalid-input-span" *ngIf="addFlightForm.get('prices.economyPrice').invalid && addFlightForm.get('prices.economyPrice').touched">This field is required.</span>
+                </div>
+            </div>
+
+            <div class="col" *ngIf="planeSegments?.includes('Economy premium')">
+                <div class="wrap-input100" >
+                    <label class="label-input100">Economy Premium ticket price: </label>
+                    <div class="input-icons">
+                        <input
+                        formControlName="economyPremiumPrice"
+                        id="economyPremiumPrice"
+                        class="input100"
+                            type="number"
+                            name="economyPrice"
+                            placeholder="Economy Premium price..."
+                        >
+                    </div>
+                    <span class="invalid-input-span" *ngIf="addFlightForm.get('prices.economyPremiumPrice').invalid && addFlightForm.get('prices.economyPremiumPrice').touched">This field is required.</span>
+                </div>
+            </div>
+
+            <div class="col"  *ngIf="planeSegments?.includes('Business class')">
+                <div class="wrap-input100" >
+                    <label class="label-input100">Business class ticket price: </label>
+                    <div class="input-icons">
+                        <input
+                        formControlName="businessPrice"
+                        id="businessPrice"
+                        class="input100"
+                            type="number"
+                            name="businessPrice"
+                            placeholder="Business class price..."
+                        >
+                    </div>
+                    <span class="invalid-input-span" *ngIf="addFlightForm.get('prices.economyPrice').invalid && addFlightForm.get('prices.economyPrice').touched">This field is required.</span>
+                </div>
+            </div>
+
+            <div class="col" *ngIf="planeSegments?.includes('First class')" >
+                <div class="wrap-input100" >
+                    <label class="label-input100">First class ticket price: </label>
+                    <div class="input-icons">
+                        <input
+                        formControlName="firstPrice"
+                        id="firstPrice"
+                        class="input100"
+                            type="number"
+                            name="firstPrice"
+                            placeholder="First class price..."
+                        >
+                    </div>
+                    <span class="invalid-input-span" *ngIf="addFlightForm.get('prices.firstPrice').invalid && addFlightForm.get('prices.firstPrice').touched">This field is required.</span>
+                </div>
+            </div>
+        </div>
+
+
+</form>
+
+
+<div class="d-flex justify-content-center" style="margin-top: 2%;margin-bottom: 5%;margin-left: 13%;">
+    <div class="container-form-btn" style="align-self: center;">
+      <div class="wrap-form-btn">
+        <div class="form-bgbtn"></div>
+          <button class="form-btn" [disabled]="addFlightForm.invalid" (click)="onAddFlight()">
+            Add flight
+          </button>
+        </div>
+      </div>
+    </div>

@@ -1,0 +1,41 @@
+<div class="my-heading-div">
+    <div class="d-flex justify-content-end">
+        <button class="btn  btn-md btn-rounded button-style" (click)="open(modal)">Add new rows</button>
+        </div>
+    <h4>Edit plane configuration</h4>
+    <h4>{{plane.name}}</h4>
+  </div>
+  
+  <app-plane-layout [plane]="plane" style="margin-top: 5%;"></app-plane-layout>
+  
+
+  <ng-template #modal let-modal>
+    <div class="modal-header" >
+      <h6>Add new seats...</h6>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">×</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form [formGroup]="addSeatsForm">
+        <div class="form-group">
+          <label class="control-label" for="segment">Segment:</label>
+          <select formControlName="segment">
+            <option *ngFor="let segment of plane.segments" [value]="segment.name">{{segment.name}}</option>
+          </select>
+          <span class="help-block" *ngIf="addSeatsForm.get('segment').errors?.required ">This field is required!</span>
+        </div>
+        <div class="form-group">
+          <label class="control-label" for="erows">Number of rows:</label><br>
+          <input formControlName="rowsInput" name="rows" id="erows"><br>
+          <span class="help-block" *ngIf="addSeatsForm.get('rowsInput').errors?.required && addSeatsForm.get('rowsInput').touched">This field is required!</span>
+      </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn delete-btn"
+        (click)="addSeats();modal.close('Confirm click') " [disabled]="addSeatsForm.invalid">Add</button>
+        <button type="button"  class="btn delete-btn"
+        (click)="modal.close('Cancel click')">Cancel</button>
+    </div>
+  </ng-template>

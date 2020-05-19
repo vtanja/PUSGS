@@ -1,16 +1,11 @@
-*,
-*:before,
-*:after {
-  box-sizing: border-box;
-}
 
 html {
   font-size: 16px;
 }
 
 .plane {
-  margin: 20px auto;
-  max-width: 300px;
+  margin: 0px auto;
+  width:auto;
 }
 
 .cockpit {
@@ -66,29 +61,22 @@ html {
   border-left: 5px solid #d8d8d8;
 }
 
-ol {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.seats {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  justify-content: flex-start;
+.row{
+  margin-left: 0%;
 }
 
 .seat {
-  display: flex;
-  flex: 0 0 14.28571428571429%;
-  padding: 5px;
-  position: relative;
+  margin-left: 2%;
+  width: 30px;
+  height: 30px;
   color: whitesmoke;
 }
-.seat:nth-child(3) {
+
+
+/* .seat:nth-child(3), .seat:nth-child(6), .seat:nth-child(9) {
   margin-right: 14.28571428571429%;
-}
+} */
+
 .seat input[type="checkbox"] {
   position: absolute;
   opacity: 0;
@@ -105,6 +93,7 @@ ol {
   text-indent: -9999px;
   overflow: hidden;
 }
+
 .seat input[type="checkbox"]:disabled + label:after {
   content: "X";
   text-indent: 0;
@@ -131,6 +120,8 @@ ol {
   animation-duration: 300ms;
   animation-fill-mode: both;
 }
+
+
 .seat label:before {
   content: "";
   position: absolute;
@@ -211,3 +202,5 @@ ol {
   -webkit-animation-name: rubberBand;
   animation-name: rubberBand;
 }
+
+

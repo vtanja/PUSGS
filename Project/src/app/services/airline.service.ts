@@ -5,6 +5,7 @@ import { Subject } from 'rxjs';
 import { Address } from '../models/address';
 import { UsersRate } from '../models/users-rate.model';
 import { Airport } from '../models/airport';
+import { Plane } from '../models/plane';
 
 @Injectable()
 export class AirlineService{
@@ -16,6 +17,37 @@ export class AirlineService{
     constructor(){
         this.loadAirlines();
 
+    }
+
+    deletePlane(airlineid:number, planeid:number){
+        let airline=this.getAirline(airlineid);
+        if(airline!==undefined){
+            let plane = airline.planes.find(p=>p.id===planeid);
+            if(plane!==undefined){
+                let index = airline.planes.indexOf(plane);
+                if(index>-1){
+                    airline.planes.splice(index,1);
+                }
+            }
+        }
+    }
+
+    findFlights(airlineid:number, planename:string):Flight[]{
+        let retVal:Flight[]=[];
+
+        let airline=this.getAirline(airlineid);
+        if(airline!==undefined){
+            let plane=airline.planes.find(p=>p.name===planename);
+            if(plane!==undefined){
+                for(let flight of airline.flights){
+                    if(flight.planename===planename){
+                        retVal.push(flight);
+                    }
+                }
+            }
+        }
+
+        return retVal;
     }
 
 
@@ -137,6 +169,13 @@ export class AirlineService{
         // montenegroFlights, montenegroDest, "../../assets/images/airlines/montenegro.jpg");
         //const airline5 = new Airline(4, "Lufthansa", new Address(" ","Frankfurt","Germany"), "Lufthansa (nem. Deutsche Lufthansa AG) je nacionalna avio-kompanija Nemačke. Sedište joj je u Frankfurtu. Trenutno je najveća aviokompanija u Evropi po broju prevezenih putnika i druga po veličini flote (posle Air France-KLM).",
         // lufthansaFlights, lufthansaDest, "../../assets/images/airlines/airline1.png");
+
+        let plane = new Plane('plane1');
+        plane.id=0;
+        plane.booked=[];
+        plane.segments.push({name:'Economy class', value:{rows:13, columns:6}});
+        plane.segments.push({name:'Business class', value:{rows:3, columns:4}});
+        airline2.planes.push(plane);
 
         flight1.image=airline1.image;
         flight2.image=airline1.image;

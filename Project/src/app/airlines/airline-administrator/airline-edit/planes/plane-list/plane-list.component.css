@@ -1,0 +1,9 @@
+.delete-button{
+    background-image: url('../../../../../../assets/images/trash.png');
+    background-color: transparent;
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 25px;
+    height: 30px;
+    border-color: transparent;
+  }

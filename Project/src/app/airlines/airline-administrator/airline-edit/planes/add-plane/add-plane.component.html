@@ -1,0 +1,129 @@
+<h5 style="text-align: center;">Set plane configuration:</h5>
+<br>
+<mat-horizontal-stepper linear #stepper >  
+    <mat-step [stepControl]="nameGroup">
+        <ng-template matStepLabel >
+            <span [ngStyle]="{'color': '#31124b'}">Set plane name...</span>
+         </ng-template>
+         <form [formGroup]="nameGroup" style="margin-left: 30%; margin-top: 5%;">
+            <div class="form-group wrap-input100">
+                <label class="control-label label-input100" for="rows">Name:</label><br>
+                <input  class="input100" formControlName="nameInput" name="name" id="name"><br>
+                <span class="help-block invalid-input-span" *ngIf="nameGroup.get('nameInput').errors?.required && nameGroup.get('nameInput').touched">This field is required!</span>
+            </div>
+            <br>
+         </form>
+         <div style="text-align: right;">
+            <button mat-button matStepperNext class="btn  btn-md btn-rounded button-style" style="width: 20%;" [disabled]="nameGroup.invalid">Next</button>
+        </div>
+    </mat-step>  
+    <mat-step [stepControl]="firstFormGroup">
+        <ng-template matStepLabel >
+           <span [ngStyle]="{'color': '#31124b'}">Choose segments...</span>
+        </ng-template>
+        
+       
+        <mat-form-field class="example-chip-list" style="margin-left: 10%; width: 80%; margin-top: 5%;">
+            <mat-chip-list #chipList aria-label="Chosen segments...">
+              <mat-chip
+                *ngFor="let segment of chosenSegments"
+                [selectable]="selectable"
+                [removable]="removable"
+                (removed)="remove(segment)">
+                {{segment}}
+                <div matChipRemove *ngIf="removable"><i class="fa fa-times" style="color: #31124b;"></i></div>
+              </mat-chip>
+              <input 
+                placeholder="Choose segment..."
+                #segmentInput
+                [formControl]="segmentCtrl"
+                [matAutocomplete]="auto"
+                [matChipInputFor]="chipList"
+              (matChipInputTokenEnd)="add($event)"
+                [matChipInputSeparatorKeyCodes]="separatorKeysCodes">
+            </mat-chip-list>
+            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+              <mat-option *ngFor="let option of filteredSegments | async" [value]="option">
+                {{option}}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+        <div style="text-align: right;">
+            <button mat-button matStepperNext class="btn  btn-md btn-rounded button-style" style="width: 20%;">Next</button>
+        </div>
+      </mat-step>
+      <mat-step [stepControl]="secondFormGroup">
+        <ng-template matStepLabel >
+           <span [ngStyle]="{'color': '#31124b'}">Number of seats</span>
+        </ng-template>
+        <form [formGroup]="firstClass" style="width: 25%; float: left; margin-left: 5%;" *ngIf="chosenSegments?.includes('First class')">
+          <p class="label-input100" style="color: #fa871b;">First class:</p>
+            <div class="form-group wrap-input100">
+                <label class="control-label label-input100" for="rows">Number of rows:</label><br>
+                <input formControlName="rowsInput" class="input100" name="rows" id="rows"><br>
+                <span class="help-block invalid-input-span" *ngIf="firstClass.get('rowsInput').errors?.required && firstClass.get('rowsInput').touched">This field is required!</span>
+            </div>
+            <div class="form-group wrap-input100">
+              <label class="control-label label-input100" for="columns">Number of columns:</label><br>
+              <input formControlName="columnsInput" class="input100" name="columns" id="columns"><br>
+              <span class="help-block invalid-input-span" *ngIf="firstClass.get('columnsInput').errors?.required && firstClass.get('columnsInput').touched">This field is required!</span>
+          </div>
+          <hr>
+        </form>
+
+        <form [formGroup]="businessClass"  style="width: 25%; float: left;  margin-left: 5%;" *ngIf="chosenSegments?.includes('Business class')">
+          <p class="label-input100" style="color: #fa871b;">Business class:</p>
+            <div class="form-group wrap-input100">
+                <label class="control-label label-input100" for="brows">Number of rows:</label><br>
+                <input formControlName="rowsInput" class="input100" name="rows" id="brows"><br>
+                <span class="help-block invalid-input-span" *ngIf="businessClass.get('rowsInput').errors?.required && businessClass.get('rowsInput').touched">This field is required!</span>
+            </div>
+            <div class="form-group wrap-input100">
+              <label class="control-label label-input100" for="bcolumns">Number of columns:</label><br>
+              <input formControlName="columnsInput" class="input100" name="columns" id="bcolumns"><br>
+              <span class="help-block invalid-input-span" *ngIf="businessClass.get('columnsInput').errors?.required && businessClass.get('columnsInput').touched">This field is required!</span>
+          </div>
+          <hr>
+        </form>
+
+        <form [formGroup]="economy"  style="width: 25%;  float: left;  margin-left: 5%;" *ngIf="chosenSegments?.includes('Economy class')">
+          <p class="label-input100" style="color: #fa871b;">Economy class:</p>
+            <div class="form-group wrap-input100">
+                <label class="control-label label-input100" for="erows">Number of rows:</label><br>
+                <input formControlName="rowsInput" class="input100" name="rows" id="erows"><br>
+                <span class="help-block invalid-input-span" *ngIf="economy.get('rowsInput').errors?.required && economy.get('rowsInput').touched">This field is required!</span>
+            </div>
+            <div class="form-group wrap-input100">
+              <label class="control-label label-input100" for="ecolumns">Number of columns:</label><br>
+              <input formControlName="columnsInput" class="input100" name="columns" id="ecolumns"><br>
+              <span class="help-block invalid-input-span" *ngIf="economy.get('columnsInput').errors?.required && economy.get('columnsInput').touched">This field is required!</span>
+          </div>
+          <hr>
+        </form>
+        <br>
+        <div style="text-align: right;">
+            <button mat-button matStepperNext class="btn  btn-md btn-rounded button-style" style="width: 20%;"  [disabled]="(firstClass.invalid && chosenSegments?.includes('First class')) || (businessClass.invalid && chosenSegments?.includes('Business class')) || (economy.invalid && chosenSegments?.includes('Economy class'))" (click)="setConfig()" >Next</button>
+        </div>
+      </mat-step>
+  
+      <mat-step  [stepControl]="thirdFormGroup" *ngIf="chosenSegments?.includes('Economy class') && chosenSegments?.includes('Premium economy')" optional> 
+        <ng-template matStepLabel >
+            <span [ngStyle]="{'color': '#31124b'}">Choose premium economy seats:</span>
+         </ng-template>
+          <app-plane-layout *ngIf="show" [plane]="plane" [toBeAdded]="disabledSeats" #toBePremium ></app-plane-layout>
+          <div style="text-align: right;">
+            <button mat-button matStepperNext class="btn  btn-md btn-rounded button-style" style="width: 20%; " (click)="addPremium()" >Next</button>
+        </div>
+      </mat-step>
+
+      <mat-step  [stepControl]="fourthFormGroup"> 
+        <ng-template matStepLabel >
+            <span [ngStyle]="{'color': '#31124b'}">Confirmation</span>
+         </ng-template>
+          <app-plane-layout *ngIf="show" [plane]="plane" [toBeAdded]="disabledSeats"   #toBePremium></app-plane-layout>
+          <div style="text-align: right;">
+            <button mat-button matStepperNext class="btn  btn-md btn-rounded button-style" style="width: 20%; " (click)="confirm()" >Confirm</button>
+        </div>
+      </mat-step>
+  </mat-horizontal-stepper>
+  

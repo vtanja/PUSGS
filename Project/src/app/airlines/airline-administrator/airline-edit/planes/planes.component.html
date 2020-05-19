@@ -1,0 +1,9 @@
+<div class="my-heading-div">
+    <div class="d-flex justify-content-end">
+      <button class="btn  btn-md btn-rounded button-style"
+      routerLink="/add-plane">Add plane</button>
+      </div>
+    <h4>Planes</h4>
+  </div>
+  <p [hidden]="planes.length!==0 && planes!==undefined"><ngb-alert [dismissible]="false" style="width: 70%; text-align: center;margin-left: 15%;"><strong>Notice!</strong> There are no planes still. Please add planes first!</ngb-alert></p>
+  <app-plane-list *ngIf="planes.length!==0 && planes!==undefined" [planes]=planes></app-plane-list>

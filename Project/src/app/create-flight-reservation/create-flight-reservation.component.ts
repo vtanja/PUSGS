@@ -4,7 +4,6 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { AirlineService } from '../services/airline.service';
 import { Observable, Subscription } from 'rxjs';
 import { User } from '../models/user';
-import { SeatsLayout } from '../models/seats-layout';
 import { UserService } from '../services/user-service.service';
 import { startWith, map } from 'rxjs/operators';
 import { FormGroup, FormControl, FormBuilder, Validators, FormArray } from '@angular/forms';
@@ -17,6 +16,7 @@ import { FlightReservation } from '../models/flight-reservation.model';
 import { FlightReservationService } from '../services/flight-reservation.service';
 import Swal from 'sweetalert2';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Plane } from '../models/plane';
 
 interface Passenger {
   seat: number;
@@ -34,19 +34,13 @@ export class CreateFlightReservationComponent implements OnInit {
   mySubscription:Subscription;
 
   toBeAdded:string[]=[];
+  seatsLayout:Plane[]=[];
 
   invitedFriends:string[]=[];
   cars:Car[]=[];
   
   filteredOptions: Observable<User[]>;
   options:User[];
-
-  seatsLayout:SeatsLayout = {
-    totalRows:10,
-    seatsPerRow:6,
-    seatNaming:'rowType',
-    booked:['1A','5D']   
-  };
 
   firstFormGroup: FormGroup;
   secondFormGroup: FormGroup;
