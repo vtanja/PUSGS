@@ -12,11 +12,21 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20200517231149_InitialCreation.cs" />
+    <Compile Remove="Migrations\20200517231149_InitialCreation.Designer.cs" />
+    <Compile Remove="Migrations\20200519224533_ModelsAdded.cs" />
+    <Compile Remove="Migrations\20200519224533_ModelsAdded.Designer.cs" />
+    <Compile Remove="Migrations\20200519231057_UserTableRenamed.cs" />
+    <Compile Remove="Migrations\20200519231057_UserTableRenamed.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Include="root\custom\notifications.css" />
     <Content Include="root\images\logo.png" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="EntityFramework" Version="6.4.4" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.4" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.4" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.4" />

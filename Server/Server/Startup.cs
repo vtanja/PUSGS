@@ -43,7 +43,7 @@ namespace Server
             services.AddDbContext<DataBaseContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("IdentityConnection")));
 
-            services.AddDefaultIdentity<User>()
+            services.AddDefaultIdentity<RegisteredUser>()
                     .AddRoles<IdentityRole>()
                    .AddEntityFrameworkStores<DataBaseContext>();
 

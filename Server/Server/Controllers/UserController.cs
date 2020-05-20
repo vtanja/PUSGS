@@ -8,12 +8,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.VisualStudio.Web.CodeGeneration.Contracts.Messaging;
-using Server.Email;
 using Server.Models;
 using Server.Settings;
 
@@ -23,18 +20,20 @@ namespace Server.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private UserManager<User> _userManager;
-        private SignInManager<User> _signInManager;
+        private UserManager<RegisteredUser> _userManager;
+        private SignInManager<RegisteredUser> _signInManager;
         private readonly ApplicationSettings _appSettings;
         private readonly Email.IEmailSender _emailSender;
+        private readonly DataBaseContext _dataBaseContext;
 
-        public UserController(UserManager<User> userManager,
-            SignInManager<User> signInManager, IOptions<ApplicationSettings> appSettings, Email.IEmailSender emailSender)
+        public UserController(UserManager<RegisteredUser> userManager,
+            SignInManager<RegisteredUser> signInManager, IOptions<ApplicationSettings> appSettings, Email.IEmailSender emailSender,DataBaseContext dataBaseContext)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _appSettings = appSettings.Value;
             _emailSender = emailSender;
+            _dataBaseContext = dataBaseContext;
         }
 
         [HttpGet]
@@ -61,7 +60,7 @@ namespace Server.Controllers
         //POST : /api/User/Register
         public async Task<Object> PostApplicationUser(UserModel model)
         {
-            var user = new User()
+            var user = new RegisteredUser()
             {
                 UserName = model.UserName,
                 Email = model.Email,
@@ -74,20 +73,24 @@ namespace Server.Controllers
             try
             {
                 var result = await _userManager.CreateAsync(user, model.Password);
-                await _userManager.AddToRoleAsync(user,"USER");
+                if (result.Succeeded)
+                {
+                    await _userManager.AddToRoleAsync(user, "USER");
 
+                    await _dataBaseContext.Users.AddAsync(new User { UserId = user.Id });
+                    await _dataBaseContext.SaveChangesAsync();
 
-                var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                var confirmationLink = Url.Action(nameof(ConfirmEmail), "User", new { UserId = user.Id,Code = token}, protocol:HttpContext.Request.Scheme);
-                await _emailSender.SendEmailAsync( user.Email , "Travellix - Confirmation email link", "Please confirm your email by clicking on this link: <a href=\"" +confirmationLink + "\">click here.</a>");
-
+                    var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    var confirmationLink = Url.Action(nameof(ConfirmEmail), "User", new { UserId = user.Id, Code = token }, protocol: HttpContext.Request.Scheme);
+                    await _emailSender.SendEmailAsync(user.Email, "Travellix - Confirmation email link", "Please confirm your email by clicking on this link: <a href=\"" + confirmationLink + "\">click here.</a>");
+                }
 
                 return Ok(result);
             }
             catch (Exception ex)
             {
 
-                throw ex;
+                return BadRequest(ex.Message);
             }
         }
 

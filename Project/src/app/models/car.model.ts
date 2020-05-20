@@ -35,7 +35,6 @@ export class Car{
     this.availableDates = avDates;
     this.image = image;
     this.maxPassengers = maxPassengers;
-    this.doors = doors;
     this.doors=doors;
     this.hasAirCondition=hasAirCondition;
     this.hasAutomaticGearbox=hasAutomaticGearbox;

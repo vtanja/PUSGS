@@ -44,7 +44,7 @@
     "ngx-toastr": "^12.0.1",
     "resize-observer-polyfill": "^1.5.1",
     "rxjs": "~6.5.4",
-    "sweetalert2": "^9.10.13",
+    "sweetalert2": "^9.11.0",
     "tslib": "^1.13.0",
     "web-animations-js": "^2.3.2",
     "zone.js": "~0.10.2"
@@ -57,7 +57,7 @@
     "@igniteui/angular-schematics": "^9.0.503",
     "@types/jasmine": "~3.5.0",
     "@types/jasminewd2": "~2.0.3",
-    "@types/node": "^12.12.39",
+    "@types/node": "^12.12.40",
     "codelyzer": "^5.1.2",
     "jasmine-core": "~3.5.0",
     "jasmine-spec-reporter": "~4.2.1",
