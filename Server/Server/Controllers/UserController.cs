@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,8 +13,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 using Server.Models;
 using Server.Settings;
+using Server.Socials.Facebook;
+using Server.Socials.Google;
 
 namespace Server.Controllers
 {
@@ -130,6 +135,168 @@ namespace Server.Controllers
                 return BadRequest(new { message = "Username or password is incorrect." });
         }
 
+        [HttpPost]
+        [Route("GoogleLogin")]
+        // POST: api/<controller>/GoogleLogin
+        public async Task<IActionResult> GoogleLogin([FromBody]LoginModel loginModel)
+        {
+            var googleApiTokenInfo = VerifyToken(loginModel.IdToken);
+
+            if (googleApiTokenInfo!=null)
+            {
+                var user = await _userManager.FindByEmailAsync(googleApiTokenInfo.email);
+
+                if (user == null)
+                {
+                    var pass = "socialUser123";
+
+                    var newUser = new RegisteredUser()
+                    {
+                        UserName = googleApiTokenInfo.email,
+                        FirstName = googleApiTokenInfo.given_name,
+                        LastName = googleApiTokenInfo.family_name,
+                        Email = googleApiTokenInfo.email,
+                        SocialUserType = 'g'
+                    };
+                    try
+                    {
+                        var result = await _userManager.CreateAsync(newUser, pass);
+
+                        if (result.Succeeded)
+                        {
+                            await _userManager.AddToRoleAsync(newUser, "USER");
+                            await _dataBaseContext.Users.AddAsync(new User { UserId = newUser.Id });
+                            await _dataBaseContext.SaveChangesAsync();
+
+                            var token = await GenerateToken(user);
+                            return Ok(new { token });
+
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+
+                        return BadRequest(ex.Message);
+                    }
+                }
+                else
+                {
+
+                    if (user != null && user.SocialUserType != 'g')
+                    {
+                        return BadRequest("We have already account connected to that email address.");
+
+                    }
+
+                    var token = await GenerateToken(user);
+                    return Ok(new { token });
+                }
+            }
+
+                return BadRequest("Can not login.Information provided are not valid.");
+        }
+
+        [HttpPost]
+        [Route("FacebookLogin")]
+        // POST: api/<controller>/Login
+        public async Task<IActionResult> FacebookLogin([FromBody]LoginModel loginModel)
+        {
+
+            var Client = new HttpClient();
+
+            var appAccessTokenResponse = await Client.GetStringAsync($"https://graph.facebook.com/oauth/access_token?client_id={_appSettings.FacebookAppId}&client_secret={_appSettings.FacebookAppSecret}&grant_type=client_credentials");
+            var appAccessToken = JsonConvert.DeserializeObject<FacebookAppAccessToken>(appAccessTokenResponse);
+            // 2. validate the user access token
+            var userAccessTokenValidationResponse = await Client.GetStringAsync($"https://graph.facebook.com/debug_token?input_token={loginModel.AuthToken}&access_token={appAccessToken.AccessToken}");
+            var userAccessTokenValidation = JsonConvert.DeserializeObject<FacebookUserAccessTokenValidation>(userAccessTokenValidationResponse);
+
+            if (userAccessTokenValidation.Data.IsValid)
+            {
+                var userInfoResponse = await Client.GetStringAsync($"https://graph.facebook.com/v2.8/me?fields=id,email,first_name,last_name,name,gender,locale,birthday,picture&access_token={loginModel.AuthToken}");
+                var userInfo = JsonConvert.DeserializeObject<FacebookUserData>(userInfoResponse);
+
+                var user = await _userManager.FindByEmailAsync(userInfo.Email);
+
+                if (user == null)
+                {
+                    var pass = "socialUser123";
+
+                    var newUser = new RegisteredUser()
+                    {
+                        UserName = userInfo.Email,
+                        FirstName = userInfo.FirstName,
+                        LastName = userInfo.LastName,
+                        Email = userInfo.Email,
+                        SocialUserType = 'f'
+                    };
+
+                    try
+                    {
+                        var result = await _userManager.CreateAsync(newUser, pass);
+
+
+                        if (result.Succeeded)
+                        {
+                            await _userManager.AddToRoleAsync(newUser, "USER");
+                            await _dataBaseContext.Users.AddAsync(new User { UserId = newUser.Id });
+                            await _dataBaseContext.SaveChangesAsync();
+
+                            var Token = await GenerateToken(newUser);
+                            return Ok(new { Token });
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+
+                        return BadRequest(ex.Message);
+                    }
+
+                }
+                else
+                {
+                    if (user != null && user.SocialUserType != 'f')
+                    {
+                        return BadRequest("There is another account using that email address.");
+
+                    }
+
+                    var token = await GenerateToken(user);
+                    return Ok(new { token });
+                }
+
+            }
+
+            return Unauthorized("Can not login.Information provided are not valid.");
+        }
+
+        private const string GoogleApiTokenInfoUrl = "https://www.googleapis.com/oauth2/v3/tokeninfo?id_token={0}";
+
+        public GoogleApiTokenInfo VerifyToken(string providerToken)
+        {
+            var httpClient = new HttpClient();
+            var requestUri = new Uri(string.Format(GoogleApiTokenInfoUrl, providerToken));
+
+            HttpResponseMessage httpResponseMessage;
+
+            try
+            {
+                httpResponseMessage = httpClient.GetAsync(requestUri).Result;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+
+            if (httpResponseMessage.StatusCode != HttpStatusCode.OK)
+            {
+                return null;
+            }
+
+            var response = httpResponseMessage.Content.ReadAsStringAsync().Result;
+             return JsonConvert.DeserializeObject<GoogleApiTokenInfo>(response);
+
+        }
+
         [HttpGet("[action]")]
         [AllowAnonymous]
         public async Task<IActionResult> ConfirmEmail(string userID, string code)
@@ -169,5 +336,28 @@ namespace Server.Controllers
             }
         }
 
+        private async Task<string> GenerateToken(RegisteredUser user)
+        {
+            var role = await _userManager.GetRolesAsync(user);
+            IdentityOptions _options = new IdentityOptions();
+
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+
+                Subject = new ClaimsIdentity(new Claim[]
+               {
+                        new Claim("UserID",user.Id),
+                        new Claim("UserName",user.FirstName),
+                        new Claim(_options.ClaimsIdentity.RoleClaimType,role.FirstOrDefault())
+               }),
+                Expires = DateTime.UtcNow.AddDays(1),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_appSettings.JWT_Secret)), SecurityAlgorithms.HmacSha256Signature)
+            };
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var securityToken = tokenHandler.CreateToken(tokenDescriptor);
+            var token = tokenHandler.WriteToken(securityToken);
+            return token;
+
+        }
     }
 }

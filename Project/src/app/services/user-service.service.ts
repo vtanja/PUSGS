@@ -10,6 +10,7 @@ import { UsersRate } from '../models/users-rate.model';
 import { LoggedUser } from '../models/logged-user.model';
 import { Address } from '../models/address';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import * as jwt_decode from "jwt-decode";
 
 interface Passenger {
     seat: number;
@@ -168,15 +169,13 @@ export class UserService{
     }
 
     getUserRole(){
-      let payload = JSON.parse(window.atob(localStorage.getItem('token').split('.')[1]));
-      let role = payload.role;
-      return role;
+      let payload = jwt_decode(localStorage.getItem('token'));
+      return payload.role;
     }
 
     getUserName(){
-      let payload = JSON.parse(window.atob(localStorage.getItem('token').split('.')[1]));
-      let role = payload.UserName;
-      return role;
+      let payload = jwt_decode(localStorage.getItem('token'));
+      return payload.UserName;
     }
 
     isUserLoggedIn(){
@@ -185,5 +184,12 @@ export class UserService{
     return false;
     }
 
+    googleLogin(formData){
+      return this.httpClient.post(this.baseUri + 'User/GoogleLogin',formData);
+    }
+
+    facebookLogin(formData){
+      return this.httpClient.post(this.baseUri + 'User/FacebookLogin',formData);
+    }
 
 }

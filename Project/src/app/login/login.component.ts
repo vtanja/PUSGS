@@ -3,6 +3,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../services/user-service.service';
 import { ToastrService } from 'ngx-toastr';
+import { AuthService } from "angularx-social-login";
+import { FacebookLoginProvider, GoogleLoginProvider } from "angularx-social-login";
 
 @Component({
   selector: 'app-login',
@@ -13,7 +15,8 @@ export class LoginComponent implements OnInit {
 
   loginForm:FormGroup;
 
-  constructor(private userService:UserService, private route:ActivatedRoute, private router:Router,private toastr:ToastrService) {
+  constructor(private userService:UserService, private route:ActivatedRoute,
+            private router:Router,private toastr:ToastrService,public OAuth:AuthService) {
 
     this.loginForm = new FormGroup({
       'username': new FormControl(null,Validators.required),
@@ -48,16 +51,7 @@ export class LoginComponent implements OnInit {
     },
 
       err => {
-        if(err.status===400){
-          this.toastr.error('Incorrect username or password','Login failed.');
-        }
-        else if(err.status===401){
-          console.log(err.message);
-          this.toastr.error('Email not confirmed.','Login failed.');
-        }
-        else{
-         console.log("error");
-        }
+        this.checkError(err);
 
     })
 
@@ -75,4 +69,55 @@ export class LoginComponent implements OnInit {
 
   }
 
-}
+  logInWithFacebook():void{
+
+    this.OAuth.signIn(FacebookLoginProvider.PROVIDER_ID).then(socialusers => {
+      console.log(socialusers);
+      this.userService.facebookLogin(socialusers).subscribe((res:any)=>{
+
+        localStorage.setItem('token', res.token);
+        this.userService.userLogged.next(true);
+        this.loginForm.reset();
+        this.router.navigateByUrl('/home');
+    },
+
+      err => {
+        this.checkError(err);
+
+    });
+    });
+  }
+
+  logInWithGoogle():void{
+
+    this.OAuth.signIn(GoogleLoginProvider.PROVIDER_ID).then(socialusers => {
+      this.userService.googleLogin(socialusers).subscribe((res:any)=>{
+
+        localStorage.setItem('token', res.token);
+        this.userService.userLogged.next(true);
+        this.loginForm.reset();
+        this.router.navigateByUrl('/home');
+    },
+
+      err => {
+        this.checkError(err);
+
+    });
+    });
+
+    }
+
+  checkError(err:any){
+    if(err.status===400){
+      this.toastr.error('There is another account using that email address.','Login failed.');
+    }
+    else if(err.status===401){
+      this.toastr.error('Information provided are not valid.','Login failed.');
+    }
+    else{
+      this.toastr.error('An error occured.Please try again later','Login failed.');
+    }
+  }
+  }
+
+

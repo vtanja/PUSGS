@@ -26,15 +26,9 @@ namespace Server.Models
         [ForeignKey("CarId")]
         public virtual Car Car { get; set; }
 
-        public int CarRateId { get; set; }
+        public bool CarRated { get; set; }
 
-        [ForeignKey("CarRateId")]
-        public CarRate CarRate { get; set; }
-
-        public int CompanyRateId { get; set; }
-
-        [ForeignKey("CompanyRateId")]
-        public CompanyRate CompnayRate { get; set; }
+        public bool CompanyRated { get; set; }
 
     }
 }

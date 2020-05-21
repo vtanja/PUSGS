@@ -47,7 +47,7 @@ import { ProfileNavbarComponent } from './common/profile-navbar/profile-navbar.c
 import { ProfileOfficesComponent } from './common/profile-offices/profile-offices.component';
 import { AirlineProfileComponent } from './airlines/airline-profile/airline-profile.component';
 import { CarsCardsComponent } from './rent-a-cars/rent-a-car-profile/cars-cards/cars-cards.component';
-import { HammerModule } from "@angular/platform-browser";
+import { HammerModule } from '@angular/platform-browser';
 import { ToastrModule } from 'ngx-toastr';
 import { IgxTimePickerModule } from 'igniteui-angular';
 import { ReservationsComponent } from './user/reservations/reservations.component';
@@ -55,8 +55,8 @@ import { CarReservationListComponent } from './user/reservations/car-reservation
 import { CarReservationItemComponent } from './user/reservations/car-reservation-item/car-reservation-item.component';
 import { FlightReservationItemComponent } from './user/reservations/flight-reservation-item/flight-reservation-item.component';
 import { FlightReservationListComponent } from './user/reservations/flight-reservation-list/flight-reservation-list.component';
-import {NgbDateCustomParserFormatter} from './services/date-formatter.service';
-import { RateDialogComponent } from './user/reservations/rate-dialog/rate-dialog.component'
+import { NgbDateCustomParserFormatter } from './services/date-formatter.service';
+import { RateDialogComponent } from './user/reservations/rate-dialog/rate-dialog.component';
 import { CarReservationsService } from './services/car-reservations.service';
 import { RentACarAdministratorComponent } from './rent-a-cars/rent-a-car-administrator/rent-a-car-administrator.component';
 import { RentACarEditComponent } from './rent-a-cars/rent-a-car-administrator/rent-a-car-edit/rent-a-car-edit.component';
@@ -93,9 +93,39 @@ import { SortByPipe } from './pipes/sort-by.pipe';
 import { MatSortModule } from '@angular/material/sort';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatChipsModule } from '@angular/material/chips';
-import {MatInputModule} from '@angular/material/input';
-import {MatStepperModule} from '@angular/material/stepper';
-import {MatSelectModule} from '@angular/material/select';
+import { MatInputModule } from '@angular/material/input';
+import { MatStepperModule } from '@angular/material/stepper';
+import { MatSelectModule } from '@angular/material/select';
+import { SocialLoginModule, AuthServiceConfig,AuthService, LoginOpt } from 'angularx-social-login';
+import {
+  GoogleLoginProvider,
+  FacebookLoginProvider,
+} from 'angularx-social-login';
+
+const fbLoginOptions: LoginOpt = {
+  scope: 'first_name,last_name,name,email',
+  return_scopes: true,
+  enable_profile_selector: true
+};
+
+const googleLoginOptions: LoginOpt = {
+  scope: 'profile email'
+};
+
+let config = new AuthServiceConfig([
+  {
+    id: GoogleLoginProvider.PROVIDER_ID,
+    provider: new GoogleLoginProvider("63207347059-po3ghnjgnptsdls0u5a25vp2ak1j197d.apps.googleusercontent.com", googleLoginOptions)
+  },
+  {
+    id: FacebookLoginProvider.PROVIDER_ID,
+    provider: new FacebookLoginProvider("179484520010513")
+  }
+]);
+
+export function provideConfig() {
+  return config;
+}
 
 @NgModule({
   declarations: [
@@ -168,7 +198,6 @@ import {MatSelectModule} from '@angular/material/select';
     FooterComponent,
     UsersListComponent,
     UsersItemComponent,
-
   ],
   imports: [
     BrowserModule,
@@ -187,12 +216,14 @@ import {MatSelectModule} from '@angular/material/select';
     MatInputModule,
     HammerModule,
     IgxTimePickerModule,
-    AgmCoreModule.forRoot({apiKey: 'AIzaSyAdtC28jUsGI3OLfTvoocC32_XqBVcXAes'}),
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyAdtC28jUsGI3OLfTvoocC32_XqBVcXAes',
+    }),
     FormsModule,
     MatStepperModule,
     MatSelectModule,
     MatChipsModule,
-    ToastrModule.forRoot()
+    ToastrModule.forRoot(),
   ],
   providers: [
     UserService,
@@ -201,11 +232,16 @@ import {MatSelectModule} from '@angular/material/select';
     CarReservationsService,
     RentCarAdministratorService,
     AdministratorService,
-    {provide: NgbDateParserFormatter, useClass: NgbDateCustomParserFormatter},
-    {provide: HTTP_INTERCEPTORS, useClass:HttpTokenInterceptor,multi:true},
-    GoogleMapsAPIWrapper
+    { provide: NgbDateParserFormatter, useClass: NgbDateCustomParserFormatter },
+    { provide: HTTP_INTERCEPTORS, useClass: HttpTokenInterceptor, multi: true },
+    AuthService,
+    {
+      provide: AuthServiceConfig,
+      useFactory: provideConfig,
+    },
+    GoogleMapsAPIWrapper,
+    SocialLoginModule,
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule {
-}
+export class AppModule {}

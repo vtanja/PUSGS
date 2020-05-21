@@ -10,7 +10,6 @@ namespace Server.Models
     public class AirlineAdmin
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string UserId { get; set; }
 
         [ForeignKey("UserId")]

@@ -16,11 +16,10 @@ namespace Server.Models
 
         public string OwnerId { get; set; }
 
-        public string Name { get; set; }
-
         [ForeignKey("OwnerId")]
         public virtual RegisteredUser Owner { get; set; }
-        
+
+        public string Name { get; set; }
 
         public int AddressId { get; set; }
 

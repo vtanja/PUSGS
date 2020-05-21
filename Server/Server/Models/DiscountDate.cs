@@ -13,10 +13,10 @@ namespace Server.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        [Index("IX_CarAndDate", 1, IsUnique = true)]
+      //  [Index("IX_CarAndDate", 1, IsUnique = true)]
         public int CarId { get; set; }
 
-        [Index("IX_CarAndDate", 2, IsUnique = true)]
+      //  [Index("IX_CarAndDate", 2, IsUnique = true)]
         public DateTime Date { get; set; }
 
         [ForeignKey("CarId")]
