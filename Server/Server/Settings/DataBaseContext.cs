@@ -20,6 +20,11 @@ namespace Server.Settings
         public DbSet<RentCarAdmin> RentCarAdmins{ get; set; }
         public DbSet<AirlineAdmin> AirlineAdmins { get; set; }
         public DbSet<Administrator> Administrators { get; set; }
+        public DbSet<Server.Models.RentCar> RentCars { get; set; }
+        public DbSet<Server.Models.Car> Cars { get; set; }
+
+        public DbSet<Office> Offices { get; set; }
+
       //  public DbSet<RentCar> RentCarCompanies { get; set; }
        // public DbSet<Car> Cars{ get; set; }
 

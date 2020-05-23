@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Server.Email;
+using AutoMapper;
 
 namespace Server
 {
@@ -33,6 +34,8 @@ namespace Server
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAutoMapper(typeof(Startup));
+
             services.AddControllers();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
@@ -56,7 +59,7 @@ namespace Server
                 options.Password.RequiredLength = 1;
 
                 options.SignIn.RequireConfirmedEmail = true;
-                options.User.RequireUniqueEmail = true;
+             //   options.User.RequireUniqueEmail = true;
             }
             );
 

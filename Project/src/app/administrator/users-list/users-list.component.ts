@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { User } from 'src/app/models/user';
 import { AdministratorService } from 'src/app/services/administrator.service';
 
@@ -9,13 +9,12 @@ import { AdministratorService } from 'src/app/services/administrator.service';
 })
 export class UsersListComponent implements OnInit {
 
-  users:User[];
+  @Input() users:User[];
 
   constructor(private administratorService:AdministratorService) { }
 
   ngOnInit(): void {
 
-    this.users = this.administratorService.getAllUsers();
   }
 
 }

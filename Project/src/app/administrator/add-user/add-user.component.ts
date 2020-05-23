@@ -4,6 +4,7 @@ import { AdministratorService } from 'src/app/services/administrator.service';
 import { User } from 'src/app/models/user';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
+import { UserService } from 'src/app/services/user-service.service';
 
 @Component({
   selector: 'app-add-user',
@@ -15,7 +16,7 @@ export class AddUserComponent implements OnInit {
 
   addUserForm:FormGroup;
 
-  constructor(private administratorService:AdministratorService,private router:Router) {
+  constructor(private administratorService:AdministratorService,private userService:UserService,private router:Router) {
 
     this.addUserForm = new FormGroup({
 
@@ -82,54 +83,72 @@ export class AddUserComponent implements OnInit {
 
   onAddAdmin():void{
 
-    let username = this.addUserForm.get('username').value;
-    let firstName = this.addUserForm.get('firstName').value;
-    let lastName = this.addUserForm.get('lastName').value;
-    let adminType = this.addUserForm.get('adminType').value;
-    let email = this.addUserForm.get('email').value;
-    let password = this.addUserForm.get('password').value;
-    let city = this.addUserForm.get('city').value;
-    let phone = this.addUserForm.get('phone').value;
+    let userData;
 
+    userData = {
+      'UserName' : this.addUserForm.get('username').value,
+      'FirstName' : this.addUserForm.get('firstName').value,
+      'LastName' : this.addUserForm.get('lastName').value,
+      'Password' : this.addUserForm.get('password').value,
+      'Email' : this.addUserForm.get('email').value,
+      'Address' : this.addUserForm.get('city').value,
+      'PhoneNumber' : this.addUserForm.get('phone').value,
+      'UserRole' : this.addUserForm.get('adminType').value
+    }
 
-    let newUser:User = new User(firstName,lastName,email,adminType,username,password,phone,city,[]);
+    if(userData.UserRole === 'RENTCARADMIN'){
+    this.administratorService.addRentCarAdmin(userData).subscribe(
 
-    if(this.administratorService.addAdministrator(newUser)){
-
+     res => {
       this.clearForm();
-
       Swal.fire({
-        text: 'User successfully added!',
-        icon: 'success',
-        showConfirmButton: false,
-        timer: 1500,
+            text: 'Administrator successfully added!',
+            icon: 'success',
+            showConfirmButton: false,
+            timer: 1500,
+          });
+          if(userData.UserRole==='RENTCARADMIN')
+            this.router.navigateByUrl('/all-users/rent-car');
+          else
+            this.router.navigateByUrl('/all-users/airline');
+     },
+      err => {
+        Swal.fire({
+              text: err.error.message,
+              icon: 'error',
+              showConfirmButton: true,
+              confirmButtonColor: "#de8e26"
+            });
       });
-
-      this.router.navigateByUrl('/all-users');
     }else{
+      this.administratorService.addAirlineAdmin(userData).subscribe(
+
+        res => {
+      this.clearForm();
       Swal.fire({
-        text: 'Unable to add user!',
-        icon: 'error',
-        showConfirmButton: true,
-        confirmButtonColor: "#de8e26"
+            text: 'Administrator successfully added!',
+            icon: 'success',
+            showConfirmButton: false,
+            timer: 1500,
+          });
+          if(userData.UserRole==='RENTCARADMIN')
+            this.router.navigateByUrl('/rent-car-admins');
+          else
+            this.router.navigateByUrl('/airline-admins');
+     },
+      err => {
+        Swal.fire({
+              text: err.error.message,
+              icon: 'error',
+              showConfirmButton: true,
+              confirmButtonColor: "#de8e26"
+            });
       });
+    }
   }
-}
 
   clearForm():void{
-
     this.addUserForm.reset();
-    this.addUserForm.patchValue({
-
-      'username' : null,
-        'firstName' : null,
-        'lastName' : null,
-        'adminType' : '',
-        'email' : null,
-        'password': null,
-        'city': null,
-        'phone': null
-    })
   }
 
 }

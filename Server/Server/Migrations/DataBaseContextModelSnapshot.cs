@@ -250,16 +250,11 @@ namespace Server.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("RentCarId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Street")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("AddressId");
-
-                    b.HasIndex("RentCarId");
 
                     b.ToTable("Address");
                 });
@@ -292,6 +287,9 @@ namespace Server.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("Brand")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("CompanyId")
                         .HasColumnType("int");
 
@@ -304,17 +302,29 @@ namespace Server.Migrations
                     b.Property<bool>("HasAutomationGearbox")
                         .HasColumnType("bit");
 
+                    b.Property<string>("Image")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Model")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("PassengersNumber")
                         .HasColumnType("int");
 
+                    b.Property<int>("Price")
+                        .HasColumnType("int");
+
                     b.Property<int>("Rate")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Year")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CompanyId");
 
-                    b.ToTable("Car");
+                    b.ToTable("Cars");
                 });
 
             modelBuilder.Entity("Server.Models.CarRate", b =>
@@ -430,6 +440,28 @@ namespace Server.Migrations
                     b.ToTable("DiscountDate");
                 });
 
+            modelBuilder.Entity("Server.Models.Office", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("AddressId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("RentCarId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AddressId");
+
+                    b.HasIndex("RentCarId");
+
+                    b.ToTable("Offices");
+                });
+
             modelBuilder.Entity("Server.Models.RentCar", b =>
                 {
                     b.Property<int>("Id")
@@ -469,7 +501,7 @@ namespace Server.Migrations
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("CompanyId")
+                    b.Property<int?>("CompanyId")
                         .HasColumnType("int");
 
                     b.HasKey("UserId");
@@ -580,13 +612,6 @@ namespace Server.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Server.Models.Address", b =>
-                {
-                    b.HasOne("Server.Models.RentCar", null)
-                        .WithMany("Offices")
-                        .HasForeignKey("RentCarId");
-                });
-
             modelBuilder.Entity("Server.Models.Administrator", b =>
                 {
                     b.HasOne("Server.Models.RegisteredUser", "RegisteredUser")
@@ -662,6 +687,19 @@ namespace Server.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Server.Models.Office", b =>
+                {
+                    b.HasOne("Server.Models.Address", "Address")
+                        .WithMany()
+                        .HasForeignKey("AddressId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Server.Models.RentCar", null)
+                        .WithMany("Offices")
+                        .HasForeignKey("RentCarId");
+                });
+
             modelBuilder.Entity("Server.Models.RentCar", b =>
                 {
                     b.HasOne("Server.Models.Address", "Address")
@@ -679,9 +717,7 @@ namespace Server.Migrations
                 {
                     b.HasOne("Server.Models.RentCar", "RentCarCompany")
                         .WithMany()
-                        .HasForeignKey("CompanyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CompanyId");
 
                     b.HasOne("Server.Models.RegisteredUser", "RegisteredUser")
                         .WithMany()

@@ -164,6 +164,10 @@ export class UserService{
      return this.httpClient.post(this.baseUri + 'User/Register',userData);
     }
 
+    addAdmin(userData:{}){
+      return this.httpClient.post(this.baseUri + 'User/AddAdmin',userData);
+     }
+
     getUserProfile(){
       return this.httpClient.get(this.baseUri + 'User/Profile');
     }

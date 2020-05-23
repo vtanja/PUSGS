@@ -7,13 +7,16 @@ using System.Net.Http;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
+using Server.DTOs;
 using Server.Models;
 using Server.Settings;
 using Server.Socials.Facebook;
@@ -29,17 +32,21 @@ namespace Server.Controllers
         private SignInManager<RegisteredUser> _signInManager;
         private readonly ApplicationSettings _appSettings;
         private readonly Email.IEmailSender _emailSender;
+        private readonly IMapper _mapper;
         private readonly DataBaseContext _dataBaseContext;
 
         public UserController(UserManager<RegisteredUser> userManager,
-            SignInManager<RegisteredUser> signInManager, IOptions<ApplicationSettings> appSettings, Email.IEmailSender emailSender,DataBaseContext dataBaseContext)
+            SignInManager<RegisteredUser> signInManager, IOptions<ApplicationSettings> appSettings, Email.IEmailSender emailSender,
+            DataBaseContext dataBaseContext,IMapper mapper)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _appSettings = appSettings.Value;
             _emailSender = emailSender;
             _dataBaseContext = dataBaseContext;
+            _mapper = mapper;
         }
+
 
         [HttpGet]
         [Route("Profile")]
@@ -63,7 +70,7 @@ namespace Server.Controllers
         [HttpPost]
         [Route("Register")]
         //POST : /api/User/Register
-        public async Task<Object> PostApplicationUser(UserModel model)
+        public async Task<Object> PostUser(UserModel model)
         {
             var user = new RegisteredUser()
             {
@@ -82,7 +89,7 @@ namespace Server.Controllers
                 {
                     await _userManager.AddToRoleAsync(user, "USER");
 
-                    await _dataBaseContext.Users.AddAsync(new User { UserId = user.Id });
+                    await _dataBaseContext.Administrators.AddAsync(new Administrator{ UserId = user.Id });
                     await _dataBaseContext.SaveChangesAsync();
 
                     var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -98,6 +105,7 @@ namespace Server.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
 
         [HttpPost]
         [Route("Login")]

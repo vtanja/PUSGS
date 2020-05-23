@@ -5,6 +5,10 @@ import { Subject } from 'rxjs';
 import { Address } from '../models/address';
 import { RateDialogComponent } from '../user/reservations/rate-dialog/rate-dialog.component';
 import { UsersRate } from '../models/users-rate.model';
+import { HttpClient } from '@angular/common/http';
+import { map } from 'rxjs/operators';
+import { RentCarAdapter } from '../models/adapters/rent-a-car.adapter';
+import { RentCarProfileAdapter } from '../models/adapters/rent-a-car-profile.adapter';
 
 @Injectable()
 export class RentCarService {
@@ -13,8 +17,9 @@ export class RentCarService {
   searchCarsParamsSubject = new Subject<{}>();
   sortChange = new Subject<string>();
   rentCarChangeSubject = new Subject<number>();
+  readonly baseUri = 'http://localhost:51474/api/';
 
-  constructor() {
+  constructor(private httpClient:HttpClient,private rentCarAdapter:RentCarAdapter,private rentCarProfileAdapter: RentCarProfileAdapter) {
     this.loadRentCars();
   }
 
@@ -476,7 +481,17 @@ export class RentCarService {
   }
 
   getRentCars() {
-    return this.rentCars.slice();
+    return this.httpClient.get(this.baseUri + 'RentCars').pipe(
+      map((data: any[]) => data.map(item => this.rentCarAdapter.adapt(item))),
+    );
+  }
+
+  getRCC(id:number) {
+   return this.httpClient.get(this.baseUri + 'RentCars/'+id).pipe(
+     map((data:any) => {
+     return this.rentCarProfileAdapter.adapt(data)}),
+    );
+
   }
 
   getRentCarCompany(id: number) {

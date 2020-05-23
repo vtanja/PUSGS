@@ -33,7 +33,7 @@ namespace Server.Models
         public string Logo { get; set; }
 
         public ICollection<Car> Cars { get; set; }
-        public ICollection<Address> Offices { get; set; }
+        public ICollection<Office> Offices { get; set; }
         public ICollection<CompanyRate> Rates { get; set; }
     }
 }

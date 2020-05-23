@@ -5,8 +5,8 @@
 </ng-template>
 
 
- <div class="container">
-  <div class="row" style="width: 70%;margin-left: 15%;"  >
+ <div class="container" style="margin-bottom: 3%;">
+  <div class="row" style="width: 80%;margin-left: 10%;"  >
     <div *ngFor="let car of cars; index as i" style="width: 25%;">
       <div class="card " style="width: 100%; height: 100%;">
         <div class="container c1">
@@ -36,7 +36,7 @@
                   <img src="../../../assets/images/car-door.png" class="icon-style">
                   <label class="label-style" style="font-weight:500">&nbsp;&nbsp;{{car.doors}}&nbsp;&nbsp;doors</label>
                 </div>
-                <div class="row" style="margin-top: 3%;" *ngIf="car.hasAirCondition">
+                <div class="row" style="justify-content: center;" *ngIf="car.hasAirCondition">
                   <img src="../../../assets/images/freezer.png" class="icon-style">
                   <label class="label-style" >&nbsp;&nbsp;Air condition</label>
                 </div>

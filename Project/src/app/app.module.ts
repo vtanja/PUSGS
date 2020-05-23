@@ -101,7 +101,13 @@ import {
   GoogleLoginProvider,
   FacebookLoginProvider,
 } from 'angularx-social-login';
-
+import { RentCarAdapter } from './models/adapters/rent-a-car.adapter';
+import { AddressAdapter } from './models/adapters/address.adapter';
+import { NgxSpinnerModule } from "ngx-spinner";
+import { RentCarProfileAdapter } from './models/adapters/rent-a-car-profile.adapter';
+import { OfficeAdapter } from './models/adapters/office.adapter';
+import { RentCarAdminsComponent } from './administrator/rent-car-admins/rent-car-admins/rent-car-admins.component';
+import { AirlineAdminsComponent } from './administrator/airline-admins/airline-admins/airline-admins.component';
 const fbLoginOptions: LoginOpt = {
   scope: 'first_name,last_name,name,email',
   return_scopes: true,
@@ -198,6 +204,8 @@ export function provideConfig() {
     FooterComponent,
     UsersListComponent,
     UsersItemComponent,
+    RentCarAdminsComponent,
+    AirlineAdminsComponent,
   ],
   imports: [
     BrowserModule,
@@ -224,6 +232,7 @@ export function provideConfig() {
     MatSelectModule,
     MatChipsModule,
     ToastrModule.forRoot(),
+    NgxSpinnerModule
   ],
   providers: [
     UserService,
@@ -235,6 +244,10 @@ export function provideConfig() {
     { provide: NgbDateParserFormatter, useClass: NgbDateCustomParserFormatter },
     { provide: HTTP_INTERCEPTORS, useClass: HttpTokenInterceptor, multi: true },
     AuthService,
+    AddressAdapter,
+    RentCarAdapter,
+    RentCarProfileAdapter,
+    OfficeAdapter,
     {
       provide: AuthServiceConfig,
       useFactory: provideConfig,

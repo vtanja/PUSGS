@@ -44,7 +44,7 @@ export class CreateCarReservationComponent implements OnInit {
     {
       letter: 'B',
       names: ['Belgrade, Serbia','Budapest, Hungary','Banja Luka, BiH']
-  
+
     },
      {
       letter: 'D',
@@ -59,22 +59,22 @@ export class CreateCarReservationComponent implements OnInit {
       letter: 'T',
       names: ['Trebinje, BiH']
     }];
-    
-    dropOffLocationOptions: Observable<LocationGroup[]>;
-  
 
-  constructor(private airlineService:AirlineService,private router:Router, private route:ActivatedRoute,private userService:UserService,private modalService: NgbModal, private rentCarService:RentCarService, private config: NgbDatepickerConfig, private flightReservationService:FlightReservationService) { 
+    dropOffLocationOptions: Observable<LocationGroup[]>;
+
+
+  constructor(private airlineService:AirlineService,private router:Router, private route:ActivatedRoute,private userService:UserService,private modalService: NgbModal, private rentCarService:RentCarService, private config: NgbDatepickerConfig, private flightReservationService:FlightReservationService) {
   }
 
   ngOnInit(): void {
     this.flight = this.airlineService.getFlight(+this.route.snapshot.params['id']);
     this.company = this.flight.airline;
     const carId = +this.route.snapshot.params['carid'];
-    
+
     var startParts = this.flight.landingDate.split('-');
 
     var current = new Date(+startParts[2],+startParts[1]-1,+startParts[0]);
-    
+
     console.log(current);
     this.config.minDate = { year: current.getFullYear(), month:
     current.getMonth() + 1, day: current.getDate() };
@@ -115,7 +115,7 @@ export class CreateCarReservationComponent implements OnInit {
 
     var date1 = new Date(+startParts[2],+startParts[1]-1,+startParts[0]);
     var date2 = new Date(+startParts[2],+startParts[1]-1,+startParts[0]);
-    
+
 
     console.log(date1);
     console.log(date2);
@@ -142,8 +142,8 @@ export class CreateCarReservationComponent implements OnInit {
     console.log(date);
     const days = this.getDaysBetween(this.flight.landingDate, date)+1;
     console.log(days);
-    this.rentalCompany = this.rentCarService.getRentCars().find(x=>x.name===this.car.companyName);
-    
+    //this.rentalCompany = this.rentCarService.getRentCars().find(x=>x.name===this.car.companyName);
+
     const companyId = this.rentalCompany.id;
     console.log(companyId);
 

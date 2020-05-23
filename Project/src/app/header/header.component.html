@@ -57,7 +57,8 @@
             reservations</a>
           <a *ngIf="userRole==='USER'" ngbDropdownItem routerLink="/user/friends">Friends</a>
 
-          <a *ngIf="userRole==='ADMINISTRATOR'" ngbDropdownItem routerLink="/all-users">All users</a>
+          <a *ngIf="userRole==='ADMINISTRATOR'" ngbDropdownItem routerLink="/rent-car-admins">Rent car admins</a>
+          <a *ngIf="userRole==='ADMINISTRATOR'" ngbDropdownItem routerLink="/airline-admins">Airline admins</a>
 
           <a *ngIf="userRole==='RENTCARADMIN'" ngbDropdownItem routerLink="/company-data/edit-main-data">Company data and offices</a>
           <a *ngIf="userRole==='RENTCARADMIN'" ngbDropdownItem routerLink="/companyCars">Cars</a>

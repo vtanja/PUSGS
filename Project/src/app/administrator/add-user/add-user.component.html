@@ -55,8 +55,8 @@
         <div class="input-icons">
           <select formControlName="adminType" class="select100"  name="adminType">
             <option value="" selected disabled hidden >Administrator type...</option>
-            <option value="AIRLINEADMIN">Airline company administartor</option>
-            <option value="CARADMIN">Rent a car company administartor</option>
+            <option value="AIRLINEADMIN">Airline company administrator</option>
+            <option value="RENTCARADMIN">Rent a car company administrator</option>
           </select>
             <i *ngIf="addUserForm.get('adminType').invalid && addUserForm.get('adminType').touched"
               class="fa fa-exclamation"></i>
@@ -89,7 +89,7 @@
         <span class="label-input100">Password</span>
         <div class="input-icons">
           <show-hide-password size="sm" btnStyle="light" [btnOutline]="false">
-            <input formControlName="password" class="input100" type="text" name="pass" placeholder="*************">
+            <input formControlName="password" class="input100" type="password" name="pass" placeholder="*************">
           </show-hide-password>
           <span class="focus-input100"></span>
         </div>

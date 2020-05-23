@@ -36,9 +36,10 @@ import { AddPlaneComponent } from './airlines/airline-administrator/airline-edit
 import { AdminFlightListComponent } from './airlines/airline-administrator/airline-edit/admin-flights/admin-flight-list/admin-flight-list.component';
 import { AddFlightComponent } from './airlines/airline-administrator/airline-edit/admin-flights/add-flight/add-flight.component';
 import { AdminFlightsComponent } from './airlines/airline-administrator/airline-edit/admin-flights/admin-flights.component';
-
 import { AddUserComponent } from './administrator/add-user/add-user.component';
-import { UsersListComponent } from './administrator/users-list/users-list.component';
+import { RentCarAdminsComponent } from './administrator/rent-car-admins/rent-car-admins/rent-car-admins.component';
+import { AirlineAdminsComponent } from './administrator/airline-admins/airline-admins/airline-admins.component';
+
 
 const routes: Routes = [
   { path: '', component: HomePageComponent, pathMatch: 'full' },
@@ -120,12 +121,9 @@ const routes: Routes = [
     {path:'add-plane', component:AddPlaneComponent},
   {path:'companyCars',component:CarsEditComponent},
   {path:'addCar',component:AddCarComponent},
-  {
-    path: 'all-users',
-    component: UsersListComponent
-  },
+  {path: 'rent-car-admins', component: RentCarAdminsComponent},
+  {path: 'airline-admins', component: AirlineAdminsComponent},
   { path: 'add-user', component: AddUserComponent },
-
   { path: '**', component: HomePageComponent },
 
 ];

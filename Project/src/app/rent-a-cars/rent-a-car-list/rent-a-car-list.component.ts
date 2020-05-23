@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { RentCarService } from '../../services/rent-a-car.service';
 import { RentCar } from 'src/app/models/rent-a-car.model';
 import { Subscription } from 'rxjs';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-rent-a-car-list',
@@ -10,17 +11,30 @@ import { Subscription } from 'rxjs';
 })
 export class RentACarListComponent implements OnInit {
 
-  rentCars: Array<RentCar>;
+  rentCars: Array<RentCar> = new Array<RentCar>(0);
   paramsSubscription: Subscription;
   sortParamsSubscription:Subscription;
   sortCriteria:string='';
+  isSpining:boolean = true;
 
-  constructor(private rentCarService:RentCarService) {
+  constructor(private rentCarService:RentCarService,private spinner: NgxSpinnerService) {
 
    }
 
   ngOnInit(): void {
-    this.rentCars = this.rentCarService.getRentCars();
+    this.spinner.show();
+    this.rentCarService.getRentCars().subscribe(
+      (res)=>{
+        console.log(res);
+        this.rentCars = res;
+        this.spinner.hide();
+        this.isSpining = false;
+      },
+      (err)=>{
+        this.spinner.hide();
+        this.isSpining = true;
+      }
+    );
 
     this.paramsSubscription= this.rentCarService.searchParamsSubject.subscribe((params:{})=>{
       this.rentCars = this.rentCarService.search(params);
