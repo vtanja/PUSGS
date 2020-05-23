@@ -19,6 +19,8 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Server.Email;
 using AutoMapper;
+using Server.Services;
+using Server.HubConfig;
 
 namespace Server
 {
@@ -35,7 +37,7 @@ namespace Server
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddAutoMapper(typeof(Startup));
-
+            services.AddSignalR();
             services.AddControllers();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
@@ -113,15 +115,17 @@ namespace Server
             builder.WithOrigins(Configuration["ApplicationSettings:Client_URL"].ToString())
             .AllowAnyHeader()
             .AllowAnyMethod()
-
+            .AllowCredentials()
             );
             app.UseAuthentication();
 
             app.UseAuthorization();
 
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHub<RequestsHub>("/requests");
             });
         }
     }

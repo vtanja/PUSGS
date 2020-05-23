@@ -37,7 +37,9 @@ tbody tr td{
   margin-top: 2%;
   display: inline-block;
   text-align: left;
-  width: 50%;
+  width: 55%;
+  color: #31124b;
+  font-weight: bolder;
 }
 
 .form-inline input{
@@ -85,4 +87,32 @@ tbody tr td{
     padding:0;
   }  
 
+  .button-style{
+    background-color:  #fa871b;
+    color: white;
+    border-color: #fa871b;
+    height: 8%;
+    width: 20%;
+    padding: 0%;
+  }
+
+  .dugme{
+    background-color: #31124b;
+    color: white;
+    border: none;
+    border-radius: 8px;
+  }
+
   
+  .button-style:hover{
+    background-color:  #fa871b;
+    color: #31124b;
+    border-color: #fa871b;
+    height: 8%;
+    width: 20%;
+    padding: 0%;
+  }
+
+  .button-style:disabled:hover{
+    color: white;
+  }

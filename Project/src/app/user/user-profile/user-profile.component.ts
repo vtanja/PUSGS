@@ -1,27 +1,25 @@
-import { Component, OnInit, } from '@angular/core';
+import { Component, OnInit, AfterViewInit, } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UserService } from '../../services/user-service.service';
 import { User } from 'src/app/models/user';
+import { UserAdapter } from 'src/app/models/adapters/user.adapter';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-user-profile',
   templateUrl: './user-profile.component.html',
   styleUrls: ['./user-profile.component.css']
 })
-export class UserProfileComponent implements OnInit {
+export class UserProfileComponent implements OnInit, AfterViewInit {
 
   editForm:FormGroup;
   profileImage:string | ArrayBuffer;
-
+  isDataLoaded:boolean=false;
   loggedUser:User;
 
   fileToUpload: File = null;
 
-  constructor(private userService:UserService) {
-    this.loggedUser=this.userService.getLoggedUser();
-  }
-
-  ngOnInit(): void {
+  constructor(private userService:UserService, private toastr:ToastrService) {
     this.editForm = new FormGroup({
       'firstName': new FormControl(null,Validators.required),
       'lastName' : new FormControl(null,Validators.required),
@@ -30,30 +28,38 @@ export class UserProfileComponent implements OnInit {
       'address': new FormControl(null, Validators.required),
       'file': new FormControl('', [Validators.required]),
       'passwordData' : new FormGroup({
-          'password': new FormControl(null,[Validators.required,
+          'password': new FormControl('',[
             Validators.pattern(new RegExp("^(?=.*[0-9]+.*)(?=.*[a-zA-Z]+.*)[0-9a-zA-Z]{8,}$"))]),
-          'confirm': new FormControl(null,[Validators.required])
+          'confirm': new FormControl('')
 
         },this.passwordMatchValidator.bind(this)),
 
     });
-
-
-
-    this.editForm.setValue({
-      'firstName':this.loggedUser.firstName,
-      'lastName': this.loggedUser.lastName,
-      'passwordData':{
-        password:this.loggedUser.password,
-        confirm:this.loggedUser.password
-      },
-      'email': this.loggedUser.email,
-      'phone': this.loggedUser.phoneNumber,
-      'address': this.loggedUser.address,
+  }
+  ngAfterViewInit(): void {
+    this.userService.getUser().subscribe((res:any)=>{
+      console.log(res);
+        this.loggedUser=res;
+        console.log(this.loggedUser);
+        this.isDataLoaded=true;
     });
 
-    this.profileImage=this.loggedUser.profileImage;
-    console.log(this.editForm);
+    if(this.isDataLoaded){
+      this.editForm.patchValue({
+        'firstName':this.loggedUser.firstName,
+        'lastName': this.loggedUser.lastName,
+        'email': this.loggedUser.email,
+        'phone': this.loggedUser.phoneNumber,
+        'address': this.loggedUser.address,
+      });
+    }
+  }
+
+  ngOnInit(): void {
+    
+      this.profileImage=this.loggedUser.profileImage;
+      console.log(this.editForm);
+   
   }
 
   onFileChange(event) {
@@ -141,7 +147,19 @@ export class UserProfileComponent implements OnInit {
 
 
   onSaveChanges(){
-
+    var user={
+      'UserName' : this.editForm.get('userName').value,
+      'FirstName' : this.editForm.get('firstName').value,
+      'LastName' : this.editForm.get('lastName').value,
+      'Password' : this.editForm.get('passwordData.password').value!==''?this.editForm.get('passwordData.password').value:this.loggedUser.password,
+      'Email' : this.editForm.get('email').value,
+      'Address' : this.editForm.get('address').value,
+      'PhoneNumber' : this.editForm.get('phoneNumber').value,
+    }
+    this.userService.updateProfile(user).subscribe((res:User)=>{
+      this.toastr.success('Successfully updated profile!', "Success!");
+      this.loggedUser=res;
+    });
   }
 
 

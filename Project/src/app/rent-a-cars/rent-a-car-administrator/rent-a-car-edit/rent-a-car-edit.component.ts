@@ -15,7 +15,7 @@ export class RentACarEditComponent implements OnInit {
   constructor(private rentCarAdministratorService:RentCarAdministratorService) { }
 
   ngOnInit(): void {
-   this.company = this.rentCarAdministratorService.getRentCarCompany();
+   //this.company = this.rentCarAdministratorService.getRentCarCompany();
   }
 
 }

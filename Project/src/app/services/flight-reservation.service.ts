@@ -22,7 +22,7 @@ export class FlightReservationService {
   }
 
   completeReservation(){
-    this.userService.getLoggedUser().flightReservations.push(this.pendingReservation);
+   // this.userService.getLoggedUser().flightReservations.push(this.pendingReservation);
     this.pendingReservation=undefined;
   }
 }
