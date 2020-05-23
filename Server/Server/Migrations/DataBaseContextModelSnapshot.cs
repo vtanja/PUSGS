@@ -851,7 +851,6 @@ namespace Server.Migrations
             modelBuilder.Entity("Server.Models.CarReservation", b =>
                 {
                     b.HasOne("Server.Models.Car", "Car")
-                        .WithMany()
                         .WithMany("Reservations")
                         .HasForeignKey("CarId")
                         .OnDelete(DeleteBehavior.Cascade)

@@ -9,7 +9,7 @@ import { AirlineService } from './airline.service';
 import { UsersRate } from '../models/users-rate.model';
 import { LoggedUser } from '../models/logged-user.model';
 import { Address } from '../models/address';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { User } from '../models/user';
 import { SignalRService } from './signal-r.service';
