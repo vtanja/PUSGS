@@ -61,6 +61,7 @@ namespace Server
                 options.Password.RequiredLength = 1;
 
                 options.SignIn.RequireConfirmedEmail = true;
+                options.User.RequireUniqueEmail = true;
             }
             );
 

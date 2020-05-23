@@ -15,6 +15,7 @@ namespace Server.Models
 
         public int CarId { get; set; }
 
+
         public DateTime Date { get; set; }
 
         [ForeignKey("CarId")]

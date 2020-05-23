@@ -27,10 +27,11 @@ namespace Server.Models
 
         [ForeignKey("CompanyId")]
         public virtual RentCar CarCompany { get; set; }
-        public ICollection<CarRate> Rates { get; set; }
+        public ICollection<CarReservation> Reservations{ get; set; }
 
         public ICollection<ReservedDate> ReservedDates { get; set; }
         public ICollection<DiscountDate> DisocuntDates { get; set; }
+        public ICollection<CarRate> Rates { get; set; }
 
 
     }

@@ -10,7 +10,6 @@ namespace Server.Models
     public class RentCarAdmin
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string UserId { get; set; }
 
         [ForeignKey("UserId")]
