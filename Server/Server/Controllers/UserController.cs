@@ -5,12 +5,16 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Server.DTOs;
 using Server.Models;
 using Server.Settings;
 
@@ -25,15 +29,18 @@ namespace Server.Controllers
         private readonly ApplicationSettings _appSettings;
         private readonly Email.IEmailSender _emailSender;
         private readonly DataBaseContext _dataBaseContext;
+        private readonly IMapper _mapper;
 
         public UserController(UserManager<RegisteredUser> userManager,
-            SignInManager<RegisteredUser> signInManager, IOptions<ApplicationSettings> appSettings, Email.IEmailSender emailSender,DataBaseContext dataBaseContext)
+            SignInManager<RegisteredUser> signInManager, IOptions<ApplicationSettings> appSettings,
+            Email.IEmailSender emailSender, DataBaseContext dataBaseContext, IMapper mapper)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _appSettings = appSettings.Value;
             _emailSender = emailSender;
             _dataBaseContext = dataBaseContext;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -54,6 +61,74 @@ namespace Server.Controllers
                 user.PhoneNumber
             };
         }
+
+        [HttpPut("{username}")]
+        public async Task<IActionResult> UpdateProfile(string username, UserModel model)
+        {
+            if (username != model.UserName)
+            {
+                return BadRequest();
+            }
+
+            var user = new RegisteredUser()
+            {
+                UserName = model.UserName,
+                Email = model.Email,
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                Address = model.Address,
+                PhoneNumber = model.PhoneNumber
+            };
+
+            _dataBaseContext.Entry(user).State = EntityState.Modified;
+
+            try
+            {
+                await _dataBaseContext.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (_dataBaseContext.RegisteredUsers.Where(x => x.UserName == username).FirstOrDefault() == null)
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
+
+
+        [HttpGet]
+        [Route("AllUsers")]
+        public async Task<ActionResult<IEnumerable<UserDTO>>> GetAllUsers()
+        {
+            string userName = User.Claims.First(c => c.Type == "UserName").Value;
+            //string userName = "tanja";
+
+            List<UserDTO> retVal = new List<UserDTO>();
+            var users = await _dataBaseContext.Users.Include(user => user.RegisteredUser).Where(u => u.RegisteredUser.UserName != userName).ToListAsync();
+            users.ForEach(r => retVal.Add(_mapper.Map<User, UserDTO>(r)));
+            return retVal;
+
+        }
+
+        [HttpGet("{username}")]
+        public async Task<ActionResult<UserDTO>> GetUser(string username)
+        {
+            var user = await _dataBaseContext.Users.Include(x => x.RegisteredUser).Where(x => x.RegisteredUser.UserName == username).FirstOrDefaultAsync();
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return _mapper.Map<User, UserDTO>(user);
+        }
+
 
         [HttpPost]
         [Route("Register")]

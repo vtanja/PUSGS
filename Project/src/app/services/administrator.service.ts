@@ -13,6 +13,10 @@ export class AdministratorService{
   }
 
   getAllUsers():User[]{
-    return this.usersService.getAllUsers();
+    let users:User[]=[];
+     this.usersService.getAllUsers().subscribe((res:User[])=>{
+       res.forEach(item=>users.push(item))
+     });
+     return users;
   }
 }

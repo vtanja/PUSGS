@@ -19,24 +19,27 @@
       <li class="nav-item" *ngIf="loggedIn && userRole==='USER'">
         <div class="list-group-item d-flex justify-content-between align-items-center" style="cursor: pointer;"
           placement="bottom" [ngbPopover]="requests" data-container="body" data-toggle="popover" data-placement="bottom"
-          data-content="requests" popoverClass="popoverClass">
+          data-content="requests" popoverClass="popoverClass" >
           <span class="slika" style="color:white; font-size:large;">
             <i class="fa fa-users"></i>
           </span>
-          <!-- <span class="badge badge-pill"
-            style="background-color: #fa9e1c; color: white;">{{loggedUser.friendRequests.length}}</span> -->
+          <span class="badge badge-pill"
+            style="background-color: #fa9e1c; color: white;">{{invitations.length}}</span>
         </div>
 
 
       </li>
 
       <ng-template #requests style="background-color: #e3cff3;">
-        <!-- <tr *ngFor="let friend of loggedUser.friendRequests" style="width: 30%;">
+        <div *ngIf="invitations.length===0" style="background-color: white; color: #31124b; font-weight: bolder;">
+          There are no friend requests!
+        </div>
+         <tr *ngFor="let friend of invitations" style="width: 30%;">
           <td>
             <img src={{friend.profileImage}} style="width: 30px; height:30px; ">
           </td>&nbsp;
           <td style="font-size: larger; color: #31124b; vertical-align: middle; ">
-            {{friend.firstName}} {{friend.lastName}} </td>
+            {{friend.getName()}} </td>
           &nbsp;
           <td style="vertical-align: middle;">
             <button (click)="onAccept(friend)" class="dugme">Accept</button>
@@ -44,7 +47,7 @@
           <td style="vertical-align: middle;">
             <button (click)="onDecline(friend)" class="dugme">Decline</button>
           </td>
-        </tr> -->
+        </tr> 
       </ng-template>
       <li class="nav-item" ngbDropdown display="dynamic" placement="bottom-right" *ngIf="loggedIn">
         <a class="nav-link" style="cursor: pointer" ngbDropdownToggle id="navbarDropdown3" role="button"

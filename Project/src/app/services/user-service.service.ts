@@ -1,7 +1,7 @@
 
-import { Subject } from 'rxjs';
+import { Subject, Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { User } from '../models/user';
+import { UserAdapter } from '../models/adapters/user.adapter';
 import { CarReservation } from '../models/car-reservation.model';
 import { FlightReservation } from '../models/flight-reservation.model';
 import { RentCarService } from './rent-a-car.service';
@@ -10,6 +10,9 @@ import { UsersRate } from '../models/users-rate.model';
 import { LoggedUser } from '../models/logged-user.model';
 import { Address } from '../models/address';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { map } from 'rxjs/operators';
+import { User } from '../models/user';
+import { SignalRService } from './signal-r.service';
 
 interface Passenger {
     seat: number;
@@ -20,43 +23,18 @@ interface Passenger {
 export class UserService{
     userLogged = new Subject<boolean>();
     users:User[];
+
+    newRequest:Subject<boolean> = new Subject<boolean>();
+    
     changeMap:Subject<Address>;
     readonly baseUri = 'http://localhost:51474/api/';
 
-    constructor(private rentCarService:RentCarService,private airlineService:AirlineService,private httpClient:HttpClient){
+    constructor(private rentCarService:RentCarService,private airlineService:AirlineService,private httpClient:HttpClient, private userAdapter:UserAdapter){
 
 
-
-      this.users = [];
       this.changeMap = new Subject<Address>();
 
-      this.users.push(new User('Tanja', 'Vukmirovic', 'tanja.vukmirovic8@gmail.com','USER',
-            'tanja123', 'tanja1sifra', '+38165432156', 'Zdravka Celara 185, Futog',
-            [new User('Andjela', 'Cickovic', 'andjela.ljuban@gmail.com',"USER", 'andjela123',
-            'andjela1sifra', '+38165432123', 'Trebinje', []),
-            new User('Pera', 'Peric', 'pera@pera.com','USER', 'pera123', 'pera1sifra', '+381987654321', 'Perina ulica 1, Novi Sad', [])] ));
-
-        this.users[0].friendRequests.push(new User("Natasa", "Lukic", "natasa.naca.lukic@gmail.com",'USER', "naca", "nata1sifra", "0657654355", "Adresa 1", []));
-        this.users[0].carReservations.push(new CarReservation("3-5-2020","10:00","4-5-2020","10:00", 2, 90, 1, "Firefly", 1, "Audi","Q3"));
-
-        let passenger1: Passenger = {seat: 101, passenger:{firstname:"Tanja", lastname:"Vukmirovic", passportNo:"123456785"}};
-        let passenger2: Passenger = {seat: 102, passenger:{firstname:"Andjela", lastname:"Cickovic", passportNo:"123456775"}};
-        this.users[0].flightReservations.push(new FlightReservation("rez1", 1, 0, 150, [passenger1, passenger2]));
-        // this.loggedUser.flightReservations[0].carReservation.push(new CarReservation("3-5-2020","10:00","4-5-2020","10:00", 2, 90, 1, "Firefly", 1, "Audi"));
-
-        let rentCarAdmin = new User('caradmin','caradmin','email@gmail.com','CARADMIN','c','c','123456789','My address',[]);
-        rentCarAdmin.carCompany = 1;
-
-        let airlineAdmin = new User('airlineadmin','airlineadmin','email@gmail.com',"AIRLINEADMIN",'a','a','123456789','My address',[]);
-        airlineAdmin.airlineCompany = 1;
-
-        let admin = new User('admin','admin','email@gmail.com','ADMINISTRATOR','admin','admin','123456789','My address',[]);
-
-        this.users.push(rentCarAdmin);
-        this.users.push(airlineAdmin);
-        this.users.push(admin);
-      }
-
+    }
 
     isUserLogged():boolean{
       if(localStorage.getItem('loggedUser')!=undefined)
@@ -76,15 +54,38 @@ export class UserService{
       return this.httpClient.post(this.baseUri + 'User/Login',loginData);
     }
 
+    sendRequests(selectedUser:{}){
+        return this.httpClient.post(this.baseUri + 'Friendship/SendRequest', selectedUser);
+    }
+
     logout():boolean{
       localStorage.removeItem('token');
       this.userLogged.next(false);
       return true;
     }
 
+    accept(user:User){
+      return this.httpClient.put(this.baseUri+'Friendship/'+user.username,undefined);
+    }
+
+    delete(user:User){
+      return this.httpClient.delete(this.baseUri+'Friendship/'+user.username);
+    }
+
     getLoggedUser():User{
-      let username = JSON.parse(localStorage.getItem('loggedUser')).username;
+      let username = this.getUserName();
       return this.users.find(u=>u.username===username);
+    }
+
+    getUser():Observable<Object>{
+      let username = this.getUserName();
+      console.log(username);
+       return this.httpClient.get(this.baseUri+'User/'+username)
+       .pipe(
+        map((data:any)=>
+             this.userAdapter.adapt(data)
+        )
+      );
     }
 
     getFlightReservations(){
@@ -155,12 +156,39 @@ export class UserService{
 
     }
 
-    getAllUsers():User[]{
-      return this.users;
+    getAllUsers():Observable<User[]>{
+      return this.httpClient.get(this.baseUri+'User/AllUsers')
+        .pipe(
+          map((data:any)=>
+            data.map(item=>this.userAdapter.adapt(item)
+            )
+          )
+        );
+      
+    }
+
+    getFriends():Observable<User[]>{
+      return this.httpClient.get(this.baseUri + 'Friendship/Friends')
+      .pipe(
+        map((data:any)=>
+        data.map(item=>this.userAdapter.adapt(item)))
+      );
+    }
+
+    getFriendRequests():Observable<User[]>{
+      return this.httpClient.get(this.baseUri + 'Friendship/Requests')
+      .pipe(
+        map((data:any)=>
+        data.map(item=>this.userAdapter.adapt(item)))
+      );
     }
 
     register(userData:{}){
      return this.httpClient.post(this.baseUri + 'User/Register',userData);
+    }
+
+    updateProfile(userData:{}){
+      return this.httpClient.put(this.baseUri+'User/', userData['userName'] ,userData)
     }
 
     getUserProfile(){

@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { NgSelectModule } from '@ng-select/ng-select';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgbModule, NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap';
 import { IgxAvatarModule } from 'igniteui-angular';
@@ -168,7 +169,6 @@ import {MatSelectModule} from '@angular/material/select';
     FooterComponent,
     UsersListComponent,
     UsersItemComponent,
-
   ],
   imports: [
     BrowserModule,
@@ -192,7 +192,8 @@ import {MatSelectModule} from '@angular/material/select';
     MatStepperModule,
     MatSelectModule,
     MatChipsModule,
-    ToastrModule.forRoot()
+    ToastrModule.forRoot(),
+    NgSelectModule,
   ],
   providers: [
     UserService,

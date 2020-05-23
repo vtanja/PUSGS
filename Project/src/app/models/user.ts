@@ -1,5 +1,8 @@
 import { CarReservation } from './car-reservation.model';
 import { FlightReservation } from './flight-reservation.model';
+import { Injectable } from '@angular/core';
+import { Adapter } from './adapter';
+import { isRegExp } from 'util';
 
 export class User {
      firstName:string;
@@ -15,8 +18,6 @@ export class User {
      profileImage:string;
      carReservations:CarReservation[];
      flightReservations:FlightReservation[];
-     name:string;
-
      carCompany:number;
      airlineCompany:number;
 
@@ -35,7 +36,11 @@ export class User {
             this.profileImage="../../assets/images/profilna.png";
             this.carReservations = [];
             this.flightReservations=[];
-            this.name=this.firstName+' '+this.lastName;
 
          }
-}
+        
+
+        getName():string{
+          return this.firstName+' '+this.lastName;
+        }
+      }

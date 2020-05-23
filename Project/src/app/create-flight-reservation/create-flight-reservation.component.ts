@@ -245,7 +245,7 @@ export class CreateFlightReservationComponent implements OnInit {
   private _filter = (opt: User[], value: string): User[] => {
     const filterValue = value.toLowerCase();
   
-    return opt.filter(item => item.name.toLowerCase().indexOf(filterValue) === 0 );
+    return opt.filter(item => item.getName().toLowerCase().indexOf(filterValue) === 0 );
   };
 
 }

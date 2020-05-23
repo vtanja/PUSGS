@@ -17,6 +17,7 @@ namespace Server.Settings
 
         public DbSet<RegisteredUser> RegisteredUsers { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<Friendship> Friendships { get; set; }
         public DbSet<RentCarAdmin> RentCarAdmins{ get; set; }
         public DbSet<AirlineAdmin> AirlineAdmins { get; set; }
         public DbSet<Administrator> Administrators { get; set; }

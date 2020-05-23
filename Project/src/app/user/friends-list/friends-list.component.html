@@ -2,9 +2,45 @@
     <img src="../../../assets/images/friends.jpeg" style="width:100%; height: 400px;"> 
 </div>
 
+<div style="margin-left: 15%; margin-top: 2%;"> 
+<div style="float: left; font-weight: bolder; color: #31124b; ">Add friends:</div>     
+<ng-select bindLabel="name" style="width: 50%; text-align: center; float: left;"
+                placeholder="Select user to send request..."
+                appendTo="body"
+                [searchable]="true" 
+                [(ngModel)]="selected">
+                <ng-option [value]="item.username" *ngFor="let item of users">
+                    {{item.getName()}}
+                </ng-option>
+    </ng-select>   
+    <button (click)="sendRequests()" [disabled]="selected===undefined" style="float: left;" class="btn  btn-md btn-rounded button-style"> 
+      Send friend request
+    </button>
+  </div>
+
+  <!-- <div style="margin-left: 15%; margin-top: 7%; "  *ngIf="invitations.length!==0"> 
+    <div style="float: left; font-weight: bolder; color: #31124b; ">Pending requests:</div>     
+    <br>
+     <tr *ngFor="let friend of invitations" style="width: 30%;">
+      <td>
+        <img src={{friend.profileImage}} style="width: 30px; height:30px; ">
+      </td>&nbsp;
+      <td style="font-size: larger; color: #31124b; vertical-align: middle; ">
+        {{friend.getName()}} </td>
+      &nbsp;
+      <td style="vertical-align: middle;">
+        <button (click)="onAccept(friend)" class="dugme">Accept</button>
+      </td>
+      <td style="vertical-align: middle;">
+        <button (click)="onDecline(friend)" class="dugme">Decline</button>
+      </td>
+    </tr> 
+    </div> -->
+ 
+
 <div class="container" style="display: inline;">
-  <div style="display: block; text-align: center;">
-      <div class="form-inline active-cyan-2">
+  <div style="display: block; text-align: start; margin-top: 2%; margin-left: 7%;">
+      <div class="form-inline active-cyan-2">Search your friends:
         <input class="form-control form-control-sm mr-3 w-75" [(ngModel)]="filterUser" type="text" placeholder="Search..."
           aria-label="Search">
         <i class="fa fa-search" aria-hidden="true"></i>
@@ -12,7 +48,7 @@
     </div>
     <!-- <div class="wrapper" style="display: block; text-align: center;"> 
       <div style="display: inline-block; width: 80%;"> -->
-      <table class="table" matSort (matSortChange)="sortData($event)" style="vertical-align: middle;">
+      <table class="table" matSort (matSortChange)="sortData($event)" style="margin-top: 2%;">
         <thead class="thead">
           <tr>
             <th scope="col" style="width: 20%;"> </th>

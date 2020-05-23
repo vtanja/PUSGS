@@ -1,7 +1,14 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { Sort } from '@angular/material/sort';
 import { UserService } from '../../services/user-service.service';
 import { User } from 'src/app/models/user';
+import { FormControl, FormGroup } from '@angular/forms';
+import { ReplaySubject, Subject } from 'rxjs';
+import { MatSelect } from '@angular/material/select';
+import { takeUntil } from 'rxjs/operators';
+import { ToastrService } from 'ngx-toastr';
+import { SignalRService } from 'src/app/services/signal-r.service';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-friends-list',
@@ -11,10 +18,10 @@ import { User } from 'src/app/models/user';
 
 
 
-export class FriendsListComponent implements OnInit {
+export class FriendsListComponent implements OnInit, AfterViewInit{
   loggedUser:User;
-  filterData: User[]=[];
   filterUser: string='';
+
 
   sortedData: User[]=[];
   public imgSource = "https://randomuser.me/api/portraits/men/1.jpg";
@@ -22,10 +29,77 @@ export class FriendsListComponent implements OnInit {
   public color = "black";
   public isCircular = true;
 
-  constructor(private userService:UserService) {
-    this.sortedData = this.userService.getLoggedUser().friends.slice();
-    console.log(this.sortedData);
+   users: User[] = [];
+   selected: string;
+
+   invitations:User[];
+
+  constructor(private userService:UserService, private toastr:ToastrService, private signalRService:SignalRService, private httpClient:HttpClient) {
+    this.users = this.getAllUsers();
+    this.sortedData = this.getFriends();
   }
+  
+  ngAfterViewInit(): void {
+    this.userService.newRequest.subscribe(()=>{
+      console.log('users changed');
+      this.sortedData=this.getFriends();
+      console.log(this.sortedData);
+      
+    })
+  }
+
+  // private startHttpRequest = () => {
+  //   this.httpClient.get('http://localhost:51474/api/requests')
+  //     .subscribe(res => {
+  //       if(res){
+  //        this.filterData = this.getFriends();
+  //       }
+  //     })
+  // }
+
+  ngOnInit(): void {
+    //this.signalRService.startConnection();
+    //this.signalRService.addTransferChartDataListener();   
+
+    
+  }
+
+  
+  getFriends():User[]{
+
+    let retVal:User[]=[];
+    this.userService.getFriends().subscribe((res:User[])=>{
+      res.forEach(obj=>{
+        retVal.push(obj);
+      })
+    })
+    
+    return retVal;
+  }
+
+  sendRequests(){
+    console.log(this.selected);
+
+    //let user:User = this.users.find(u=>u.username===this.selected);
+    var toSend = {'username':this.selected};
+    this.userService.sendRequests(toSend).subscribe((res:any)=>{
+      if(res==="success"){
+        this.selected=undefined;
+        this.toastr.success('Friend request sent!','Success!');
+      }
+      else if(res === "Already sent request!"){
+        this.selected=undefined;
+        this.toastr.error('Request already sent!','Error!');
+      }
+      else{
+        this.selected=undefined;
+        this.toastr.error('Unknown error!','Error!');
+      }
+    });
+
+  }
+
+  
 
   sortData(sort: Sort) {
     const data = this.sortedData.slice();
@@ -45,26 +119,23 @@ export class FriendsListComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
-     this.loggedUser=this.userService.getLoggedUser();
-    // this.filterData.push(...(this.loggedUser.friends))
-    // console.log(this.filterData);
+  getAllUsers():User[]{
+    let retVal:User[]=[];
+    this.userService.getAllUsers().subscribe((res:User[])=>{
+      res.forEach(obj=>{
+        retVal.push(obj);
+      })
+    })
+    
+    return retVal;
   }
 
+ 
+
   removeUser(user:User){
-    const index = this.loggedUser.friends.indexOf(user);
-    if(index>-1){
-      this.loggedUser.friends.splice(index,1);
-    }
-
-    this.sortedData.splice(index,1); 
-
-    const index2=user.friends.indexOf(this.loggedUser);
-    if(index2>-1){
-      user.friends.splice(index2,1);
-    }
-
-    console.log('removed');
+    this.userService.delete(user).subscribe((res:any)=>{
+      this.sortedData=this.getFriends()
+    })
   }
 
 }

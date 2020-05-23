@@ -26,7 +26,7 @@ export class OfficesEditComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.company = this.rentCarAdminService.getRentCarCompany();
+    //this.company = this.rentCarAdminService.getRentCarCompany();
   }
 
   openModal(content){
@@ -50,7 +50,7 @@ export class OfficesEditComponent implements OnInit {
     let address = new Address(number,street,city,country,-1,-1);
 
     if(this.rentCarAdminService.addOffice(address)){
-      this.company = this.rentCarAdminService.getRentCarCompany();
+      //this.company = this.rentCarAdminService.getRentCarCompany();
     }
 
   }
