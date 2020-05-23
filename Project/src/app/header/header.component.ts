@@ -3,7 +3,6 @@ import { UserService } from '../services/user-service.service';
 import { User } from '../models/user';
 import { Router, NavigationEnd } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { SignalRService } from '../services/signal-r.service';
 import { Observable } from 'rxjs/internal/Observable';
 import { Subscription } from 'rxjs';
 
@@ -18,19 +17,18 @@ export class HeaderComponent implements OnInit{
   userName:string = "";
   userRole:string= "";
   invitations:User[]=[];
-  
+
   isCollapsedRequests:boolean=true;
   mySubscription:Subscription;
 
   constructor(private userService:UserService,private router:Router ){
-    
-    
+
    }
-  
+
 
   ngOnInit(): void {
 
-    
+
     if(this.userService.isUserLoggedIn()){
         this.loggedIn=true;
         this.getUserData();

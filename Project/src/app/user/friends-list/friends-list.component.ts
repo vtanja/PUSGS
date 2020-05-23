@@ -7,7 +7,6 @@ import { ReplaySubject, Subject } from 'rxjs';
 import { MatSelect } from '@angular/material/select';
 import { takeUntil } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
-import { SignalRService } from 'src/app/services/signal-r.service';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
@@ -34,17 +33,17 @@ export class FriendsListComponent implements OnInit, AfterViewInit{
 
    invitations:User[];
 
-  constructor(private userService:UserService, private toastr:ToastrService, private signalRService:SignalRService, private httpClient:HttpClient) {
+  constructor(private userService:UserService, private toastr:ToastrService, private httpClient:HttpClient) {
     this.users = this.getAllUsers();
     this.sortedData = this.getFriends();
   }
-  
+
   ngAfterViewInit(): void {
     this.userService.newRequest.subscribe(()=>{
       console.log('users changed');
       this.sortedData=this.getFriends();
       console.log(this.sortedData);
-      
+
     })
   }
 
@@ -59,12 +58,12 @@ export class FriendsListComponent implements OnInit, AfterViewInit{
 
   ngOnInit(): void {
     //this.signalRService.startConnection();
-    //this.signalRService.addTransferChartDataListener();   
+    //this.signalRService.addTransferChartDataListener();
 
-    
+
   }
 
-  
+
   getFriends():User[]{
 
     let retVal:User[]=[];
@@ -73,7 +72,7 @@ export class FriendsListComponent implements OnInit, AfterViewInit{
         retVal.push(obj);
       })
     })
-    
+
     return retVal;
   }
 
@@ -99,7 +98,7 @@ export class FriendsListComponent implements OnInit, AfterViewInit{
 
   }
 
-  
+
 
   sortData(sort: Sort) {
     const data = this.sortedData.slice();
@@ -126,11 +125,11 @@ export class FriendsListComponent implements OnInit, AfterViewInit{
         retVal.push(obj);
       })
     })
-    
+
     return retVal;
   }
 
- 
+
 
   removeUser(user:User){
     this.userService.delete(user).subscribe((res:any)=>{

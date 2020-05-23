@@ -12,7 +12,6 @@ import { Address } from '../models/address';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { User } from '../models/user';
-import { SignalRService } from './signal-r.service';
 import * as jwt_decode from "jwt-decode";
 
 interface Passenger {

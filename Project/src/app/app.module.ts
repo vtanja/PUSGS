@@ -233,7 +233,8 @@ export function provideConfig() {
     MatSelectModule,
     MatChipsModule,
     ToastrModule.forRoot(),
-    NgxSpinnerModule
+    NgxSpinnerModule,
+    NgSelectModule
   ],
   providers: [
     UserService,

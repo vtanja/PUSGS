@@ -48,20 +48,20 @@ namespace Server.DTOs
                 .ForMember(dest => dest.Latitude, opt => opt.MapFrom(src => src.Address.Latitude));
 
             CreateMap<AirlineAdmin, UserDTO>()
-                .ForMember(dest => dest.username, opt => opt.MapFrom(src => src.RegisteredUser.UserName))
-                .ForMember(dest => dest.firstName, opt => opt.MapFrom(src => src.RegisteredUser.FirstName))
-                .ForMember(dest => dest.lastName, opt => opt.MapFrom(src => src.RegisteredUser.LastName))
-                .ForMember(dest => dest.email, opt => opt.MapFrom(src => src.RegisteredUser.Email))
-                .ForMember(dest => dest.phoneNumber, opt => opt.MapFrom(src => src.RegisteredUser.PhoneNumber))
-                .ForMember(dest => dest.address, opt => opt.MapFrom(src => src.RegisteredUser.Address));
+                .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.RegisteredUser.UserName))
+                .ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => src.RegisteredUser.FirstName))
+                .ForMember(dest => dest.LastName, opt => opt.MapFrom(src => src.RegisteredUser.LastName))
+                .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.RegisteredUser.Email))
+                .ForMember(dest => dest.PhoneNumber, opt => opt.MapFrom(src => src.RegisteredUser.PhoneNumber))
+                .ForMember(dest => dest.Address, opt => opt.MapFrom(src => src.RegisteredUser.Address));
 
             CreateMap<RentCarAdmin, UserDTO>()
-                .ForMember(dest => dest.username, opt => opt.MapFrom(src => src.RegisteredUser.UserName))
-                .ForMember(dest => dest.firstName, opt => opt.MapFrom(src => src.RegisteredUser.FirstName))
-                .ForMember(dest => dest.lastName, opt => opt.MapFrom(src => src.RegisteredUser.LastName))
-                .ForMember(dest => dest.email, opt => opt.MapFrom(src => src.RegisteredUser.Email))
-                .ForMember(dest => dest.phoneNumber, opt => opt.MapFrom(src => src.RegisteredUser.PhoneNumber))
-                .ForMember(dest => dest.address, opt => opt.MapFrom(src => src.RegisteredUser.Address));
+                .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.RegisteredUser.UserName))
+                .ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => src.RegisteredUser.FirstName))
+                .ForMember(dest => dest.LastName, opt => opt.MapFrom(src => src.RegisteredUser.LastName))
+                .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.RegisteredUser.Email))
+                .ForMember(dest => dest.PhoneNumber, opt => opt.MapFrom(src => src.RegisteredUser.PhoneNumber))
+                .ForMember(dest => dest.Address, opt => opt.MapFrom(src => src.RegisteredUser.Address));
            
             CreateMap<User, UserDTO>()
                 .ForMember(dest=>dest.FirstName, opt=>opt.MapFrom(src=>src.RegisteredUser.FirstName))

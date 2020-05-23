@@ -22,7 +22,6 @@ using Server.Models;
 using Server.Settings;
 using Server.Socials.Facebook;
 using Server.Socials.Google;
-using Server.DTOs;
 
 namespace Server.Controllers
 {
@@ -36,7 +35,6 @@ namespace Server.Controllers
         private readonly Email.IEmailSender _emailSender;
         private readonly IMapper _mapper;
         private readonly DataBaseContext _dataBaseContext;
-        private readonly IMapper _mapper;
 
         public UserController(UserManager<RegisteredUser> userManager,
             SignInManager<RegisteredUser> signInManager, IOptions<ApplicationSettings> appSettings, Email.IEmailSender emailSender,
@@ -109,20 +107,6 @@ namespace Server.Controllers
             return NoContent();
         }
 
-
-        [HttpGet]
-        [Route("AllUsers")]
-        public async Task<ActionResult<IEnumerable<UserDTO>>> GetAllUsers()
-        {
-            string userName = User.Claims.First(c => c.Type == "UserName").Value;
-            //string userName = "tanja";
-
-            List<UserDTO> retVal = new List<UserDTO>();
-            var users = await _dataBaseContext.Users.Include(user => user.RegisteredUser).Where(u => u.RegisteredUser.UserName != userName).ToListAsync();
-            users.ForEach(r => retVal.Add(_mapper.Map<User, UserDTO>(r)));
-            return retVal;
-
-        }
 
         [HttpGet("{username}")]
         public async Task<ActionResult<UserDTO>> GetUser(string username)
@@ -263,7 +247,7 @@ namespace Server.Controllers
 
                     if (user != null && user.SocialUserType != 'g')
                     {
-                        return BadRequest("We have already account connected to that email address.");
+                        return BadRequest(new { message = "We have already account connected to that email address." });
 
                     }
 
@@ -272,7 +256,7 @@ namespace Server.Controllers
                 }
             }
 
-                return BadRequest("Can not login.Information provided are not valid.");
+                return BadRequest(new { message = "Can not login.Information provided are not valid." });
         }
 
         [HttpPost]

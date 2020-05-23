@@ -938,61 +938,63 @@ namespace Server.Migrations
                     b.HasOne("Server.Models.RentCar", null)
                         .WithMany("Offices")
                         .HasForeignKey("RentCarId");
-            modelBuilder.Entity("Server.Models.Friendship", b =>
-                {
-                    b.HasOne("Server.Models.User", "Friend")
-                        .WithMany()
-                        .HasForeignKey("FriendID");
+                    modelBuilder.Entity("Server.Models.Friendship", b =>
+                        {
+                            b.HasOne("Server.Models.User", "Friend")
+                                .WithMany()
+                                .HasForeignKey("FriendID");
 
-                    b.HasOne("Server.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserID");
+                            b.HasOne("Server.Models.User", "User")
+                                .WithMany()
+                                .HasForeignKey("UserID");
+                        });
+
+                    modelBuilder.Entity("Server.Models.RentCar", b =>
+                        {
+                            b.HasOne("Server.Models.Address", "Address")
+                                .WithMany()
+                                .HasForeignKey("AddressId")
+                                .OnDelete(DeleteBehavior.Cascade)
+                                .IsRequired();
+
+                            b.HasOne("Server.Models.RegisteredUser", "Owner")
+                                .WithMany()
+                                .HasForeignKey("OwnerId");
+                        });
+
+                    modelBuilder.Entity("Server.Models.RentCarAdmin", b =>
+                        {
+                            b.HasOne("Server.Models.RentCar", "RentCarCompany")
+                                .WithMany()
+                                .HasForeignKey("CompanyId");
+
+                            b.HasOne("Server.Models.RegisteredUser", "RegisteredUser")
+                                .WithMany()
+                                .HasForeignKey("UserId")
+                                .OnDelete(DeleteBehavior.Cascade)
+                                .IsRequired();
+                        });
+
+                    modelBuilder.Entity("Server.Models.ReservedDate", b =>
+                        {
+                            b.HasOne("Server.Models.Car", "Car")
+                                .WithMany("ReservedDates")
+                                .HasForeignKey("CarId")
+                                .OnDelete(DeleteBehavior.Cascade)
+                                .IsRequired();
+                        });
+
+                    modelBuilder.Entity("Server.Models.User", b =>
+                        {
+                            b.HasOne("Server.Models.RegisteredUser", "RegisteredUser")
+                                .WithMany()
+                                .HasForeignKey("UserId")
+                                .OnDelete(DeleteBehavior.Cascade)
+                                .IsRequired();
+                        });
+
                 });
-
-            modelBuilder.Entity("Server.Models.RentCar", b =>
-                {
-                    b.HasOne("Server.Models.Address", "Address")
-                        .WithMany()
-                        .HasForeignKey("AddressId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Server.Models.RegisteredUser", "Owner")
-                        .WithMany()
-                        .HasForeignKey("OwnerId");
-                });
-
-            modelBuilder.Entity("Server.Models.RentCarAdmin", b =>
-                {
-                    b.HasOne("Server.Models.RentCar", "RentCarCompany")
-                        .WithMany()
-                        .HasForeignKey("CompanyId");
-
-                    b.HasOne("Server.Models.RegisteredUser", "RegisteredUser")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Server.Models.ReservedDate", b =>
-                {
-                    b.HasOne("Server.Models.Car", "Car")
-                        .WithMany("ReservedDates")
-                        .HasForeignKey("CarId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Server.Models.User", b =>
-                {
-                    b.HasOne("Server.Models.RegisteredUser", "RegisteredUser")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-#pragma warning restore 612, 618
-        }
+                
+            }
     }
 }

@@ -51,7 +51,7 @@ export class LoginComponent implements OnInit {
     },
 
       err => {
-        this.checkError(err);
+        this.toastr.error(err.error.message);
 
     })
 
@@ -82,7 +82,7 @@ export class LoginComponent implements OnInit {
     },
 
       err => {
-        this.checkError(err);
+        this.toastr.error(err.error.message);
 
     });
     });
@@ -100,24 +100,13 @@ export class LoginComponent implements OnInit {
     },
 
       err => {
-        this.checkError(err);
+        this.toastr.error(err.error.message);
 
     });
     });
 
     }
 
-  checkError(err:any){
-    if(err.status===400){
-      this.toastr.error('There is another account using that email address.','Login failed.');
-    }
-    else if(err.status===401){
-      this.toastr.error('Information provided are not valid.','Login failed.');
-    }
-    else{
-      this.toastr.error('An error occured.Please try again later','Login failed.');
-    }
-  }
   }
 
 
