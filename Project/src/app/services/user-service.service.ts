@@ -23,35 +23,26 @@ interface Passenger {
 export class UserService{
     userLogged = new Subject<boolean>();
     users:User[];
-
     newRequest:Subject<boolean> = new Subject<boolean>();
 
     changeMap:Subject<Address>;
     readonly baseUri = 'http://localhost:51474/api/';
 
     constructor(private rentCarService:RentCarService,private airlineService:AirlineService,private httpClient:HttpClient, private userAdapter:UserAdapter){
-
-
       this.changeMap = new Subject<Address>();
 
     }
 
-    isUserLogged():boolean{
-      if(localStorage.getItem('loggedUser')!=undefined)
-        return true;
-      return false;
-
-    //   if(localStorage.getItem('token')!=undefined)
-    //   return true;
-    // return false;
-    }
-
-    getUserFromName(name:string){
-      return JSON.parse(localStorage.getItem('loggedUser')).name;
-    }
-
     login(loginData:{}){
       return this.httpClient.post(this.baseUri + 'User/Login',loginData);
+    }
+
+    googleLogin(formData){
+      return this.httpClient.post(this.baseUri + 'User/GoogleLogin',formData);
+    }
+
+    facebookLogin(formData){
+      return this.httpClient.post(this.baseUri + 'User/FacebookLogin',formData);
     }
 
     sendRequests(selectedUser:{}){
@@ -79,7 +70,6 @@ export class UserService{
 
     getUser():Observable<Object>{
       let username = this.getUserName();
-      console.log(username);
        return this.httpClient.get(this.baseUri+'User/'+username)
        .pipe(
         map((data:any)=>
@@ -190,6 +180,7 @@ export class UserService{
     addAdmin(userData:{}){
       return this.httpClient.post(this.baseUri + 'User/AddAdmin',userData);
      }
+
     updateProfile(userData:{}){
       return this.httpClient.put(this.baseUri+'User/', userData['userName'] ,userData)
     }
@@ -208,18 +199,27 @@ export class UserService{
       return payload.UserName;
     }
 
+    userHasCompany(){
+      return this.httpClient.get(this.baseUri + "RentCarAdmins/UserHasCompany");
+    }
+
     isUserLoggedIn(){
          if(localStorage.getItem('token')!=undefined)
       return true;
     return false;
     }
 
-    googleLogin(formData){
-      return this.httpClient.post(this.baseUri + 'User/GoogleLogin',formData);
-    }
-
-    facebookLogin(formData){
-      return this.httpClient.post(this.baseUri + 'User/FacebookLogin',formData);
+    roleMatch(allowedRoles):boolean{
+      var isMatch = false;
+      var userRole = this.getUserRole();
+      console.log(userRole);
+      allowedRoles.forEach(element => {
+        if(userRole==element){
+          isMatch=true;
+          return false;
+        }
+      });
+      return isMatch;
     }
 
 }

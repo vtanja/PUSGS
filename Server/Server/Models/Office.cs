@@ -12,8 +12,16 @@ namespace Server.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
+
         public int AddressId { get; set; }
+
         [ForeignKey("AddressId")]
         public virtual Address Address { get; set; }
+
+        public int RentCarId { get; set; }
+
+        [ForeignKey("RentCarId")]
+        public virtual RentCar RentCar{ get; set; }
+
     }
 }

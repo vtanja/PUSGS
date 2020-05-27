@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "YhDh32k7nxuaFqjSbWBZ9qpvG1OijDdSCD/FTh5951Ds2xQisYkXWjnKjJlByGZp8BNM3ysytunnholJqt/CXg==",
+  "dgSpecHash": "fmtEp3Q7keU5UDvQLsnzCGh84lvQKO8smUKBzNdq2Zpg5PjZJTDwJFn2PC8OH/xA/5z8cKHz4HLU8GS9fYRIrQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\Andjela\\Desktop\\PUSGS\\Server\\Server\\Server.csproj",
   "expectedPackageFiles": [
@@ -12,6 +12,7 @@
     "C:\\Users\\Andjela\\.nuget\\packages\\microsoft.aspnetcore.html.abstractions\\2.2.0\\microsoft.aspnetcore.html.abstractions.2.2.0.nupkg.sha512",
     "C:\\Users\\Andjela\\.nuget\\packages\\microsoft.aspnetcore.identity.entityframeworkcore\\3.1.4\\microsoft.aspnetcore.identity.entityframeworkcore.3.1.4.nupkg.sha512",
     "C:\\Users\\Andjela\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\3.1.4\\microsoft.aspnetcore.identity.ui.3.1.4.nupkg.sha512",
+    "C:\\Users\\Andjela\\.nuget\\packages\\microsoft.aspnetcore.jsonpatch\\3.1.4\\microsoft.aspnetcore.jsonpatch.3.1.4.nupkg.sha512",
     "C:\\Users\\Andjela\\.nuget\\packages\\microsoft.aspnetcore.razor\\2.2.0\\microsoft.aspnetcore.razor.2.2.0.nupkg.sha512",
     "C:\\Users\\Andjela\\.nuget\\packages\\microsoft.aspnetcore.razor.language\\3.1.0\\microsoft.aspnetcore.razor.language.3.1.0.nupkg.sha512",
     "C:\\Users\\Andjela\\.nuget\\packages\\microsoft.aspnetcore.razor.runtime\\2.2.0\\microsoft.aspnetcore.razor.runtime.2.2.0.nupkg.sha512",

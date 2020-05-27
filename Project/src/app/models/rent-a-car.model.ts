@@ -51,6 +51,7 @@ export class RentCar{
   }
 
   getOfficesAddresses():Address[]{
+    console.log(this.offices);
     let keys = Object.keys(this.offices);
     let ret:Address[] = [];
     keys.forEach(country=>{

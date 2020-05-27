@@ -47,7 +47,7 @@
           <td style="vertical-align: middle;">
             <button (click)="onDecline(friend)" class="dugme">Decline</button>
           </td>
-        </tr> 
+        </tr>
       </ng-template>
       <li class="nav-item" ngbDropdown display="dynamic" placement="bottom-right" *ngIf="loggedIn">
         <a class="nav-link" style="cursor: pointer;margin-top: 9%;" ngbDropdownToggle id="navbarDropdown3" role="button"
@@ -63,8 +63,9 @@
           <a *ngIf="userRole==='ADMINISTRATOR'" ngbDropdownItem routerLink="/rent-car-admins">Rent car admins</a>
           <a *ngIf="userRole==='ADMINISTRATOR'" ngbDropdownItem routerLink="/airline-admins">Airline admins</a>
 
-          <a *ngIf="userRole==='RENTCARADMIN'" ngbDropdownItem routerLink="/company-data/edit-main-data">Company data and offices</a>
-          <a *ngIf="userRole==='RENTCARADMIN'" ngbDropdownItem routerLink="/companyCars">Cars</a>
+          <a *ngIf="userRole==='RENTCARADMIN' && !companyExists" ngbDropdownItem routerLink="/add-company">Add company</a>
+          <a *ngIf="userRole==='RENTCARADMIN' && companyExists" ngbDropdownItem routerLink="/company-data/edit-main-data">Company data and offices</a>
+          <a *ngIf="userRole==='RENTCARADMIN' && companyExists" ngbDropdownItem routerLink="/companyCars">Cars</a>
 
           <a *ngIf="userRole==='AIRLINEADMIN'" ngbDropdownItem routerLink="/airline-company-data/edit-airline-main-data">Company data and destinations</a>
 

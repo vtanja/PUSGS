@@ -25,6 +25,7 @@ namespace Server.Settings
         public DbSet<Server.Models.Car> Cars { get; set; }
 
         public DbSet<Office> Offices { get; set; }
+        public DbSet<Address> Addresses { get; set; }
 
       //  public DbSet<RentCar> RentCarCompanies { get; set; }
        // public DbSet<Car> Cars{ get; set; }

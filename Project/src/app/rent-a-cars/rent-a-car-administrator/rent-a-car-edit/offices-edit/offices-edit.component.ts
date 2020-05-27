@@ -1,69 +1,108 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { RentCarAdministratorService } from 'src/app/services/rent-car-administrator.service';
-import { RentCar } from 'src/app/models/rent-a-car.model';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
-import { Address } from 'src/app/models/address';
+import { RentCarOfficesService } from 'src/app/services/rent-car-offices.service';
+import Swal from 'sweetalert2';
+import { isEmpty } from 'rxjs/operators';
 
 @Component({
   selector: 'app-offices-edit',
   templateUrl: './offices-edit.component.html',
-  styleUrls: ['./offices-edit.component.css']
+  styleUrls: ['./offices-edit.component.css'],
 })
 export class OfficesEditComponent implements OnInit {
+  offices: {};
+  addOfficeForm: FormGroup;
+  closeResult: string;
 
-  company:RentCar;
-  addOfficeForm:FormGroup;
-  closeResult:string;
-
-  constructor(private rentCarAdminService:RentCarAdministratorService,private modalService: NgbModal) {
+  constructor(
+    private rentCarAdminService: RentCarAdministratorService,
+    private modalService: NgbModal,
+    private officesService: RentCarOfficesService
+  ) {
     this.addOfficeForm = new FormGroup({
-      'street' : new FormControl('',Validators.required),
-      'number' : new FormControl('',Validators.required),
-      'city' : new FormControl('',Validators.required),
-      'country' : new FormControl('',Validators.required),
+      street: new FormControl('', Validators.required),
+      number: new FormControl('', Validators.required),
+      city: new FormControl('', Validators.required),
+      country: new FormControl('', Validators.required),
     });
   }
 
   ngOnInit(): void {
-    //this.company = this.rentCarAdminService.getRentCarCompany();
+    this.modalService.dismissAll();
+    this.officesService.getOffices().subscribe(
+      (res) => {
+        this.offices = res;
+      },
+      (err) => {}
+    );
   }
 
-  openModal(content){
+  openModal(content) {
+    this.addOfficeForm.reset();
 
-    this.clearForm();
+    this.modalService
+      .open(content, {
+        ariaLabelledBy: 'modal-basic-title-adm',
+        centered: true,
+        backdropClass: 'light-purple-backdrop',
+      })
+      .result.then(
+        (result) => {
+          this.closeResult = `Closed with: ${result}`;
+        },
+        (reason) => {
+          this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+        }
+      );
+  }
 
-    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title-adm'}).result.then((result) => {
-      this.closeResult = `Closed with: ${result}`;
-    }, (reason) => {
-      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-    });
+  addOffice() {
+
+    let data = this.addOfficeForm.value;
+    let address = {'address' : data};
+
+    this.officesService.addOffice(address).subscribe(
+      res=>{
+
+        this.modalService.dismissAll();
+        console.log(res);
+        this.updateOfficesAdd(res);
+
+        Swal.fire({
+          text : 'Office successfully added',
+          showConfirmButton:false,
+          icon : 'success',
+          timer:2000
+        });
+        this.addOfficeForm.reset();
+      },
+      err=>{
+        console.log(err);
+        Swal.fire({
+          text : err.errors.message,
+          showConfirmButton:true,
+          icon : 'error'
+        });
+      }
+    )
 
   }
 
-  addOffice(){
-    let street = this.addOfficeForm.get('street').value;
-    let number = this.addOfficeForm.get('number').value;
-    let city = this.addOfficeForm.get('city').value;
-    let country = this.addOfficeForm.get('country').value;
-
-    let address = new Address(number,street,city,country,-1,-1);
-
-    if(this.rentCarAdminService.addOffice(address)){
-      //this.company = this.rentCarAdminService.getRentCarCompany();
+  updateOfficesAdd(office:{}){
+    if(this.offices[office['country']]===undefined){
+      let arr = []
+      arr.push(office);
+      this.offices[office['country']] = arr;
+    }else{
+      this.offices[office['country']].push(office);
     }
-
   }
 
-  clearForm():void{
+  officesEmpty():boolean{
 
-    this.addOfficeForm.patchValue({
-      'street' : '',
-      'number' : null,
-      'city' : '',
-      'country':''
-    })
-
+    return (Object.keys(this.offices).length===0 || this.offices===undefined);
   }
 
   private getDismissReason(reason: any): string {
@@ -72,8 +111,7 @@ export class OfficesEditComponent implements OnInit {
     } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
       return 'by clicking on a backdrop';
     } else {
-      return  `with: ${reason}`;
+      return `with: ${reason}`;
     }
   }
-
 }

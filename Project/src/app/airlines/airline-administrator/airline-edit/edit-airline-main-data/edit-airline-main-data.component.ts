@@ -13,7 +13,7 @@ export class EditAirlineMainDataComponent implements OnInit {
   dataForm:FormGroup;
   airline:Airline;
   imgPreview:string | ArrayBuffer;
-  
+
   constructor(private airlineAdministratorService:AirlineAdministratorService) { }
 
   ngOnInit(): void {
@@ -31,14 +31,14 @@ export class EditAirlineMainDataComponent implements OnInit {
     })
   }
 
-  
+
   editCompanyData():void{
     let newName = this.dataForm.get('name').value;
     let newStreet = this.dataForm.get('street').value;
     let newNum = this.dataForm.get('number').value;
     let newCity = this.dataForm.get('city').value;
     let newCountry = this.dataForm.get('country').value;
-    let newAddress = new Address(+newNum,newStreet,newCity,newCountry,-1,-1);
+    let newAddress = new Address(-1,+newNum,newStreet,newCity,newCountry,-1,-1);
     let newDescription = this.dataForm.get('description').value;
     let newLogo = this.dataForm.get('fileSource').value;
 

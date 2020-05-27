@@ -8,6 +8,9 @@ import { RentCarAdministratorService } from 'src/app/services/rent-car-administr
 import { MatDialogRef } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
 import { fadeIn } from 'igniteui-angular';
+import { CarService } from 'src/app/services/car.service';
+import { CarAdapter } from 'src/app/models/adapters/car.adapter';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-cars-edit',
@@ -21,24 +24,36 @@ export class CarsEditComponent implements OnInit {
   closeResult: string;
   changePriceForm:FormGroup;
   addDiscountForm:FormGroup;
-  companyId:number;
 
   hoveredDate: NgbDate | null = null;
   fromDate: NgbDate;
   toDate: NgbDate | null = null;
 
   selectedDates:boolean;
+  isLoading:boolean;
 
-  constructor(private rentCarService:RentCarService,private rentCarAdminService:RentCarAdministratorService,
-    private modalService: NgbModal,private config: NgbDatepickerConfig,private calendar: NgbCalendar) {
+  constructor(private carService:CarService, private carAdapter:CarAdapter,
+    private modalService: NgbModal,private config: NgbDatepickerConfig,
+    private calendar: NgbCalendar,private spinner: NgxSpinnerService) {
     this.fromDate = calendar.getToday();
     this.toDate = calendar.getNext(calendar.getToday(), 'd', 10);
   }
 
   ngOnInit(): void {
-
-    this.cars = this.rentCarAdminService.getCars();
-    this.companyId = this.rentCarAdminService.getCompanyId();
+    this.isLoading = true;
+    this.spinner.show();
+    this.carService.getCompanyCars().subscribe(
+      (res:any)=>{
+        console.log(res);
+        this.cars = res;
+        this.spinner.hide();
+        this.isLoading = false;
+      },
+      (err)=>{
+        this.spinner.hide();
+       this.isLoading = false;
+      }
+    )
 
     this.changePriceForm = new FormGroup({
       'newPrice':new FormControl(null,[Validators.required,Validators.min(1)])
@@ -102,20 +117,106 @@ export class CarsEditComponent implements OnInit {
   }
 
    changePrice():void{
-     var newPrice = +this.changePriceForm.get('newPrice').value;
-     if (this.rentCarAdminService.changeCarPrice(this.companyId,this.currentCar.id,newPrice)){
-      this.cars.find(c=>c.id===this.currentCar.id).pricePerDay=newPrice;
-      Swal.fire({
-        text: 'Price successfully changed!',
-        icon: 'success',
-        showConfirmButton: false,
-        timer: 1500
-      })
-     }
+    let newPrice = this.changePriceForm.get('newPrice').value;
+    this.spinner.show();;
+    this.carService.changeCarPrice(this.currentCar.id,newPrice).subscribe(
+      (res:any) => {
+        this.spinner.hide();;
+        Swal.fire({
+          text: 'Price successfully changed!',
+          icon: 'success',
+          showConfirmButton: false,
+          timer: 1500
+        });
 
+      let carChanged = this.carAdapter.adapt(res);
+      let index = this.cars.findIndex(c=>c.id === res.id);
+      this.cars[index] = carChanged;
+
+      },
+      err => {
+        this.spinner.hide();;
+        Swal.fire({
+          text: err.errors.message,
+          icon: 'error',
+          showConfirmButton: true,
+          confirmButtonColor: '#fa9e1c',
+          timer: 1500
+        });
+
+      }
+     )
    }
 
-   onDateSelection(date: NgbDate) {
+  getDiscountPrice():number{
+    if(this.addDiscountForm.valid){
+      let discount = this.addDiscountForm.get('discount').value;
+      return +(this.currentCar.pricePerDay*(100-discount)/100).toFixed(2);
+    }else{
+      return -1;
+    }
+  }
+
+  addDiscount():void{
+    // if(this.rentCarAdminService.addDiscount(this.companyId,this.currentCar.id,this.fromDate,this.toDate,this.getDiscountPrice())){
+    //   Swal.fire({
+    //     text: 'Discount successfully added!',
+    //     icon: 'success',
+    //     showConfirmButton: false,
+    //     timer: 1500
+    //   });
+    // }
+  }
+
+  deleteCar(car:Car):void{
+
+    Swal.fire({
+      text: 'Are you sure you want to remove ' +  car.brand + ' ' + car.model + ' from your company ?',
+      showCancelButton :true,
+      showConfirmButton :true,
+      confirmButtonText: 'Yes, remove it!',
+      cancelButtonText: 'No, cancel!',
+      confirmButtonColor: '#fa9e1c',
+      cancelButtonColor: '#31124b',
+      icon: "warning",
+
+    }).then((result)=>{
+      if(result.value){
+
+        this.spinner.show();
+        this.carService.deleteCar(car.id).subscribe(
+          (res)=>{
+
+            this.spinner.hide();
+          Swal.fire({
+            text: 'Car successfully deleted!',
+            icon: 'success',
+            showConfirmButton: false,
+            timer: 1500,
+          });
+
+          this.updateCarsAfterDelete(car);
+
+          (err)=>{
+            this.spinner.hide();
+          }
+
+        })
+      }
+  });
+  }
+
+
+  carsEmpty():boolean{
+    return (this.cars===undefined ||  this.cars.length ===0);
+  }
+
+  updateCarsAfterDelete(car:Car){
+    let index = this.cars.indexOf(car);
+    this.cars.splice(index,1);
+  }
+
+  onDateSelection(date: NgbDate) {
     if (!this.fromDate && !this.toDate) {
       this.fromDate = date;
       this.selectedDates=false;
@@ -140,50 +241,5 @@ export class CarsEditComponent implements OnInit {
   isRange(date: NgbDate) {
     return date.equals(this.fromDate) || (this.toDate && date.equals(this.toDate)) || this.isInside(date) || this.isHovered(date);
   }
-
-  getDiscountPrice():number{
-    if(this.addDiscountForm.valid){
-      let discount = this.addDiscountForm.get('discount').value;
-      return +(this.currentCar.pricePerDay*(100-discount)/100).toFixed(2);
-    }else{
-      return -1;
-    }
-  }
-
-  addDiscount():void{
-    if(this.rentCarAdminService.addDiscount(this.companyId,this.currentCar.id,this.fromDate,this.toDate,this.getDiscountPrice())){
-      Swal.fire({
-        text: 'Discount successfully added!',
-        icon: 'success',
-        showConfirmButton: false,
-        timer: 1500
-      });
-    }
-  }
-
-  deleteCar():void{
-
-    if (this.rentCarAdminService.deleteCar(this.currentCar.id,this.companyId)){
-      this.cars = this.rentCarService.getCompanyCars(this.companyId);
-      Swal.fire({
-        text: 'Car successfully deleted!',
-        icon: 'success',
-        showConfirmButton: false,
-        timer: 1500,
-      });
-    }else{
-      Swal.fire({
-        text: 'Unable to delete car, there are active reservations!',
-        icon: 'error',
-        showConfirmButton: true,
-        confirmButtonColor: "#de8e26"
-      });
-
-    }
-
-
-
-  }
-
 
 }

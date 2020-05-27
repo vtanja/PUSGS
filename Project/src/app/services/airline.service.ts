@@ -155,39 +155,39 @@ export class AirlineService{
         };
 
 
-        let a1address=new Address(17, "Bulevar kralja Aleksandra", "Belgrade", "Serbia",20.468057, 44.809942 );
-        let a2address=new Address(1, "Vrbanja", "Arajevo", "Bosnia and Herzegovina", 18.408138, 43.856059 );
-        let a3address=new Address(17, "Zrinjevac", "Zagreb", "Croatia",15.977941, 45.810625 );
+        // let a1address=new Address(17, "Bulevar kralja Aleksandra", "Belgrade", "Serbia",20.468057, 44.809942 );
+        // let a2address=new Address(1, "Vrbanja", "Arajevo", "Bosnia and Herzegovina", 18.408138, 43.856059 );
+        // let a3address=new Address(17, "Zrinjevac", "Zagreb", "Croatia",15.977941, 45.810625 );
 
-        const airline1 = new Airline(0, "Air Serbia", a1address, "Air Serbia je nacionalna avio kompanije Republike Srbije, nastala iz dotadašnje avio kompanije Jat Airways.",
-         airSerbiaFlights, serbiaDest, "../../assets/images/airlines/air-serbia.png");
-        const airline2 = new Airline(1, "FlyBosnia", a2address, "FlyBosnia je avio kompanija iz Bosne i Hercegovina sa sedištem u Sarajevu. Avio kompanija FlyBosnia trenutno leti na direktnim linijama iz Sarajeva za London, Riyadh i Kuvajt.",
-         [], destBosnia, "../../assets/images/airlines/Logo-FlyBosnia.png");
-        const airline3 = new Airline(2, "Croatia Airlines", a3address, "Croatia Airlines je nacionalna avio kompanija Republike Hrvatske, osnovana 1989. godine pod nazivom Zagal, Zagreb Airlines, a 1990. godine menja ime u Croatia Airlines.",
-         [], croatiaDest, "../../assets/images/airlines/croatia.png");
+        // const airline1 = new Airline(0, "Air Serbia", a1address, "Air Serbia je nacionalna avio kompanije Republike Srbije, nastala iz dotadašnje avio kompanije Jat Airways.",
+        //  airSerbiaFlights, serbiaDest, "../../assets/images/airlines/air-serbia.png");
+        // const airline2 = new Airline(1, "FlyBosnia", a2address, "FlyBosnia je avio kompanija iz Bosne i Hercegovina sa sedištem u Sarajevu. Avio kompanija FlyBosnia trenutno leti na direktnim linijama iz Sarajeva za London, Riyadh i Kuvajt.",
+        //  [], destBosnia, "../../assets/images/airlines/Logo-FlyBosnia.png");
+        // const airline3 = new Airline(2, "Croatia Airlines", a3address, "Croatia Airlines je nacionalna avio kompanija Republike Hrvatske, osnovana 1989. godine pod nazivom Zagal, Zagreb Airlines, a 1990. godine menja ime u Croatia Airlines.",
+        //  [], croatiaDest, "../../assets/images/airlines/croatia.png");
         //const airline4 = new Airline(3, "Montenegro Airlines", new Address(" ","Podgorica","Montenegro"), "Montenegro Airlines je nacionalna avio kompanija Crne Gore, sa sedištem u Podgorici, osnovana je u oktobru 1994. godine, a postala članica IATA 5. marta 2003. godine.",
         // montenegroFlights, montenegroDest, "../../assets/images/airlines/montenegro.jpg");
         //const airline5 = new Airline(4, "Lufthansa", new Address(" ","Frankfurt","Germany"), "Lufthansa (nem. Deutsche Lufthansa AG) je nacionalna avio-kompanija Nemačke. Sedište joj je u Frankfurtu. Trenutno je najveća aviokompanija u Evropi po broju prevezenih putnika i druga po veličini flote (posle Air France-KLM).",
         // lufthansaFlights, lufthansaDest, "../../assets/images/airlines/airline1.png");
 
-        let plane = new Plane('plane1');
-        plane.id=0;
-        plane.booked=[];
-        plane.segments.push({name:'Economy class', value:{rows:13, columns:6}});
-        plane.segments.push({name:'Business class', value:{rows:3, columns:4}});
-        airline2.planes.push(plane);
+        // let plane = new Plane('plane1');
+        // plane.id=0;
+        // plane.booked=[];
+        // plane.segments.push({name:'Economy class', value:{rows:13, columns:6}});
+        // plane.segments.push({name:'Business class', value:{rows:3, columns:4}});
+        // airline2.planes.push(plane);
 
-        flight1.image=airline1.image;
-        flight2.image=airline1.image;
-        flight3.image=airline1.image;
-        flight4.image=airline1.image;
-        flight5.image=airline1.image;
+        // flight1.image=airline1.image;
+        // flight2.image=airline1.image;
+        // flight3.image=airline1.image;
+        // flight4.image=airline1.image;
+        // flight5.image=airline1.image;
 
-        flight1.airline=airline1;
-        flight2.airline=airline1;
-        flight3.airline=airline1;
-        flight4.airline=airline1;
-        flight5.airline=airline1;
+        // flight1.airline=airline1;
+        // flight2.airline=airline1;
+        // flight3.airline=airline1;
+        // flight4.airline=airline1;
+        // flight5.airline=airline1;
         //flight6.image=airline1.image;
         //flight7.image=airline1.image;
         //flight8.image=airline1.image;
@@ -215,9 +215,9 @@ export class AirlineService{
         // flight23.image=airline5.image;
         // flight24.image=airline5.image;
 
-        this.airlines.push(airline1);
-        this.airlines.push(airline2);
-        this.airlines.push(airline3);
+        // this.airlines.push(airline1);
+        // this.airlines.push(airline2);
+        // this.airlines.push(airline3);
         // this.airlines.push(airline4);
         // this.airlines.push(airline5);
 

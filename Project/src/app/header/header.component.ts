@@ -5,15 +5,17 @@ import { Router, NavigationEnd } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/internal/Observable';
 import { Subscription } from 'rxjs';
+import { RentCarService } from '../services/rent-a-car.service';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
-export class HeaderComponent implements OnInit{
+export class HeaderComponent implements OnInit,OnDestroy{
 
   loggedIn:boolean=false;
+  companyExists:boolean;
   userName:string = "";
   userRole:string= "";
   invitations:User[]=[];
@@ -21,7 +23,9 @@ export class HeaderComponent implements OnInit{
   isCollapsedRequests:boolean=true;
   mySubscription:Subscription;
 
-  constructor(private userService:UserService,private router:Router ){
+  firstCompanyAdded:Subscription;
+
+  constructor(private userService:UserService,private rentCarService:RentCarService, private router:Router ){
 
    }
 
@@ -33,7 +37,6 @@ export class HeaderComponent implements OnInit{
         this.loggedIn=true;
         this.getUserData();
         this.invitations = this.getRequests();
-        console.log(this.invitations);
     }
 
     this.userService.userLogged.subscribe((isLogged:boolean)=>{
@@ -46,6 +49,11 @@ export class HeaderComponent implements OnInit{
           this.userRole="";
           this.userName="";
         }
+    });
+
+    this.rentCarService.firstCompanyAdded.subscribe((addedCompany:boolean)=>{
+      if(addedCompany)
+      this.companyExists = true;
     })
   }
 
@@ -76,6 +84,12 @@ export class HeaderComponent implements OnInit{
 
   getUserData():void{
     this.userRole = this.userService.getUserRole();
+    if(this.userRole==='RENTCARADMIN'){
+      this.userService.userHasCompany().subscribe((res:any)=>
+        {
+          this.companyExists = res.hasCompany;}
+      )
+    }
     this.userName = this.userService.getUserName();
   }
 
@@ -84,6 +98,11 @@ export class HeaderComponent implements OnInit{
       this.router.navigate(['/home']);
     }
 
+  }
+
+  ngOnDestroy(){
+    this.mySubscription.unsubscribe();
+    this.firstCompanyAdded.unsubscribe();
   }
 
 

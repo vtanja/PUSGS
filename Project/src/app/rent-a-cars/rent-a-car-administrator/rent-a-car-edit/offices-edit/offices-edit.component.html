@@ -1,32 +1,39 @@
 <div class="my-heading-div">
   <div class="d-flex justify-content-end">
     <button class="btn  btn-md btn-rounded button-style"
-            (click)="openModal(addOfficeModal)">Add new office</button>
-    </div>
+      (click)="openModal(addOfficeModal)">Add new office</button>
+  </div>
   <h4>Offices</h4>
 </div>
-<app-profile-offices style="margin-top: 4%;" [items]="this.company.offices"></app-profile-offices>
+
+<div class="container"  *ngIf="officesEmpty()">
+  <div class="row" class="row-style">
+  <h3> No offices added.</h3>
+   <h3> Click add button in left corner to add first office. </h3>
+  </div>
+</div>
+<app-profile-offices *ngIf="!officesEmpty()" style="margin-top: 4%;" [items]="this.offices"></app-profile-offices>
 
 <ng-template #addOfficeModal let-modal [formGroup]="addOfficeForm">
-  <div class="modal-header">
-    <h6 class="modal-title" id="modal-basic-title-cpm">Add new office</h6>
-    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-      <span aria-hidden="true">×</span>
-    </button>
-  </div>
-  <div class="modal-body">
-    <label class="lblStyle">Street: &nbsp;&nbsp;</label>
-    <input class="modal-input-street" formControlName="street" type="text">
-    <input class="modal-input" style="width:10%;margin-left:1%" formControlName="number" type="text">
-    <br>
-    <label class="lblStyle">City: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-    <input class="modal-input" formControlName="city" type="text">
-    <br>
-    <label class="lblStyle">Country: </label>
-    <input class="modal-input" formControlName="country" type="text">
-  </div>
-  <div class="modal-footer">
-    <button type="button" [disabled]="addOfficeForm.invalid" class="btn confirmBtnStyle"
-      (click)="modal.close('Save click'); addOffice()">Confirm</button>
-  </div>
+    <div class="modal-header">
+      <h6 class="modal-title" id="modal-basic-title-cpm">Add new office</h6>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">×</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <label class="lblStyle">Street: &nbsp;&nbsp;</label>
+      <input class="modal-input-street" formControlName="street" type="text">
+      <input class="modal-input" style="width:10%;margin-left:1%" formControlName="number" type="text">
+      <br>
+      <label class="lblStyle">City: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+      <input class="modal-input" formControlName="city" type="text">
+      <br>
+      <label class="lblStyle">Country: </label>
+      <input class="modal-input" formControlName="country" type="text">
+    </div>
+    <div class="modal-footer">
+      <button type="button" [disabled]="addOfficeForm.invalid" class="btn confirmBtnStyle"
+        (click)="addOffice()">Confirm</button>
+    </div>
 </ng-template>

@@ -5,6 +5,10 @@ import { UserService } from 'src/app/services/user-service.service';
 import { Address } from 'src/app/models/address';
 import { RentCarAdministratorService } from 'src/app/services/rent-car-administrator.service';
 import { AirlineAdministratorService } from 'src/app/services/airline-administrator.service';
+import { RentCarOfficesService } from 'src/app/services/rent-car-offices.service';
+import Swal from 'sweetalert2';
+import { OfficeAdapter } from 'src/app/models/adapters/office.adapter';
+import { Office } from 'src/app/models/office';
 
 
 @Component({
@@ -27,7 +31,11 @@ export class ProfileOfficesComponent implements OnInit {
 
   images: {};
 
-  constructor(private router: ActivatedRoute,private usersService:UserService,private rentCarAdminService:RentCarAdministratorService, private airlineAdminService:AirlineAdministratorService) {}
+  constructor(private router: ActivatedRoute,private usersService:UserService,
+    private rentCarAdminService:RentCarAdministratorService,
+    private officeAdapter:OfficeAdapter,
+    private rentCarOfficesService:RentCarOfficesService,
+     private airlineAdminService:AirlineAdministratorService) {}
 
   ngOnInit(): void {
     if (this.router.snapshot.routeConfig.path.includes('carProfile')) {
@@ -124,13 +132,45 @@ export class ProfileOfficesComponent implements OnInit {
     };
   }
 
-  removeOffice(address:Address){
-    if(this.rentCarAdminService.deleteOffice(address)){
-      let index = this.items[address.country].indexOf(address);
-      this.items[address.country].splice(index,1);
-      if(this.items[address.country].length===0)
-        delete this.items[address.country]
-    }
+  removeOffice(office:Office){
+
+    Swal.fire({
+      text: 'Are you sure you want to delete this office?',
+      showConfirmButton: true,
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'No, cancel!',
+      confirmButtonColor: '#fa9e1c',
+      cancelButtonColor: '#31124b',
+      icon: 'warning'
+    }).then(
+      (result)=>{
+        if(result.value){
+        this.rentCarOfficesService.deleteOffice(office.officeId).subscribe(
+          res=>{
+            Swal.fire({
+              text : 'Office successfully deleted',
+              showConfirmButton:false,
+              icon : 'success',
+              timer:2000
+            });
+            this.deleteOfficeUpdate(office);
+
+          },
+          err=>{
+            Swal.fire({
+              text : err.errors.message,
+              showConfirmButton:true,
+              confirmButtonColor: '#fa9e1c',
+              icon : 'error'
+            });
+          }
+        )
+        }
+      }
+    )
+
+
   }
 
   removeDestination(country:string, city:string){
@@ -141,5 +181,12 @@ export class ProfileOfficesComponent implements OnInit {
 
   changeMap(address:Address):void{
     this.usersService.changeMap.next(address);
+  }
+
+  deleteOfficeUpdate(office:Office){
+    let index = this.items[office.country].indexOf(office);
+      this.items[office.country].splice(index,1);
+      if(this.items[office.country].length===0)
+        delete this.items[office.country]
   }
 }

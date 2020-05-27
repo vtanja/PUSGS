@@ -25,21 +25,21 @@
       </div>
       <div class="wrap-input100">
         <label class="label-input100">Max passengers: </label>
-        <select class="input100" formControlName="maxPassengers">
+        <select class="input100" formControlName="passengers">
           <option *ngFor="let pass of passengersNumbers" value={{pass}}>{{pass}}</option>
         </select>
         <span class="invalid-input-span"
-          *ngIf="addCarForm.get('maxPassengers').invalid && addCarForm.get('maxPassengers').touched">This field is
+          *ngIf="addCarForm.get('passengers').invalid && addCarForm.get('passengers').touched">This field is
           required !</span>
       </div>
       <div class="wrap-input100">
         <label class="label-input100">Gearbox type: </label>
-        <select class="input100" formControlName="gearboxType">
-          <option value="automatic">Automatic</option>
-          <option value="manual">Manual</option>
+        <select class="input100" formControlName="hasAutomationGearbox">
+          <option value="true">Automatic</option>
+          <option value="false">Manual</option>
         </select>
         <span class="invalid-input-span"
-          *ngIf="addCarForm.get('gearboxType').invalid && addCarForm.get('gearboxType').touched">This field is
+          *ngIf="addCarForm.get('hasAutomationGearbox').invalid && addCarForm.get('hasAutomationGearbox').touched">This field is
           required !</span>
       </div>
     </div>
@@ -73,12 +73,12 @@
       </div>
       <div class="wrap-input100">
         <label class="label-input100">Has air condition: </label>
-        <select class="input100" formControlName="hasAircondition">
-          <option value="Yes">Yes</option>
-          <option value="No">No</option>
+        <select class="input100" formControlName="hasAirCondition">
+          <option value="true">Yes</option>
+          <option value="false">No</option>
         </select>
         <span class="invalid-input-span"
-          *ngIf="addCarForm.get('hasAircondition').invalid && addCarForm.get('hasAircondition').touched">This field is
+          *ngIf="addCarForm.get('hasAirCondition').invalid && addCarForm.get('hasAirCondition').touched">This field is
           required !</span>
       </div>
     </div>

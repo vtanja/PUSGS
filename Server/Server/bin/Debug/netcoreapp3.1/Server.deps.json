@@ -28,6 +28,7 @@
           "Microsoft.AspNetCore.Authentication.JwtBearer": "3.1.4",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "3.1.4",
           "Microsoft.AspNetCore.Identity.UI": "3.1.4",
+          "Microsoft.AspNetCore.JsonPatch": "3.1.4",
           "Microsoft.EntityFrameworkCore": "3.1.4",
           "Microsoft.EntityFrameworkCore.Relational": "3.1.4",
           "Microsoft.EntityFrameworkCore.SqlServer": "3.1.4",
@@ -412,6 +413,21 @@
           "lib/netcoreapp3.1/Microsoft.AspNetCore.Identity.UI.Views.V3.dll": {},
           "lib/netcoreapp3.1/Microsoft.AspNetCore.Identity.UI.Views.V4.dll": {},
           "lib/netcoreapp3.1/Microsoft.AspNetCore.Identity.UI.dll": {}
+        }
+      },
+      "Microsoft.AspNetCore.JsonPatch/3.1.4": {
+        "dependencies": {
+          "Microsoft.CSharp": "4.7.0",
+          "Newtonsoft.Json": "12.0.2"
+        },
+        "runtime": {
+          "lib/netstandard2.0/Microsoft.AspNetCore.JsonPatch.dll": {
+            "assemblyVersion": "3.1.4.0",
+            "fileVersion": "3.100.420.21604"
+          }
+        },
+        "compile": {
+          "lib/netstandard2.0/Microsoft.AspNetCore.JsonPatch.dll": {}
         }
       },
       "Microsoft.AspNetCore.Razor/2.2.0": {
@@ -4144,6 +4160,13 @@
       "sha512": "sha512-vcC9azaKtJ397L1YpTsdi0auUgCEhI1yrd25rUum9E2I4C2HOU8KCF4XZ4gd3cvFda7sTsxH5bKEEGlbYGoK6Q==",
       "path": "microsoft.aspnetcore.identity.ui/3.1.4",
       "hashPath": "microsoft.aspnetcore.identity.ui.3.1.4.nupkg.sha512"
+    },
+    "Microsoft.AspNetCore.JsonPatch/3.1.4": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-ZNy+dmMOog7PyPCVLfweNYOP3rZzo4eFFrIKS5QjMd/7w2AJ12aVu9rLpZOV0XuQWxUPE7g9ZT75D05Z7wvfxw==",
+      "path": "microsoft.aspnetcore.jsonpatch/3.1.4",
+      "hashPath": "microsoft.aspnetcore.jsonpatch.3.1.4.nupkg.sha512"
     },
     "Microsoft.AspNetCore.Razor/2.2.0": {
       "type": "package",

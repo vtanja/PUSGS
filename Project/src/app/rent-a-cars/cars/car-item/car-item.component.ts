@@ -24,7 +24,7 @@ export class CarItemComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.isUserLogged = this.usersService.isUserLogged();
+    this.isUserLogged = this.usersService.isUserLoggedIn();
   }
 
   open(content) {

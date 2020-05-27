@@ -33,17 +33,17 @@ export class FlightReservationItemComponent implements OnInit,OnDestroy {
     this.company = this.airlineService.getAirline(this.flightReservation.companyID);
     console.log(this.company);
     if(this.flightReservation.carReservation!==undefined){
-      this.rentalCompany = this.rentCarService.getRentCarCompany(this.flightReservation.carReservation.companyId); 
+      //this.rentalCompany = this.rentCarService.getRentCarCompany(this.flightReservation.carReservation.companyId);
       console.log(this.rentalCompany);
     }
-    
+
     this.modalCloseSubscription = this.airlineService.rateModalClose.subscribe(()=>{
       this.modalService.dismissAll();
     })
 
     var i = 0;
     if(this.flightReservation.carReservation!==undefined){
-        this.rentalCompany=this.rentCarService.getRentCarCompany(this.flightReservation.carReservation.companyId);
+        //this.rentalCompany=this.rentCarService.getRentCarCompany(this.flightReservation.carReservation.companyId);
     }
 
     var today = new Date();
