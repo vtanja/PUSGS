@@ -29,6 +29,7 @@ namespace Server.Settings
         public DbSet<Plane> Planes { get; set; }
         public DbSet<PlaneSegment> PlaneSegments { get; set; }
         public DbSet<Destination> Destinations { get; set; }
+        public DbSet<Address> Addresses { get; set; }
 
 
     }

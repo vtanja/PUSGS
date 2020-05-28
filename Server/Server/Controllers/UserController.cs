@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
@@ -165,9 +166,15 @@ namespace Server.Controllers
                     var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     var confirmationLink = Url.Action(nameof(ConfirmEmail), "User", new { UserId = user.Id, Code = token }, protocol: HttpContext.Request.Scheme);
                     await _emailSender.SendEmailAsync(user.Email, "Travellix - Confirmation email link", "Please confirm your email by clicking on this link: <a href=\"" + confirmationLink + "\">click here.</a>");
+
+                    return Ok(result);
+                }
+                else
+                {
+                    return BadRequest(new { message = result.Errors.ToString()});
                 }
 
-                return Ok(result);
+                
             }
             catch (Exception ex)
             {
@@ -222,7 +229,7 @@ namespace Server.Controllers
 
             if (googleApiTokenInfo!=null)
             {
-                var user = await _userManager.FindByEmailAsync(googleApiTokenInfo.email);
+                var user = await _dataBaseContext.RegisteredUsers.Where(u => u.Email == googleApiTokenInfo.email && u.SocialUserType == 'g').FirstAsync();
 
                 if (user == null)
                 {
@@ -260,12 +267,6 @@ namespace Server.Controllers
                 else
                 {
 
-                    if (user != null && user.SocialUserType != 'g')
-                    {
-                        return BadRequest(new { message = "We have already account connected to that email address." });
-
-                    }
-
                     var token = await GenerateToken(user);
                     return Ok(new { token });
                 }
@@ -293,9 +294,9 @@ namespace Server.Controllers
                 var userInfoResponse = await Client.GetStringAsync($"https://graph.facebook.com/v2.8/me?fields=id,email,first_name,last_name,name,gender,locale,birthday,picture&access_token={loginModel.AuthToken}");
                 var userInfo = JsonConvert.DeserializeObject<FacebookUserData>(userInfoResponse);
 
-                var user = await _userManager.FindByEmailAsync(userInfo.Email);
+                bool exists = await _userManager.Users.Where (u => u.Email == userInfo.Email && u.SocialUserType=='f').AnyAsync();
 
-                if (user == null)
+                if (!exists)
                 {
                     var pass = "socialUser123";
 
@@ -332,12 +333,7 @@ namespace Server.Controllers
                 }
                 else
                 {
-                    if (user != null && user.SocialUserType != 'f')
-                    {
-                        return BadRequest("There is another account using that email address.");
-
-                    }
-
+                    var user = await _userManager.Users.Where(u => u.Email == userInfo.Email && u.SocialUserType == 'f').FirstAsync();
                     var token = await GenerateToken(user);
                     return Ok(new { token });
                 }

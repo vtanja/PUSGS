@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Server.DTOs;
@@ -18,11 +20,13 @@ namespace Server.Controllers
     {
         private readonly DataBaseContext _context;
         private readonly IMapper _mapper;
+        private readonly UserManager<RegisteredUser> _userManager;
 
-        public RentCarsController(DataBaseContext context,IMapper mapper)
+        public RentCarsController(DataBaseContext context,IMapper mapper, UserManager<RegisteredUser> userManager)
         {
             _context = context;
             _mapper = mapper;
+            _userManager = userManager;
         }
 
         // GET: api/RentCars
@@ -46,24 +50,72 @@ namespace Server.Controllers
             return ret;
         }
 
+        // GET: api/RentCars
+        [HttpGet]
+        [Route("CompanyMainData")]
+        [Authorize(Roles = "RENTCARADMIN")]
+        public async Task<ActionResult<RentCarDTO>> GetRentCarMainData(int id)
+        {
+
+            string userId = User.Claims.First(c => c.Type == "UserID").Value;
+            var rentCar = await _context.RentCars.Include(rc => rc.Address).Where(c=>c.OwnerId == userId).FirstOrDefaultAsync();
+           
+            if (rentCar == null)
+            {
+                return NotFound();
+            }
+
+            var ret = _mapper.Map<RentCarDTO>(rentCar);
+            return ret;
+        }
+
         // PUT: api/RentCars/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
+        [Authorize(Roles = "RENTCARADMIN")]
         public async Task<IActionResult> PutRentCar(int id, RentCar rentCar)
         {
+
             if (id != rentCar.Id)
             {
-                return BadRequest();
+                return BadRequest(new  { message = "An error occured.Please try again later." });
+            }
+         
+
+            try
+            {
+                _context.Entry<RentCar>(rentCar).State = EntityState.Detached;
+                _context.Entry<RentCar>(rentCar).State = EntityState.Modified;
+
+            }catch(Exception e)
+            {
+                _context.Entry<RentCar>(rentCar).State = EntityState.Unchanged;
+                return BadRequest(new { message = "Updating data failed.Please try again later." });
             }
 
-            _context.Entry(rentCar).State = EntityState.Modified;
+            try
+            {
+                _context.Entry<Address>(rentCar.Address).State = EntityState.Detached;
+                _context.Entry<Address>(rentCar.Address).State = EntityState.Modified;
+
+            }
+            catch(Exception e)
+            {
+                _context.Entry<Address>(rentCar.Address).State = EntityState.Unchanged;
+                return BadRequest(new { message = "Updating data failed.Please try again later." });
+            }
+            _context.Entry(rentCar).Property(rc => rc.Rate).IsModified = false;
+            _context.Entry(rentCar).Property(rc => rc.OwnerId).IsModified = false;
+            _context.Entry(rentCar).Property(rc => rc.AddressId).IsModified = false;
+            
+            
 
             try
             {
                 await _context.SaveChangesAsync();
             }
-            catch (DbUpdateConcurrencyException)
+            catch (DbUpdateConcurrencyException e)
             {
                 if (!RentCarExists(id))
                 {
@@ -71,7 +123,7 @@ namespace Server.Controllers
                 }
                 else
                 {
-                    throw;
+                    return BadRequest(new { message = "Updating data failed.Please try again later." });
                 }
             }
 
@@ -82,9 +134,20 @@ namespace Server.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
+        [Authorize(Roles = "RENTCARADMIN")]
         public async Task<ActionResult<RentCar>> PostRentCar(RentCar rentCar)
         {
+
+            string userId = User.Claims.First(c => c.Type == "UserID").Value;
+            var user = await _context.RentCarAdmins.FindAsync(userId);
+            rentCar.OwnerId = userId;
+
             _context.RentCars.Add(rentCar);
+
+            await _context.SaveChangesAsync();
+
+            user.CompanyId = rentCar.Id;
+
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetRentCar", new { id = rentCar.Id }, rentCar);
@@ -92,6 +155,7 @@ namespace Server.Controllers
 
         // DELETE: api/RentCars/5
         [HttpDelete("{id}")]
+        [Authorize(Roles = "RENTCARADMIN")]
         public async Task<ActionResult<RentCar>> DeleteRentCar(int id)
         {
             var rentCar = await _context.RentCars.FindAsync(id);
@@ -110,5 +174,7 @@ namespace Server.Controllers
         {
             return _context.RentCars.Any(e => e.Id == id);
         }
+
+       
     }
 }

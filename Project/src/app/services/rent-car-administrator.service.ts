@@ -14,100 +14,10 @@ export class RentCarAdministratorService {
 
   }
 
-  getCompanyId():number{
-    let loggedUser = this.usersService.getLoggedUser();
-    return this.rentCarService.getRentCarCompany(loggedUser.carCompany).id;
-  }
-
-  getRentCarCompany():RentCar{
-    let loggedUser = this.usersService.getLoggedUser();
-    return this.rentCarService.getRentCarCompany(loggedUser.carCompany);
-  }
-
-  getCars():Car[]{
-    let loggedUser = this.usersService.getLoggedUser();
-    return this.rentCarService.getCompanyCars(loggedUser.carCompany);
-  }
-
-  editCompanyData(companyID:number,name:string,description:string,address:Address,logo:string){
-
-    let company = this.rentCarService.getRentCarCompany(companyID);
-    company.name=name;
-    company.description=description;
-    company.address = address;
-    this.reverseGeocode(address).then(()=>{
-      console.log("reerse geocode true");
-    },()=>{
-      console.log("reerse geocode false");
-    });
-
-    return true;
-  }
-
-  changeCarPrice(companyID:number,carID:number,newPrice:number):boolean{
-    let car = this.rentCarService.getCompanyCar(companyID,carID);
-    car.pricePerDay = newPrice;
-    return true;
-  }
-
   addDiscount(companyID:number,carID:number,startDate:NgbDate,endDate:NgbDate,discount:number):boolean{
     return true;
   }
 
-  deleteCar(carID:number,companyID:number):boolean{
-    // let company = this.rentCarService.getRentCarCompany(companyID);
-    // let car = company.cars.find(c=>c.id===carID);
-    // if(this.canBeDeleted(car)){
-    // company.cars.splice(company.cars.indexOf(car),1);
-    // return true;
-    // }
-    return false;
-  }
-
-  canBeDeleted(car:Car):boolean{
-
-    if(car.reservations.length>0){
-
-      let today = this.calendar.getToday();
-      car.reservations.forEach(res =>
-      {
-        if(this.stringToNgbDate(res.returnDate).after(today)){
-          return false;
-        }
-
-      });
-
-    }
-
-    return true;
-  }
-
-  addOffice(address:Address):boolean{
-    this.reverseGeocode(address);
-    let user = this.usersService.getLoggedUser();
-    let company = this.rentCarService.getRentCarCompany(user.carCompany);
-
-    if(company.offices[address.country]!=undefined){
-      company.offices[address.country].push(address);
-    }else{
-      let addresses = [];
-      addresses.push(address);
-      company.offices[address.country] = addresses;
-    }
-    return(true);
-  }
-
-  deleteOffice(address:Address):boolean{
-    let user = this.usersService.getLoggedUser();
-    let company = this.rentCarService.getRentCarCompany(user.carCompany);
-    console.log(company.offices);
-    let index = company.offices[address.country].indexOf(address);
-    company.offices[address.country].splice(index,1);
-    if(company.offices[address.country].length===0){
-      delete company.offices[address.country];
-    }
-    return true;
-  }
 
   stringToNgbDate(date:string):NgbDate{
 
@@ -117,15 +27,9 @@ export class RentCarAdministratorService {
 
   }
 
-  addCar(newCar:Car):boolean{
-    let loggedUser = this.usersService.getLoggedUser();
-    let carCompany = this.rentCarService.getRentCarCompany(loggedUser.carCompany);
-    newCar.companyId = carCompany.id;
-    newCar.companyName = carCompany.name;
-    newCar.id = carCompany.cars.length+1;
-    carCompany.cars.push(newCar);
-    return true;
-  }
+
+
+
 
   async reverseGeocode(address:Address) {
     let city = address.city.replace(' ','+');
@@ -136,8 +40,11 @@ export class RentCarAdministratorService {
          'Accept-Language' : 'en-US'
        }
      });
+     console.log("data here");
              const res = await data.json();
              address.longitude = +res[0].lon;
              address.latitude=+res[0].lat;
    }
+
+
 }

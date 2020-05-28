@@ -4,6 +4,8 @@ import { RentCarService } from 'src/app/services/rent-a-car.service';
 import { RentCar } from 'src/app/models/rent-a-car.model';
 import { RentCarAdministratorService } from 'src/app/services/rent-car-administrator.service';
 import { Address } from 'src/app/models/address';
+import { RentCarAdapter } from 'src/app/models/adapters/rent-a-car.adapter';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-main-data-edit',
@@ -16,63 +18,82 @@ export class MainDataEditComponent implements OnInit {
   rentCarCompany:RentCar;
   imgPreview:string | ArrayBuffer;
 
-  constructor(private rentCarAdminService:RentCarAdministratorService) {
-
+  constructor(private rentCarService:RentCarService,private rentCarAdapter:RentCarAdapter) {
+    this.dataForm = new FormGroup({
+      name: new FormControl(null, Validators.required),
+      address: new FormGroup({
+        street: new FormControl(null, Validators.required),
+        number: new FormControl(null, Validators.required),
+        city: new FormControl(null, Validators.required),
+        country: new FormControl(null, Validators.required),
+      }),
+      description: new FormControl(null, Validators.required),
+      file: new FormControl(''),
+      fileSource: new FormControl(''),
+      logo: new FormControl('')
+    });
    }
 
   ngOnInit(): void {
 
-
-
-    this.rentCarCompany = this.rentCarAdminService.getRentCarCompany();
-
-    console.log(this.rentCarCompany.address);
-
-    this.imgPreview = this.rentCarCompany.logo;
-    this.dataForm = new FormGroup({
-      'name': new FormControl(this.rentCarCompany.name,Validators.required),
-      'street' : new FormControl(this.rentCarCompany.address.street,Validators.required),
-      'number' : new FormControl(this.rentCarCompany.address.num,Validators.required),
-      'city' : new FormControl(this.rentCarCompany.address.city,Validators.required),
-      'country' : new FormControl(this.rentCarCompany.address.country,Validators.required),
-      'description' : new FormControl(this.rentCarCompany.description,Validators.required),
-      'file': new FormControl('', [Validators.required]),
-       'fileSource': new FormControl('', [Validators.required])
-    })
-
+    this.rentCarService.getRentCarMainData().subscribe(
+      res => {
+        this.rentCarCompany = this.rentCarAdapter.adapt(res);
+        this.setFormValues();
+      },
+      err => {}
+    )
   }
 
   editCompanyData():void{
-    let newName = this.dataForm.get('name').value;
-    let newStreet = this.dataForm.get('street').value;
-    let newNum = this.dataForm.get('number').value;
-    let newCity = this.dataForm.get('city').value;
-    let newCountry = this.dataForm.get('country').value;
-    let newAddress = new Address(+newNum,newStreet,newCity,newCountry,-1,-1);
-    let newDescription = this.dataForm.get('description').value;
-    let newLogo = this.dataForm.get('fileSource').value;
+    let data = this.dataForm.value;
+    data["id"] = this.rentCarCompany.id;
+    data["address"]["addressId"] = this.rentCarCompany.address.addressId;
+    delete (data["file"]);
+    delete (data["fileSource"]);
 
-    if(this.rentCarAdminService.editCompanyData(this.rentCarCompany.id,newName,newDescription,newAddress,newLogo)){
+    this.rentCarService.editCompanyMainData(this.rentCarCompany.id,data).subscribe(
+      res => {
+        Swal.fire({
+          text : 'Data successfully updated.',
+          icon: 'success',
+          timer: 1500,
+          showConfirmButton:false
+        })
+      },
+      err => {
+        Swal.fire({
+          title : 'Unable to update data.',
+          text : err.message,
+          icon: 'error',
+          timer: 1500,
+          showConfirmButton:false
+        })
+        this.setFormValues();
+      }
+    )
 
-      console.log(this.rentCarCompany.address);
-      // this.rentCarCompany.name=newName;
-      // this.rentCarCompany.address=newAddress;
-      // this.rentCarCompany.description=newDescription;
-      // this.rentCarCompany.logo = newLogo;
-  }
-
-    this.dataForm.reset();
-    this.setFormValues();
 }
 
   setFormValues():void{
+
+    this.imgPreview = this.rentCarCompany.logo;
+
     this.dataForm.patchValue({
       'name':this.rentCarCompany.name,
+      'address.street':this.rentCarCompany.address.street,
+      'address.number':this.rentCarCompany.address.num,
+      'address.city':this.rentCarCompany.address.city,
+      'address.country':this.rentCarCompany.address.country,
+      'description' : this.rentCarCompany.description,
+      'logo' : this.rentCarCompany.logo
+    })
+
+    this.dataForm.get('address').patchValue({
       'street':this.rentCarCompany.address.street,
       'number':this.rentCarCompany.address.num,
       'city':this.rentCarCompany.address.city,
       'country':this.rentCarCompany.address.country,
-      'description' : this.rentCarCompany.description
     })
   }
 
@@ -91,12 +112,14 @@ export class MainDataEditComponent implements OnInit {
       reader.readAsDataURL(file);
       reader.onload = (_event) => {
         this.imgPreview = reader.result;
-        console.log(this.imgPreview);
+
+        this.dataForm.patchValue({
+          fileSource: file,
+          logo: reader.result
+        });
       }
 
-      this.dataForm.patchValue({
-        fileSource: file
-      });
+
 
     }
   }

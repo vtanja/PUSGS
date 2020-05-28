@@ -15,13 +15,14 @@ export class RentACarListComponent implements OnInit {
   paramsSubscription: Subscription;
   sortParamsSubscription:Subscription;
   sortCriteria:string='';
-  isSpining:boolean = true;
+  isSpining:boolean ;
 
   constructor(private rentCarService:RentCarService,private spinner: NgxSpinnerService) {
 
    }
 
   ngOnInit(): void {
+    this.isSpining = true;
     this.spinner.show();
     this.rentCarService.getRentCars().subscribe(
       (res)=>{
@@ -32,7 +33,7 @@ export class RentACarListComponent implements OnInit {
       },
       (err)=>{
         this.spinner.hide();
-        this.isSpining = true;
+        this.isSpining = false;
       }
     );
 

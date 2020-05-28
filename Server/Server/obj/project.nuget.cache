@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "qyvk16F14wg3WafmgEZAN+6opl23EcJseh9zZJJmy0FDNAOOUyiRdRxR5fUJvLF0arOo8Ma4TcKOtMQCqET8Og==",
+  "dgSpecHash": "akLm4YSbKipJ31TEHEcVlIH+O8b5+wQK2XU8ZzRb8GwWeU8abdqPqz7peXi9BVuMQz5uaNE4fbOS+kOaUzsCug==",
   "success": true,
   "projectFilePath": "C:\\Users\\vukmi\\OneDrive\\Dokumenti\\GitHub\\PUSGS\\Server\\Server\\Server.csproj",
   "expectedPackageFiles": [
@@ -12,6 +12,7 @@
     "C:\\Users\\vukmi\\.nuget\\packages\\microsoft.aspnetcore.html.abstractions\\2.2.0\\microsoft.aspnetcore.html.abstractions.2.2.0.nupkg.sha512",
     "C:\\Users\\vukmi\\.nuget\\packages\\microsoft.aspnetcore.identity.entityframeworkcore\\3.1.4\\microsoft.aspnetcore.identity.entityframeworkcore.3.1.4.nupkg.sha512",
     "C:\\Users\\vukmi\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\3.1.4\\microsoft.aspnetcore.identity.ui.3.1.4.nupkg.sha512",
+    "C:\\Users\\vukmi\\.nuget\\packages\\microsoft.aspnetcore.jsonpatch\\3.1.4\\microsoft.aspnetcore.jsonpatch.3.1.4.nupkg.sha512",
     "C:\\Users\\vukmi\\.nuget\\packages\\microsoft.aspnetcore.razor\\2.2.0\\microsoft.aspnetcore.razor.2.2.0.nupkg.sha512",
     "C:\\Users\\vukmi\\.nuget\\packages\\microsoft.aspnetcore.razor.language\\3.1.0\\microsoft.aspnetcore.razor.language.3.1.0.nupkg.sha512",
     "C:\\Users\\vukmi\\.nuget\\packages\\microsoft.aspnetcore.razor.runtime\\2.2.0\\microsoft.aspnetcore.razor.runtime.2.2.0.nupkg.sha512",

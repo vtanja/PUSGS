@@ -11,70 +11,43 @@ import { LoginComponent } from 'src/app/login/login.component';
   templateUrl: './user-profile.component.html',
   styleUrls: ['./user-profile.component.css']
 })
-export class UserProfileComponent implements OnInit, AfterViewInit {
+export class UserProfileComponent implements OnInit {
 
   editForm:FormGroup;
   profileImage:string | ArrayBuffer;
-  isDataLoaded:boolean=false;
   loggedUser:User;
-  img= '../../../assets/images/';
-  
+  fileToUpload: File = null;
+  isDataLoaded:boolean;
+
   constructor(private userService:UserService, private toastr:ToastrService) {
-    this.profileImage = this.img+'profilna.png';
+    //this.profileImage = this.img+'profilna.png';
     this.editForm = new FormGroup({
       'firstName': new FormControl(null,Validators.required),
       'lastName' : new FormControl(null,Validators.required),
       'email': new FormControl(null, [Validators.required, Validators.email]),
       'phone': new FormControl(null, [Validators.required, Validators.pattern(new RegExp('(([+][(]?[0-9]{1,3}[)]?)|([(]?[0-9]{4}[)]?))\s*[)]?[-\s\.]?[(]?[0-9]{1,3}[)]?([-\s\.]?[0-9]{3})([-\s\.]?[0-9]{3,4})'))]),
       'address': new FormControl(null, Validators.required),
-      'file': new FormControl('', []),
-      // 'logo' : new FormControl('', []),
+      'file': new FormControl('', [Validators.required]),
+      'profileImage': new FormControl('', [Validators.required]),
       'passwordData' : new FormGroup({
-          'password': new FormControl('',[
-            Validators.pattern(new RegExp("^(?=.*[0-9]+.*)(?=.*[a-zA-Z]+.*)[0-9a-zA-Z]{8,}$"))]),
+         'password': new FormControl('',[
+           Validators.pattern(new RegExp("^(?=.*[0-9]+.*)(?=.*[a-zA-Z]+.*)[0-9a-zA-Z]{8,}$"))]),
           'confirm': new FormControl('')
 
         },this.passwordMatchValidator.bind(this)),
 
     });
   }
-  ngAfterViewInit(): void {
-    this.userService.getUser().subscribe((res:any)=>{
-      console.log(res);
-        this.loggedUser=res;
-        console.log(this.loggedUser);
-        this.isDataLoaded=true;
-    });
 
-    if(this.isDataLoaded){
-      this.editForm.patchValue({
-        'firstName':this.loggedUser.firstName,
-        'lastName': this.loggedUser.lastName,
-        'email': this.loggedUser.email,
-        'phone': this.loggedUser.phoneNumber,
-        'address': this.loggedUser.address,
-        // 'logo':this.editForm.get('file').value.name
-      });
-    }
-  }
 
   ngOnInit(): void {
-    
-    this.userService.getUser().subscribe((res:any)=>{
-      console.log(res);
+    this.isDataLoaded = false;
+    this.userService.getUserProfile().subscribe((res:any)=>{
         this.loggedUser=res;
-        console.log(this.loggedUser);
-        this.isDataLoaded=true;
+        this.setFormValues();
+        this.isDataLoaded = true;
     });
 
-    if(this.loggedUser!==undefined){
-      this.profileImage=this.loggedUser.profileImage;
-    }
-    else{
-      this.profileImage = this.img+'profilna.png';
-    }
-      console.log(this.editForm);
-   
   }
 
   onFileChange(event) {
@@ -91,16 +64,15 @@ export class UserProfileComponent implements OnInit, AfterViewInit {
       var reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = (_event) => {
-       // this.profileImage = reader.result;
-        //console.log(this.profileImage);
+        this.profileImage = reader.result;
+        this.editForm.patchValue({
+          fileSource: file,
+          logo:reader.result
+        });
       }
 
-      this.editForm.patchValue({
-        //logo:file.name,
-        
-      });
 
-      this.profileImage =this.img + this.editForm.get('file').value.name;
+      //this.profileImage =this.img + this.editForm.get('file').value.name;
 
     }
   }
@@ -163,6 +135,16 @@ export class UserProfileComponent implements OnInit, AfterViewInit {
 
   }
 
+  setFormValues(){
+    this.editForm.patchValue({
+      'firstName':this.loggedUser.firstName,
+      'lastName': this.loggedUser.lastName,
+      'email': this.loggedUser.email,
+      'phone': this.loggedUser.phoneNumber,
+      'address': this.loggedUser.address,
+      'profileImage' : this.loggedUser.profileImage
+    });
+  }
 
   onSaveChanges(){
     var user={

@@ -41,7 +41,10 @@ import { RentCarAdminsComponent } from './administrator/rent-car-admins/rent-car
 import { AirlineAdminsComponent } from './administrator/airline-admins/airline-admins/airline-admins.component';
 import { AirlineAdministratorComponent } from './airlines/airline-administrator/airline-administrator.component';
 import { AddAirlineComponent } from './airlines/airline-administrator/airline-edit/add-airline/add-airline.component';
-import { AuthGuardGuard } from './guards/auth-guard.guard';
+import { RentACarAddComponent } from './rent-a-cars/rent-a-car-administrator/rent-a-car-add/rent-a-car-add.component';
+import { AddFirstComponent } from './rent-a-cars/rent-a-car-administrator/rent-a-car-add/add-first/add-first.component';
+import { AdminHomeComponent } from './administrator/admin-home/admin-home.component';
+import { AuthGuard } from './guards/auth-guard.guard';
 
 
 const routes: Routes = [
@@ -56,28 +59,29 @@ const routes: Routes = [
         component: FlightsSearchComponent },
     ],
   },
+  {path: 'admin-home',component:AdminHomeComponent,canActivate:[AuthGuard], data:{permittedRoles:['ADMINISTRATOR']}},
   {
     path: 'user',
     component: UserComponent,
     children: [
       { path: 'profile',
          component: UserProfileComponent,
-         canActivate:[AuthGuardGuard], data:{permittedRoles:['USER','ADMINISTRATOR','AIRLINEADMIN','RENTCARADMIN']} },
+         canActivate:[AuthGuard], data:{permittedRoles:['USER','ADMINISTRATOR','AIRLINEADMIN','RENTCARADMIN']} },
          
       { path: 'friends',
        component: FriendsListComponent ,
-        canActivate:[AuthGuardGuard], data:{permittedRoles:['USER']}},
+        canActivate:[AuthGuard], data:{permittedRoles:['USER']}},
       {
         path: 'reservations',
         component: ReservationsComponent,
         children: [
           { path: 'car-reservations', 
             component: CarReservationListComponent ,
-            canActivate:[AuthGuardGuard], data:{permittedRoles:['USER']}},
+            canActivate:[AuthGuard], data:{permittedRoles:['USER']}},
           {
             path: 'flight-reservations',
             component: FlightReservationListComponent,
-            canActivate:[AuthGuardGuard], data:{permittedRoles:['USER']}
+            canActivate:[AuthGuard], data:{permittedRoles:['USER']}
           },
         ],
         
@@ -93,30 +97,32 @@ const routes: Routes = [
   { path: 'navbar', component: NavbarComponent },
   { path: 'carProfile/:id', component: RentACarProfileComponent },
   { path: 'airlineProfile/:id', component: AirlineProfileComponent },
-  { path: 'editService', component: RentACarEditComponent },
+  { path: 'editService', component: RentACarEditComponent ,canActivate:[AuthGuard], data:{permittedRoles:['RENTCARADMIN']}},
   {
     path: 'create-reservation/:id',
-    component: CreateFlightReservationComponent,canActivate:[AuthGuardGuard], data:{permittedRoles:['USER']}
+    component: CreateFlightReservationComponent,canActivate:[AuthGuard], data:{permittedRoles:['USER']}
   },
   {
     path: 'create-reservation/:id/create-car-reservation/:carid',
-    component: CreateCarReservationComponent,canActivate:[AuthGuardGuard], data:{permittedRoles:['USER']}
+    component: CreateCarReservationComponent,canActivate:[AuthGuard], data:{permittedRoles:['USER']}
   },
 
   {
     path: 'company-data',
     component: RentACarEditComponent,
     children: [
-      { path: 'edit-main-data', component: MainDataEditComponent },
-      { path: 'edit-offices', component: OfficesEditComponent },
+      { path: 'edit-main-data', component: MainDataEditComponent ,canActivate:[AuthGuard], data:{permittedRoles:['RENTCARADMIN']}},
+      { path: 'edit-offices', component: OfficesEditComponent,canActivate:[AuthGuard], data:{permittedRoles:['RENTCARADMIN']} },
     ],
   },
-  { path: 'companyCars', component: CarsEditComponent },
-  { path: 'addCar', component: AddCarComponent },
   {path: 'airline-admin', component:AirlineAdministratorComponent,
-   canActivate:[AuthGuardGuard], data:{permittedRoles:['AIRLINEADMIN']}},
+   canActivate:[AuthGuard], data:{permittedRoles:['AIRLINEADMIN']}},
   { path: 'add-airline-data', component:AddAirlineComponent,
-    canActivate:[AuthGuardGuard], data:{permittedRoles:['AIRLINEADMIN']}},
+    canActivate:[AuthGuard], data:{permittedRoles:['AIRLINEADMIN']}},
+  {path: 'add-first',component:AddFirstComponent,canActivate:[AuthGuard], data:{permittedRoles:['RENTCARADMIN']}},
+  {path: 'add-company',component:RentACarAddComponent,canActivate:[AuthGuard], data:{permittedRoles:['RENTCARADMIN']}},
+  { path: 'companyCars', component: CarsEditComponent,canActivate:[AuthGuard], data:{permittedRoles:['RENTCARADMIN']} },
+  { path: 'addCar', component: AddCarComponent ,canActivate:[AuthGuard], data:{permittedRoles:['RENTCARADMIN']}},
   {
     path: 'airline-company-data',
     component: AirlineEditComponent,
@@ -124,23 +130,23 @@ const routes: Routes = [
       {
         path: 'edit-airline-main-data',
         component: EditAirlineMainDataComponent,
-          canActivate:[AuthGuardGuard], data:{permittedRoles:['AIRLINEADMIN']}
+          canActivate:[AuthGuard], data:{permittedRoles:['AIRLINEADMIN']}
       },
       { path: 'edit-destinations', component: EditDestinationsComponent,
-        canActivate:[AuthGuardGuard], data:{permittedRoles:['AIRLINEADMIN']}}
+        canActivate:[AuthGuard], data:{permittedRoles:['AIRLINEADMIN']}}
     ],
-    canActivate:[AuthGuardGuard], data:{permittedRoles:['AIRLINEADMIN']}
+    canActivate:[AuthGuard], data:{permittedRoles:['AIRLINEADMIN']}
   },
-  {path:'admin-flights', component:AdminFlightsComponent, canActivate:[AuthGuardGuard], data:{permittedRoles:['AIRLINEADMIN']}},
-  {path:'add-flight', component:AddFlightComponent, canActivate:[AuthGuardGuard], data:{permittedRoles:['AIRLINEADMIN']}},
-  {path:'planes', component:PlanesComponent, canActivate:[AuthGuardGuard], data:{permittedRoles:['AIRLINEADMIN']}},
-  {path:'edit-plane/:id', component:EditPlaneComponent, canActivate:[AuthGuardGuard], data:{permittedRoles:['AIRLINEADMIN']}},
-    {path:'add-plane', component:AddPlaneComponent, canActivate:[AuthGuardGuard], data:{permittedRoles:['AIRLINEADMIN']}},
-  {path:'companyCars',component:CarsEditComponent},
-  {path:'addCar',component:AddCarComponent},
-  {path: 'rent-car-admins', component: RentCarAdminsComponent},
-  {path: 'airline-admins', component: AirlineAdminsComponent},
-  { path: 'add-user', component: AddUserComponent },
+  {path:'admin-flights', component:AdminFlightsComponent, canActivate:[AuthGuard], data:{permittedRoles:['AIRLINEADMIN']}},
+  {path:'add-flight', component:AddFlightComponent, canActivate:[AuthGuard], data:{permittedRoles:['AIRLINEADMIN']}},
+  {path:'planes', component:PlanesComponent, canActivate:[AuthGuard], data:{permittedRoles:['AIRLINEADMIN']}},
+  {path:'edit-plane/:id', component:EditPlaneComponent, canActivate:[AuthGuard], data:{permittedRoles:['AIRLINEADMIN']}},
+    {path:'add-plane', component:AddPlaneComponent, canActivate:[AuthGuard], data:{permittedRoles:['AIRLINEADMIN']}},
+ 
+ 
+  {path: 'rent-car-admins', component: RentCarAdminsComponent,canActivate:[AuthGuard], data:{permittedRoles:['ADMINISTRATOR']}},
+  {path: 'airline-admins', component: AirlineAdminsComponent,canActivate:[AuthGuard], data:{permittedRoles:['ADMINISTRATOR']}},
+  { path: 'add-user', component: AddUserComponent ,canActivate:[AuthGuard], data:{permittedRoles:['ADMINISTRATOR']} },
   { path: '**', component: HomePageComponent },
 
 ];

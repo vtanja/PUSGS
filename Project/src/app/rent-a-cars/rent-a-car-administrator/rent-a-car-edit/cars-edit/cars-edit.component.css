@@ -205,3 +205,17 @@ h4{
   {
     opacity: 0.8;
   }
+
+  .row-style{
+    align-content: center;
+    justify-content: center;
+    margin-top: 7%;
+  }
+
+  h3{
+    text-align: center;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    color: #31124b;
+    font-size: xx-large;
+
+  }

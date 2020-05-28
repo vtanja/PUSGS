@@ -582,6 +582,7 @@ namespace Server.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("SegmentId")
+                    b.Property<int>("RentCarId")
                         .HasColumnType("int");
 
                     b.HasKey("PlaneSegmentId");
@@ -884,7 +885,7 @@ namespace Server.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Server.Models.RentCar", null)
+                    b.HasOne("Server.Models.RentCar", "RentCar")
                         .WithMany("Offices")
                         .HasForeignKey("RentCarId");
                 });
@@ -909,6 +910,7 @@ namespace Server.Migrations
                     b.HasOne("Server.Models.Segment", "Segment")
                         .WithMany()
                         .HasForeignKey("SegmentId")
+                        .HasForeignKey("RentCarId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

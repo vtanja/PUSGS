@@ -108,9 +108,9 @@ export class AddUserComponent implements OnInit {
             timer: 1500,
           });
           if(userData.UserRole==='RENTCARADMIN')
-            this.router.navigateByUrl('/all-users/rent-car');
+            this.router.navigateByUrl('/rent-car-admins');
           else
-            this.router.navigateByUrl('/all-users/airline');
+            this.router.navigateByUrl('/airline-admins');
      },
       err => {
         Swal.fire({

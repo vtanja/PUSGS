@@ -8,23 +8,25 @@ import { Subscription } from 'rxjs';
 import { AirlineService } from '../services/airline.service';
 import { Airline } from '../models/airline.model';
 import { AirlineAdministratorService } from '../services/airline-administrator.service';
+import { RentCarService } from '../services/rent-a-car.service';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
-export class HeaderComponent implements OnInit{
+export class HeaderComponent implements OnInit,OnDestroy{
 
   loggedIn:boolean=false;
+  companyExists:boolean;
   userName:string = "";
   userRole:string= "";
   invitations:User[]=[];
 
   isCollapsedRequests:boolean=true;
   mySubscription:Subscription;
-
-  constructor(private userService:UserService,private router:Router , private airlineService:AirlineService, private airlineAdminService:AirlineAdministratorService){
+  firstCompanyAdded:Subscription;
+  constructor(private userService:UserService , private airlineService:AirlineService, private airlineAdminService:AirlineAdministratorService, private rentCarService:RentCarService, private router:Router){
 
    }
 
@@ -53,6 +55,11 @@ export class HeaderComponent implements OnInit{
           this.userRole="";
           this.userName="";
         }
+    });
+
+    this.rentCarService.firstCompanyAdded.subscribe((addedCompany:boolean)=>{
+      if(addedCompany)
+      this.companyExists = true;
     })
   }
 
@@ -96,6 +103,12 @@ export class HeaderComponent implements OnInit{
 
   getUserData():void{
     this.userRole = this.userService.getUserRole();
+    if(this.userRole==='RENTCARADMIN'){
+      this.userService.userHasCompany().subscribe((res:any)=>
+        {
+          this.companyExists = res.hasCompany;}
+      )
+    }
     this.userName = this.userService.getUserName();
   }
 
@@ -104,6 +117,11 @@ export class HeaderComponent implements OnInit{
       this.router.navigate(['/home']);
     }
 
+  }
+
+  ngOnDestroy(){
+    this.mySubscription.unsubscribe();
+    this.firstCompanyAdded.unsubscribe();
   }
 
 

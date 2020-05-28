@@ -24,7 +24,7 @@
     </div>
     <div class="col" style="margin-left: 5%;">
       <div class="row">
-        <div class="wrap-input100 ">
+        <div class="wrap-input100 " formGroupName="address">
           <span class="label-input100">Street :&nbsp;&nbsp;&nbsp;&nbsp;</span>
           <input id="streetInput" class="input100 input-margin" style="width:50%" formControlName="street" type="text">
           <input id="numberInput" class="input100 input-margin" style="width:10%;margin-left:5px" formControlName="number" type="text">
@@ -32,14 +32,15 @@
         </div>
       </div>
       <div class="row">
-        <div class="wrap-input100 ">
+        <div class="wrap-input100 " formGroupName="address">
           <span class="label-input100">City :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
           <input id="cityInput" class="input100 input-margin" formControlName="city" type="text">
           <i class="fa fa-pencil-square-o icon-style" aria-hidden="true" (click)="onLogoClick('cityInput')"></i>
         </div>
       </div>
       <div class="row">
-        <div class="wrap-input100 ">
+        <div class="wrap-input100 " formGroupName="address"
+        >
           <span class="label-input100">Country :</span>
           <input id="countryInput" class="input100 input-margin" formControlName="country" type="text">
           <i class="fa fa-pencil-square-o icon-style" aria-hidden="true" (click)="onLogoClick('countryInput')"></i>

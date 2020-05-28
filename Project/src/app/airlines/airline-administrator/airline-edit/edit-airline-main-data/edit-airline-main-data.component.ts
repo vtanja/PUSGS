@@ -66,7 +66,7 @@ export class EditAirlineMainDataComponent implements OnInit, AfterViewInit {
     // })
   }
 
-  
+
   editCompanyData():void{
 
 

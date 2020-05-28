@@ -1,13 +1,16 @@
 export class Address {
+
+    addressId:number;
     street:string;
     num:number;
     city:string;
     country:string;
     longitude:number;
     latitude:number;
-    
-    constructor(num:number, street:string,  city:string,  country:string,lon:number,lat:number){
-        this.num = num;
+
+    constructor(addressId:number,num:number, street:string,  city:string,  country:string,lon:number,lat:number){
+      this.addressId = addressId;
+      this.num = num;
         this.street=street;
         this.city=city;
         this.country=country;

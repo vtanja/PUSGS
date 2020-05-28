@@ -31,31 +31,34 @@ export class RentACarProfileComponent implements OnInit,OnDestroy{
     this.showMapToggled=false;
     this.showMapOfficesToggled=false;
 
-
-
      this.mySubscription = this.route.params.subscribe((params:Params)=>{
-      this.rentCarsService.getRCC(params['id']).subscribe(
+      this.rentCarsService.getRentCarCompany(params['id']).subscribe(
         (succ:any) => {
-          console.log(succ);
           this.carCompany = succ;
-          this.navItemInfo={'name':this.carCompany.name,
-          'logo':this.carCompany.logo,
-          'companyType':'RentCar'};
+          this.navItemInfo={
+            'name':this.carCompany.name,
+            'logo':this.carCompany.logo,
+            'companyType':'RentCar'
+          };
+
+          this.mapMarkers = this.carCompany.getOfficesAddresses();
         },
-        (err:any)=>{}
+        (err:any)=>{
+          console.log(err.errors.message);
+        }
       )
 
     })
 
-    // this.mapMarkers = this.carCompany.getOfficesAddresses();
 
-    // this.changeMapMarker = this.userService.changeMap.subscribe((address)=>{
-    //   if(!this.showMapOfficesToggled){
-    //   this.showMapOfficesToggled = true;
-    //   this.mapMarkers =[];
-    //   this.mapMarkers.push(address);
-    //   }
-    // })
+
+    this.changeMapMarker = this.userService.changeMap.subscribe((address)=>{
+      if(!this.showMapOfficesToggled){
+      this.showMapOfficesToggled = true;
+      this.mapMarkers =[];
+      this.mapMarkers.push(address);
+      }
+    })
 
   }
 

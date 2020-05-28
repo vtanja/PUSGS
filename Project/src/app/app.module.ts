@@ -102,6 +102,7 @@ import {
   GoogleLoginProvider,
   FacebookLoginProvider,
 } from 'angularx-social-login';
+import { CountoModule }  from 'angular2-counto';
 import { RentCarAdapter } from './models/adapters/rent-a-car.adapter';
 import { AddressAdapter } from './models/adapters/address.adapter';
 import { NgxSpinnerModule } from "ngx-spinner";
@@ -111,6 +112,14 @@ import { RentCarAdminsComponent } from './administrator/rent-car-admins/rent-car
 import { AirlineAdminsComponent } from './administrator/airline-admins/airline-admins/airline-admins.component';
 import { AirlineAdministratorComponent } from './airlines/airline-administrator/airline-administrator.component';
 import { AddAirlineComponent } from './airlines/airline-administrator/airline-edit/add-airline/add-airline.component';
+import { RentCarOfficesService } from './services/rent-car-offices.service';
+import { CarService } from './services/car.service';
+import { AdminHomeComponent } from './administrator/admin-home/admin-home.component';
+import { AnimatedDigitComponent } from './../animated/animated-digit.compoanent';
+import { AdminHomeCounterCardComponent } from './administrator/admin-home-counter-card/admin-home-counter-card.component';
+import { RentACarAddComponent } from './rent-a-cars/rent-a-car-administrator/rent-a-car-add/rent-a-car-add.component';
+import { AddFirstComponent } from './rent-a-cars/rent-a-car-administrator/rent-a-car-add/add-first/add-first.component';
+
 const fbLoginOptions: LoginOpt = {
   scope: 'first_name,last_name,name,email',
   return_scopes: true,
@@ -211,6 +220,11 @@ export function provideConfig() {
     AirlineAdminsComponent,
     AirlineAdministratorComponent,
     AddAirlineComponent,
+    RentACarAddComponent,
+    AddFirstComponent,
+    AdminHomeComponent,
+    AnimatedDigitComponent,
+    AdminHomeCounterCardComponent
   ],
   imports: [
     BrowserModule,
@@ -238,7 +252,8 @@ export function provideConfig() {
     MatChipsModule,
     ToastrModule.forRoot(),
     NgxSpinnerModule,
-    NgSelectModule
+    NgSelectModule,
+    CountoModule
   ],
   providers: [
     UserService,
@@ -254,6 +269,8 @@ export function provideConfig() {
     RentCarAdapter,
     RentCarProfileAdapter,
     OfficeAdapter,
+    RentCarOfficesService,
+    CarService,
     {
       provide: AuthServiceConfig,
       useFactory: provideConfig,

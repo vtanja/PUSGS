@@ -1,0 +1,40 @@
+.milestone_counter
+{
+	font-size: 48px;
+	font-weight: 600;
+	color: #2d2c2c;
+	line-height: 1;
+  margin-top: 25px;
+  margin-bottom: 25px;
+  align-content: center;
+  text-align: center;
+  justify-content: center;
+}
+
+.row-first{
+  width: 80%;
+  margin-left: 10%;
+}
+
+h6{
+  color: #8879794f;
+  text-align: center;
+   justify-content:
+   center; align-content: center
+}
+
+.img-style{
+  width: 40%;
+  margin-left: 30%;
+  height: 50px;
+}
+
+h3{
+  color:  #7e4596;
+  /* , , #f0a63f); */
+  text-align: center;
+   justify-content:center;
+   align-content: center;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-weight: 600;
+}
