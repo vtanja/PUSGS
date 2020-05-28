@@ -117,6 +117,7 @@ import { CarService } from './services/car.service';
 import { AdminHomeComponent } from './administrator/admin-home/admin-home.component';
 import { AnimatedDigitComponent } from './../animated/animated-digit.compoanent';
 import { AdminHomeCounterCardComponent } from './administrator/admin-home-counter-card/admin-home-counter-card.component';
+import { MapboxComponent } from './mapbox/mapbox.component';
 
 const fbLoginOptions: LoginOpt = {
   scope: 'first_name,last_name,name,email',
@@ -220,7 +221,8 @@ export function provideConfig() {
     AddFirstComponent,
     AdminHomeComponent,
     AnimatedDigitComponent,
-    AdminHomeCounterCardComponent
+    AdminHomeCounterCardComponent,
+    MapboxComponent
   ],
   imports: [
     BrowserModule,
