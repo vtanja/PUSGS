@@ -1,0 +1,73 @@
+<div class="my-heading-div">
+    <h4>Add airline data</h4>
+  </div>
+  <div class="container container-style" [formGroup]="dataForm"> 
+    <div class="row">
+      <div class="col" style="margin-left: 1%;">
+        <div class="row">
+          <div class="wrap-input100">
+            <span class="label-input100" style="margin-right: 10%;">Name :</span>
+            <input id="nameInput" class="input100 input-margin" formControlName="name" type="text">
+            <i id="icon" class="fa fa-pencil-square-o icon-style" aria-hidden="true"
+              (click)="onLogoClick('nameInput')"></i>
+          </div>
+        </div>
+        <div class="row">
+            <span class="logo-label-input100" >Logo :</span>
+            <img class="logo-img" [src]="imgPreview" *ngIf="imgPreview!==undefined && imgPreview!==''">
+        </div>
+        <div class="row" style="margin-top: 45px;">
+            <span class="logo-label-input100">Change logo:</span>
+            <input formControlName="file" accept='image/*' id="file" type="file" class="input100-logo"
+              (change)="onFileChange($event)">
+        </div>
+      </div>
+      <div class="col" style="margin-left: 5%;"  formGroupName="address">
+        <div class="row">
+          <div class="wrap-input100 " >
+            <span class="label-input100">Street :&nbsp;&nbsp;&nbsp;&nbsp;</span>
+            <input id="streetInput" class="input100 input-margin" style="width:50%" formControlName="street" type="text">
+            <input id="numberInput" class="input100 input-margin" style="width:10%;margin-left:5px" formControlName="number" type="text">
+            <i class="fa fa-pencil-square-o icon-style" aria-hidden="true" (click)="onLogoClick('streetInput')"></i>
+          </div>
+        </div>
+        <div class="row">
+          <div class="wrap-input100 ">
+            <span class="label-input100">City :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+            <input id="cityInput" class="input100 input-margin" formControlName="city" type="text">
+            <i class="fa fa-pencil-square-o icon-style" aria-hidden="true" (click)="onLogoClick('cityInput')"></i>
+          </div>
+        </div>
+        <div class="row">
+          <div class="wrap-input100 ">
+            <span class="label-input100">Country :</span>
+            <input id="countryInput" class="input100 input-margin" formControlName="country" type="text">
+            <i class="fa fa-pencil-square-o icon-style" aria-hidden="true" (click)="onLogoClick('countryInput')"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+  
+    <div class="row" style="height: 100px;">
+      <div class="col-sm-2">
+        <span class="label-input100" style="margin-left: 11%;">Description :</span>
+      </div>
+      <div class="col">
+        <textarea id="descriptionInput" class="input100" formControlName="description"
+          style="width: 92%; height: 100%; margin-left: -3%; resize: none;" type="text"></textarea>
+        <i class="fa fa-pencil-square-o icon-style" aria-hidden="true" (click)="onLogoClick('descriptionInput')"></i>
+      </div>
+    </div>
+    <div class="d-flex justify-content-center" style="margin-top: 2%;margin-bottom: 5%;">
+      <div class="container-form-btn" style="align-self: center;">
+        <div class="wrap-form-btn">
+          <div class="form-bgbtn"></div>
+          <button class="form-btn" [disabled]="dataForm.invalid || !dataForm.dirty" (click)="addAirline()">
+            Add airline
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  

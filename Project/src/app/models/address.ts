@@ -5,7 +5,7 @@ export class Address {
     country:string;
     longitude:number;
     latitude:number;
-
+    
     constructor(num:number, street:string,  city:string,  country:string,lon:number,lat:number){
         this.num = num;
         this.street=street;

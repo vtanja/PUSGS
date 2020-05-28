@@ -5,6 +5,9 @@ import { Router, NavigationEnd } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/internal/Observable';
 import { Subscription } from 'rxjs';
+import { AirlineService } from '../services/airline.service';
+import { Airline } from '../models/airline.model';
+import { AirlineAdministratorService } from '../services/airline-administrator.service';
 
 @Component({
   selector: 'app-header',
@@ -21,7 +24,7 @@ export class HeaderComponent implements OnInit{
   isCollapsedRequests:boolean=true;
   mySubscription:Subscription;
 
-  constructor(private userService:UserService,private router:Router ){
+  constructor(private userService:UserService,private router:Router , private airlineService:AirlineService, private airlineAdminService:AirlineAdministratorService){
 
    }
 
@@ -32,7 +35,9 @@ export class HeaderComponent implements OnInit{
     if(this.userService.isUserLoggedIn()){
         this.loggedIn=true;
         this.getUserData();
-        this.invitations = this.getRequests();
+        if(this.userService.getUserRole()==='USER'){
+          this.invitations = this.getRequests();
+        }
         console.log(this.invitations);
     }
 
@@ -40,12 +45,27 @@ export class HeaderComponent implements OnInit{
         if(isLogged){
             this.getUserData();
             this.loggedIn=true;
-            this.invitations = this.getRequests();
+            if(this.userService.getUserRole()==='USER'){
+              this.invitations = this.getRequests();
+            }
         }else{
           this.loggedIn=false;
           this.userRole="";
           this.userName="";
         }
+    })
+  }
+
+
+  onCompanyDataAndDestinations(){
+    this.airlineAdminService.hasAirline().subscribe((res:boolean)=>{
+      console.log(res);
+      if(res){
+        this.router.navigate(['/airline-company-data/edit-airline-main-data']);
+      }
+      else{
+        this.router.navigate(['/airline-admin']);
+      }
     })
   }
 

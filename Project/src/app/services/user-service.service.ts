@@ -203,6 +203,10 @@ export class UserService{
       return payload.role;
     }
 
+    getUserId(){
+      let payload = jwt_decode(localStorage.getItem('token'));
+      return payload.UserID;
+    }
     getUserName(){
       let payload = jwt_decode(localStorage.getItem('token'));
       return payload.UserName;
@@ -222,4 +226,17 @@ export class UserService{
       return this.httpClient.post(this.baseUri + 'User/FacebookLogin',formData);
     }
 
+
+    roleMatch(allowedRoles):boolean{
+      var isMatch = false;
+      var userRole = this.getUserRole();
+      console.log(userRole);
+      allowedRoles.forEach(element => {
+        if(userRole==element){
+          isMatch=true;
+          return false;
+        }
+      });
+      return isMatch;
+    }
 }

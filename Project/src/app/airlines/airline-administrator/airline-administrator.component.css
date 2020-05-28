@@ -1,0 +1,14 @@
+.button{
+    background: linear-gradient(to right, #eea136, #7e4596, #f0a63f);
+	z-index: -1;
+	-webkit-transition: all 400ms ease;
+	-moz-transition: all 400ms ease;
+	-ms-transition: all 400ms ease;
+	-o-transition: all 400ms ease;
+    transition: all 400ms ease;
+    
+    width: 15%;
+    height: 4%;
+    color: white;
+    border-radius: 25px;
+}

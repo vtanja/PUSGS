@@ -7,11 +7,12 @@ import { Airline } from 'src/app/models/airline.model';
   styleUrls: ['./airline-item.component.css']
 })
 export class AirlineItemComponent implements OnInit {
-
+  image='';
   @Input() airline:Airline;
   constructor() { }
 
   ngOnInit(): void {
+    this.image = '../../../assets/images/'+this.airline.image;
   }
 
 }

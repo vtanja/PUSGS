@@ -10,7 +10,7 @@
   </div>
   <br>
   <div class="d-flex justify-content-center">
-    <img src="{{airlineCompany.image}}" width="240px" height="100px">
+    <img src="{{navItemInfo.logo}}" width="240px" height="100px">
   </div>
 
   <div class="d-flex justify-content-between" style="margin-left:20%;margin-top: 3%;width: 60%;">
@@ -37,7 +37,11 @@
 
   <div style="background-color: whitesmoke; padding-bottom: 2%; margin-top: 2%;">
     <h4>Check our destinations</h4>
-    <app-profile-offices [items]="airlineCompany.destinations"></app-profile-offices>
+      <app-profile-offices *ngIf="airlineCompany!==undefined && airlineCompany.destinations!==undefined" [items]="airlineCompany.destinations"></app-profile-offices>
+   
+    
+      <p *ngIf="airlineCompany===undefined || airlineCompany.destinations===undefined " ><ngb-alert [dismissible]="false" style="width: 70%; text-align: center;margin-left: 15%;"><strong>Notice!</strong> There are no destinations still.</ngb-alert></p>
+    
   </div>
 
   <!-- <div class="d-flex justify-content-center" style="margin-top: 5%;">

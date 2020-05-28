@@ -66,7 +66,7 @@
           <a *ngIf="userRole==='RENTCARADMIN'" ngbDropdownItem routerLink="/company-data/edit-main-data">Company data and offices</a>
           <a *ngIf="userRole==='RENTCARADMIN'" ngbDropdownItem routerLink="/companyCars">Cars</a>
 
-          <a *ngIf="userRole==='AIRLINEADMIN'" ngbDropdownItem routerLink="/airline-company-data/edit-airline-main-data">Company data and destinations</a>
+          <a *ngIf="userRole==='AIRLINEADMIN'" ngbDropdownItem (click)="onCompanyDataAndDestinations()">Company data and destinations</a>
 
           <hr style="border: 1px solid rgba(255, 255, 255, 0.3);">
           <a ngbDropdownItem href="#" (click)="onLogout()">Sign out</a>

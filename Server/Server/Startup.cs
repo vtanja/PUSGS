@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -21,7 +21,6 @@ using Server.Email;
 using AutoMapper;
 using Server.Services;
 using Server.HubConfig;
-
 namespace Server
 {
     public class Startup
@@ -29,6 +28,7 @@ namespace Server
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            
         }
 
         public IConfiguration Configuration { get; }
@@ -87,6 +87,7 @@ namespace Server
             };
            });
 
+           
 
         }
 

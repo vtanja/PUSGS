@@ -47,7 +47,7 @@ export class AddFlightComponent implements OnInit {
 
   constructor(private router:Router,private activeRoute:ActivatedRoute, private config: NgbDatepickerConfig, private airlineAdminService:AirlineAdministratorService) {
 
-    this.planes=airlineAdminService.getAirline().planes;
+    //this.planes=airlineAdminService.getAirline().planes;
     
     
 
@@ -104,7 +104,7 @@ export class AddFlightComponent implements OnInit {
     );
 
     this.addFlightForm.get('plane')!.valueChanges.subscribe(plane=>{
-      this.chosenPlane=this.airlineAdminService.getAirline().planes.find(p=>p.name===plane);
+      //this.chosenPlane=this.airlineAdminService.getAirline().planes.find(p=>p.name===plane);
       if(this.chosenPlane!==undefined){
         for(let segment of this.chosenPlane.segments)
         this.planeSegments.push(segment.name);

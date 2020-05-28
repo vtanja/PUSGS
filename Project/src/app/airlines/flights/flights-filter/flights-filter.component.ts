@@ -34,7 +34,10 @@ export class FlightsFilterComponent implements OnInit {
 
   ngOnInit(): void {
     var i:number=0;
-    this.airlines=this.airlineService.getAirlines();
+    this.airlineService.getAirlines().subscribe((res:Airline[])=>{
+      this.airlines=res;
+    }
+    );
     for(const airline of this.airlines){
       this.companies.push({name:airline.name, isChecked:true});
     }

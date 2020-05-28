@@ -121,6 +121,21 @@ namespace Server.Controllers
             return _mapper.Map<User, UserDTO>(user);
         }
 
+        [HttpGet]
+        [Route("AllUsers")]
+        public async Task<ActionResult<IEnumerable<UserDTO>>> GetAllUsers()
+        {
+            string userName = User.Claims.First(c => c.Type == "UserName").Value;
+            //string userName = "tanja";
+
+            List<UserDTO> retVal = new List<UserDTO>();
+            var users = await _dataBaseContext.Users.Include(user => user.RegisteredUser).Where(u => u.RegisteredUser.UserName != userName).ToListAsync();
+            users.ForEach(r => retVal.Add(_mapper.Map<User, UserDTO>(r)));
+            return retVal;
+
+        }
+
+
 
         [HttpPost]
         [Route("Register")]
@@ -144,7 +159,7 @@ namespace Server.Controllers
                 {
                     await _userManager.AddToRoleAsync(user, "USER");
 
-                    await _dataBaseContext.Administrators.AddAsync(new Administrator{ UserId = user.Id });
+                    await _dataBaseContext.Users.AddAsync(new User{ UserId = user.Id });
                     await _dataBaseContext.SaveChangesAsync();
 
                     var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);

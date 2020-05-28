@@ -4,6 +4,7 @@ import { UserService } from '../../services/user-service.service';
 import { User } from 'src/app/models/user';
 import { UserAdapter } from 'src/app/models/adapters/user.adapter';
 import { ToastrService } from 'ngx-toastr';
+import { LoginComponent } from 'src/app/login/login.component';
 
 @Component({
   selector: 'app-user-profile',
@@ -16,17 +17,18 @@ export class UserProfileComponent implements OnInit, AfterViewInit {
   profileImage:string | ArrayBuffer;
   isDataLoaded:boolean=false;
   loggedUser:User;
-
-  fileToUpload: File = null;
-
+  img= '../../../assets/images/';
+  
   constructor(private userService:UserService, private toastr:ToastrService) {
+    this.profileImage = this.img+'profilna.png';
     this.editForm = new FormGroup({
       'firstName': new FormControl(null,Validators.required),
       'lastName' : new FormControl(null,Validators.required),
       'email': new FormControl(null, [Validators.required, Validators.email]),
       'phone': new FormControl(null, [Validators.required, Validators.pattern(new RegExp('(([+][(]?[0-9]{1,3}[)]?)|([(]?[0-9]{4}[)]?))\s*[)]?[-\s\.]?[(]?[0-9]{1,3}[)]?([-\s\.]?[0-9]{3})([-\s\.]?[0-9]{3,4})'))]),
       'address': new FormControl(null, Validators.required),
-      'file': new FormControl('', [Validators.required]),
+      'file': new FormControl('', []),
+      // 'logo' : new FormControl('', []),
       'passwordData' : new FormGroup({
           'password': new FormControl('',[
             Validators.pattern(new RegExp("^(?=.*[0-9]+.*)(?=.*[a-zA-Z]+.*)[0-9a-zA-Z]{8,}$"))]),
@@ -51,13 +53,26 @@ export class UserProfileComponent implements OnInit, AfterViewInit {
         'email': this.loggedUser.email,
         'phone': this.loggedUser.phoneNumber,
         'address': this.loggedUser.address,
+        // 'logo':this.editForm.get('file').value.name
       });
     }
   }
 
   ngOnInit(): void {
     
+    this.userService.getUser().subscribe((res:any)=>{
+      console.log(res);
+        this.loggedUser=res;
+        console.log(this.loggedUser);
+        this.isDataLoaded=true;
+    });
+
+    if(this.loggedUser!==undefined){
       this.profileImage=this.loggedUser.profileImage;
+    }
+    else{
+      this.profileImage = this.img+'profilna.png';
+    }
       console.log(this.editForm);
    
   }
@@ -76,13 +91,16 @@ export class UserProfileComponent implements OnInit, AfterViewInit {
       var reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = (_event) => {
-        this.profileImage = reader.result;
-        console.log(this.profileImage);
+       // this.profileImage = reader.result;
+        //console.log(this.profileImage);
       }
 
       this.editForm.patchValue({
-        fileSource: file
+        //logo:file.name,
+        
       });
+
+      this.profileImage =this.img + this.editForm.get('file').value.name;
 
     }
   }

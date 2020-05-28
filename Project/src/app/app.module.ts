@@ -109,6 +109,8 @@ import { RentCarProfileAdapter } from './models/adapters/rent-a-car-profile.adap
 import { OfficeAdapter } from './models/adapters/office.adapter';
 import { RentCarAdminsComponent } from './administrator/rent-car-admins/rent-car-admins/rent-car-admins.component';
 import { AirlineAdminsComponent } from './administrator/airline-admins/airline-admins/airline-admins.component';
+import { AirlineAdministratorComponent } from './airlines/airline-administrator/airline-administrator.component';
+import { AddAirlineComponent } from './airlines/airline-administrator/airline-edit/add-airline/add-airline.component';
 const fbLoginOptions: LoginOpt = {
   scope: 'first_name,last_name,name,email',
   return_scopes: true,
@@ -207,6 +209,8 @@ export function provideConfig() {
     UsersItemComponent,
     RentCarAdminsComponent,
     AirlineAdminsComponent,
+    AirlineAdministratorComponent,
+    AddAirlineComponent,
   ],
   imports: [
     BrowserModule,
