@@ -581,7 +581,8 @@ namespace Server.Migrations
                     b.Property<int>("PlaneId")
                         .HasColumnType("int");
 
-                    b.Property<int>("SegmentId")
+                    b.Property<int>("SegmentId"); 
+
                     b.Property<int>("RentCarId")
                         .HasColumnType("int");
 

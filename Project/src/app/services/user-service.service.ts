@@ -213,18 +213,7 @@ export class UserService{
     return false;
     }
 
-    roleMatch(allowedRoles):boolean{
-      var isMatch = false;
-      var userRole = this.getUserRole();
-      console.log(userRole);
-      allowedRoles.forEach(element => {
-        if(userRole==element){
-          isMatch=true;
-          return false;
-        }
-      });
-      return isMatch;
-    }
+   
 
 
     roleMatch(allowedRoles):boolean{

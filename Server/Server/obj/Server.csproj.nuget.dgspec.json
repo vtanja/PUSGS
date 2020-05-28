@@ -84,6 +84,10 @@
               "target": "Package",
               "version": "[3.1.4, )"
             },
+            "Microsoft.Extensions.Identity.Core": {
+              "target": "Package",
+              "version": "[3.1.4, )"
+            },
             "Microsoft.IdentityModel.Tokens": {
               "target": "Package",
               "version": "[6.5.1, )"

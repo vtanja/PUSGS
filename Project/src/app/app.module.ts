@@ -102,7 +102,7 @@ import {
   GoogleLoginProvider,
   FacebookLoginProvider,
 } from 'angularx-social-login';
-import { CountoModule }  from 'angular2-counto';
+// import { CountoModule }  from 'angular2-counto';
 import { RentCarAdapter } from './models/adapters/rent-a-car.adapter';
 import { AddressAdapter } from './models/adapters/address.adapter';
 import { NgxSpinnerModule } from "ngx-spinner";
@@ -253,7 +253,7 @@ export function provideConfig() {
     ToastrModule.forRoot(),
     NgxSpinnerModule,
     NgSelectModule,
-    CountoModule
+    // CountoModule
   ],
   providers: [
     UserService,
