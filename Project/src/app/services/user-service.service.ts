@@ -83,11 +83,6 @@ export class UserService{
       return this.users.find(u=>u.username===username).flightReservations.slice();
     }
 
-    getCarReservations(){
-      let username = JSON.parse(localStorage.getItem('loggedUser')).username;
-      return this.users.find(u=>u.username===username).carReservations.slice();
-    }
-
     addCarRate(reservationId:number,rate:number){
 
       let username = JSON.parse(localStorage.getItem('loggedUser')).username;
@@ -136,15 +131,6 @@ export class UserService{
 
     }
 
-    makeCarReservation(reservation:CarReservation):boolean{
-
-      let username = JSON.parse(localStorage.getItem('loggedUser')).username;
-      reservation.username=username;
-      this.users.find(u=>u.username===username).carReservations.push(reservation);
-
-      return true;
-
-    }
 
     getAllUsers():Observable<User[]>{
       return this.httpClient.get(this.baseUri+'User/AllUsers')
@@ -213,13 +199,9 @@ export class UserService{
     return false;
     }
 
-   
-
-
     roleMatch(allowedRoles):boolean{
       var isMatch = false;
       var userRole = this.getUserRole();
-      console.log(userRole);
       allowedRoles.forEach(element => {
         if(userRole==element){
           isMatch=true;

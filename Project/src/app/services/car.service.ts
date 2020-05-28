@@ -24,12 +24,16 @@ export class CarService {
   }
 
   changeCarPrice(carId: number, newPrice: number) {
-    let data = {
-      op: 'replace',
-      path: '/price',
-      value: newPrice,
-    };
+    // let data = {
+    //   op: 'replace',
+    //   path: '/price',
+    //   value: newPrice,
+    // };
 
     return this.httpClient.patch(this.baseUri + 'Cars/' + carId,newPrice);
+  }
+
+  addDiscount(){
+    return true;
   }
 }

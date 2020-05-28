@@ -10,7 +10,7 @@ import { Flight } from '../models/flight.model';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { AirlineAdapter } from '../models/adapters/airline.adapter';
-import { AirlineEditComponent } from '../airlines/airline-administrator/airline-edit/airline-edit.component';
+import { AirlineEditComponent } from '../components/airlines/airline-administrator/airline-edit/airline-edit.component';
 import { AirlineProfileAdapter } from '../models/adapters/airline-profile.adapter';
 
 @Injectable({

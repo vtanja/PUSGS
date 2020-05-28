@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Car } from '../models/Car.model';
 import { Subject } from 'rxjs';
 import { Address } from '../models/address';
-import { RateDialogComponent } from '../user/reservations/rate-dialog/rate-dialog.component';
+import { RateDialogComponent } from '../components/user/reservations/rate-dialog/rate-dialog.component';
 import { UsersRate } from '../models/users-rate.model';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';

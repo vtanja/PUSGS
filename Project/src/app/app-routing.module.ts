@@ -1,49 +1,49 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule, ExtraOptions } from '@angular/router';
-import { LoginComponent } from './login/login.component';
-import { HomePageComponent } from './home-page/home-page.component';
-import { RegisterComponent } from './register/register.component';
-import { AirlinesComponent } from './airlines/airlines.component';
-import { RentACarsComponent } from './rent-a-cars/rent-a-cars.component';
-import { CarsSearchComponent } from './rent-a-cars/cars-search/cars-search.component';
-import { UserProfileComponent } from './user/user-profile/user-profile.component';
-import { FriendsListComponent } from './user/friends-list/friends-list.component';
-import { UserComponent } from './user/user.component';
-import { NavbarComponent } from './navbar/navbar.component';
-import { AirlinesListComponent } from './airlines/airlines-list/airlines-list.component';
-import { FlightsSearchComponent } from './airlines/flights-search/flights-search.component';
-import { FlightListComponent } from './airlines/flights/flight-list/flight-list.component';
-import { RentACarProfileComponent } from './rent-a-cars/rent-a-car-profile/rent-a-car-profile.component';
-import { CarsComponent } from './rent-a-cars/cars/cars.component';
-import { FlightsComponent } from './airlines/flights/flights.component';
-import { AirlineProfileComponent } from './airlines/airline-profile/airline-profile.component';
-import { ReservationsComponent } from './user/reservations/reservations.component';
-import { CarReservationListComponent } from './user/reservations/car-reservation-list/car-reservation-list.component';
-import { FlightReservationListComponent } from './user/reservations/flight-reservation-list/flight-reservation-list.component';
-import { RentACarEditComponent } from './rent-a-cars/rent-a-car-administrator/rent-a-car-edit/rent-a-car-edit.component';
-import { CreateFlightReservationComponent } from './create-flight-reservation/create-flight-reservation.component';
-import { CreateCarReservationComponent } from './create-car-reservation/create-car-reservation.component';
-import { MainDataEditComponent } from './rent-a-cars/rent-a-car-administrator/rent-a-car-edit/main-data-edit/main-data-edit.component';
-import { CarsEditComponent } from './rent-a-cars/rent-a-car-administrator/rent-a-car-edit/cars-edit/cars-edit.component';
-import { OfficesEditComponent } from './rent-a-cars/rent-a-car-administrator/rent-a-car-edit/offices-edit/offices-edit.component';
-import { AddCarComponent } from './rent-a-cars/rent-a-car-administrator/rent-a-car-edit/add-car/add-car.component';
-import { AirlineEditComponent } from './airlines/airline-administrator/airline-edit/airline-edit.component';
-import { EditAirlineMainDataComponent } from './airlines/airline-administrator/airline-edit/edit-airline-main-data/edit-airline-main-data.component';
-import { EditDestinationsComponent } from './airlines/airline-administrator/airline-edit/edit-destinations/edit-destinations.component';
-import { PlanesComponent } from './airlines/airline-administrator/airline-edit/planes/planes.component';
-import { EditPlaneComponent } from './airlines/airline-administrator/airline-edit/planes/edit-plane/edit-plane.component';
-import { AddPlaneComponent } from './airlines/airline-administrator/airline-edit/planes/add-plane/add-plane.component';
-import { AdminFlightListComponent } from './airlines/airline-administrator/airline-edit/admin-flights/admin-flight-list/admin-flight-list.component';
-import { AddFlightComponent } from './airlines/airline-administrator/airline-edit/admin-flights/add-flight/add-flight.component';
-import { AdminFlightsComponent } from './airlines/airline-administrator/airline-edit/admin-flights/admin-flights.component';
-import { AddUserComponent } from './administrator/add-user/add-user.component';
-import { RentCarAdminsComponent } from './administrator/rent-car-admins/rent-car-admins/rent-car-admins.component';
-import { AirlineAdminsComponent } from './administrator/airline-admins/airline-admins/airline-admins.component';
-import { AirlineAdministratorComponent } from './airlines/airline-administrator/airline-administrator.component';
-import { AddAirlineComponent } from './airlines/airline-administrator/airline-edit/add-airline/add-airline.component';
-import { RentACarAddComponent } from './rent-a-cars/rent-a-car-administrator/rent-a-car-add/rent-a-car-add.component';
-import { AddFirstComponent } from './rent-a-cars/rent-a-car-administrator/rent-a-car-add/add-first/add-first.component';
-import { AdminHomeComponent } from './administrator/admin-home/admin-home.component';
+import { LoginComponent } from './components/login/login.component';
+import { HomePageComponent } from './components/home-page/home-page.component';
+import { RegisterComponent } from './components/register/register.component';
+import { AirlinesComponent } from './components/airlines/airlines.component';
+import { RentACarsComponent } from './components/rent-a-cars/rent-a-cars.component';
+import { CarsSearchComponent } from './components/rent-a-cars/cars-search/cars-search.component';
+import { UserProfileComponent } from './components/user/user-profile/user-profile.component';
+import { FriendsListComponent } from './components/user/friends-list/friends-list.component';
+import { UserComponent } from './components/user/user.component';
+import { NavbarComponent } from './components/navbar/navbar.component';
+import { AirlinesListComponent } from './components/airlines/airlines-list/airlines-list.component';
+import { FlightsSearchComponent } from './components/airlines/flights-search/flights-search.component';
+import { FlightListComponent } from './components/airlines/flights/flight-list/flight-list.component';
+import { RentACarProfileComponent } from './components/rent-a-cars/rent-a-car-profile/rent-a-car-profile.component';
+import { CarsComponent } from './components/rent-a-cars/cars/cars.component';
+import { FlightsComponent } from './components/airlines/flights/flights.component';
+import { AirlineProfileComponent } from './components/airlines/airline-profile/airline-profile.component';
+import { ReservationsComponent } from './components/user/reservations/reservations.component';
+import { CarReservationListComponent } from './components/user/reservations/car-reservation-list/car-reservation-list.component';
+import { FlightReservationListComponent } from './components/user/reservations/flight-reservation-list/flight-reservation-list.component';
+import { RentACarEditComponent } from './components/rent-a-cars/rent-a-car-administrator/rent-a-car-edit/rent-a-car-edit.component';
+import { CreateFlightReservationComponent } from './components/create-flight-reservation/create-flight-reservation.component';
+import { CreateCarReservationComponent } from './components/create-car-reservation/create-car-reservation.component';
+import { MainDataEditComponent } from './components/rent-a-cars/rent-a-car-administrator/rent-a-car-edit/main-data-edit/main-data-edit.component';
+import { CarsEditComponent } from './components/rent-a-cars/rent-a-car-administrator/rent-a-car-edit/cars-edit/cars-edit.component';
+import { OfficesEditComponent } from './components/rent-a-cars/rent-a-car-administrator/rent-a-car-edit/offices-edit/offices-edit.component';
+import { AddCarComponent } from './components/rent-a-cars/rent-a-car-administrator/rent-a-car-edit/add-car/add-car.component';
+import { AirlineEditComponent } from './components/airlines/airline-administrator/airline-edit/airline-edit.component';
+import { EditAirlineMainDataComponent } from './components/airlines/airline-administrator/airline-edit/edit-airline-main-data/edit-airline-main-data.component';
+import { EditDestinationsComponent } from './components/airlines/airline-administrator/airline-edit/edit-destinations/edit-destinations.component';
+import { PlanesComponent } from './components/airlines/airline-administrator/airline-edit/planes/planes.component';
+import { EditPlaneComponent } from './components/airlines/airline-administrator/airline-edit/planes/edit-plane/edit-plane.component';
+import { AddPlaneComponent } from './components/airlines/airline-administrator/airline-edit/planes/add-plane/add-plane.component';
+import { AdminFlightListComponent } from './components/airlines/airline-administrator/airline-edit/admin-flights/admin-flight-list/admin-flight-list.component';
+import { AddFlightComponent } from './components/airlines/airline-administrator/airline-edit/admin-flights/add-flight/add-flight.component';
+import { AdminFlightsComponent } from './components/airlines/airline-administrator/airline-edit/admin-flights/admin-flights.component';
+import { AddUserComponent } from './components/administrator/add-user/add-user.component';
+import { RentCarAdminsComponent } from './components/administrator/rent-car-admins/rent-car-admins/rent-car-admins.component';
+import { AirlineAdminsComponent } from './components/administrator/airline-admins/airline-admins/airline-admins.component';
+import { AirlineAdministratorComponent } from './components/airlines/airline-administrator/airline-administrator.component';
+import { AddAirlineComponent } from './components/airlines/airline-administrator/airline-edit/add-airline/add-airline.component';
+import { RentACarAddComponent } from './components/rent-a-cars/rent-a-car-administrator/rent-a-car-add/rent-a-car-add.component';
+import { AddFirstComponent } from './components/rent-a-cars/rent-a-car-administrator/rent-a-car-add/add-first/add-first.component';
+import { AdminHomeComponent } from './components/administrator/admin-home/admin-home.component';
 import { AuthGuard } from './guards/auth-guard.guard';
 
 
@@ -53,7 +53,7 @@ const routes: Routes = [
     path: 'home',
     component: HomePageComponent,
     children: [
-      { path: 'search-cars', 
+      { path: 'search-cars',
         component: CarsSearchComponent },
       { path: 'search-flights',
         component: FlightsSearchComponent },
@@ -67,7 +67,7 @@ const routes: Routes = [
       { path: 'profile',
          component: UserProfileComponent,
          canActivate:[AuthGuard], data:{permittedRoles:['USER','ADMINISTRATOR','AIRLINEADMIN','RENTCARADMIN']} },
-         
+
       { path: 'friends',
        component: FriendsListComponent ,
         canActivate:[AuthGuard], data:{permittedRoles:['USER']}},
@@ -75,7 +75,7 @@ const routes: Routes = [
         path: 'reservations',
         component: ReservationsComponent,
         children: [
-          { path: 'car-reservations', 
+          { path: 'car-reservations',
             component: CarReservationListComponent ,
             canActivate:[AuthGuard], data:{permittedRoles:['USER']}},
           {
@@ -84,7 +84,7 @@ const routes: Routes = [
             canActivate:[AuthGuard], data:{permittedRoles:['USER']}
           },
         ],
-        
+
       },
     ],
   },
@@ -142,8 +142,8 @@ const routes: Routes = [
   {path:'planes', component:PlanesComponent, canActivate:[AuthGuard], data:{permittedRoles:['AIRLINEADMIN']}},
   {path:'edit-plane/:id', component:EditPlaneComponent, canActivate:[AuthGuard], data:{permittedRoles:['AIRLINEADMIN']}},
     {path:'add-plane', component:AddPlaneComponent, canActivate:[AuthGuard], data:{permittedRoles:['AIRLINEADMIN']}},
- 
- 
+
+
   {path: 'rent-car-admins', component: RentCarAdminsComponent,canActivate:[AuthGuard], data:{permittedRoles:['ADMINISTRATOR']}},
   {path: 'airline-admins', component: AirlineAdminsComponent,canActivate:[AuthGuard], data:{permittedRoles:['ADMINISTRATOR']}},
   { path: 'add-user', component: AddUserComponent ,canActivate:[AuthGuard], data:{permittedRoles:['ADMINISTRATOR']} },
