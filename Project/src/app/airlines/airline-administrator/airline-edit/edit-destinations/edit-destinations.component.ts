@@ -1,9 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { Airline } from 'src/app/models/airline.model';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { AirlineAdministratorService } from 'src/app/services/airline-administrator.service';
 import { Address } from 'src/app/models/address';
+import { DestinationService } from 'src/app/services/destination.service';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+import Swal from 'sweetalert2';
+import { Destination } from 'src/app/models/destination.model';
 
 @Component({
   selector: 'app-edit-destinations',
@@ -16,7 +20,13 @@ export class EditDestinationsComponent implements OnInit {
   addDestinationForm:FormGroup;
   closeResult:string;
 
-  constructor(private airlineAdministratorService:AirlineAdministratorService,private modalService: NgbModal) {
+  constructor(private airlineAdminSerivce:AirlineAdministratorService, private destinationService:DestinationService,private modalService: NgbModal) {
+    this.airlineAdminSerivce.getAirline().subscribe((res:Airline)=>{
+      this.company = res;
+    }, (err)=>{
+      console.log(err);
+    });
+
     this.addDestinationForm = new FormGroup({
       'city' : new FormControl('',Validators.required),
       'country' : new FormControl('',Validators.required),
@@ -25,16 +35,34 @@ export class EditDestinationsComponent implements OnInit {
 
   ngOnInit(): void {
     
-    this.company = this.airlineAdministratorService.getAirline();
+    this.airlineAdminSerivce.getAirline().subscribe((res:Airline)=>{
+      this.company = res;
+    });
   }
 
   addDestination(){
-    let city = this.addDestinationForm.get('city').value;
-    let country = this.addDestinationForm.get('country').value;
+      let dest=new Destination(-1, this.addDestinationForm.get('city').value, this.addDestinationForm.get('country').value);
+      console.log(dest);
+      this.destinationService.addDestination(dest).subscribe((res:any)=>{
+        Swal.fire({
+          text: 'Destination successfully added!',
+          icon: 'success',
+          showConfirmButton: false,
+          timer: 1500,
+        });
 
-    if(this.airlineAdministratorService.addDestination(country,city)){
-      this.company = this.airlineAdministratorService.getAirline();
-    }
+        this.airlineAdminSerivce.getAirline().subscribe((res:Airline)=>{
+          this.company = res;
+        });
+        
+      }, 
+      (err:any)=>{
+        Swal.fire({
+          text: err.error.message,
+          icon: 'error',
+          showConfirmButton: true,
+        });
+      })
 
   }
 

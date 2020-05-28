@@ -102,7 +102,7 @@ import {
   GoogleLoginProvider,
   FacebookLoginProvider,
 } from 'angularx-social-login';
-import { CountoModule }  from 'angular2-counto';
+// import { CountoModule }  from 'angular2-counto';
 import { RentCarAdapter } from './models/adapters/rent-a-car.adapter';
 import { AddressAdapter } from './models/adapters/address.adapter';
 import { NgxSpinnerModule } from "ngx-spinner";
@@ -110,14 +110,16 @@ import { RentCarProfileAdapter } from './models/adapters/rent-a-car-profile.adap
 import { OfficeAdapter } from './models/adapters/office.adapter';
 import { RentCarAdminsComponent } from './administrator/rent-car-admins/rent-car-admins/rent-car-admins.component';
 import { AirlineAdminsComponent } from './administrator/airline-admins/airline-admins/airline-admins.component';
-import { RentACarAddComponent } from './rent-a-cars/rent-a-car-administrator/rent-a-car-add/rent-a-car-add.component';
-import { AddFirstComponent } from './rent-a-cars/rent-a-car-administrator/rent-a-car-add/add-first/add-first.component';
+import { AirlineAdministratorComponent } from './airlines/airline-administrator/airline-administrator.component';
+import { AddAirlineComponent } from './airlines/airline-administrator/airline-edit/add-airline/add-airline.component';
 import { RentCarOfficesService } from './services/rent-car-offices.service';
 import { CarService } from './services/car.service';
 import { AdminHomeComponent } from './administrator/admin-home/admin-home.component';
 import { AnimatedDigitComponent } from './../animated/animated-digit.compoanent';
 import { AdminHomeCounterCardComponent } from './administrator/admin-home-counter-card/admin-home-counter-card.component';
 import { MapboxComponent } from './mapbox/mapbox.component';
+import { RentACarAddComponent } from './rent-a-cars/rent-a-car-administrator/rent-a-car-add/rent-a-car-add.component';
+import { AddFirstComponent } from './rent-a-cars/rent-a-car-administrator/rent-a-car-add/add-first/add-first.component';
 
 const fbLoginOptions: LoginOpt = {
   scope: 'first_name,last_name,name,email',
@@ -217,6 +219,8 @@ export function provideConfig() {
     UsersItemComponent,
     RentCarAdminsComponent,
     AirlineAdminsComponent,
+    AirlineAdministratorComponent,
+    AddAirlineComponent,
     RentACarAddComponent,
     AddFirstComponent,
     AdminHomeComponent,
@@ -251,7 +255,7 @@ export function provideConfig() {
     ToastrModule.forRoot(),
     NgxSpinnerModule,
     NgSelectModule,
-    CountoModule
+    // CountoModule
   ],
   providers: [
     UserService,

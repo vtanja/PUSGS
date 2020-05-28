@@ -5,8 +5,11 @@ import { UserService } from 'src/app/services/user-service.service';
 import { Address } from 'src/app/models/address';
 import { RentCarAdministratorService } from 'src/app/services/rent-car-administrator.service';
 import { AirlineAdministratorService } from 'src/app/services/airline-administrator.service';
-import { RentCarOfficesService } from 'src/app/services/rent-car-offices.service';
+import { Destination } from 'src/app/models/destination.model';
 import Swal from 'sweetalert2';
+import { DestinationService } from 'src/app/services/destination.service';
+import { DestinationAdapter } from 'src/app/models/adapters/destination.adapter';
+import { RentCarOfficesService } from 'src/app/services/rent-car-offices.service';
 import { OfficeAdapter } from 'src/app/models/adapters/office.adapter';
 import { Office } from 'src/app/models/office';
 
@@ -35,7 +38,9 @@ export class ProfileOfficesComponent implements OnInit {
     private rentCarAdminService:RentCarAdministratorService,
     private officeAdapter:OfficeAdapter,
     private rentCarOfficesService:RentCarOfficesService,
-     private airlineAdminService:AirlineAdministratorService) {}
+     private airlineAdminService:AirlineAdministratorService,
+     private destAdapter:DestinationAdapter,
+     private destinationService:DestinationService) {}
 
   ngOnInit(): void {
     if (this.router.snapshot.routeConfig.path.includes('carProfile')) {
@@ -46,6 +51,9 @@ export class ProfileOfficesComponent implements OnInit {
        this.isCarCompany = true;
     }
     else if(this.router.snapshot.routeConfig.path.includes('edit-destinations')){
+
+      console.log(this.items);
+
       this.isAirlineCompanyEdit=true;
       this.isArlineCompany=true;
     }
@@ -173,11 +181,52 @@ export class ProfileOfficesComponent implements OnInit {
 
   }
 
-  removeDestination(country:string, city:string){
-    if(this.airlineAdminService.deleteDestination(country, city)){
-      console.log(this.items[country]);
-    }
-    }
+  removeDestination(dest:{}){
+    var destination = this.destAdapter.adapt(dest);
+    console.log(dest);
+    Swal.fire({
+      text: 'Are you sure you want to delete this destination?',
+      showConfirmButton: true,
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'No, cancel!',
+      confirmButtonColor: '#fa9e1c',
+      cancelButtonColor: '#31124b',
+      icon: 'warning'
+    }).then(
+      (result)=>{
+        if(result.value){
+        this.destinationService.deleteDestination(destination.id).subscribe(
+          res=>{
+            Swal.fire({
+              text : 'Destination successfully deleted',
+              showConfirmButton:false,
+              icon : 'success',
+              timer:2000
+            });
+            this.deleteDestinationUpdate(destination);
+
+          },
+          err=>{
+            Swal.fire({
+              text : err.error.message,
+              showConfirmButton:true,
+              confirmButtonColor: '#fa9e1c',
+              icon : 'error'
+            });
+          }
+        )
+        }
+      }
+    )
+  }
+
+  deleteDestinationUpdate(dest:Destination){
+    let index = this.items[dest.country].indexOf(dest);
+      this.items[dest.country].splice(index,1);
+      if(this.items[dest.country].length===0)
+        delete this.items[dest.country]
+  }
 
   changeMap(address:Address):void{
     this.usersService.changeMap.next(address);

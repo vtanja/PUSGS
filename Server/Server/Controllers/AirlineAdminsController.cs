@@ -47,7 +47,7 @@ namespace Server.Controllers
 
         // GET: api/AirlineAdmins/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<AirlineAdmin>> GetAirlineAdmin(string id)
+        public async Task<ActionResult<AirlineAdminDTO>> GetAirlineAdmin(string id)
         {
             var airlineAdmin = await _context.AirlineAdmins.FindAsync(id);
 
@@ -56,7 +56,7 @@ namespace Server.Controllers
                 return NotFound();
             }
 
-            return airlineAdmin;
+            return _mapper.Map<AirlineAdmin,AirlineAdminDTO>(airlineAdmin);
         }
 
         // PUT: api/AirlineAdmins/5

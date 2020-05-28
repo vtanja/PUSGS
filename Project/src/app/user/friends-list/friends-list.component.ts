@@ -34,8 +34,7 @@ export class FriendsListComponent implements OnInit, AfterViewInit{
    invitations:User[];
 
   constructor(private userService:UserService, private toastr:ToastrService, private httpClient:HttpClient) {
-    this.users = this.getAllUsers();
-    this.sortedData = this.getFriends();
+    
   }
 
   ngAfterViewInit(): void {
@@ -47,20 +46,10 @@ export class FriendsListComponent implements OnInit, AfterViewInit{
     })
   }
 
-  // private startHttpRequest = () => {
-  //   this.httpClient.get('http://localhost:51474/api/requests')
-  //     .subscribe(res => {
-  //       if(res){
-  //        this.filterData = this.getFriends();
-  //       }
-  //     })
-  // }
 
   ngOnInit(): void {
-    //this.signalRService.startConnection();
-    //this.signalRService.addTransferChartDataListener();
-
-
+    this.users = this.getAllUsers();
+    this.sortedData = this.getFriends();
   }
 
 
@@ -79,22 +68,15 @@ export class FriendsListComponent implements OnInit, AfterViewInit{
   sendRequests(){
     console.log(this.selected);
 
-    //let user:User = this.users.find(u=>u.username===this.selected);
     var toSend = {'username':this.selected};
     this.userService.sendRequests(toSend).subscribe((res:any)=>{
-      if(res==="success"){
-        this.selected=undefined;
+      
         this.toastr.success('Friend request sent!','Success!');
       }
-      else if(res === "Already sent request!"){
-        this.selected=undefined;
-        this.toastr.error('Request already sent!','Error!');
+      , (err)=> {
+        this.toastr.error(err.message,'Eroor!');
       }
-      else{
-        this.selected=undefined;
-        this.toastr.error('Unknown error!','Error!');
-      }
-    });
+    );
 
   }
 

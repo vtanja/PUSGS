@@ -15,7 +15,7 @@ export class PlanesComponent implements OnInit {
    }
 
   ngOnInit(): void {
-    this.planes = this.airlineAdminService.getAirline().planes;
+    //this.planes = this.airlineAdminService.getAirline().planes;
     console.log(this.planes);
   }
 

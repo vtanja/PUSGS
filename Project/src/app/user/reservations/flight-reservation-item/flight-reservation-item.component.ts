@@ -29,8 +29,8 @@ export class FlightReservationItemComponent implements OnInit,OnDestroy {
   constructor(private airlineService:AirlineService, private modalService: NgbModal, private rentCarService:RentCarService) { }
 
   ngOnInit(): void {
-    this.flight = this.airlineService.getAirline(this.flightReservation.companyID).flights.find(c=>c.id==this.flightReservation.flightID);
-    this.company = this.airlineService.getAirline(this.flightReservation.companyID);
+    //this.flight = this.airlineService.getAirline(this.flightReservation.companyID).flights.find(c=>c.id==this.flightReservation.flightID);
+    //this.company = this.airlineService.getAirline(this.flightReservation.companyID);
     console.log(this.company);
     if(this.flightReservation.carReservation!==undefined){
       //this.rentalCompany = this.rentCarService.getRentCarCompany(this.flightReservation.carReservation.companyId);

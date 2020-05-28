@@ -14,5 +14,8 @@ namespace Server.Models
 
         [ForeignKey("UserId")]
         public virtual RegisteredUser RegisteredUser { get; set; }
+        public int? AirlineId { get; set; }
+        [ForeignKey("AirlineId")]
+        public virtual Airline Airline { get; set; }
     }
 }

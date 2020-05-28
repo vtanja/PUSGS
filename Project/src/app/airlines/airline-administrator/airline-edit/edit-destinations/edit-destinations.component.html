@@ -5,8 +5,9 @@
       </div>
     <h4>Destinations</h4>
   </div>
-  <app-profile-offices style="margin-top: 4%;" [items]="this.company.destinations"></app-profile-offices>
-  
+  <app-profile-offices *ngIf="company!==undefined && company.destinations!==undefined" style="margin-top: 4%;" [items]="company.destinations"></app-profile-offices>
+  <p *ngIf="company===undefined || company.destinations===undefined"  ><ngb-alert [dismissible]="false" style="width: 70%; text-align: center;margin-left: 15%;"><strong>Notice!</strong> There are no destinations still.</ngb-alert></p>
+
   <ng-template #addDestinationModal let-modal [formGroup]="addDestinationForm">
     <div class="modal-header">
       <h6 class="modal-title" id="modal-basic-title-cpm">Add new destination</h6>

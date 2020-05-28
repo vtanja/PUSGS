@@ -5,6 +5,9 @@ import { Router, NavigationEnd } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/internal/Observable';
 import { Subscription } from 'rxjs';
+import { AirlineService } from '../services/airline.service';
+import { Airline } from '../models/airline.model';
+import { AirlineAdministratorService } from '../services/airline-administrator.service';
 import { RentCarService } from '../services/rent-a-car.service';
 
 @Component({
@@ -22,10 +25,8 @@ export class HeaderComponent implements OnInit,OnDestroy{
 
   isCollapsedRequests:boolean=true;
   mySubscription:Subscription;
-
   firstCompanyAdded:Subscription;
-
-  constructor(private userService:UserService,private rentCarService:RentCarService, private router:Router ){
+  constructor(private userService:UserService , private airlineService:AirlineService, private airlineAdminService:AirlineAdministratorService, private rentCarService:RentCarService, private router:Router){
 
    }
 
@@ -36,14 +37,19 @@ export class HeaderComponent implements OnInit,OnDestroy{
     if(this.userService.isUserLoggedIn()){
         this.loggedIn=true;
         this.getUserData();
-        this.invitations = this.getRequests();
+        if(this.userService.getUserRole()==='USER'){
+          this.invitations = this.getRequests();
+        }
+        console.log(this.invitations);
     }
 
     this.userService.userLogged.subscribe((isLogged:boolean)=>{
         if(isLogged){
             this.getUserData();
             this.loggedIn=true;
-            this.invitations = this.getRequests();
+            if(this.userService.getUserRole()==='USER'){
+              this.invitations = this.getRequests();
+            }
         }else{
           this.loggedIn=false;
           this.userRole="";
@@ -54,6 +60,19 @@ export class HeaderComponent implements OnInit,OnDestroy{
     this.rentCarService.firstCompanyAdded.subscribe((addedCompany:boolean)=>{
       if(addedCompany)
       this.companyExists = true;
+    })
+  }
+
+
+  onCompanyDataAndDestinations(){
+    this.airlineAdminService.hasAirline().subscribe((res:boolean)=>{
+      console.log(res);
+      if(res){
+        this.router.navigate(['/airline-company-data/edit-airline-main-data']);
+      }
+      else{
+        this.router.navigate(['/airline-admin']);
+      }
     })
   }
 

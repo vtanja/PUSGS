@@ -6,6 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
@@ -32,6 +33,7 @@ namespace Server.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "USER")]
         [Route("SendRequest")]
         //POST : /api/Friendship/SendRequest
         public async Task<ActionResult> SendRequest(LoginModel model)
@@ -67,17 +69,17 @@ namespace Server.Controllers
                     //toNotify.ForEach(r => retVal.Add(_mapper.Map<User, UserDTO>(r.User)));
 
                     //await _hubContext.Clients.Client(toAdd.UserId).SendAsync("getRequests", true);
-                    return new JsonResult("success");
+                    return Ok(new { message = "Request sent successfully!" });
                 }
                 catch (Exception)
                 {
-                    return new JsonResult("error");
+                    return BadRequest(new { message = "Sending request failed. Please try again later." });
                 }
             }
 
             else
             {
-                return new JsonResult("Already sent request!");
+                return BadRequest(new { message = "You have already sent request" });
             }  
             
 
@@ -85,6 +87,7 @@ namespace Server.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "USER")]
         [Route("Requests")]
         public async Task<ActionResult<IEnumerable<UserDTO>>> GetRequests()
         {
@@ -101,6 +104,7 @@ namespace Server.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "USER")]
         [Route("Friends")]
         public async Task<ActionResult<IEnumerable<UserDTO>>> GetFriends()
         {
@@ -119,6 +123,7 @@ namespace Server.Controllers
         }
 
         [HttpDelete("{username}")]
+        [Authorize(Roles = "USER")]
         public async Task<ActionResult<Friendship>> DeclineRequest(string username)
         {
             string userID = User.Claims.First(c => c.Type == "UserID").Value;
@@ -140,6 +145,7 @@ namespace Server.Controllers
         }
 
         [HttpPut("{username}")]
+        [Authorize(Roles = "USER")]
         public async Task<IActionResult> AcceptFriend(string username)
         {
             
@@ -165,7 +171,7 @@ namespace Server.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    throw;
+                    return BadRequest(new { message = "Accepting friend gone wrong. Please try again later." });
                 }
             }
 

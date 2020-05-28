@@ -4,6 +4,7 @@ import { UserService } from '../../services/user-service.service';
 import { User } from 'src/app/models/user';
 import { UserAdapter } from 'src/app/models/adapters/user.adapter';
 import { ToastrService } from 'ngx-toastr';
+import { LoginComponent } from 'src/app/login/login.component';
 
 @Component({
   selector: 'app-user-profile',
@@ -19,6 +20,7 @@ export class UserProfileComponent implements OnInit {
   isDataLoaded:boolean;
 
   constructor(private userService:UserService, private toastr:ToastrService) {
+    //this.profileImage = this.img+'profilna.png';
     this.editForm = new FormGroup({
       'firstName': new FormControl(null,Validators.required),
       'lastName' : new FormControl(null,Validators.required),
@@ -69,6 +71,8 @@ export class UserProfileComponent implements OnInit {
         });
       }
 
+
+      //this.profileImage =this.img + this.editForm.get('file').value.name;
 
     }
   }

@@ -1,23 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Andjela\\Desktop\\PUSGS\\Server\\Server\\Server.csproj": {}
+    "C:\\Users\\vukmi\\OneDrive\\Dokumenti\\GitHub\\PUSGS\\Server\\Server\\Server.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Andjela\\Desktop\\PUSGS\\Server\\Server\\Server.csproj": {
+    "C:\\Users\\vukmi\\OneDrive\\Dokumenti\\GitHub\\PUSGS\\Server\\Server\\Server.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Andjela\\Desktop\\PUSGS\\Server\\Server\\Server.csproj",
+        "projectUniqueName": "C:\\Users\\vukmi\\OneDrive\\Dokumenti\\GitHub\\PUSGS\\Server\\Server\\Server.csproj",
         "projectName": "Server",
-        "projectPath": "C:\\Users\\Andjela\\Desktop\\PUSGS\\Server\\Server\\Server.csproj",
-        "packagesPath": "C:\\Users\\Andjela\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Andjela\\Desktop\\PUSGS\\Server\\Server\\obj\\",
+        "projectPath": "C:\\Users\\vukmi\\OneDrive\\Dokumenti\\GitHub\\PUSGS\\Server\\Server\\Server.csproj",
+        "packagesPath": "C:\\Users\\vukmi\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\vukmi\\OneDrive\\Dokumenti\\GitHub\\PUSGS\\Server\\Server\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-        ],
         "configFilePaths": [
-          "C:\\Users\\Andjela\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\vukmi\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -87,6 +84,10 @@
               "target": "Package",
               "version": "[3.1.4, )"
             },
+            "Microsoft.Extensions.Identity.Core": {
+              "target": "Package",
+              "version": "[3.1.4, )"
+            },
             "Microsoft.IdentityModel.Tokens": {
               "target": "Package",
               "version": "[6.5.1, )"
@@ -114,6 +115,12 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[3.1.2, 3.1.2]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.AspNetCore.App": {
               "privateAssets": "none"
@@ -122,7 +129,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.200\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.300\\RuntimeIdentifierGraph.json"
         }
       }
     }

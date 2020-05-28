@@ -13,6 +13,22 @@ namespace Server.DTOs
     {
         public AutoMapping()
         {
+            CreateMap<Airline, AirlineDTO>()
+                .ForMember(dest => dest.Address, opt => opt.MapFrom(src => src.Address))
+                .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description))
+                .ForMember(dest => dest.Logo, opt => opt.MapFrom(src => src.Logo))
+                .ForMember(dest => dest.Rate, opt => opt.MapFrom(src => src.Rate))
+                .ForMember(dest => dest.Planes, opt => opt.MapFrom(src => src.Planes))
+                .ForMember(dest => dest.Destinations, opt => opt.MapFrom(src => src.Destinations.GroupBy(g => g.Country).ToDictionary(g => g.Key, g =>g.ToList()))).ReverseMap();
+
+            CreateMap<Plane, PlaneDTO>();
+
+            CreateMap<AirlineAdmin, AirlineAdminDTO>()
+                .ForMember(dest => dest.AirlineId, opt => opt.MapFrom(src => src.AirlineId));
+
+            CreateMap<Destination, DestinationDTO>()
+                .ForMember(dest => dest.City, opt => opt.MapFrom(src => src.City))
+                .ForMember(dest => dest.Country, opt => opt.MapFrom(src => src.Country));
 
             CreateMap<Car, CarDTO>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))

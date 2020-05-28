@@ -33,7 +33,7 @@ export class EditPlaneComponent implements OnInit {
   ngOnInit(): void {
     this.mySubscription = this.route.params.subscribe((params:Params)=>
       {
-        this.plane=this.airlineAdminService.getAirline().planes.find(p=>p.id===+params['id']);
+        //this.plane=this.airlineAdminService.getAirline().planes.find(p=>p.id===+params['id']);
         console.log('edit plane');
         console.log(this.plane);
       }
@@ -72,7 +72,7 @@ export class EditPlaneComponent implements OnInit {
         showConfirmButton: false,
         timer: 1500,
       });
-      this.plane=this.airlineAdminService.getAirline().planes.find(p=>p.id===this.plane.id);
+     // this.plane=this.airlineAdminService.getAirline().planes.find(p=>p.id===this.plane.id);
     }
     else{
       Swal.fire({

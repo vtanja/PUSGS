@@ -194,6 +194,10 @@ export class UserService{
       return payload.role;
     }
 
+    getUserId(){
+      let payload = jwt_decode(localStorage.getItem('token'));
+      return payload.UserID;
+    }
     getUserName(){
       let payload = jwt_decode(localStorage.getItem('token'));
       return payload.UserName;
@@ -209,6 +213,9 @@ export class UserService{
     return false;
     }
 
+   
+
+
     roleMatch(allowedRoles):boolean{
       var isMatch = false;
       var userRole = this.getUserRole();
@@ -221,5 +228,4 @@ export class UserService{
       });
       return isMatch;
     }
-
 }

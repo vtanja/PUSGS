@@ -14,7 +14,7 @@ export class AirlineEditComponent implements OnInit {
   constructor(private airlineAdministratorService:AirlineAdministratorService) { }
 
   ngOnInit(): void {
-    this.airline = this.airlineAdministratorService.getAirline();
+    //this.airline = this.airlineAdministratorService.getAirline();
   }
 
 }
