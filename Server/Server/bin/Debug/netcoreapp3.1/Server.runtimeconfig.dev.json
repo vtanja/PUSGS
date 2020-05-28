@@ -1,8 +1,0 @@
-{
-  "runtimeOptions": {
-    "additionalProbingPaths": [
-      "C:\\Users\\vukmi\\.dotnet\\store\\|arch|\\|tfm|",
-      "C:\\Users\\vukmi\\.nuget\\packages"
-    ]
-  }
-}
