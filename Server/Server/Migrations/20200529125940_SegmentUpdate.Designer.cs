@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Server.Settings;
 
 namespace Server.Migrations
 {
     [DbContext(typeof(DataBaseContext))]
-    partial class DataBaseContextModelSnapshot : ModelSnapshot
+    [Migration("20200529125940_SegmentUpdate")]
+    partial class SegmentUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -553,17 +555,44 @@ namespace Server.Migrations
 
             modelBuilder.Entity("Server.Models.Plane", b =>
                 {
-                    b.Property<string>("Code")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("AirlineId")
                         .HasColumnType("int");
 
-                    b.HasKey("Code");
+                    b.Property<string>("Code")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("AirlineId");
 
                     b.ToTable("Planes");
+                });
+
+            modelBuilder.Entity("Server.Models.PlaneSegment", b =>
+                {
+                    b.Property<int>("PlaneSegmentId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("PlaneId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SegmentId")
+                        .HasColumnType("int");
+
+                    b.HasKey("PlaneSegmentId");
+
+                    b.HasIndex("PlaneId");
+
+                    b.HasIndex("SegmentId");
+
+                    b.ToTable("PlaneSegments");
                 });
 
             modelBuilder.Entity("Server.Models.RentCar", b =>
@@ -648,8 +677,8 @@ namespace Server.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("PlaneId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int?>("PlaneId")
+                        .HasColumnType("int");
 
                     b.Property<int>("Rows")
                         .HasColumnType("int");
@@ -878,6 +907,21 @@ namespace Server.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Server.Models.PlaneSegment", b =>
+                {
+                    b.HasOne("Server.Models.Plane", "Plane")
+                        .WithMany()
+                        .HasForeignKey("PlaneId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Server.Models.Segment", "Segment")
+                        .WithMany()
+                        .HasForeignKey("SegmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Server.Models.RentCar", b =>
                 {
                     b.HasOne("Server.Models.Address", "Address")
@@ -915,7 +959,7 @@ namespace Server.Migrations
 
             modelBuilder.Entity("Server.Models.Segment", b =>
                 {
-                    b.HasOne("Server.Models.Plane", "Plane")
+                    b.HasOne("Server.Models.Plane", null)
                         .WithMany("Segments")
                         .HasForeignKey("PlaneId");
                 });

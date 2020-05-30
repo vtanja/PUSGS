@@ -10,6 +10,8 @@ import { startWith, map } from 'rxjs/operators';
 import { MatChipInputEvent } from '@angular/material/chips';
 import Swal from 'sweetalert2';
 import { PlaneLayoutComponent } from 'src/app/components/plane-layout/plane-layout.component';
+import { PlaneService } from 'src/app/services/plane.service';
+import { Segment } from 'src/app/models/segment';
 
 @Component({
   selector: 'app-add-plane',
@@ -26,7 +28,7 @@ export class AddPlaneComponent implements OnInit {
 
   businessClass:FormGroup;
   firstClass:FormGroup;
-  economyPremium:FormGroup;
+  premium:FormGroup;
   economy:FormGroup;
 
   premiumEconomySeats:string[]=[];
@@ -36,7 +38,6 @@ export class AddPlaneComponent implements OnInit {
   filteredSegments:Observable<string[]>;
 
   plane:Plane;
-  disabledSeats:string[]=[];
   show=false;
 
   visible = true;
@@ -49,7 +50,7 @@ export class AddPlaneComponent implements OnInit {
   @ViewChild('auto') matAutocomplete: MatAutocomplete;
   @ViewChild('toBePremium') toBePremium:PlaneLayoutComponent;
 
-  constructor(private airlineAdminService:AirlineAdministratorService, private router:Router) {
+  constructor(private planeService:PlaneService, private router:Router) {
 
     this.setSegments();
 
@@ -72,6 +73,11 @@ export class AddPlaneComponent implements OnInit {
     });
 
     this.economy=new FormGroup({
+      'rowsInput':new FormControl('', Validators.required),
+      'columnsInput':new FormControl('', Validators.required)
+    });
+
+    this.premium=new FormGroup({
       'rowsInput':new FormControl('', Validators.required),
       'columnsInput':new FormControl('', Validators.required)
     });
@@ -131,45 +137,35 @@ export class AddPlaneComponent implements OnInit {
   setConfig(){
     let totalRows:number =0;
     let totalColumns:number=0;
-    console.log('Totals:');
-    console.log(totalRows);
-    console.log(totalColumns);
 
-    if(this.chosenSegments.includes('First class')){
-      totalRows += +this.firstClass.get('rowsInput').value;
-      totalColumns += +this.firstClass.get('columnsInput').value;
-    }
-
-    if(this.chosenSegments.includes('Business class')){
-      totalRows += +this.businessClass.get('rowsInput').value;
-      totalColumns += +this.businessClass.get('columnsInput').value;
-    }
-
-    if(this.chosenSegments.includes('Economy class')){
-      totalRows += +this.economy.get('rowsInput').value;
-      totalColumns += +this.economy.get('columnsInput').value;
-    }
-
-    this.plane = new Plane(this.nameGroup.get('nameInput').value);
+    this.plane = new Plane(this.nameGroup.get('nameInput').value, [], 0);
+    
 
     if(this.chosenSegments.includes('First class')){
       let rows = +this.firstClass.get('rowsInput').value;
       let columns = +this.firstClass.get('columnsInput').value;
-      let segment = {name:'First class',value:{ rows:rows, columns:columns}};
+      let segment = new Segment('First class', rows, columns);
       this.plane.segments.push(segment);
     }
 
     if(this.chosenSegments.includes('Business class')){
       let rows = +this.businessClass.get('rowsInput').value;
       let columns = +this.businessClass.get('columnsInput').value;
-      let segment = {name:'Business class', value:{rows:rows, columns:columns}};
+      let segment = new Segment('Business class', rows, columns);
+      this.plane.segments.push(segment);
+    }
+
+    if(this.chosenSegments.includes('Premium economy')){
+      let rows = +this.premium.get('rowsInput').value;
+      let columns = +this.premium.get('columnsInput').value;
+      let segment = new Segment('Premium economy', rows, columns);
       this.plane.segments.push(segment);
     }
 
     if(this.chosenSegments.includes('Economy class')){
       let rows = +this.economy.get('rowsInput').value;
       let columns = +this.economy.get('columnsInput').value;
-      let segment = {name:'Economy class', value:{rows:rows, columns:columns}};
+      let segment = new Segment('Economy class', rows, columns);
       this.plane.segments.push(segment);
     }
 
@@ -191,7 +187,7 @@ export class AddPlaneComponent implements OnInit {
 
   confirm(){
     console.log(this.plane);
-    if(this.airlineAdminService.addPlane(this.plane)){
+    this.planeService.addPlane(this.plane).subscribe((res:any)=>{
       Swal.fire({
         text: 'Plane successfully added!',
         icon: 'success',
@@ -199,18 +195,16 @@ export class AddPlaneComponent implements OnInit {
         timer: 1500,
       });
       this.router.navigate(['/planes']);
-    }
-    else{
+    }, (err)=>{
+      console.log(err);
       Swal.fire({
-        text: 'Unable to add new plane!',
+        text: err.error.message,
         icon: 'error',
         showConfirmButton: true,
-        timer: 1500,
       });
-    }
+    });
+    
   }
 
-  addPremium(){
-    this.plane.premiumSeats.push(...this.toBePremium.toBePremium);
-  }
+
 }

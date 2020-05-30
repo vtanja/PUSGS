@@ -1,12 +1,13 @@
+<div *ngIf="isLoaded">
 <div class="my-heading-div">
     <div class="d-flex justify-content-end">
         <button class="btn  btn-md btn-rounded button-style" (click)="open(modal)">Add new rows</button>
         </div>
     <h4>Edit plane configuration</h4>
-    <h4>{{plane.name}}</h4>
+    <h4>{{plane.code}}</h4>
   </div>
   
-  <app-plane-layout [plane]="plane" style="margin-top: 5%;"></app-plane-layout>
+  <app-plane-layout [plane]="plane" style="margin-top: 10%;"></app-plane-layout>
   
 
   <ng-template #modal let-modal>
@@ -23,7 +24,7 @@
           <select formControlName="segment">
             <option *ngFor="let segment of plane.segments" [value]="segment.name">{{segment.name}}</option>
           </select>
-          <span class="help-block" *ngIf="addSeatsForm.get('segment').errors?.required ">This field is required!</span>
+          <span class="help-block" *ngIf="addSeatsForm.get('segment').errors?.required && addSeatsForm.get('segment').touched ">This field is required!</span>
         </div>
         <div class="form-group">
           <label class="control-label" for="erows">Number of rows:</label><br>
@@ -39,3 +40,4 @@
         (click)="modal.close('Cancel click')">Cancel</button>
     </div>
   </ng-template>
+</div>

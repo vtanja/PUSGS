@@ -1,15 +1,15 @@
+import { Segment } from './segment';
+
 export class Plane {
     id:number;
-    name:string;
-    booked:string[];
-    premiumSeats:string[];
-    segments:{name:string, value:{rows:number, columns:number}}[];
+    code:string;
+    segments:Segment[];
+    booked:string[]=[];
+    airlineId:number;
 
-    constructor(name:string){
-        this.id=-1;
-        this.name=name;
-        this.booked=[];
-        this.premiumSeats=[];
-        this.segments=[];
+    constructor(code:string, segments:Segment[], airlineId:number){
+        this.code=code;
+        this.segments=segments;
+        this.airlineId=airlineId;
     }
 }

@@ -10,12 +10,10 @@ namespace Server.Models
     public class Plane
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
         public string Code { get; set; }
-        [ForeignKey("CompanyId")]
         public int AirlineId { get; set; }
         [ForeignKey("AirlineId")]
         public virtual Airline Airline { get; set; }
+        public ICollection<Segment> Segments { get; set; } 
     }
 }
