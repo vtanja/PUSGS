@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Server.Settings;
 
 namespace Server.Migrations
 {
     [DbContext(typeof(DataBaseContext))]
-    partial class DataBaseContextModelSnapshot : ModelSnapshot
+    [Migration("20200603204248_CarReservationsUpdate")]
+    partial class CarReservationsUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -350,8 +352,8 @@ namespace Server.Migrations
                     b.Property<int>("PassengersNumber")
                         .HasColumnType("int");
 
-                    b.Property<double>("Price")
-                        .HasColumnType("float");
+                    b.Property<int>("Price")
+                        .HasColumnType("int");
 
                     b.Property<int>("Rate")
                         .HasColumnType("int");
@@ -398,9 +400,6 @@ namespace Server.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<bool>("Cancelled")
-                        .HasColumnType("bit");
-
                     b.Property<int>("CarId")
                         .HasColumnType("int");
 
@@ -416,11 +415,11 @@ namespace Server.Migrations
                     b.Property<DateTime>("PickUpDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<double>("PricePerDay")
-                        .HasColumnType("float");
+                    b.Property<int>("PricePerDay")
+                        .HasColumnType("int");
 
-                    b.Property<double>("TotalPrice")
-                        .HasColumnType("float");
+                    b.Property<int>("TotalPrice")
+                        .HasColumnType("int");
 
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");

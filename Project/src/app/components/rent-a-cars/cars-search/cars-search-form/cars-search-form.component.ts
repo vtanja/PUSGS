@@ -11,6 +11,7 @@ import {
   NgbDateStruct,
   NgbDate,
   NgbDatepickerConfig,
+  NgbCalendar,
 } from '@ng-bootstrap/ng-bootstrap';
 
 import { RentCarService } from '../../../../services/rent-a-car.service';
@@ -81,7 +82,8 @@ export class CarsSearchFormComponent implements OnInit {
     private activeRoute: ActivatedRoute,
     private _formBuilder: FormBuilder,
     private rentCarsService: RentCarService,
-    private config: NgbDatepickerConfig
+    private config: NgbDatepickerConfig,
+    private calendar: NgbCalendar
   ) {
     const current = new Date();
     config.minDate = {
@@ -252,43 +254,11 @@ export class CarsSearchFormComponent implements OnInit {
     searchParams['carBrand'] = this.searchForm.get('carBrand').value;
     searchParams['passengers'] = +this.searchForm.get('passengers').value;
 
-
     if (this.companyID === undefined) {
-      console.log(this.companyID);
       this.router.navigate(['/allCars'], { queryParams: searchParams });
-    }
-    else {
-      console.log("second " + this.companyID);
+    } else {
       searchParams['companyID'] = this.companyID;
       this.rentCarsService.searchCarsParamsSubject.next(searchParams);
-    }
-  }
-
-  onClear() {
-    this.searchForm.setValue({
-      location: {
-        pickUpLocation: '',
-        dropOffLocation: '',
-      },
-      dates: {
-        pickUpDate: '',
-        dropOffDate: '',
-      },
-
-      times: {
-        pickUpTime: '',
-        dropOffTime: '',
-      },
-
-      carBrand: '',
-      passengers: '',
-    });
-
-    this.searched = false;
-    if (this.companyID === undefined) {
-      this.router.navigate(['/allCars']);
-    } else {
-      this.rentCarsService.searchCarsParamsSubject.next("");
     }
   }
 
@@ -307,4 +277,6 @@ export class CarsSearchFormComponent implements OnInit {
       return null;
     }
   }
+
+
 }

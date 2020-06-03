@@ -27,7 +27,6 @@ export class CarouselComponent implements OnInit{
   constructor(private route:ActivatedRoute, private router:Router){}
 
   ngOnInit(){
-    console.log(true);
   }
 
   togglePaused() {

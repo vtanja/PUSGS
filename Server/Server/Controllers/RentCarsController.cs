@@ -90,7 +90,6 @@ namespace Server.Controllers
         [Authorize(Roles = "RENTCARADMIN")]
         public async Task<ActionResult<RentCarDTO>> GetRentCarMainData(int id)
         {
-
             string userId = User.Claims.First(c => c.Type == "UserID").Value;
             var rentCar = await _context.RentCars.Include(rc => rc.Address).Where(c=>c.OwnerId == userId).FirstOrDefaultAsync();
            

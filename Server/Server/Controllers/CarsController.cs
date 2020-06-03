@@ -73,15 +73,21 @@ namespace Server.Controllers
             [FromQuery] string pickUpDate, [FromQuery] string dropOffDate,[FromQuery] int passengers,[FromQuery] string brand)
         {
 
-             
+            DateTime dateDropOff = Convert.ToDateTime(dropOffDate);
+            DateTime datepickUp = Convert.ToDateTime(pickUpDate);
+
+            if (!dropOffLocation.Contains(", ") || !pickUpLocation.Contains(", ") || datepickUp > dateDropOff)
+            {
+                return BadRequest(new { message = "Invalid search params."});
+            }
+
              string[] dropOffLocationParams = dropOffLocation.Split(", ");
              string[] pickUpLocationParams = pickUpLocation.Split(", ");
              string dropOffCity = dropOffLocationParams[0];
              string dropOffCountry = dropOffLocationParams[1];
              string pickUpCity = pickUpLocationParams[0];
              string pickUpCountry = pickUpLocationParams[1];
-            DateTime dateDropOff = Convert.ToDateTime(dropOffDate);
-            DateTime datepickUp = Convert.ToDateTime(pickUpDate);
+            
 
             IEnumerable<int> carIDS;
 
@@ -124,8 +130,6 @@ namespace Server.Controllers
    
             return _mapper.Map<List<CarDTO>>(ret);
         }
-
-
 
         // GET: api/Cars/CompanyCarsSearch
         [HttpGet("{pickUpLocation}/{dropOffLocation}/{pickUpDate}/{dropOffDate}/{passengers}/{brand}/{companyID}")]

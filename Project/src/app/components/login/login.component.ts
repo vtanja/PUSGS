@@ -61,7 +61,6 @@ export class LoginComponent implements OnInit {
 
   logInWithFacebook(): void {
     this.OAuth.signIn(FacebookLoginProvider.PROVIDER_ID).then((socialusers) => {
-      console.log(socialusers);
       this.userService.facebookLogin(socialusers).subscribe(
         (res: any) => {
           localStorage.setItem('token', res.token);

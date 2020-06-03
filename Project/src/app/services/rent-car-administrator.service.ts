@@ -17,7 +17,6 @@ export class RentCarAdministratorService {
     return true;
   }
 
-
   stringToNgbDate(date:string):NgbDate{
 
     let dateParts = date.split('-');

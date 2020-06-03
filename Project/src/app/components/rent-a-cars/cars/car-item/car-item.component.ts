@@ -5,6 +5,7 @@ import { RentCarService } from 'src/app/services/rent-a-car.service';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { CarReservation } from 'src/app/models/car-reservation.model';
 import Swal from 'sweetalert2';
+import { CarReservationsService } from 'src/app/services/car-reservations.service';
 
 @Component({
   selector: 'app-car-item',
@@ -20,7 +21,7 @@ export class CarItemComponent implements OnInit {
 
 
   isUserLogged:boolean;
-  constructor(private rentCarsService:RentCarService,private usersService:UserService,private modalService: NgbModal){}
+  constructor(private carReservationsService:CarReservationsService,private usersService:UserService,private modalService: NgbModal){}
 
 
   ngOnInit(): void {
@@ -47,26 +48,41 @@ export class CarItemComponent implements OnInit {
 
   makeReservation():void{
 
-    let pickUpDate = this.params['pickUpDate'];
-    let pickUpTime = this.params['pickUpTime'];
-    let dropOffDate = this.params['dropOffDate'];
-    let dropOffTime = this.params['dropOffTime'];
-    let daysBetween = this.daysBetween;
-    let totalPrice = this.car.price * daysBetween;
+    let data ={
+      'pickUpDate' : this.changeDateFormat(this.params['pickUpDate']) + " " + this.params['pickUpTime'],
+      'dropOffDate' : this.changeDateFormat(this.params['dropOffDate']) + " " + this.params['dropOffTime'],
+      'carId' : this.car.id,
+      'pricePerDay' : this.car.price
+    }
 
-    let carReservation = new CarReservation(pickUpDate,pickUpTime,dropOffDate,dropOffTime,daysBetween,totalPrice,this.car.companyId,this.car.companyName,this.car.id,'',this.car.model);
-
-    // if(this.usersService.makeCarReservation(carReservation)){
-    //   Swal.fire({
-    //     text: 'Reservation successfully made!',
-    //     icon: 'success',
-    //     showConfirmButton: false,
-    //     timer:1500,
-    //   })
-    // }
-
+    this.carReservationsService.makeCarReservation(data).subscribe(
+      ret=>{
+        Swal.fire({
+              text: 'Reservation successfully made!',
+              icon: 'success',
+              showConfirmButton: false,
+              timer:1500,
+            })
+      },
+      err=>{
+        Swal.fire({
+          title: 'Reservation making failed.',
+          text:err.error.message,
+          icon: 'error',
+          showConfirmButton: false,
+          timer:1500,
+        })
+      }
+    )
   }
 
+  changeDateFormat(date:string):string{
+    let dateParts = date.split('-');
+    let day = dateParts[0];
+    let month = dateParts[1];
+    let year = dateParts[2];
 
+    return month + '-' + day + '-' +year;
+  }
 
 }

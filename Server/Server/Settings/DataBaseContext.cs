@@ -28,6 +28,7 @@ namespace Server.Settings
         public DbSet<Address> Addresses { get; set; }
         public DbSet<DiscountDate> DiscountDates { get; set; }
         public DbSet<ReservedDate> ReservedDates { get; set; }
+        public DbSet<CarReservation> CarReservations { get; set; }
 
 
     }
