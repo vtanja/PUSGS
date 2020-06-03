@@ -12,6 +12,8 @@ import { Flight } from 'src/app/models/flight.model';
 import { startWith, map } from 'rxjs/operators';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { FlightReservation } from 'src/app/models/flight-reservation.model';
+import { CarService } from 'src/app/services/car.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-cars-cards',
@@ -27,29 +29,56 @@ export class CarsCardsComponent implements OnInit, OnDestroy {
   rentDays: number;
   closeResult: string;
   notFlightRes: boolean = true;
+  isSpining:boolean = false;
 
   constructor(
     private route: ActivatedRoute,
     private rentCarsService: RentCarService,
-    private usersService: UserService,
-    private modalService: NgbModal,
-    private airlineService: AirlineService
+    private carService:CarService,
+    private spinner: NgxSpinnerService,
+    private modalService: NgbModal
   ) {}
 
   ngOnInit() {
+
     this.searchParamsSubscription = this.rentCarsService.searchCarsParamsSubject.subscribe(
-      (params: {}) => {
+      (queryParams: "") => {
         this.searched = true;
-        this.params = params;
-        this.cars = this.rentCarsService.getCarsSearch(params);
-        this.rentDays =
-          this.getDaysBetween(params['pickUpDate'], params['dropOffDate']) + 1;
+        this.params = queryParams;
+        this.rentDays = this.getDaysBetween(queryParams['pickUpDate'], queryParams['dropOffDate']) + 1;
+
+        let httpParams =
+          "pickUpLocation=" + queryParams['pickUpLocation'] +
+          "&dropOffLocation=" + queryParams['dropOffLocation'] +
+          "&pickUpDate=" + queryParams['pickUpDate'] +
+          "&dropOffDate=" + queryParams['dropOffDate'] +
+          "&passsengers=" + queryParams['passsengers'] +
+          "&brand=" + queryParams['carBrand']+
+          "&companyID=" + queryParams['companyID'];
+
+        console.log(httpParams);
+
+          this.showSpinner();
+          this.carService.searchCompanyCars(httpParams).subscribe(
+            res=>{
+              this.cars = res;
+              this.hideSpinner();
+            },
+            err=>{
+              if(err.status === 404){
+                this.cars = [];
+              }
+              this.hideSpinner();
+            }
+          );
       }
     );
 
-    if (this.route.snapshot.routeConfig.path.includes('create-reservation')) {
+       if (this.route.snapshot.routeConfig.path.includes('create-reservation')) {
       this.notFlightRes = false;
     }
+
+
   }
 
   ngOnDestroy(): void {
@@ -98,7 +127,7 @@ export class CarsCardsComponent implements OnInit, OnDestroy {
     let dropOffDate = this.params['dropOffDate'];
     let dropOffTime = this.params['dropOffTime'];
     let daysBetween = this.getDaysBetween(pickUpDate, dropOffDate);
-    let totalPrice = this.currentCar.pricePerDay * daysBetween;
+    let totalPrice = this.currentCar.price * daysBetween;
 
     let carReservation = new CarReservation(
       pickUpDate,
@@ -122,5 +151,15 @@ export class CarsCardsComponent implements OnInit, OnDestroy {
     //     timer: 1500,
     //   });
     // }
+  }
+
+  showSpinner(){
+    this.isSpining = true;
+    this.spinner.show();
+  }
+
+  hideSpinner(){
+    this.spinner.hide();
+    this.isSpining = false;
   }
 }

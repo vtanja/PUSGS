@@ -1,13 +1,9 @@
-
 import { Subject, Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { UserAdapter } from '../models/adapters/user.adapter';
-import { CarReservation } from '../models/car-reservation.model';
-import { FlightReservation } from '../models/flight-reservation.model';
 import { RentCarService } from './rent-a-car.service';
 import { AirlineService } from './airline.service';
 import { UsersRate } from '../models/users-rate.model';
-import { LoggedUser } from '../models/logged-user.model';
 import { Address } from '../models/address';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';

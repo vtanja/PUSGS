@@ -61,30 +61,131 @@ namespace Server.Controllers
                 return BadRequest();
             }
 
-            return  _mapper.Map<List<CarDTO>>(await _context.Cars.Where(c => c.CompanyId == admin.CompanyId).ToListAsync());
+            var ret =   _mapper.Map<List<CarDTO>>(await _context.Cars.Where(c => c.CompanyId == admin.CompanyId).ToListAsync());
 
+            return ret;
         }
 
         // GET: api/Cars/Search
-        [HttpGet("{id}")]
-        public async Task<ActionResult<IEnumerable<Car>>> SearchCars(CarsSearchModel searchModel)
+        [HttpGet("{pickUpLocation}/{dropOffLocation}/{pickUpDate}/{dropOffDate}/{passengers}/{brand}")]
+        [Route("Search")]
+        public async Task<ActionResult<IEnumerable<CarDTO>>> SearchCars([FromQuery] string pickUpLocation, [FromQuery] string dropOffLocation,
+            [FromQuery] string pickUpDate, [FromQuery] string dropOffDate,[FromQuery] int passengers,[FromQuery] string brand)
         {
-             string dropOffCity = searchModel.DropOffLocation;
-             string dropOffCountry = searchModel.DropOffLocation;
-             string pickUpCity = searchModel.PickUpLocation;
-             string pickUpCountry = searchModel.PickUpLocation;
 
+             
+             string[] dropOffLocationParams = dropOffLocation.Split(", ");
+             string[] pickUpLocationParams = pickUpLocation.Split(", ");
+             string dropOffCity = dropOffLocationParams[0];
+             string dropOffCountry = dropOffLocationParams[1];
+             string pickUpCity = pickUpLocationParams[0];
+             string pickUpCountry = pickUpLocationParams[1];
+            DateTime dateDropOff = Convert.ToDateTime(dropOffDate);
+            DateTime datepickUp = Convert.ToDateTime(pickUpDate);
 
-            var cars = await _context.Cars.Include(c => c.CarCompany).ThenInclude(c => c.Offices).ThenInclude(o => o.Address).Where(c => c.CarCompany.Offices.Any(o => o.Address.City == dropOffCity && o.Address.Country == dropOffCountry)).ToListAsync();
-; 
+            IEnumerable<int> carIDS;
 
-            if (cars == null)
+            if(passengers>0 && !string.IsNullOrEmpty(brand))
+            {
+                carIDS = await _context.Cars.Where(c => c.PassengersNumber >= passengers && c.Brand.ToLower() == brand.ToLower()).Select(c=>c.Id).ToArrayAsync();
+            }else if (passengers > 0 && string.IsNullOrEmpty(brand))
+            {
+                carIDS = await _context.Cars.Where(c => c.PassengersNumber >= passengers).Select(c => c.Id).ToArrayAsync();
+            }
+            else if (!string.IsNullOrEmpty(brand))
+            {
+                carIDS = await _context.Cars.Where(c=> c.Brand.ToLower() == brand.ToLower()).Select(c => c.Id).ToArrayAsync();
+            }
+            else
+            {
+                carIDS = await _context.Cars.Include(c=>c.CarCompany).Select(c => c.Id).ToArrayAsync();
+            }
+
+            if (carIDS.Count() == 0)
             {
                 return NotFound();
             }
 
-            return cars;
+            var companiesPickUp = await _context.Offices.Include(o => o.Address)
+                                        .Where(o => o.Address.City == pickUpCity && o.Address.Country == pickUpCountry)
+                                        .Select(o => o.RentCarId)
+                                        .ToArrayAsync();
+
+            var companiesDropOff = await _context.Offices.Include(o => o.Address)
+                                       .Where(o => o.Address.City == dropOffCity && o.Address.Country == dropOffCountry)
+                                       .Select(o => o.RentCarId)
+                                       .ToArrayAsync();
+
+            var intersect = companiesPickUp.Intersect(companiesDropOff).Intersect(carIDS).ToArray();
+
+            var reservedCars = await _context.ReservedDates.Where(d => d.Date <= dateDropOff && d.Date >= datepickUp).Select(c => c.CarId).ToArrayAsync();
+
+            var ret = await _context.Cars.Where(c => intersect.Contains(c.CompanyId) && !reservedCars.Contains(c.Id)).ToListAsync();
+   
+            return _mapper.Map<List<CarDTO>>(ret);
         }
+
+
+
+        // GET: api/Cars/CompanyCarsSearch
+        [HttpGet("{pickUpLocation}/{dropOffLocation}/{pickUpDate}/{dropOffDate}/{passengers}/{brand}/{companyID}")]
+        [Route("CompanyCarsSearch")]
+        public async Task<ActionResult<IEnumerable<CarDTO>>> SearchCompanyCars([FromQuery] string pickUpLocation, [FromQuery] string dropOffLocation,
+            [FromQuery] string pickUpDate, [FromQuery] string dropOffDate, [FromQuery] int passengers, [FromQuery] string brand,[FromQuery] int companyID)
+        {
+            string[] dropOffLocationParams = dropOffLocation.Split(", ");
+            string[] pickUpLocationParams = pickUpLocation.Split(", ");
+            string dropOffCity = dropOffLocationParams[0];
+            string dropOffCountry = dropOffLocationParams[1];
+            string pickUpCity = pickUpLocationParams[0];
+            string pickUpCountry = pickUpLocationParams[1];
+            DateTime dateDropOff = Convert.ToDateTime(dropOffDate);
+            DateTime datepickUp = Convert.ToDateTime(pickUpDate);
+
+            IEnumerable<int> carIDS;
+
+            if (passengers > 0 && !string.IsNullOrEmpty(brand))
+            {
+                carIDS = await _context.Cars.Where(c => c.PassengersNumber >= passengers && c.Brand.ToLower() == brand.ToLower() && c.CompanyId==companyID).Select(c => c.Id).ToArrayAsync();
+            }
+            else if (passengers > 0 && string.IsNullOrEmpty(brand))
+            {
+                carIDS = await _context.Cars.Where(c => c.PassengersNumber >= passengers && c.CompanyId == companyID).Select(c => c.Id).ToArrayAsync();
+            }
+            else if (!string.IsNullOrEmpty(brand))
+            {
+                carIDS = await _context.Cars.Where(c => c.Brand.ToLower() == brand.ToLower() && c.CompanyId == companyID).Select(c => c.Id).ToArrayAsync();
+            }
+            else
+            {
+                carIDS = await _context.Cars.Where(rc=> rc.CompanyId == companyID).Select(c => c.Id).ToArrayAsync();
+            }
+
+            if (carIDS.Count() == 0)
+            {
+                return NotFound();
+            }
+
+            var companiesPickUp = await _context.Offices.Include(o => o.Address)
+                                        .Where(o => o.Address.City == pickUpCity && o.Address.Country == pickUpCountry && o.RentCarId== companyID)
+                                        .AnyAsync();
+
+            var companiesDropOff = await _context.Offices.Include(o => o.Address)
+                                       .Where(o => o.Address.City == dropOffCity && o.Address.Country == dropOffCountry && o.RentCarId == companyID)
+                                       .Select(o => o.RentCarId)
+                                       .AnyAsync();
+            if (companiesDropOff && companiesPickUp)
+            {
+                var reservedCars = await _context.ReservedDates.Where(d => d.Date <= dateDropOff && d.Date >= datepickUp).Select(c => c.CarId).ToArrayAsync();
+
+                var ret = await _context.Cars.Where(c => carIDS.Contains(c.CompanyId) && !reservedCars.Contains(c.Id)).ToListAsync();
+
+                return _mapper.Map<List<CarDTO>>(ret);
+            }
+
+            return NotFound();
+        }
+
 
         // PUT: api/Cars/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
@@ -98,7 +199,15 @@ namespace Server.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(car).State = EntityState.Modified;
+            try
+            {
+                _context.Entry<Car>(car).State = EntityState.Modified;
+
+            }
+            catch(Exception e)
+            {
+
+            }
 
             try
             {
@@ -179,22 +288,6 @@ namespace Server.Controllers
             return NoContent();
         }
 
-        [HttpPatch("{id}")]
-        [Authorize(Roles = "RENTCARADMIN")]
-        public async Task<ActionResult<CarDTO>> PatchCarPrice(int id,[FromBody] int price)
-        {
-            var car = await _context.Cars.FindAsync(id);
-
-            if(car == null)
-            {
-                return NotFound();
-            }
-
-            car.Price = price;
-            await _context.SaveChangesAsync();
-
-            return _mapper.Map<CarDTO>(car);
-        }
 
         private bool CarExists(int id)
         {

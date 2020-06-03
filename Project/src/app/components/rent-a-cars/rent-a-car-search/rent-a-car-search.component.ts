@@ -77,14 +77,14 @@ export class RentACarSearchComponent implements OnInit {
   }
 
   onSubmitForm(){
-    console.log(this.searchForm.get('rate').value);
-    const params = {
-      'name' : this.searchForm.get('name').value,
-      'address' : this.searchForm.get('address').value,
-      'rate' : this.searchForm.get('rate').value,
+    if(!this.isFormEmpty()){
+     const params =
+      'name=' + this.searchForm.get('name').value +
+      '&address='+this.searchForm.get('address').value+
+      '&rate='+(this.searchForm.get('rate').value===""?-1:+this.searchForm.get('rate'));
 
-    };
     this.rentCarService.searchParamsSubject.next(params);
+    }
   }
 
   onChangeSort(value:string){
@@ -105,6 +105,15 @@ export class RentACarSearchComponent implements OnInit {
       }
       return null;
     }
+  }
+
+  isFormEmpty():boolean{
+    if(this.searchForm.get('name').value.trim()==="" &&
+      this.searchForm.get('address').value.trim()==="" &&
+      this.searchForm.get('rate').value.trim()==="")
+      return true;
+    return false;
+
   }
 
 }

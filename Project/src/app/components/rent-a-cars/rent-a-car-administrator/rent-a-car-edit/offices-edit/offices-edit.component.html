@@ -14,26 +14,36 @@
 </div>
 <app-profile-offices *ngIf="!officesEmpty()" style="margin-top: 4%;" [items]="this.offices"></app-profile-offices>
 
-<ng-template #addOfficeModal let-modal [formGroup]="addOfficeForm">
+<ng-template #addOfficeModal let-modal >
     <div class="modal-header">
       <h6 class="modal-title" id="modal-basic-title-cpm">Add new office</h6>
       <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
         <span aria-hidden="true">×</span>
       </button>
     </div>
-    <div class="modal-body">
-      <label class="lblStyle">Street: &nbsp;&nbsp;</label>
-      <input class="modal-input-street" formControlName="street" type="text">
-      <input class="modal-input" style="width:10%;margin-left:1%" formControlName="number" type="text">
+    <div class="modal-body" [formGroup]="addOfficeForm">
+
+      <h6>Choose office location on map</h6>
+
+      <div class="map-container">
+        <agm-map  [(latitude)]="marker.lat" [(longitude)]="marker.lng" [(zoom)]="zoom" [disableDefaultUI]="true"
+          (mapClick)="onClick($event)" [zoomControl]="true">
+          <agm-marker *ngIf="mapClicked" [(latitude)]="marker.lat" [(longitude)]="marker.lng" [markerDraggable]="marker.draggable"></agm-marker>
+        </agm-map>
+      </div>
+
+      <label  class="lblStyle">Street: &nbsp;&nbsp;</label>
+      <input id="street" class="modal-input-street" formControlName="street" type="text">
+      <input id="number" class="modal-input" style="width:10%;margin-left:1%" formControlName="number" type="text">
       <br>
       <label class="lblStyle">City: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-      <input class="modal-input" formControlName="city" type="text">
+      <input id="city" class="modal-input" formControlName="city" type="text">
       <br>
       <label class="lblStyle">Country: </label>
-      <input class="modal-input" formControlName="country" type="text">
+      <input id="country" class="modal-input" formControlName="country" type="text">
     </div>
     <div class="modal-footer">
       <button type="button" [disabled]="addOfficeForm.invalid" class="btn confirmBtnStyle"
-        (click)="addOffice()">Confirm</button>
+        (click)="checkLatLon()">Confirm</button>
     </div>
 </ng-template>

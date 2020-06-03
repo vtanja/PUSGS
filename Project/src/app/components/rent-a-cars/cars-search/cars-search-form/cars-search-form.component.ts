@@ -250,11 +250,15 @@ export class CarsSearchFormComponent implements OnInit {
       'location.dropOffLocation'
     ).value;
     searchParams['carBrand'] = this.searchForm.get('carBrand').value;
-    searchParams['passengers'] = this.searchForm.get('passengers').value;
+    searchParams['passengers'] = +this.searchForm.get('passengers').value;
+
 
     if (this.companyID === undefined) {
+      console.log(this.companyID);
       this.router.navigate(['/allCars'], { queryParams: searchParams });
-    } else {
+    }
+    else {
+      console.log("second " + this.companyID);
       searchParams['companyID'] = this.companyID;
       this.rentCarsService.searchCarsParamsSubject.next(searchParams);
     }
@@ -284,7 +288,7 @@ export class CarsSearchFormComponent implements OnInit {
     if (this.companyID === undefined) {
       this.router.navigate(['/allCars']);
     } else {
-      this.rentCarsService.searchCarsParamsSubject.next({});
+      this.rentCarsService.searchCarsParamsSubject.next("");
     }
   }
 

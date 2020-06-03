@@ -7,6 +7,23 @@ h4{
   color:white;
 }
 
+.sebm-google-map-container {
+  height: 200px;
+}
+
+.map-container{
+  margin-left: 10%;
+  width: 80%;
+  margin-bottom: 5%;
+  margin-top: 3%;
+}
+
+.map-btn{
+  margin-top: 2%;
+  margin-bottom: 2%;
+  margin-left:80%;
+}
+
 .my-heading-div{
   background: linear-gradient(to right, #fa9e1b, #8d4fff);
   border-radius: 1%;

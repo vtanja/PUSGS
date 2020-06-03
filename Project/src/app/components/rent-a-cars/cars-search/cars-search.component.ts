@@ -47,8 +47,6 @@ export class CarsSearchComponent implements OnInit {
   }
 
   onFormSubmit(){
-
-    console.log(this.searchForm);
     const searchParams = {};
 
     let pickUpDate = this.searchForm.get('dates.pickUpDate').value;
@@ -62,8 +60,6 @@ export class CarsSearchComponent implements OnInit {
     searchParams['dropOffLocation'] = this.searchForm.get('location.dropOffLocation').value;
     searchParams['carBrand'] = this.searchForm.get('carBrand').value;
     searchParams['passengers'] = this.searchForm.get('passengers').value;
-
-    console.log(searchParams);
 
     this.router.navigate(['/allCars'],{queryParams:searchParams});
 

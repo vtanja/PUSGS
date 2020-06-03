@@ -9,8 +9,6 @@ export class AdministratorService{
   readonly baseUri = 'http://localhost:51474/api/';
   constructor(private userAdapter:UserAdapter,private httpClient:HttpClient){}
 
-
-
   addRentCarAdmin(data:{}){
     return this.httpClient.post(this.baseUri+'RentCarAdmins/AddAdmin',data);
   }

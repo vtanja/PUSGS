@@ -1,16 +1,12 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { KeyValue } from '@angular/common';
 import { UserService } from 'src/app/services/user-service.service';
 import { Address } from 'src/app/models/address';
-import { RentCarAdministratorService } from 'src/app/services/rent-car-administrator.service';
-import { AirlineAdministratorService } from 'src/app/services/airline-administrator.service';
 import { Destination } from 'src/app/models/destination.model';
 import Swal from 'sweetalert2';
 import { DestinationService } from 'src/app/services/destination.service';
 import { DestinationAdapter } from 'src/app/models/adapters/destination.adapter';
 import { RentCarOfficesService } from 'src/app/services/rent-car-offices.service';
-import { OfficeAdapter } from 'src/app/models/adapters/office.adapter';
 import { Office } from 'src/app/models/office';
 
 
@@ -35,10 +31,7 @@ export class ProfileOfficesComponent implements OnInit {
   images: {};
 
   constructor(private router: ActivatedRoute,private usersService:UserService,
-    private rentCarAdminService:RentCarAdministratorService,
-    private officeAdapter:OfficeAdapter,
     private rentCarOfficesService:RentCarOfficesService,
-     private airlineAdminService:AirlineAdministratorService,
      private destAdapter:DestinationAdapter,
      private destinationService:DestinationService) {}
 

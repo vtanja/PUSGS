@@ -1,6 +1,16 @@
 <div class="my-heading-div">
   <h4>Add company main data</h4>
 </div>
+<div class="row">
+  <button class="map-btn" *ngIf="!mapToggled" (click)="this.mapToggled = !mapToggled">Choose address on map</button>
+  <div *ngIf="mapToggled" class="map-container">
+    <agm-map [(latitude)]="marker.lat" [(longitude)]="marker.lng" [(zoom)]="zoom" [disableDefaultUI]="true"
+      (mapClick)="onClick($event)" [zoomControl]="true">
+      <agm-marker [(latitude)]="marker.lat" [(longitude)]="marker.lng" [markerDraggable]="marker.draggable">
+      </agm-marker>
+    </agm-map>
+  </div>
+</div>
 <div class="container container-style" [formGroup]="dataForm">
   <div class="row">
     <div class="col" style="margin-left: 1%;">
@@ -92,7 +102,7 @@
     <div class="container-form-btn" style="align-self: center;">
       <div class="wrap-form-btn">
         <div class="form-bgbtn"></div>
-        <button class="form-btn" [disabled]="dataForm.invalid" (click)="addCompany()">
+        <button class="form-btn" [disabled]="dataForm.invalid" (click)="onAdd()">
           Save changes
         </button>
       </div>

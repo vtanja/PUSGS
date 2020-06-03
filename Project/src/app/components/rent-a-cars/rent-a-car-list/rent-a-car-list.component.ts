@@ -18,32 +18,36 @@ export class RentACarListComponent implements OnInit {
   isSpining:boolean ;
 
   constructor(private rentCarService:RentCarService,private spinner: NgxSpinnerService) {
-
    }
 
   ngOnInit(): void {
-    this.isSpining = true;
-    this.spinner.show();
+    this.showSpinner();
     this.rentCarService.getRentCars().subscribe(
       (res)=>{
         console.log(res);
         this.rentCars = res;
-        this.spinner.hide();
-        this.isSpining = false;
+        this.hideSpinner();
       },
       (err)=>{
-        this.spinner.hide();
-        this.isSpining = false;
+        this.hideSpinner();
       }
     );
 
-    this.paramsSubscription= this.rentCarService.searchParamsSubject.subscribe((params:{})=>{
-      this.rentCars = this.rentCarService.search(params);
+    this.paramsSubscription= this.rentCarService.searchParamsSubject.subscribe((params:string)=>{
+      this.rentCarService.getRentCars().subscribe(
+        (res)=>{
+          console.log(res);
+          this.rentCars = res;
+          this.hideSpinner();
+        },
+        (err)=>{
+          this.hideSpinner();
+        }
+      );
     });
 
     this.sortParamsSubscription = this.rentCarService.sortChange.subscribe((params:string)=>{
       this.sortCriteria=params;
-
     })
   }
 
@@ -52,5 +56,14 @@ export class RentACarListComponent implements OnInit {
     this.sortParamsSubscription.unsubscribe();
   }
 
+  showSpinner(){
+    this.isSpining = true;
+    this.spinner.show();
+  }
+
+  hideSpinner(){
+    this.spinner.hide();
+    this.isSpining = false;
+  }
 
 }

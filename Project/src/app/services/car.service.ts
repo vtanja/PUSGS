@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { CarAdapter } from '../models/adapters/car.adapter';
+import { Car } from '../models/Car.model';
 
 @Injectable()
 export class CarService {
@@ -23,14 +24,23 @@ export class CarService {
     return this.httpClient.delete(this.baseUri + 'Cars/' + carId);
   }
 
-  changeCarPrice(carId: number, newPrice: number) {
-    // let data = {
-    //   op: 'replace',
-    //   path: '/price',
-    //   value: newPrice,
-    // };
+  changeCarPrice(carId: number, car: Car) {
 
-    return this.httpClient.patch(this.baseUri + 'Cars/' + carId,newPrice);
+    let data = JSON.stringify(car);
+    return this.httpClient.put(this.baseUri + 'Cars/' + carId,car);
+  }
+
+  searchCars(params:string){
+    return this.httpClient.get(this.baseUri+"Cars/Search?"+params).pipe(
+      map((data: any[]) => data.map(item => this.carAdapter.adapt(item))),
+    );
+  }
+
+  searchCompanyCars(params:string){
+    console.log(params);
+    return this.httpClient.get(this.baseUri+"Cars/CompanyCarsSearch?"+params).pipe(
+      map((data:any[]) => data.map(item => this.carAdapter.adapt(item))),
+    )
   }
 
   addDiscount(){

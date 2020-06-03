@@ -50,6 +50,40 @@ namespace Server.Controllers
             return ret;
         }
 
+        // GET: api/RentCars/search
+        [HttpGet("{name}/{address}/{rate}")]
+        [Route("search")]
+        public async Task<ActionResult<IEnumerable<RentCar>>> SearchRentCar([FromQuery]string name, [FromQuery]string address, [FromQuery]int rate)
+        {
+            List<RentCar> rentCars = new List<RentCar>();
+            if (!String.IsNullOrEmpty(address))
+            {
+                string[] addressParts = address.Split(", ");
+                var city = addressParts[0];
+                var country = addressParts[1];
+
+                if (!String.IsNullOrEmpty(name))
+                    rentCars = await _context.RentCars.Where(rc => rc.Name.ToLower() == name.ToLower() && rc.Rate >= rate).Include(rc => rc.Address).Where(rc => rc.Address.City == city && rc.Address.Country == country).ToListAsync();
+                else
+                    rentCars = await _context.RentCars.Where(rc => rc.Rate >= rate).Include(rc => rc.Address).Where(rc => rc.Address.City == city && rc.Address.Country == country).ToListAsync();
+            }
+            else
+            {
+                if (!String.IsNullOrEmpty(name))
+                    rentCars = await _context.RentCars.Where(rc => rc.Name.ToLower() == name.ToLower() && rc.Rate >= rate).Include(rc => rc.Address).ToListAsync();
+                else
+                    rentCars = await _context.RentCars.Where(rc => rc.Rate >= rate).ToListAsync();
+
+            }
+            
+            if (rentCars == null)
+            {
+                return NotFound();
+            }
+
+            return rentCars;
+        }
+
         // GET: api/RentCars
         [HttpGet]
         [Route("CompanyMainData")]
@@ -175,6 +209,7 @@ namespace Server.Controllers
             return _context.RentCars.Any(e => e.Id == id);
         }
 
-       
+
+
     }
 }

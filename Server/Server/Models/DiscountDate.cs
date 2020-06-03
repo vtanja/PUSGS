@@ -12,14 +12,15 @@ namespace Server.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-
-        public int CarId { get; set; }
+        
         public DateTime Date { get; set; }
+
+        public double Discount { get; set; }
+        public int CarId { get; set; }
 
         [ForeignKey("CarId")]
         public virtual Car Car { get; set; }
 
-        public int Discount { get; set; }
-        public int DiscountPrice { get; set; }
+        
     }
 }

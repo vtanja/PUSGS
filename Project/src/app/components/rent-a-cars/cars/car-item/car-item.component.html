@@ -12,7 +12,7 @@
       </div>
       <div class="row" >
         <h4 style="color:black; font-weight: 600; font-size: 22px;margin-left: 35%;">
-          {{car.pricePerDay*daysBetween | currency:'EUR'}}</h4>
+          {{car.price*daysBetween | currency:'EUR'}}</h4>
       </div>
     </div>
     <div class="col" style="margin-left: 3%;">
@@ -25,14 +25,14 @@
         <div class="col">
           <div class="row">
             <img src="../../../assets/images/team.png" class="icon-style">
-            <label style="font-weight: bolder;">&nbsp;&nbsp;{{car.maxPassengers}}&nbsp;&nbsp;</label>
+            <label style="font-weight: bolder;">&nbsp;&nbsp;{{car.passengersNumber}}&nbsp;&nbsp;</label>
             <label style="font-weight: 500; font-size: 14px;">passengers</label>
           </div>
           <div class="row">
             <img src="../../../assets/images/gearshift.png" class="icon-style">
-            <label *ngIf="car.hasAutomaticGearbox" style="font-weight: bolder;margin-top: 3%;">
+            <label *ngIf="car.hasAutomationGearbox" style="font-weight: bolder;margin-top: 3%;">
               &nbsp;&nbsp;A&nbsp;&nbsp;</label>
-            <label *ngIf="!car.hasAutomaticGearbox" style="font-weight: bolder;margin-top: 3%;">&nbsp;&nbsp;M</label>
+            <label *ngIf="!car.hasAutomationGearbox" style="font-weight: bolder;margin-top: 3%;">&nbsp;&nbsp;M</label>
             <label style="margin-top: 3%; font-weight: 500;">gearbox</label>
           </div>
         </div>
@@ -89,7 +89,7 @@
     <br>
     <label class="lblStyle">Drop off date:<span class="valueStyle">  {{params['dropOffDate']}},&nbsp;&nbsp;{{params['dropOffTime']}}</span></label>
     <br>
-    <label class="lblStyle">Total price: <span class="valueStyle"> {{car.pricePerDay*(daysBetween===0?1:daysBetween) | currency:'EUR' }}</span></label>
+    <label class="lblStyle">Total price: <span class="valueStyle"> {{car.price*(daysBetween===0?1:daysBetween) | currency:'EUR' }}</span></label>
   </div>
   <div class="modal-footer">
     <button type="button" class="btn confirmBtnStyle" (click)="makeReservation();modal.close('Save click')">Confirm</button>

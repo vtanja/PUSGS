@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Car } from 'src/app/models/Car.model';
 import { RentCarService } from '../../../../services/rent-a-car.service';
 import { ActivatedRoute, Params } from '@angular/router';
+import { CarService } from 'src/app/services/car.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-cars-list',
@@ -13,17 +15,38 @@ export class CarsListComponent implements OnInit {
   cars:Array<Car> = new Array<Car>();
   params:{};
   daysBetween:number;
+  isSpining:boolean ;
 
-  constructor(private rentCarService:RentCarService,
-              private activeRoute:ActivatedRoute) { }
+  constructor(private activeRoute:ActivatedRoute,
+              private carService:CarService,
+              private spinner: NgxSpinnerService) { }
 
   ngOnInit(): void {
 
     this.activeRoute.queryParams.subscribe((queryParams:Params)=>{
       this.params=queryParams;
       this.daysBetween = this.getDaysBetween(queryParams.pickUpDate,queryParams.dropOffDate);
-      this.cars=this.rentCarService.getCars(queryParams);
-  });
+
+      let params =
+        "pickUpLocation=" + queryParams.pickUpLocation +
+        "&dropOffLocation=" + queryParams.dropOffLocation +
+        "&pickUpDate=" + queryParams.pickUpDate +
+        "&dropOffDate=" + queryParams.dropOffDate +
+        "&passsengers=" + queryParams.passsengers +
+        "&brand=" + queryParams.carBrand;
+        ;
+
+      this.showSpinner();
+      this.carService.searchCars(params).subscribe(
+        res=>{
+          this.cars = res;
+          this.hideSpinner();
+        },
+        err=>{
+          this.hideSpinner();
+        }
+      );
+      });
 }
 
 getDaysBetween(start:string,end:string):number{
@@ -40,4 +63,13 @@ getDaysBetween(start:string,end:string):number{
   return diffDays;
 }
 
+showSpinner(){
+  this.isSpining = true;
+  this.spinner.show();
+}
+
+hideSpinner(){
+  this.spinner.hide();
+  this.isSpining = false;
+}
 }

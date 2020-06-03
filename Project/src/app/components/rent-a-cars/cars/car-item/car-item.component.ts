@@ -52,7 +52,7 @@ export class CarItemComponent implements OnInit {
     let dropOffDate = this.params['dropOffDate'];
     let dropOffTime = this.params['dropOffTime'];
     let daysBetween = this.daysBetween;
-    let totalPrice = this.car.pricePerDay * daysBetween;
+    let totalPrice = this.car.price * daysBetween;
 
     let carReservation = new CarReservation(pickUpDate,pickUpTime,dropOffDate,dropOffTime,daysBetween,totalPrice,this.car.companyId,this.car.companyName,this.car.id,'',this.car.model);
 

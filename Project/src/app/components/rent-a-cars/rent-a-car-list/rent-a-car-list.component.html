@@ -1,10 +1,10 @@
 <ngx-spinner type='ball-spin-clockwise-fade' color="#eea136">
   <p style="font-size: 20px; color: white ; padding-top: 25%;">Loading...</p>
 </ngx-spinner>
-<div *ngIf="(rentCars.length===0 || rentCars===undefined) && !isSpining">
-  <h3>We haven't found any Rent a car companies for you...</h3>
+<div *ngIf="(rentCars===undefined || rentCars.length===0) && !isSpining">
+  <h3 style="margin-bottom: 500px;">We haven't found any Rent a car companies for you...</h3>
 </div>
-<div *ngIf="rentCars.length!=0">
+<div *ngIf="rentCars.length!=0 && !isSpining">
   <div class="list-group" *ngFor="let rentCar of rentCars | sortBy:'asc':sortCriteria">
     <app-rent-a-car-item [rentCar]="rentCar"></app-rent-a-car-item>
 </div>

@@ -41,7 +41,9 @@ namespace Server.DTOs
                 .ForMember(dest => dest.PassengersNumber, opt => opt.MapFrom(src => src.PassengersNumber))
                 .ForMember(dest => dest.HasAirCondition, opt => opt.MapFrom(src => src.HasAirCondition))
                 .ForMember(dest => dest.HasAutomationGearbox, opt => opt.MapFrom(src => src.HasAutomationGearbox))
-                .ForMember(dest => dest.Doors, opt => opt.MapFrom(src => src.Doors));
+                .ForMember(dest => dest.Doors, opt => opt.MapFrom(src => src.Doors))
+                .ForMember(dest => dest.CompanyId, opt => opt.MapFrom(src => src.CompanyId))
+                .ForMember(dest => dest.CompanyName, opt => opt.MapFrom(src => (src.CarCompany==null?"":src.CarCompany.Name)));
 
 
             CreateMap<RentCar, RentCarDTO>()

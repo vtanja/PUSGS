@@ -14,6 +14,23 @@ h4{
   padding-bottom: 1%;
 }
 
+.sebm-google-map-container {
+  height: 200px;
+}
+
+.map-container{
+  margin-left: 10%;
+  width: 80%;
+  margin-bottom: 5%;
+  margin-top: 3%;
+}
+
+.map-btn{
+  margin-top: 2%;
+  margin-bottom: 2%;
+  margin-left:80%;
+}
+
 .container-style{
 
   margin-top:5%;

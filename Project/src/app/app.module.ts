@@ -42,7 +42,6 @@ import { FlightItemComponent } from './components/airlines/flights/flight-item/f
 import { FlightsComponent } from './components/airlines/flights/flights.component';
 import { RoundFlightItemComponent } from './components/airlines/flights/round-flight-item/round-flight-item.component';
 import { RentACarProfileComponent } from './components/rent-a-cars/rent-a-car-profile/rent-a-car-profile.component';
-import { CarsCarouselComponent } from './components/rent-a-cars/rent-a-car-profile/cars-carousel/cars-carousel.component';
 import { FlightsFilterComponent } from './components/airlines/flights/flights-filter/flights-filter.component';
 import { ProfileNavbarComponent } from './components/common/profile-navbar/profile-navbar.component';
 import { ProfileOfficesComponent } from './components/common/profile-offices/profile-offices.component';
@@ -66,7 +65,6 @@ import { CarsEditComponent } from './components/rent-a-cars/rent-a-car-administr
 import { PlaneLayoutComponent } from './components/plane-layout/plane-layout.component';
 import { CreateFlightReservationComponent } from './components/create-flight-reservation/create-flight-reservation.component';
 import { CreateCarReservationComponent } from './components/create-car-reservation/create-car-reservation.component';
-import { RentCarAdministratorService } from './services/rent-car-administrator.service';
 import { OfficesEditComponent } from './components/rent-a-cars/rent-a-car-administrator/rent-a-car-edit/offices-edit/offices-edit.component';
 import { AddCarComponent } from './components/rent-a-cars/rent-a-car-administrator/rent-a-car-edit/add-car/add-car.component';
 import { MapComponent } from './components/map/map.component';
@@ -115,9 +113,9 @@ import { RentCarOfficesService } from './services/rent-car-offices.service';
 import { CarService } from './services/car.service';
 import { AdminHomeComponent } from './components/administrator/admin-home/admin-home.component';
 import { AdminHomeCounterCardComponent } from './components/administrator/admin-home-counter-card/admin-home-counter-card.component';
-import { MapboxComponent } from './components/mapbox/mapbox.component';
 import { RentACarAddComponent } from './components/rent-a-cars/rent-a-car-administrator/rent-a-car-add/rent-a-car-add.component';
 import { AddFirstComponent } from './components/rent-a-cars/rent-a-car-administrator/rent-a-car-add/add-first/add-first.component';
+import { DiscountDateService } from './services/discount-date.service';
 
 const fbLoginOptions: LoginOpt = {
   scope: 'first_name,last_name,name,email',
@@ -176,7 +174,6 @@ export function provideConfig() {
     FlightsComponent,
     RoundFlightItemComponent,
     RentACarProfileComponent,
-    CarsCarouselComponent,
     FlightsFilterComponent,
     FilterPipe,
     RoundFlightsFilterPipe,
@@ -222,8 +219,7 @@ export function provideConfig() {
     RentACarAddComponent,
     AddFirstComponent,
     AdminHomeComponent,
-    AdminHomeCounterCardComponent,
-    MapboxComponent
+    AdminHomeCounterCardComponent
   ],
   imports: [
     BrowserModule,
@@ -258,7 +254,6 @@ export function provideConfig() {
     RentCarService,
     AirlineService,
     CarReservationsService,
-    RentCarAdministratorService,
     AdministratorService,
     { provide: NgbDateParserFormatter, useClass: NgbDateCustomParserFormatter },
     { provide: HTTP_INTERCEPTORS, useClass: HttpTokenInterceptor, multi: true },
@@ -268,6 +263,7 @@ export function provideConfig() {
     RentCarProfileAdapter,
     OfficeAdapter,
     RentCarOfficesService,
+    DiscountDateService,
     CarService,
     {
       provide: AuthServiceConfig,

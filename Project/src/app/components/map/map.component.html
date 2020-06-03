@@ -1,6 +1,6 @@
 <div class="map-container">
   <agm-map  [(latitude)]="markers[0].lat" [(longitude)]="markers[0].lng" [(zoom)]="zoom" [disableDefaultUI]="true"
-    [zoomControl]="true">
+    (mapClick)="onClick($event,0)" [zoomControl]="true">
     <agm-marker  *ngFor="let marker of markers" [(latitude)]="marker.lat" [(longitude)]="marker.lng" [markerDraggable]="marker.draggable"></agm-marker>
   </agm-map>
 </div>
