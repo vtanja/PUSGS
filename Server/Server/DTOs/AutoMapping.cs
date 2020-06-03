@@ -21,7 +21,15 @@ namespace Server.DTOs
                 .ForMember(dest => dest.Planes, opt => opt.MapFrom(src => src.Planes))
                 .ForMember(dest => dest.Destinations, opt => opt.MapFrom(src => src.Destinations.GroupBy(g => g.Country).ToDictionary(g => g.Key, g =>g.ToList()))).ReverseMap();
 
-            CreateMap<Plane, PlaneDTO>();
+            CreateMap<Plane, PlaneDTO>()
+                .ForMember(dest=>dest.Code, opt=>opt.MapFrom(src=>src.Code))
+                .ForMember(dest=>dest.Segments, opt=>opt.MapFrom(src=>src.Segments));
+
+            CreateMap<Segment, SegmentDTO>()
+                .ForMember(dest => dest.Columns, opt => opt.MapFrom(src => src.Columns))
+                .ForMember(dest => dest.Rows, opt => opt.MapFrom(src => src.Rows))
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name));
 
             CreateMap<AirlineAdmin, AirlineAdminDTO>()
                 .ForMember(dest => dest.AirlineId, opt => opt.MapFrom(src => src.AirlineId));

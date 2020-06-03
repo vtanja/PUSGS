@@ -24,6 +24,10 @@
     <Compile Remove="Migrations\20200522153729_UpdateOnRentCarAdmin.Designer.cs" />
     <Compile Remove="Migrations\20200522154001_UpdateRentCarAdminCompany.cs" />
     <Compile Remove="Migrations\20200522154001_UpdateRentCarAdminCompany.Designer.cs" />
+    <Compile Remove="Migrations\20200529105605_PlaneUpdate.cs" />
+    <Compile Remove="Migrations\20200529105605_PlaneUpdate.Designer.cs" />
+    <Compile Remove="Migrations\20200529131331_PlaneUpdate2.cs" />
+    <Compile Remove="Migrations\20200529131331_PlaneUpdate2.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -37,6 +41,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.4" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.4" />
     <PackageReference Include="Microsoft.AspNetCore.JsonPatch" Version="3.1.4" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="3.1.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.4" />

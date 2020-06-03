@@ -163,6 +163,7 @@ namespace Server.Controllers
             else
             {
                 friendship.Accepted = true;
+                _dataBaseContext.Entry(friendship).State = EntityState.Detached;
                 _dataBaseContext.Entry(friendship).State = EntityState.Modified;
 
                 try

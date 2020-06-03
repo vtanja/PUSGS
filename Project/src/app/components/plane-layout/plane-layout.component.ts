@@ -10,11 +10,11 @@ import { Plane } from '../../models/plane';
 export class PlaneLayoutComponent implements OnInit {
   @Input() plane:Plane;
   @Input() toBeAdded: string[]=[];
-  toBePremium:string[]=[];
   selected:string[]=[];
   firstRows = new Array();
   businessRows = new Array();
   economyRows = new Array();
+  premiumRows = [];
   settingConfig=false;
   done=false;
   hidden=true;
@@ -25,39 +25,82 @@ export class PlaneLayoutComponent implements OnInit {
 
   ngOnInit() {
 
-    this.toBePremium=[];
 
     if(this.route.snapshot.routeConfig.path.includes('add-plane')){
       this.settingConfig=true;
       this.hidden=false;
     }
+    if(this.route.snapshot.routeConfig.path.includes('edit-plane')){
+      this.settingConfig=true;
+    }
 
     this.firstRows=this.getSeatsPerSegment(0,'First class');
 
-    if(this.firstRows!==undefined){
-      this.businessRows=this.getSeatsPerSegment(this.firstRows.length, 'Business class');
-    }
-    else{
-      this.businessRows=this.getSeatsPerSegment(0, 'Business class');
-    }
+    this.findBusinessStart();
 
-    if(this.businessRows!==undefined){
-      if(this.firstRows!==undefined){
-        this.economyRows=this.getSeatsPerSegment(this.firstRows.length + this.businessRows.length, 'Economy class');
-      }
-      else{
-        this.economyRows=this.getSeatsPerSegment(this.businessRows.length, 'Economy class');
-      }
-    }
-    else{
-      if(this.firstRows!==undefined){
-        this.economyRows=this.getSeatsPerSegment(this.firstRows.length, 'Economy class');
-      }
-      else{
-        this.economyRows=this.getSeatsPerSegment(0, 'Economy class');
-      }
-    }
+    this.findEconomyPremiumStart();
 
+    this.findEconomyStart();
+
+    console.log(this.firstRows);
+    console.log(this.businessRows);
+    console.log(this.premiumRows);
+    console.log(this.economyRows);
+  }
+
+  private findBusinessStart() {
+    if (this.firstRows !== undefined) {
+      this.businessRows = this.getSeatsPerSegment(this.firstRows.length, 'Business class');
+    }
+    else {
+      this.businessRows = this.getSeatsPerSegment(0, 'Business class');
+    }
+  }
+
+  private findEconomyPremiumStart() {
+    if (this.businessRows !== undefined) {
+      if (this.firstRows !== undefined) {
+        this.premiumRows = this.getSeatsPerSegment(this.firstRows.length + this.businessRows.length, 'Premium economy');
+      }
+      else {
+        this.premiumRows = this.getSeatsPerSegment(this.businessRows.length, 'Premium economy');
+      }
+    }
+    else {
+      if (this.firstRows !== undefined) {
+        this.premiumRows = this.getSeatsPerSegment(this.firstRows.length, 'Premium economy');
+      }
+      else {
+        this.premiumRows = this.getSeatsPerSegment(0, 'Premium economym');
+      }
+    }
+  }
+
+  private findEconomyStart() {
+    if (this.businessRows === undefined && this.firstRows === undefined && this.premiumRows === undefined) {
+      this.economyRows = this.getSeatsPerSegment(0, 'Economy class');
+    }
+    else if (this.businessRows !== undefined && this.firstRows === undefined && this.premiumRows === undefined) {
+      this.economyRows = this.getSeatsPerSegment(this.businessRows.length, 'Economy class');
+    }
+    else if (this.businessRows === undefined && this.firstRows !== undefined && this.premiumRows === undefined) {
+      this.economyRows = this.getSeatsPerSegment(this.firstRows.length, 'Economy class');
+    }
+    else if (this.businessRows === undefined && this.firstRows === undefined && this.premiumRows !== undefined) {
+      this.economyRows = this.getSeatsPerSegment(this.premiumRows.length, 'Economy class');
+    }
+    else if (this.businessRows !== undefined && this.firstRows !== undefined && this.premiumRows === undefined) {
+      this.economyRows = this.getSeatsPerSegment(this.firstRows.length + this.businessRows.length, 'Economy class');
+    }
+    else if (this.businessRows !== undefined && this.firstRows === undefined && this.premiumRows !== undefined) {
+      this.economyRows = this.getSeatsPerSegment(this.premiumRows.length + this.businessRows.length, 'Economy class');
+    }
+    else if (this.businessRows === undefined && this.firstRows !== undefined && this.premiumRows !== undefined) {
+      this.economyRows = this.getSeatsPerSegment(this.premiumRows.length + this.firstRows.length, 'Economy class');
+    }
+    else if (this.businessRows !== undefined && this.firstRows !== undefined && this.premiumRows !== undefined) {
+      this.economyRows = this.getSeatsPerSegment(this.premiumRows.length = this.businessRows.length + this.firstRows.length, 'Economy class');
+    }
   }
 
   getSeatsPerSegment(start:number, segmentname:string){
@@ -70,26 +113,19 @@ export class PlaneLayoutComponent implements OnInit {
 
     if (this.plane != undefined){
         let segment = this.plane.segments.find(s=>s.name===segmentname);
+        console.log(segment);
         if(segment!==undefined){
-          let segmentInfo = segment.value;
-          console.log(segmentInfo);
-          if(segmentInfo !== undefined){
-            for(let row = 0 ; row<segmentInfo.rows; row++){
-              for(let seats = 0; seats<segmentInfo.columns; seats++){
+            for(let row = 0 ; row<segment.rows; row++){
+              for(let seats = 0; seats<segment.columns; seats++){
                 seatChar = String.fromCharCode(65 + seats)
                 seatsInARow.push((start+row + 1).toString() + seatChar);
               }
               rows.push(seatsInARow);
               seatsInARow = new Array();
             }
-          }
-
-
-
+        }
       }
-    }
-
-    console.log(rows);
+      console.log(rows);
     return rows;
   }
 
@@ -104,13 +140,5 @@ export class PlaneLayoutComponent implements OnInit {
 
   }
 
-  seatActionConfig(seat){
-    if(this.toBePremium.indexOf(seat)===-1){
-      this.toBePremium.push(seat);
-    }
-    else{
-      var index=this.toBePremium.indexOf(seat);
-      this.toBePremium.splice(index, 1);
-    }
-  }
+  
 }

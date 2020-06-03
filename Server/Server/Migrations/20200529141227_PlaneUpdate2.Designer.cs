@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Server.Settings;
 
 namespace Server.Migrations
 {
     [DbContext(typeof(DataBaseContext))]
-    partial class DataBaseContextModelSnapshot : ModelSnapshot
+    [Migration("20200529141227_PlaneUpdate2")]
+    partial class PlaneUpdate2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -491,14 +493,17 @@ namespace Server.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
-                    b.Property<double>("Discount")
-                        .HasColumnType("float");
+                    b.Property<int>("Discount")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DiscountPrice")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CarId");
 
-                    b.ToTable("DiscountDates");
+                    b.ToTable("DiscountDate");
                 });
 
             modelBuilder.Entity("Server.Models.Friendship", b =>
@@ -629,7 +634,7 @@ namespace Server.Migrations
 
                     b.HasIndex("CarId");
 
-                    b.ToTable("ReservedDates");
+                    b.ToTable("ReservedDate");
                 });
 
             modelBuilder.Entity("Server.Models.Segment", b =>

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Server.Settings;
 
 namespace Server.Migrations
 {
     [DbContext(typeof(DataBaseContext))]
-    partial class DataBaseContextModelSnapshot : ModelSnapshot
+    [Migration("20200529131809_PlaneSegmentRelationshipChanged")]
+    partial class PlaneSegmentRelationshipChanged
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -491,14 +493,17 @@ namespace Server.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
-                    b.Property<double>("Discount")
-                        .HasColumnType("float");
+                    b.Property<int>("Discount")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DiscountPrice")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CarId");
 
-                    b.ToTable("DiscountDates");
+                    b.ToTable("DiscountDate");
                 });
 
             modelBuilder.Entity("Server.Models.Friendship", b =>
@@ -550,13 +555,18 @@ namespace Server.Migrations
 
             modelBuilder.Entity("Server.Models.Plane", b =>
                 {
-                    b.Property<string>("Code")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("AirlineId")
                         .HasColumnType("int");
 
-                    b.HasKey("Code");
+                    b.Property<string>("Code")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("AirlineId");
 
@@ -629,7 +639,7 @@ namespace Server.Migrations
 
                     b.HasIndex("CarId");
 
-                    b.ToTable("ReservedDates");
+                    b.ToTable("ReservedDate");
                 });
 
             modelBuilder.Entity("Server.Models.Segment", b =>
@@ -645,8 +655,8 @@ namespace Server.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("PlaneId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("PlaneId")
+                        .HasColumnType("int");
 
                     b.Property<int>("Rows")
                         .HasColumnType("int");
@@ -914,7 +924,9 @@ namespace Server.Migrations
                 {
                     b.HasOne("Server.Models.Plane", "Plane")
                         .WithMany("Segments")
-                        .HasForeignKey("PlaneId");
+                        .HasForeignKey("PlaneId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Server.Models.User", b =>

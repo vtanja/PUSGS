@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, AfterViewInit } from '@angular/core';
 import { Plane } from 'src/app/models/plane';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { AirlineProfileComponent } from 'src/app/components/airlines/airline-profile/airline-profile.component';
@@ -8,6 +8,8 @@ import { Subscription, Subject } from 'rxjs';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import Swal from 'sweetalert2';
+import { PlaneService } from 'src/app/services/plane.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-edit-plane',
@@ -16,14 +18,16 @@ import Swal from 'sweetalert2';
 })
 export class EditPlaneComponent implements OnInit {
 
-  plane:Plane;
+  public plane:Plane;
   mySubscription:Subscription;
   disabledSeats:string[]=[];
   addSeatsForm:FormGroup;
   closeResult:string='';
+  isLoading:boolean;
+  isLoaded=false;
+  constructor(private route:ActivatedRoute, private planeService:PlaneService, private modalService: NgbModal, private router:Router ,
+    private spinner: NgxSpinnerService) {
 
-
-  constructor(private route:ActivatedRoute, private airlineAdminService:AirlineAdministratorService, private modalService: NgbModal, private router:Router ) {
     this.addSeatsForm=new FormGroup({
       'segment':new FormControl('', Validators.required),
       'rowsInput':new FormControl('', Validators.required)
@@ -31,11 +35,15 @@ export class EditPlaneComponent implements OnInit {
    }
 
   ngOnInit(): void {
-    this.mySubscription = this.route.params.subscribe((params:Params)=>
-      {
-        //this.plane=this.airlineAdminService.getAirline().planes.find(p=>p.id===+params['id']);
-        console.log('edit plane');
-        console.log(this.plane);
+    this.showLoader();
+    this.planeService.getPlane(this.route.snapshot.params['id']).subscribe((res:any)=>{
+      console.log('edit plane ',res);
+        this.plane = res;
+        this.isLoaded=true;
+        this.hideLoader();
+      },
+      (err)=>{
+        this.hideLoader();
       }
     );
   }
@@ -64,24 +72,35 @@ export class EditPlaneComponent implements OnInit {
     let segment =this.addSeatsForm.get('segment').value;
     let rows = +this.addSeatsForm.get('rowsInput').value;
 
-    if(this.airlineAdminService.addSeats(this.plane.id, segment, rows)){
-      //this.plane.segments.find(s=>s.name===segment).value.rows+=rows;
+    this.plane.segments.find(x=>x.name===segment).rows += rows;
+
+    this.planeService.updatePlaneConfig(this.plane.code, this.plane).subscribe((res:any)=>{
       Swal.fire({
         text: 'Successfully added new seats!',
         icon: 'success',
         showConfirmButton: false,
         timer: 1500,
       });
-     // this.plane=this.airlineAdminService.getAirline().planes.find(p=>p.id===this.plane.id);
-    }
-    else{
+    this.planeService.getPlane(this.plane.code).subscribe((res:any)=>{
+      this.plane=res;
+    })
+  }  ,
+    (err)=>{
       Swal.fire({
-        text: 'Unable to add new seats!',
+        text: err.error.message,
         icon: 'error',
-        showConfirmButton: true,
-        timer: 1500,
-      });
-    }
+        showConfirmButton: true
+      })
+    });
   }
 
+  showLoader(){
+    this.isLoading = true;
+    this.spinner.show();
+  }
+
+  hideLoader(){
+    this.spinner.hide();
+    this.isLoading = false;
+  }
 }

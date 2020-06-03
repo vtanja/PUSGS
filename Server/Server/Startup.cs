@@ -38,7 +38,10 @@ namespace Server
         {
             services.AddAutoMapper(typeof(Startup));
             services.AddSignalR();
-            services.AddControllers();
+            services.AddControllers()
+                .AddNewtonsoftJson(options =>
+                         options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
             services.AddSendGridEmailSender();

@@ -22,7 +22,8 @@ namespace Server.Settings
         public DbSet<Office> Offices { get; set; }
         public DbSet<Airline> Airlines { get; set; }
         public DbSet<Plane> Planes { get; set; }
-        public DbSet<PlaneSegment> PlaneSegments { get; set; }
+        public DbSet<Segment> Segments { get; set; }
+
         public DbSet<Destination> Destinations { get; set; }
         public DbSet<Address> Addresses { get; set; }
         public DbSet<DiscountDate> DiscountDates { get; set; }
