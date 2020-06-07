@@ -1,24 +1,29 @@
-<nav class="main_nav navbar navbar-expand-sm" style="width: 100%; background-color:#e3cff3;opacity: 0.7;  z-index: -1 !important; ">
-  <div class="container" >
-    <div class="row" style="width: 100%;">
-      <div class="col main_nav_col d-flex flex-row align-items-center justify-content-start">
-        <div class="logo_container">
-          <div class="logo"><img src={{company.logo}} height="60px" width="120px"></div>
-        </div>
-        <div *ngIf="company.companyType === 'RentCar'" class="main_nav_container ml-auto">
-          <ul class="main_nav_list">
-            <li class="main_nav_item"><a >about us</a></li>
-            <li class="main_nav_item"><a >cars</a></li>
-            <li class="main_nav_item"><a>our offices</a></li>
-          </ul>
-        </div>
-        <div *ngIf="company.companyType === 'Airline' " class="main_nav_container ml-auto">
-          <ul class="main_nav_list">
-            <li class="main_nav_item"><a >about us</a></li>
-            <li class="main_nav_item"><a>our destinations</a></li>
-          </ul>
+<div style="
+  z-index: 1000;
+position: relative;">
+  <nav class="main_nav navbar navbar-expand-sm"
+    style="width: 100%; background-color:#e3cff3;opacity: 0.7;  z-index: -1 !important; ">
+    <div class="container">
+      <div class="row" style="width: 100%;">
+        <div class="col main_nav_col d-flex flex-row align-items-center justify-content-start">
+          <div class="logo_container">
+            <div class="logo"><img src={{company.logo}} height="60px" width="120px"></div>
+          </div>
+          <div *ngIf="company.companyType === 'RentCar'" class="main_nav_container ml-auto">
+            <ul class="main_nav_list">
+              <li class="main_nav_item" (click)="onRouteClick('aboutUs')">about us</li>
+              <li class="main_nav_item" (click) ="onRouteClick('cars')" >cars</li>
+              <li class="main_nav_item" (click) ="onRouteClick('offices')" >our offices</li>
+            </ul>
+          </div>
+          <div *ngIf="company.companyType === 'Airline' " class="main_nav_container ml-auto">
+            <ul class="main_nav_list">
+              <li class="main_nav_item" (click)="onRouteClick('aboutUs')">about us</li>
+              <li class="main_nav_item" (click)="onRouteClick('destinations')">our destinations</li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</nav>
+  </nav>
+</div>

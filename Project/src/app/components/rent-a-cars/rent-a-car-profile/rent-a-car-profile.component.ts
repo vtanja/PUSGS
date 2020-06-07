@@ -72,4 +72,8 @@ export class RentACarProfileComponent implements OnInit,OnDestroy{
     this.changeMapMarker.unsubscribe();
   }
 
+  onInnerRouteChange(route:string){
+    document.getElementById(route).scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"});
+  }
+
 }

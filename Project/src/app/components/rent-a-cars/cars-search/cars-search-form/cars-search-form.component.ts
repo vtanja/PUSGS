@@ -17,6 +17,7 @@ import {
 import { RentCarService } from '../../../../services/rent-a-car.service';
 import { Observable } from 'rxjs/internal/Observable';
 import { startWith, map } from 'rxjs/operators';
+import { NgbTime } from '@ng-bootstrap/ng-bootstrap/timepicker/ngb-time';
 
 export interface LocationGroup {
   letter: string;
@@ -188,15 +189,18 @@ export class CarsSearchFormComponent implements OnInit {
           this.requireMatch.bind(this),
         ]),
       }),
-      dates: new FormGroup({
-        pickUpDate: new FormControl(pickUpDate, Validators.required),
-        dropOffDate: new FormControl(dropOffDate, Validators.required),
-      }),
+      dates: new FormGroup(
+        {
+          pickUpDate: new FormControl(pickUpDate, Validators.required),
+          dropOffDate: new FormControl(dropOffDate, Validators.required),
+        },
+        this.datesValid.bind(this)
+      ),
 
       times: new FormGroup({
         pickUpTime: new FormControl(pickUpTime, Validators.required),
         dropOffTime: new FormControl(dropOffTime, Validators.required),
-      }),
+      },this.timesValid.bind(this)),
 
       carBrand: new FormControl(carBrand),
       passengers: new FormControl(passengers),
@@ -278,5 +282,68 @@ export class CarsSearchFormComponent implements OnInit {
     }
   }
 
+  private datesValid(group: FormGroup): { [s: string]: boolean } | null {
+    if (group) {
+      if (
+        group.get('pickUpDate').value != '' &&
+        group.get('dropOffDate').value != ''
+      ) {
+        let pickUpForm = group.get('pickUpDate').value;
+        let dropOffForm = group.get('dropOffDate').value;
+        let pickUpDate = new NgbDate(
+          pickUpForm.year,
+          pickUpForm.month,
+          pickUpForm.day
+        );
+        let dropoffDate = new NgbDate(
+          dropOffForm.year,
+          dropOffForm.month,
+          dropOffForm.day
+        );
 
+        if (dropoffDate.after(pickUpDate) || dropoffDate.equals(pickUpDate)) {
+          return null;
+        }
+      }
+    }
+    return { invalidDates: true };
+  }
+
+  private timesValid(group: FormGroup): { [s: string]: boolean } | null {
+    if (group) {
+      if (
+        group.get('pickUpTime').value != '' &&
+        group.get('dropOffTime').value != ''
+      ) {
+        if (
+          this.searchForm.get('dates.pickUpDate').value != '' &&
+          this.searchForm.get('dates.dropOffDate').value != ''
+        ) {
+          let pickUpTimeParts = group.get('pickUpTime').value.split(':');
+          let dropOffTimeParts = group
+            .get('dropOffTime')
+            .value.split(':');
+
+          let pickUpDateForm = this.searchForm.get('dates.pickUpDate').value;
+          let dropOffDateForm = this.searchForm.get('dates.dropOffDate').value;
+          let pickUpDate = new NgbDate(
+            pickUpDateForm.year,
+            pickUpDateForm.month,
+            pickUpDateForm.day
+          );
+          let dropoffDate = new NgbDate(
+            dropOffDateForm.year,
+            dropOffDateForm.month,
+            dropOffDateForm.day
+          );
+
+          if (dropoffDate.equals(pickUpDate)) {
+            if (+dropOffTimeParts[0] < +pickUpTimeParts[0]) {
+              return { 'times inavlid': true };
+            }
+          }
+        }
+      }
+    }
+  }
 }

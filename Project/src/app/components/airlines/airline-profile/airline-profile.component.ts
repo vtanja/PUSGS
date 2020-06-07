@@ -48,4 +48,8 @@ export class AirlineProfileComponent implements OnInit,OnDestroy {
     this.mySubscription.unsubscribe();
   }
 
+  onInnerRouteChange(route:string){
+    document.getElementById(route).scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"});
+  }
+
 }

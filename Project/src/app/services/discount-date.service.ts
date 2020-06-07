@@ -11,4 +11,8 @@ export class DiscountDateService{
   addDiscountDates(data:{}){
     return this.httpClient.post(this.baseUri+'DiscountDates',data);
   }
+
+  overrideDiscount(data:{}){
+    return this.httpClient.put(this.baseUri+'DiscountDates/Override',data);
+  }
 }

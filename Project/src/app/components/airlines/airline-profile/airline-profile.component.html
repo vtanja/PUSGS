@@ -4,22 +4,22 @@
   </span>
 </ng-template>
 
-<div style="width: 100%;" >
+<div style="width: 100%;">
   <div class=" sticky-top " style=" width: 100%; background-color:#e3cff3;opacity: 0.7;">
-    <app-profile-navbar [company]="navItemInfo" style="width: 100%;"></app-profile-navbar>
+    <app-profile-navbar (route)="onInnerRouteChange($event)" [company]="navItemInfo" style="width: 100%;"></app-profile-navbar>
   </div>
-  <br>
+  <br id="aboutUs">
   <div class="d-flex justify-content-center">
     <img src="{{navItemInfo.logo}}" width="240px" height="100px">
   </div>
 
   <div class="d-flex justify-content-between" style="margin-left:20%;margin-top: 3%;width: 60%;">
     <div>
-    <i class="fa fa-map-marker" aria-hidden="true"
-    title="Show on google maps"  (click)="showMapToggled=!showMapToggled"></i>
-    <span>&nbsp;&nbsp;&nbsp;{{airlineCompany.address.toString()}}</span>
-  </div>
-      <div>
+      <i class="fa fa-map-marker" aria-hidden="true" title="Show on google maps"
+        (click)="showMapToggled=!showMapToggled"></i>
+      <span>&nbsp;&nbsp;&nbsp;{{airlineCompany.address.toString()}}</span>
+    </div>
+    <div>
       <ngb-rating [(rate)]="airlineCompany.rate" [starTemplate]="t" [readonly]="true" [max]="5"></ngb-rating>
       <hr style="margin-top: 0%;">
       <pre *ngIf="airlineCompany.rate!=-1" style="margin-top: 0%;">Rate: <b>{{airlineCompany.rate}}</b></pre>
@@ -32,26 +32,19 @@
   </div>
 
   <div class="d-flex justify-content-center">
-    <p >{{airlineCompany.description}}</p>
+    <p>{{airlineCompany.description}}</p>
   </div>
 
-  <div style="background-color: whitesmoke; padding-bottom: 2%; margin-top: 2%;">
+  <div id="destinations" style="background-color: whitesmoke; padding-bottom: 2%; margin-top: 2%;">
     <h4>Check our destinations</h4>
-      <app-profile-offices *ngIf="airlineCompany!==undefined && airlineCompany.destinations!==undefined" [items]="airlineCompany.destinations"></app-profile-offices>
-   
-    
-      <p *ngIf="airlineCompany===undefined || airlineCompany.destinations===undefined " ><ngb-alert [dismissible]="false" style="width: 70%; text-align: center;margin-left: 15%;"><strong>Notice!</strong> There are no destinations still.</ngb-alert></p>
-    
+    <app-profile-offices *ngIf="airlineCompany!==undefined && airlineCompany.destinations!==undefined"
+      [items]="airlineCompany.destinations"></app-profile-offices>
+
+
+    <p *ngIf="airlineCompany===undefined || airlineCompany.destinations===undefined ">
+      <ngb-alert [dismissible]="false" style="width: 70%; text-align: center;margin-left: 15%;"><strong>Notice!</strong>
+        There are no destinations still.</ngb-alert>
+    </p>
+
   </div>
-
-  <!-- <div class="d-flex justify-content-center" style="margin-top: 5%;">
-    <h4>Check our cars</h4>
-  </div> -->
-
-  <!-- <div class="d-flex justify-content-center" style="margin-top: 2%;">
-    <app-cars-carousel [airlineCompany]="airlineCompany"></app-cars-carousel>
-  </div> -->
 </div>
-
-
-

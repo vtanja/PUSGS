@@ -6,9 +6,14 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Newtonsoft.Json;
 using Server.Models;
+using Server.Repositories;
+using Server.Services;
 using Server.Settings;
+using Server.UOW;
 
 namespace Server.Controllers
 {
@@ -17,64 +22,20 @@ namespace Server.Controllers
     public class DiscountDatesController : ControllerBase
     {
         private readonly DataBaseContext _context;
+        private readonly DiscountDateService discountDateService;
 
-        public DiscountDatesController(DataBaseContext context)
+        public DiscountDatesController(DataBaseContext context,UnitOfWork unitOfWork)
         {
             _context = context;
+            this.discountDateService = unitOfWork.DiscountDateService;
         }
 
-        // GET: api/DiscountDates
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<DiscountDate>>> GetDiscountDates()
-        {
-            return await _context.DiscountDates.ToListAsync();
-        }
-
-        // GET: api/DiscountDates/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<DiscountDate>> GetDiscountDate(int id)
-        {
-            var discountDate = await _context.DiscountDates.FindAsync(id);
-
-            if (discountDate == null)
-            {
-                return NotFound();
-            }
-
-            return discountDate;
-        }
-
-        // PUT: api/DiscountDates/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutDiscountDate(int id, DiscountDate discountDate)
-        {
-            if (id != discountDate.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(discountDate).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!DiscountDateExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
+        //// GET: api/DiscountDates
+        //[HttpGet]
+        //public async Task<ActionResult<IEnumerable<DiscountDate>>> GetDiscountDates()
+        //{
+        //    return await _context.DiscountDates.ToListAsync();
+        //}
 
         // POST: api/DiscountDates
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
@@ -88,58 +49,39 @@ namespace Server.Controllers
             {
                 return BadRequest();
             }
+            var ret = await discountDateService.AddDiscountDate(discountRange);
+            if (ret == "success")
+            {
+                  return Ok(new { success = "Discount successfully aplied on all dates." });
 
-            var dates = new List<DiscountDate>();
-            discountRange.Dates.ForEach(date => {
-                dates.Add(new DiscountDate()
-                {
-                    Date = Convert.ToDateTime(date),
-                    CarId = car.Id,
-                    Discount = discountRange.Discount
-                }
-               ); });
-
-            //var alreadyOnDiscount = new List<DateTime>();
-            //var carsDiscountDates = await  _context.DiscountDates.Where(d => d.CarId == car.Id).Select(d=>d.Date).Intersect(dates).ToListAsync();
-
-            ////for(DateTime date=discountRange.StartDate; date <=discountRange.EndDate; date = date.AddDays(1))
-            ////{
-            ////    if (carsDiscountDates.Contains(date))
-            ////    {
-            ////        alreadyOnDiscount.Add(date);
-            ////    }
-            ////    else
-            ////    {
-            ////        var discountDate = new DiscountDate()
-            ////        {
-            ////            CarId = car.Id,
-            ////            Date = date,
-            ////            Discount = discountRange.Discount
-
-            ////        };
-            ////        _context.DiscountDates.Add(discountDate);
-            ////    }
-
-            ////}
-
-            //if (alreadyOnDiscount.Count == 0)
-            //{
-            //    try
-            //    {
-            //        await _context.SaveChangesAsync();
-            //    }
-            //    catch (Exception e)
-            //    {
-
-            //    }
-            //    return Ok(new { message = "Discount successfully added for dates in range " });
-            //}
-            //else
-            //{
-            //    return Conflict(new { message = "Car is already on discount for those dates: " + alreadyOnDiscount.ToString() });
-            //}
-            return Ok();
+            }
+            else if (ret == "error")
+            {
+                return BadRequest();
+            }
+            else
+            {
+                return Ok(ret);
+            }
         }
+
+        [HttpPut]
+        [Authorize(Roles = "RENTCARADMIN")]
+        [Route("Override")]
+        public async Task<ActionResult<DiscountDate>> OverrideDiscountDates(DiscountRangeModel discountRange)
+        {
+            var car = await _context.Cars.FindAsync(discountRange.CarId);
+            if (car == null)
+            {
+                return BadRequest();
+            }
+
+            if (await discountDateService.UpdateDiscountDates(discountRange))
+                return Ok();
+
+            return BadRequest();
+        }
+
 
         // DELETE: api/DiscountDates/5
         [HttpDelete("{id}")]
@@ -157,9 +99,5 @@ namespace Server.Controllers
             return discountDate;
         }
 
-        private bool DiscountDateExists(int id)
-        {
-            return _context.DiscountDates.Any(e => e.Id == id);
-        }
     }
 }

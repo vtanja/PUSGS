@@ -43,7 +43,4 @@ export class CarService {
     )
   }
 
-  addDiscount(){
-    return true;
-  }
 }

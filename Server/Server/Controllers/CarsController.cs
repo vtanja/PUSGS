@@ -10,7 +10,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Server.DTOs;
 using Server.Models;
+using Server.Repositories;
+using Server.Services;
 using Server.Settings;
+using Server.UOW;
 
 namespace Server.Controllers
 {
@@ -20,25 +23,30 @@ namespace Server.Controllers
     {
         private readonly DataBaseContext _context;
         private readonly IMapper _mapper;
+        private readonly CarService carService;
 
-        public CarsController(DataBaseContext context,IMapper mapper)
+        public CarsController(DataBaseContext context,IMapper mapper,UnitOfWork 
+            unitOfWork)
         {
             _context = context;
             _mapper = mapper;
+            carService = unitOfWork.CarService;
         }
 
         // GET: api/Cars
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Car>>> GetCar()
+        public async Task<IEnumerable<Car>> GetCar()
         {
-            return await _context.Cars.ToListAsync();
+            // return await _context.Cars.ToListAsync();
+            return await carService.GetCars();
         }
 
         // GET: api/Cars/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Car>> GetCar(int id)
         {
-            var car = await _context.Cars.FindAsync(id);
+            //var car = await _context.Cars.FindAsync(id);
+            var car = await carService.GetCarByID(id);
 
             if (car == null)
             {
@@ -61,7 +69,7 @@ namespace Server.Controllers
                 return BadRequest();
             }
 
-            var ret =   _mapper.Map<List<CarDTO>>(await _context.Cars.Where(c => c.CompanyId == admin.CompanyId).ToListAsync());
+            var ret = _mapper.Map<List<CarDTO>>(await carService.GetCompanyCars((int)admin.CompanyId));
 
             return ret;
         }
@@ -72,63 +80,74 @@ namespace Server.Controllers
         public async Task<ActionResult<IEnumerable<CarDTO>>> SearchCars([FromQuery] string pickUpLocation, [FromQuery] string dropOffLocation,
             [FromQuery] string pickUpDate, [FromQuery] string dropOffDate,[FromQuery] int passengers,[FromQuery] string brand)
         {
-
-            DateTime dateDropOff = Convert.ToDateTime(dropOffDate);
-            DateTime datepickUp = Convert.ToDateTime(pickUpDate);
-
-            if (!dropOffLocation.Contains(", ") || !pickUpLocation.Contains(", ") || datepickUp > dateDropOff)
+            SearchCarModel searchCarModel = new SearchCarModel()
             {
-                return BadRequest(new { message = "Invalid search params."});
-            }
+                DropOffDate = dropOffDate,
+                PickUpDate = pickUpDate,
+                DropOffLocation = dropOffLocation,
+                PickUpLocation = pickUpLocation,
+                Passengers = passengers,
+                Brand = brand
+            };
 
-             string[] dropOffLocationParams = dropOffLocation.Split(", ");
-             string[] pickUpLocationParams = pickUpLocation.Split(", ");
-             string dropOffCity = dropOffLocationParams[0];
-             string dropOffCountry = dropOffLocationParams[1];
-             string pickUpCity = pickUpLocationParams[0];
-             string pickUpCountry = pickUpLocationParams[1];
-            
+            return _mapper.Map<List<CarDTO>>(await carService.SearchCars(searchCarModel));
 
-            IEnumerable<int> carIDS;
+            //DateTime dateDropOff = Convert.ToDateTime(dropOffDate);
+            //DateTime datepickUp = Convert.ToDateTime(pickUpDate);
 
-            if(passengers>0 && !string.IsNullOrEmpty(brand))
-            {
-                carIDS = await _context.Cars.Where(c => c.PassengersNumber >= passengers && c.Brand.ToLower() == brand.ToLower()).Select(c=>c.Id).ToArrayAsync();
-            }else if (passengers > 0 && string.IsNullOrEmpty(brand))
-            {
-                carIDS = await _context.Cars.Where(c => c.PassengersNumber >= passengers).Select(c => c.Id).ToArrayAsync();
-            }
-            else if (!string.IsNullOrEmpty(brand))
-            {
-                carIDS = await _context.Cars.Where(c=> c.Brand.ToLower() == brand.ToLower()).Select(c => c.Id).ToArrayAsync();
-            }
-            else
-            {
-                carIDS = await _context.Cars.Include(c=>c.CarCompany).Select(c => c.Id).ToArrayAsync();
-            }
+            //if (!dropOffLocation.Contains(", ") || !pickUpLocation.Contains(", ") || datepickUp > dateDropOff)
+            //{
+            //    return BadRequest(new { message = "Invalid search params."});
+            //}
 
-            if (carIDS.Count() == 0)
-            {
-                return NotFound();
-            }
+            // string[] dropOffLocationParams = dropOffLocation.Split(", ");
+            // string[] pickUpLocationParams = pickUpLocation.Split(", ");
+            // string dropOffCity = dropOffLocationParams[0];
+            // string dropOffCountry = dropOffLocationParams[1];
+            // string pickUpCity = pickUpLocationParams[0];
+            // string pickUpCountry = pickUpLocationParams[1];
 
-            var companiesPickUp = await _context.Offices.Include(o => o.Address)
-                                        .Where(o => o.Address.City == pickUpCity && o.Address.Country == pickUpCountry)
-                                        .Select(o => o.RentCarId)
-                                        .ToArrayAsync();
 
-            var companiesDropOff = await _context.Offices.Include(o => o.Address)
-                                       .Where(o => o.Address.City == dropOffCity && o.Address.Country == dropOffCountry)
-                                       .Select(o => o.RentCarId)
-                                       .ToArrayAsync();
+            //IEnumerable<int> carIDS;
 
-            var intersect = companiesPickUp.Intersect(companiesDropOff).Intersect(carIDS).ToArray();
+            //if(passengers>0 && !string.IsNullOrEmpty(brand))
+            //{
+            //    carIDS = await _context.Cars.Where(c => c.PassengersNumber >= passengers && c.Brand.ToLower() == brand.ToLower()).Select(c=>c.Id).ToArrayAsync();
+            //}else if (passengers > 0 && string.IsNullOrEmpty(brand))
+            //{
+            //    carIDS = await _context.Cars.Where(c => c.PassengersNumber >= passengers).Select(c => c.Id).ToArrayAsync();
+            //}
+            //else if (!string.IsNullOrEmpty(brand))
+            //{
+            //    carIDS = await _context.Cars.Where(c=> c.Brand.ToLower() == brand.ToLower()).Select(c => c.Id).ToArrayAsync();
+            //}
+            //else
+            //{
+            //    carIDS = await _context.Cars.Include(c=>c.CarCompany).Select(c => c.Id).ToArrayAsync();
+            //}
 
-            var reservedCars = await _context.ReservedDates.Where(d => d.Date <= dateDropOff && d.Date >= datepickUp).Select(c => c.CarId).ToArrayAsync();
+            //if (carIDS.Count() == 0)
+            //{
+            //    return NotFound();
+            //}
 
-            var ret = await _context.Cars.Where(c => intersect.Contains(c.CompanyId) && !reservedCars.Contains(c.Id)).ToListAsync();
-   
-            return _mapper.Map<List<CarDTO>>(ret);
+            //var companiesPickUp = await _context.Offices.Include(o => o.Address)
+            //                            .Where(o => o.Address.City == pickUpCity && o.Address.Country == pickUpCountry)
+            //                            .Select(o => o.RentCarId)
+            //                            .ToArrayAsync();
+
+            //var companiesDropOff = await _context.Offices.Include(o => o.Address)
+            //                           .Where(o => o.Address.City == dropOffCity && o.Address.Country == dropOffCountry)
+            //                           .Select(o => o.RentCarId)
+            //                           .ToArrayAsync();
+
+            //var intersect = companiesPickUp.Intersect(companiesDropOff).Intersect(carIDS).ToArray();
+
+            //var reservedCars = await _context.ReservedDates.Where(d => d.Date <= dateDropOff && d.Date >= datepickUp).Select(c => c.CarId).ToArrayAsync();
+
+            //var ret = await _context.Cars.Where(c => intersect.Contains(c.CompanyId) && !reservedCars.Contains(c.Id)).ToListAsync();
+
+            //return _mapper.Map<List<CarDTO>>(ret);
         }
 
         // GET: api/Cars/CompanyCarsSearch
@@ -137,57 +156,70 @@ namespace Server.Controllers
         public async Task<ActionResult<IEnumerable<CarDTO>>> SearchCompanyCars([FromQuery] string pickUpLocation, [FromQuery] string dropOffLocation,
             [FromQuery] string pickUpDate, [FromQuery] string dropOffDate, [FromQuery] int passengers, [FromQuery] string brand,[FromQuery] int companyID)
         {
-            string[] dropOffLocationParams = dropOffLocation.Split(", ");
-            string[] pickUpLocationParams = pickUpLocation.Split(", ");
-            string dropOffCity = dropOffLocationParams[0];
-            string dropOffCountry = dropOffLocationParams[1];
-            string pickUpCity = pickUpLocationParams[0];
-            string pickUpCountry = pickUpLocationParams[1];
-            DateTime dateDropOff = Convert.ToDateTime(dropOffDate);
-            DateTime datepickUp = Convert.ToDateTime(pickUpDate);
-
-            IEnumerable<int> carIDS;
-
-            if (passengers > 0 && !string.IsNullOrEmpty(brand))
+            SearchCarModel searchCarModel = new SearchCarModel()
             {
-                carIDS = await _context.Cars.Where(c => c.PassengersNumber >= passengers && c.Brand.ToLower() == brand.ToLower() && c.CompanyId==companyID).Select(c => c.Id).ToArrayAsync();
-            }
-            else if (passengers > 0 && string.IsNullOrEmpty(brand))
-            {
-                carIDS = await _context.Cars.Where(c => c.PassengersNumber >= passengers && c.CompanyId == companyID).Select(c => c.Id).ToArrayAsync();
-            }
-            else if (!string.IsNullOrEmpty(brand))
-            {
-                carIDS = await _context.Cars.Where(c => c.Brand.ToLower() == brand.ToLower() && c.CompanyId == companyID).Select(c => c.Id).ToArrayAsync();
-            }
-            else
-            {
-                carIDS = await _context.Cars.Where(rc=> rc.CompanyId == companyID).Select(c => c.Id).ToArrayAsync();
-            }
+                DropOffDate = dropOffDate,
+                PickUpDate = pickUpDate,
+                DropOffLocation = dropOffLocation,
+                PickUpLocation = pickUpLocation,
+                CompanyID = companyID,
+                Passengers = passengers,
+                Brand = brand
+            };
 
-            if (carIDS.Count() == 0)
-            {
-                return NotFound();
-            }
+            return  _mapper.Map<List<CarDTO>>(await carService.SearchCompanyCars(searchCarModel));
 
-            var companiesPickUp = await _context.Offices.Include(o => o.Address)
-                                        .Where(o => o.Address.City == pickUpCity && o.Address.Country == pickUpCountry && o.RentCarId== companyID)
-                                        .AnyAsync();
+            //string[] dropOffLocationParams = dropOffLocation.Split(", ");
+            //string[] pickUpLocationParams = pickUpLocation.Split(", ");
+            //string dropOffCity = dropOffLocationParams[0];
+            //string dropOffCountry = dropOffLocationParams[1];
+            //string pickUpCity = pickUpLocationParams[0];
+            //string pickUpCountry = pickUpLocationParams[1];
+            //DateTime dateDropOff = Convert.ToDateTime(dropOffDate);
+            //DateTime datepickUp = Convert.ToDateTime(pickUpDate);
 
-            var companiesDropOff = await _context.Offices.Include(o => o.Address)
-                                       .Where(o => o.Address.City == dropOffCity && o.Address.Country == dropOffCountry && o.RentCarId == companyID)
-                                       .Select(o => o.RentCarId)
-                                       .AnyAsync();
-            if (companiesDropOff && companiesPickUp)
-            {
-                var reservedCars = await _context.ReservedDates.Where(d => d.Date <= dateDropOff && d.Date >= datepickUp).Select(c => c.CarId).ToArrayAsync();
+            //IEnumerable<int> carIDS;
 
-                var ret = await _context.Cars.Where(c => carIDS.Contains(c.CompanyId) && !reservedCars.Contains(c.Id)).ToListAsync();
+            //if (passengers > 0 && !string.IsNullOrEmpty(brand))
+            //{
+            //    carIDS = await _context.Cars.Where(c => c.PassengersNumber >= passengers && c.Brand.ToLower() == brand.ToLower() && c.CompanyId==companyID).Select(c => c.Id).ToArrayAsync();
+            //}
+            //else if (passengers > 0 && string.IsNullOrEmpty(brand))
+            //{
+            //    carIDS = await _context.Cars.Where(c => c.PassengersNumber >= passengers && c.CompanyId == companyID).Select(c => c.Id).ToArrayAsync();
+            //}
+            //else if (!string.IsNullOrEmpty(brand))
+            //{
+            //    carIDS = await _context.Cars.Where(c => c.Brand.ToLower() == brand.ToLower() && c.CompanyId == companyID).Select(c => c.Id).ToArrayAsync();
+            //}
+            //else
+            //{
+            //    carIDS = await _context.Cars.Where(rc=> rc.CompanyId == companyID).Select(c => c.Id).ToArrayAsync();
+            //}
 
-                return _mapper.Map<List<CarDTO>>(ret);
-            }
+            //if (carIDS.Count() == 0)
+            //{
+            //    return NotFound();
+            //}
 
-            return NotFound();
+            //var companiesPickUp = await _context.Offices.Include(o => o.Address)
+            //                            .Where(o => o.Address.City == pickUpCity && o.Address.Country == pickUpCountry && o.RentCarId== companyID)
+            //                            .AnyAsync();
+
+            //var companiesDropOff = await _context.Offices.Include(o => o.Address)
+            //                           .Where(o => o.Address.City == dropOffCity && o.Address.Country == dropOffCountry && o.RentCarId == companyID)
+            //                           .Select(o => o.RentCarId)
+            //                           .AnyAsync();
+            //if (companiesDropOff && companiesPickUp)
+            //{
+            //    var reservedCars = await _context.ReservedDates.Where(d => d.Date <= dateDropOff && d.Date >= datepickUp).Select(c => c.CarId).ToArrayAsync();
+
+            //    var ret = await _context.Cars.Where(c => carIDS.Contains(c.CompanyId) && !reservedCars.Contains(c.Id)).ToListAsync();
+
+            //    return _mapper.Map<List<CarDTO>>(ret);
+            //}
+
+            //return NotFound();
         }
 
 
@@ -198,38 +230,13 @@ namespace Server.Controllers
         [Authorize(Roles = "RENTCARADMIN")]
         public async Task<IActionResult> PutCar(int id, Car car)
         {
-            if (id != car.Id)
+
+            if (await carService.UpdateCar(id,car))
             {
-                return BadRequest();
+                return NoContent();
             }
 
-            try
-            {
-                _context.Entry<Car>(car).State = EntityState.Modified;
-
-            }
-            catch(Exception e)
-            {
-
-            }
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!CarExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+            return BadRequest();
         }
 
         // POST: api/Cars
@@ -247,18 +254,23 @@ namespace Server.Controllers
                 return BadRequest();
             }
 
-            car.CompanyId = (int)user.CompanyId;
+            if (await carService.AddCar(car))
+                return Ok();
 
-            _context.Cars.Add(car);
-            try
-            {
-                await _context.SaveChangesAsync();
-            }catch(Exception e)
-            {
-                return BadRequest();
-            }
+            return BadRequest();
 
-            return Ok();
+            //car.CompanyId = (int)user.CompanyId;
+
+            //_context.Cars.Add(car);
+            //try
+            //{
+            //    await _context.SaveChangesAsync();
+            //}catch(Exception e)
+            //{
+            //    return BadRequest();
+            //}
+
+          //  return Ok();
         }
 
         // DELETE: api/Cars/5
@@ -266,42 +278,51 @@ namespace Server.Controllers
         [Authorize(Roles = "RENTCARADMIN")]
         public async Task<ActionResult<Car>> DeleteCar(int id)
         {
-            var car = await _context.Cars.FindAsync(id);
-            if (car == null)
-            {
-                return NotFound();
-            }
+            string result = await carService.DeleteCar(id);
 
-            if (this.CarCanBeDeleted(car.Id))
-            {
-                _context.Cars.Remove(car);
-            }
-            else
-            {
+            if (result == "success")
+                return NoContent();
+            else if (result == "failed")
                 return BadRequest(new { message = "Unable to delete car. Car has active reservations." });
-            }
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch
-            {
+            else
                 return BadRequest();
-            }
 
-            return NoContent();
+            //var car = await _context.Cars.FindAsync(id);
+            //if (car == null)
+            //{
+            //    return NotFound();
+            //}
+
+            //if (this.CarCanBeDeleted(car.Id))
+            //{
+            //    _context.Cars.Remove(car);
+            //}
+            //else
+            //{
+            //    return BadRequest(new { message = "Unable to delete car. Car has active reservations." });
+            //}
+            //try
+            //{
+            //    await _context.SaveChangesAsync();
+            //}
+            //catch
+            //{
+            //    return BadRequest();
+            //}
+
+            //return NoContent();
         }
 
 
-        private bool CarExists(int id)
-        {
-            return _context.Cars.Any(e => e.Id == id);
-        }
+        //private bool CarExists(int id)
+        //{
+        //    return _context.Cars.Any(e => e.Id == id);
+        //}
 
-        private bool CarCanBeDeleted(int id)
-        {
-            //ako postoje rezervacije, ne moze se brisati auto
-            return true;
-        }
+        //private bool CarCanBeDeleted(int id)
+        //{
+        //    //ako postoje rezervacije, ne moze se brisati auto
+        //    return true;
+        //}
     }
 }
