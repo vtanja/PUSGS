@@ -116,6 +116,7 @@ import { AdminHomeCounterCardComponent } from './components/administrator/admin-
 import { RentACarAddComponent } from './components/rent-a-cars/rent-a-car-administrator/rent-a-car-add/rent-a-car-add.component';
 import { AddFirstComponent } from './components/rent-a-cars/rent-a-car-administrator/rent-a-car-add/add-first/add-first.component';
 import { DiscountDateService } from './services/discount-date.service';
+import { ChangePasswordComponent } from './components/user/change-password/change-password.component';
 
 const fbLoginOptions: LoginOpt = {
   scope: 'first_name,last_name,name,email',
@@ -219,7 +220,8 @@ export function provideConfig() {
     RentACarAddComponent,
     AddFirstComponent,
     AdminHomeComponent,
-    AdminHomeCounterCardComponent
+    AdminHomeCounterCardComponent,
+    ChangePasswordComponent
   ],
   imports: [
     BrowserModule,

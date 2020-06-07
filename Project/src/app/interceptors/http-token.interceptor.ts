@@ -48,25 +48,29 @@ export class HttpTokenInterceptor implements HttpInterceptor {
 
   checkErrorStatus(err: any) {
     if (err.status == 401) {
-      this.authenticationFailedAction();
+      this.authenticationFailedAction(err);
     } else if (err.status == 403) {
-      this.authorizationFailedAction();
+      this.authorizationFailedAction(err);
     } else if (err.status == 0) {
       this.serverUnavailableAction();
     }
   }
 
-  authenticationFailedAction() {
-    this.toastr.error(
-      'This action requires user to be logged in. Please log in.'
-    );
+  authenticationFailedAction(err:any) {
+    if(!err.message){
+      this.toastr.error(
+        'This action requires user to be logged in. Please log in.'
+      );
+    }
     localStorage.removeItem('token');
     this.router.navigateByUrl('/login');
     this.userService.userLogged.next(false);
   }
 
-  authorizationFailedAction() {
-    this.toastr.error("You don't have persmisson to access this resource.");
+  authorizationFailedAction(err:any) {
+    if(!err.message)
+      this.toastr.error("You don't have persmisson to access this resource.");
+
     localStorage.removeItem('token');
     this.router.navigateByUrl('/login');
     this.userService.userLogged.next(false);

@@ -6,6 +6,7 @@ import { Subscription, Subject } from 'rxjs';
 import { RentCarService } from '../../../services/rent-a-car.service';
 import { UserService } from 'src/app/services/user-service.service';
 import { Address } from 'src/app/models/address';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-rent-a-car-profile',
@@ -22,9 +23,12 @@ export class RentACarProfileComponent implements OnInit,OnDestroy{
   subjj:Subject<boolean>;
   changeMapMarker:Subscription;
   mapMarkers:Address[];
+  isSpining:boolean ;
 
   @ViewChild('carousel', {static : true}) carousel: NgbCarousel;
-  constructor(private route:ActivatedRoute, private router:Router,private userService:UserService,private rentCarsService:RentCarService){}
+  constructor(private route:ActivatedRoute, private router:Router,
+    private userService:UserService,private rentCarsService:RentCarService,
+    private spinner: NgxSpinnerService){}
 
   ngOnInit(){
 
@@ -32,8 +36,10 @@ export class RentACarProfileComponent implements OnInit,OnDestroy{
     this.showMapOfficesToggled=false;
 
      this.mySubscription = this.route.params.subscribe((params:Params)=>{
+       this.showSpinner();
       this.rentCarsService.getRentCarCompany(params['id']).subscribe(
         (succ:any) => {
+          this.hideSpinner();
           this.carCompany = succ;
           this.navItemInfo={
             'name':this.carCompany.name,
@@ -44,13 +50,12 @@ export class RentACarProfileComponent implements OnInit,OnDestroy{
           this.mapMarkers = this.carCompany.getOfficesAddresses();
         },
         (err:any)=>{
+          this.hideSpinner();
           console.log(err.errors.message);
         }
       )
 
     })
-
-
 
     this.changeMapMarker = this.userService.changeMap.subscribe((address)=>{
       if(!this.showMapOfficesToggled){
@@ -74,6 +79,16 @@ export class RentACarProfileComponent implements OnInit,OnDestroy{
 
   onInnerRouteChange(route:string){
     document.getElementById(route).scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"});
+  }
+
+  showSpinner(){
+    this.isSpining = true;
+    this.spinner.show();
+  }
+
+  hideSpinner(){
+    this.spinner.hide();
+    this.isSpining = false;
   }
 
 }

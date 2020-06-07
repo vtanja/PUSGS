@@ -18,5 +18,6 @@ namespace Server.Models
 
         [Column(TypeName = "nvarchar(1)")]
         public char SocialUserType { get; set; }
+        public bool PasswordChanged { get; set; }
     }
 }

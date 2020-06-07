@@ -134,7 +134,9 @@ namespace Server.Controllers
 
             if (result.Succeeded)
             {
-                return RedirectToAction("EmailConfirmed", "Notifications", new { userID, code });
+
+                var passwordChangeToken =await  _userManager.GeneratePasswordResetTokenAsync(user);
+                return RedirectToAction("EmailConfirmed", "Notifications", new { userID, passwordChangeToken });
             }
             else
             {
@@ -146,5 +148,6 @@ namespace Server.Controllers
                 return new JsonResult(errors);
             }
         }
+
     }
 }

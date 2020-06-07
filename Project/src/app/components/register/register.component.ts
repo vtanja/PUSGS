@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
 export class RegisterComponent implements OnInit {
 
   registerForm:FormGroup;
+  requestSent:boolean;
 
   constructor(private userService:UserService,private toastr:ToastrService,private router:Router) {
     this.registerForm = new FormGroup({
@@ -33,7 +34,7 @@ export class RegisterComponent implements OnInit {
   ngOnInit(): void {
 
     this.resetForm();
-
+    this.requestSent = false;
   }
 
    passwordMatchValidator(group: FormGroup): {[s:string]:boolean} {
@@ -116,11 +117,13 @@ export class RegisterComponent implements OnInit {
       'PhoneNumber' : this.registerForm.get('phoneNumber').value,
     }
 
+    this.requestSent = true;
     this.userService.register(userData).subscribe(
       (res:any) => {
+        this.requestSent = false;
         if(res.succeeded){
           this.resetForm();
-          this.toastr.success('New user added!','Registration successfull');
+          this.toastr.success('An confirmation email has been sent to your email.Please confirm.','Registration successfull');
           this.router.navigateByUrl('/login');
         }else{
           res.errors.forEach(error => {
@@ -134,6 +137,9 @@ export class RegisterComponent implements OnInit {
             }
           });
         }
+      },
+      (err:any)=>{
+        this.requestSent = false;
       }
     )
 

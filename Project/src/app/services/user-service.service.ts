@@ -41,6 +41,10 @@ export class UserService{
       return this.httpClient.post(this.baseUri + 'User/FacebookLogin',formData);
     }
 
+    changePassword(data){
+      return this.httpClient.post(this.baseUri+'User/ChangePassword',data);
+    }
+
     sendRequests(selectedUser:{}){
         return this.httpClient.post(this.baseUri + 'Friendship/SendRequest', selectedUser);
     }
