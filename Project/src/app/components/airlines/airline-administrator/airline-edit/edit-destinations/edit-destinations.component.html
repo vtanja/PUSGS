@@ -8,23 +8,25 @@
   <app-profile-offices *ngIf="company!==undefined && company.destinations!==undefined" style="margin-top: 4%;" [items]="company.destinations"></app-profile-offices>
   <p *ngIf="company===undefined || company.destinations===undefined"  ><ngb-alert [dismissible]="false" style="width: 70%; text-align: center;margin-left: 15%;"><strong>Notice!</strong> There are no destinations still.</ngb-alert></p>
 
-  <ng-template #addDestinationModal let-modal [formGroup]="addDestinationForm">
-    <div class="modal-header">
-      <h6 class="modal-title" id="modal-basic-title-cpm">Add new destination</h6>
-      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-        <span aria-hidden="true">×</span>
-      </button>
-    </div>
-    <div class="modal-body">
-      <label class="lblStyle">City: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-      <input class="modal-input" formControlName="city" type="text">
-      <br>
-      <label class="lblStyle">Country: </label>
-      <input class="modal-input" formControlName="country" type="text">
-    </div>
-    <div class="modal-footer">
-      <button type="button" [disabled]="addDestinationForm.invalid" class="btn confirmBtnStyle"
-        (click)="modal.close('Save click'); addDestination()">Confirm</button>
+  <ng-template #addDestinationModal let-modal>
+    <div  [formGroup]="addDestinationForm">
+      <div class="modal-header">
+        <h6 class="modal-title" id="modal-basic-title-cpm">Add new destination</h6>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <label class="lblStyle">City: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        <input class="modal-input" formControlName="city" type="text">
+        <br>
+        <label class="lblStyle">Country: </label>
+        <input class="modal-input" formControlName="country" type="text">
+      </div>
+      <div class="modal-footer">
+        <button type="button" [disabled]="addDestinationForm.invalid" class="btn confirmBtnStyle"
+          (click)="modal.close('Save click'); addDestination()">Confirm</button>
+      </div>
     </div>
   </ng-template>
   

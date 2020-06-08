@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
@@ -108,8 +109,16 @@ namespace Server.Controllers
         public async Task<ActionResult<Plane>> PostPlane(Plane plane)
         {
             var adminId = User.Claims.First(c => c.Type == "UserID").Value;
-            var admin = await _context.AirlineAdmins.FindAsync(adminId);
+            var admin = await _context.AirlineAdmins.Include(x => x.Airline).Where(x => x.UserId == adminId).FirstOrDefaultAsync();
 
+            foreach (var item in plane.Segments)
+            {
+                item.Id = 0;
+            }
+            if (admin.Airline == null)
+            {
+                return BadRequest(new { message = "User haven't added airline yet!" });
+            }
             
             plane.AirlineId = (int)admin.AirlineId;
             _context.Planes.Add(plane);

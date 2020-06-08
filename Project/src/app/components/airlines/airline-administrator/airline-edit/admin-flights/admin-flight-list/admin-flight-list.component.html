@@ -1,1 +1,6 @@
-<p>admin-flight-list works!</p>
+<div *ngIf="flights!==undefined">
+    <div class="list-group" *ngFor="let flight of flights" style="margin-top: 5%;">
+      <app-flight-item [flight]="flight"></app-flight-item>
+    </div> 
+  </div>
+  

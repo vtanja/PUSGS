@@ -10,6 +10,7 @@ namespace Server.DTOs
     {
         public string Code { get; set; }
         public int AirlineId { get; set; }
+        public Airline Airline { get; set; }
         public List<Segment> Segments{ get; set; }
     }
 }

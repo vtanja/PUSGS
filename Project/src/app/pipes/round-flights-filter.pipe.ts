@@ -30,35 +30,35 @@ export class RoundFlightsFilterPipe implements PipeTransform {
     const twoStopsIndex=filter.stops.indexOf(2);
 
 
-      if(flight.price>filter.price || flight.duration>filter.duration){
-        return false;
-      }
+      // if(flight.price>filter.price || flight.duration>filter.duration){
+      //   return false;
+      // }
 
-      console.log(flight.airline);
-      for(const company of filter.airlines){
-        if(flight.airline.name===company.name){
+      // console.log(flight.airline);
+      // for(const company of filter.airlines){
+      //   if(flight.airline.name===company.name){
 
-          if(!company.isChecked){
-            return false;
-          }
-        }
-      }
+      //     if(!company.isChecked){
+      //       return false;
+      //     }
+      //   }
+      // }
 
-      if(flight.numberOfChangeovers===0){
-        if(noStopsIndex===-1){
-          return false;
-        }
-      }
-      else if(flight.numberOfChangeovers===1){
-        if(oneStopIndex===-1){
-          return false;
-        }
-      }
-      else{
-        if(twoStopsIndex===1){
-          return false;
-        }
-      }
+      // if(flight.numberOfChangeovers===0){
+      //   if(noStopsIndex===-1){
+      //     return false;
+      //   }
+      // }
+      // else if(flight.numberOfChangeovers===1){
+      //   if(oneStopIndex===-1){
+      //     return false;
+      //   }
+      // }
+      // else{
+      //   if(twoStopsIndex===1){
+      //     return false;
+      //   }
+      // }
 
       return true;
 

@@ -1,0 +1,34 @@
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { FlightAdapter } from '../models/adapters/flight.adapter';
+import { AddFlightComponent } from '../components/airlines/airline-administrator/airline-edit/admin-flights/add-flight/add-flight.component';
+import { Observable } from 'rxjs';
+import { Flight } from '../models/flight.model';
+import { map } from 'rxjs/operators';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class FlightService {
+
+  readonly baseUri = 'http://localhost:51474/api/';
+
+  constructor(private httpClient: HttpClient, private flightAdapter:FlightAdapter) { 
+
+  }
+  
+  addFlight(flight:Flight){
+    //console.log(flight);
+    return this.httpClient.post(this.baseUri+'Flights',flight);
+  }
+
+  getFlights(){
+    return this.httpClient.get(this.baseUri+'Flights')
+    .pipe(
+      map((data:any)=>
+      data.map(item=>this.flightAdapter.adapt(item)
+      )
+    )
+    );
+  }
+}

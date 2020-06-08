@@ -41,7 +41,7 @@
                 <img src="../../../../assets/images/airplane.png" style="width: 20%; height: 20px;">
             </div>
             <div class="flex-row" style="height: 16.6%;">
-                <small *ngIf="roundFlight.toFlight.numberOfChangeovers>0; else noStops" style="font-size: x-small; color: #fa9e1c; font-weight: bolder;" >{{roundFlight.toFlight.numberOfChangeovers}} stop</small>
+                <small *ngIf="roundFlight.toFlight.connections.length>0; else noStops" style="font-size: x-small; color: #fa9e1c; font-weight: bolder;" >{{roundFlight.toFlight.connections.length}} stop</small>
                 <ng-template #noStops><small style="font-size: x-small; color: #fa9e1c; font-weight: bolder;">Direct</small></ng-template>
             </div>
             <div class="flex-row " style="height: 16.6%;">
@@ -52,7 +52,7 @@
                 <img src="../../../../assets/images/airplane.png" style="width: 20%; height: 20px;">
             </div>
             <div class="flex-row" style="height: 16.6%;">
-                <small *ngIf="roundFlight.backFlight.numberOfChangeovers>0; else noStops" style="font-size: x-small; color: #fa9e1c; font-weight: bolder;" >{{roundFlight.backFlight.numberOfChangeovers}} stop</small>
+                <small *ngIf="roundFlight.backFlight.connections.length>0; else noStops" style="font-size: x-small; color: #fa9e1c; font-weight: bolder;" >{{roundFlight.backFlight.connections.length}} stop</small>
                 <ng-template #noStops><small style="font-size: x-small; color: #fa9e1c; font-weight: bolder;">Direct</small></ng-template>
             </div>
         </div>
@@ -74,7 +74,7 @@
             </div>
         </div>
         <div class="flex-col align-self-center" style="width: 20%;  text-align: center;">
-            {{(roundFlight.toFlight.price+roundFlight.backFlight.price) | currency:'EUR':true}}
+            <!-- {{(roundFlight.toFlight.price+roundFlight.backFlight.price) | currency:'EUR':true}} -->
         </div>
     </div>
 </a>  

@@ -23,38 +23,37 @@ export class FilterPipe implements PipeTransform {
     const twoStopsIndex=filter.stops.indexOf(2);
 
     for(const flight of flights){
-      if(flight.price>filter.price || flight.duration>filter.duration){
-        continue;
-      }
+      // if(flight.price>filter.price || flight.duration>filter.duration){
+      //   continue;
+      // }
 
-      console.log(flight.airline);
-      for(const company of filter.airlines){
-        if(flight.airline.name===company.name){
+      // for(const company of filter.airlines){
+      //   if(flight.airline.name===company.name){
 
-          if(!company.isChecked){
-            companySuites=false;
-            continue;
-          }
-        }
-      }
-      if(!companySuites){
-        continue;
-      }
-      if(flight.numberOfChangeovers===0){
-        if(noStopsIndex===-1){
-          continue;
-        }
-      }
-      else if(flight.numberOfChangeovers===1){
-        if(oneStopIndex===-1){
-          continue;
-        }
-      }
-      else{
-        if(twoStopsIndex===1){
-          continue;
-        }
-      }
+      //     if(!company.isChecked){
+      //       companySuites=false;
+      //       continue;
+      //     }
+      //   }
+      // }
+      // if(!companySuites){
+      //   continue;
+      // }
+      // if(flight.numberOfChangeovers===0){
+      //   if(noStopsIndex===-1){
+      //     continue;
+      //   }
+      // }
+      // else if(flight.numberOfChangeovers===1){
+      //   if(oneStopIndex===-1){
+      //     continue;
+      //   }
+      // }
+      // else{
+      //   if(twoStopsIndex===1){
+      //     continue;
+      //   }
+      // }
 
       result.push(flight);
 

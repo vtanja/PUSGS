@@ -13,6 +13,18 @@ namespace Server.DTOs
     {
         public AutoMapping()
         {
+            CreateMap<Flight, FlightDTO>()
+                .ForMember(dest => dest.TakeOffDate, opt => opt.MapFrom(src => src.TakeOffDate))
+                .ForMember(dest => dest.TakeOffLocation, opt => opt.MapFrom(src => src.TakeOffLocation))
+                .ForMember(dest => dest.TakeOffTime, opt => opt.MapFrom(src => src.TakeOffTime))
+                .ForMember(dest => dest.LandingDate, opt => opt.MapFrom(src => src.LandingDate))
+                .ForMember(dest => dest.LandingLocation, opt => opt.MapFrom(src => src.LandingLocation))
+                .ForMember(dest => dest.LandingTime, opt => opt.MapFrom(src => src.LandingTime))
+                .ForMember(dest => dest.Connections, opt => opt.MapFrom(src => src.Connections))
+                .ForMember(dest => dest.SegmentPrices, opt => opt.MapFrom(src => src.SegmentPrices))
+                .ForMember(dest => dest.Duration, opt => opt.MapFrom(src => src.Duration))
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id));
+
             CreateMap<Airline, AirlineDTO>()
                 .ForMember(dest => dest.Address, opt => opt.MapFrom(src => src.Address))
                 .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description))
@@ -23,7 +35,8 @@ namespace Server.DTOs
 
             CreateMap<Plane, PlaneDTO>()
                 .ForMember(dest=>dest.Code, opt=>opt.MapFrom(src=>src.Code))
-                .ForMember(dest=>dest.Segments, opt=>opt.MapFrom(src=>src.Segments));
+                .ForMember(dest=>dest.Segments, opt=>opt.MapFrom(src=>src.Segments))
+                .ForMember(dest=>dest.Airline, opt=>opt.MapFrom(src=>src.Airline));
 
             CreateMap<Segment, SegmentDTO>()
                 .ForMember(dest => dest.Columns, opt => opt.MapFrom(src => src.Columns))

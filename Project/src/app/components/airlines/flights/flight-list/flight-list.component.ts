@@ -55,11 +55,11 @@ export class FlightListComponent implements OnInit {
       console.log(queryParams);
       if(queryParams['returnDate']==="undefined-undefined-undefined"){
         console.log('poziv funkcije one way')
-        this.flights=this.airlineService.getFlights(queryParams);
+        //this.flights=this.airlineService.getFlights(queryParams);
         this.roundFlights=[];
       }
       else{
-        this.roundFlights=this.airlineService.getRoundFlights(queryParams);
+        //this.roundFlights=this.airlineService.getRoundFlights(queryParams);
         this.flights=[];
       }
 

@@ -5,5 +5,5 @@
       </div>
     <h4>Flights</h4>
   </div>
-  <p [hidden]="flights.length!==0 && flights!==undefined"><ngb-alert [dismissible]="false" style="width: 70%; text-align: center;margin-left: 15%;"><strong>Notice!</strong> There are no flights still. Please add flights first!</ngb-alert></p>
+  <p *ngIf="showAlert"><ngb-alert [dismissible]="false" style="width: 70%; text-align: center;margin-left: 15%;"><strong>Notice!</strong> There are no flights still. Please add flights first!</ngb-alert></p>
   <app-admin-flight-list [flights]="flights" *ngIf="flights.length!==0 && flights!==undefined" ></app-admin-flight-list>

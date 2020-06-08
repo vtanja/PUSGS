@@ -14,6 +14,7 @@ export class AirlineAdapter implements Adapter<Airline>{
   constructor(private addressAdapter:AddressAdapter, private destAdapter:DestinationAdapter){}
 
   adapt(item:any):Airline{
+    console.log('airline adapter: ', item);
     let addr = this.addressAdapter.adapt(item.address);
     return new Airline(item.id,item.name,addr,item.description,null,null,item.logo)
   }

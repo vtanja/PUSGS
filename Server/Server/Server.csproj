@@ -30,6 +30,8 @@
     <Compile Remove="Migrations\20200529131331_PlaneUpdate2.Designer.cs" />
     <Compile Remove="Migrations\20200603213210_CarReservationUpdateSecond.cs" />
     <Compile Remove="Migrations\20200603213210_CarReservationUpdateSecond.Designer.cs" />
+    <Compile Remove="Migrations\20200605155539_FlightModelCreated.cs" />
+    <Compile Remove="Migrations\20200605155539_FlightModelCreated.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

@@ -161,15 +161,15 @@ export class CreateFlightReservationComponent implements OnInit {
    }
 
   ngOnInit(): void {
-    this.mySubscription = this.route.params.subscribe((params:Params)=>
-      {
-        this.flight = this.airlineService.getFlight(+params['id']);
-        console.log(this.flight);
-      }
-    )
+    // this.mySubscription = this.route.params.subscribe((params:Params)=>
+    //   {
+    //     // this.flight = this.airlineService.getFlight(+params['id']);
+    //     // console.log(this.flight);
+    //   }
+    //)
 
 
-    this.flightReservation = new FlightReservation("REZ1", this.flight.id, this.flight.airline.id, 0, []);
+    //this.flightReservation = new FlightReservation("REZ1", this.flight.id, this.flight.airline.id, 0, []);
 
     this.secondFormGroup = new FormGroup({
       'friends':new FormControl('')
@@ -234,7 +234,8 @@ export class CreateFlightReservationComponent implements OnInit {
     this.flightReservation.passengers.push(pass1);
     }
 
-    const price = this.flightReservation.passengers.length*this.flight.price;
+    //const price = this.flightReservation.passengers.length*this.flight.price;
+    var price = 60;
     console.log(price);
     this.flightReservation.price=price;
     console.log(this.flightReservation.price);
