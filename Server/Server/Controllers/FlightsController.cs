@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
@@ -9,7 +10,9 @@ using Microsoft.AspNetCore.Razor.Language;
 using Microsoft.EntityFrameworkCore;
 using Server.DTOs;
 using Server.Models;
+using Server.Services;
 using Server.Settings;
+using Server.UOW;
 
 namespace Server.Controllers
 {
@@ -19,11 +22,13 @@ namespace Server.Controllers
     {
         private readonly DataBaseContext _context;
         private readonly IMapper _mapper;
+        private readonly FlightService flightService;
 
-        public FlightsController(DataBaseContext context, IMapper mapper)
+        public FlightsController(DataBaseContext context, IMapper mapper, UnitOfWork unitOfWork)
         {
             _context = context;
             _mapper = mapper;
+            flightService = unitOfWork.FlightService;
         }
 
         // GET: api/Flights
@@ -33,16 +38,14 @@ namespace Server.Controllers
             var userId = User.Claims.First(c => c.Type == "UserID").Value;
             var user = await _context.AirlineAdmins.Include(x=>x.Airline).ThenInclude(y=>y.Planes).Where(x=>x.UserId == userId).FirstOrDefaultAsync();
 
-            var planes = user.Airline.Planes;
-            var flights = new List<Flight>();
-
-            foreach (var item in planes)
-            {
-                flights.AddRange(_context.Flights.Where(x => x.PlaneId == item.Code).Include(x => x.Plane).ThenInclude(x => x.Airline).Include(x => x.TakeOffLocation).Include(x => x.LandingLocation).ToList());
-            }
+            var planes = user.Airline.Planes.ToList();
+            var flights = await flightService.GetFlights(planes);
 
             var retVal = new List<FlightDTO>();
-            flights.ForEach(x => retVal.Add( _mapper.Map<Flight, FlightDTO>(x)));
+            foreach (var item in flights)
+            {
+                retVal.Add(_mapper.Map<Flight, FlightDTO>(item));
+            }
             
             return retVal;
         }
@@ -51,7 +54,7 @@ namespace Server.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Flight>> GetFlight(int id)
         {
-            var flight = await _context.Flights.FindAsync(id);
+            var flight = await flightService.GetFlight(id);
 
             if (flight == null)
             {
@@ -61,37 +64,7 @@ namespace Server.Controllers
             return flight;
         }
 
-        // PUT: api/Flights/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutFlight(int id, Flight flight)
-        {
-            if (id != flight.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(flight).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!FlightExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
+        
 
         // POST: api/Flights
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
@@ -115,6 +88,13 @@ namespace Server.Controllers
                 return BadRequest(new {message="Invalid dates. Landing date and time must be after take off date and time!" });
             }
 
+            var dates = new List<DateTime>();
+            for (var dt = dateTime1; dt <= dateTime2; dt = dt.AddDays(1))
+            {
+                dates.Add(dt);
+            }
+
+
             List<SegmentPrice> segments = new List<SegmentPrice>();
             foreach (var item in flight.SegmentPrices)
             {
@@ -130,41 +110,90 @@ namespace Server.Controllers
                 flight.SegmentPrices.Add(sp);
             }
 
-            _context.Flights.Add(flight);
+            var occupiedDates = await _context.OccupiedDates.Where(x => x.PlaneId == flight.PlaneId).ToListAsync();
 
-            try
+            if (datesAreAvailable(dates, occupiedDates))
             {
-                await _context.SaveChangesAsync();
+                foreach (var item in dates)
+                {
+                    OccupiedDate od = new OccupiedDate();
+                    od.Date = item;
+                    od.PlaneId = flight.PlaneId;
+                    _context.OccupiedDates.Add(od);
+                    try
+                    {
+                        await _context.SaveChangesAsync();
+                    }
+                    catch (Exception)
+                    {
+                        _context.OccupiedDates.Remove(od);
+                        return BadRequest(new { message = "Error while adding occupied dates!" });
+                    }
+
+                   
+                }
+
+                _context.Flights.Add(flight);
+
+                try
+                {
+                    await _context.SaveChangesAsync();
+                }
+                catch (Exception e)
+                {
+
+                    throw;
+                }
+
+
+                return CreatedAtAction("GetFlight", new { id = flight.Id }, flight);
             }
-            catch (Exception e)
+            else
             {
-
-                throw;
+                return BadRequest(new { message = "Plane is not available on specified dates!" });
             }
             
 
-            return CreatedAtAction("GetFlight", new { id = flight.Id }, flight);
+
+
+            
+        }
+
+        private bool datesAreAvailable(List<DateTime> dates, List<OccupiedDate> occupiedDates)
+        {
+            if (occupiedDates.Count > 0)
+            {
+                foreach (var item in dates)
+                {
+                    var date = occupiedDates.FirstOrDefault(x => x.Date == item);
+                    if ( date!=null)
+                    {
+                        return false;
+                    }
+                }
+
+            }
+            return true;
         }
 
         // DELETE: api/Flights/5
         [HttpDelete("{id}")]
         public async Task<ActionResult<Flight>> DeleteFlight(int id)
         {
-            var flight = await _context.Flights.FindAsync(id);
+            var flight = await flightService.GetFlight(id);
             if (flight == null)
             {
                 return NotFound();
             }
 
-            _context.Flights.Remove(flight);
-            await _context.SaveChangesAsync();
+            if(!await flightService.DeleteFlight(flight))
+            {
+                return BadRequest(new { message = "Error while deleting flight!" });
+            }
 
             return flight;
         }
 
-        private bool FlightExists(int id)
-        {
-            return _context.Flights.Any(e => e.Id == id);
-        }
+        
     }
 }

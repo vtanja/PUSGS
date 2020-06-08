@@ -8,7 +8,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Server.DTOs;
 using Server.Models;
+using Server.Services;
 using Server.Settings;
+using Server.UOW;
 
 namespace Server.Controllers
 {
@@ -18,11 +20,13 @@ namespace Server.Controllers
     {
         private readonly DataBaseContext _context;
         private readonly AutoMapper.IMapper _mapper;
+        private readonly DestinationService destinationService;
 
-        public DestinationsController(DataBaseContext context, AutoMapper.IMapper mapper)
+        public DestinationsController(DataBaseContext context, AutoMapper.IMapper mapper, UnitOfWork unitOfWork)
         {
             _context = context;
             _mapper = mapper;
+            destinationService = unitOfWork.DestinationService;
         }
 
         // GET: api/Destinations
@@ -30,19 +34,28 @@ namespace Server.Controllers
         public async Task<ActionResult<IEnumerable<DestinationDTO>>> GetDestinations()
         {
             string userId = User.Claims.First(c => c.Type == "UserID").Value;
-            //string userId = "5f6c5a0c-aac8-45db-81d1-6c8b2ffda359";
             var user = await _context.AirlineAdmins.Include(x => x.Airline).Where(x => x.UserId == userId).FirstOrDefaultAsync();
-            var dests = await _context.Destinations.Where(x => x.AirlineId == user.AirlineId).ToListAsync();
-            List<DestinationDTO> retVal = new List<DestinationDTO>();
-            dests.ForEach(x => retVal.Add(_mapper.Map<Destination, DestinationDTO>(x)));
-            return retVal;
+            if(user.Airline != null)
+            {
+                var dests = await destinationService.GetDestinations((int)user.AirlineId);
+                List<DestinationDTO> retVal = new List<DestinationDTO>();
+                foreach (var item in dests)
+                {
+                    retVal.Add(_mapper.Map<Destination, DestinationDTO>(item));
+                }
+                return retVal;
+            }
+            else
+            {
+                return BadRequest(new { message = "User haven't added airline yet!" });
+            }
         }
 
         // GET: api/Destinations/5
         [HttpGet("{id}")]
         public async Task<ActionResult<DestinationDTO>> GetDestination(int id)
         {
-            var destination = await _context.Destinations.Include(x=>x.Airline).FirstOrDefaultAsync(x=>x.DestinationId==id);
+            var destination = await destinationService.GetDestination(id);
 
             if (destination == null)
             {
@@ -52,37 +65,6 @@ namespace Server.Controllers
             return _mapper.Map<Destination,DestinationDTO>(destination);
         }
 
-        // PUT: api/Destinations/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutDestination(int id, Destination destination)
-        {
-            if (id != destination.DestinationId)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(destination).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!DestinationExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
 
         // POST: api/Destinations
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
@@ -93,59 +75,44 @@ namespace Server.Controllers
             var adminId = User.Claims.First(c => c.Type == "UserID").Value;
             var admin = await _context.AirlineAdmins.Include(x=>x.Airline).ThenInclude(x=>x.Destinations).Where(x=>x.UserId==adminId).FirstOrDefaultAsync();
 
-            if (admin.AirlineId != null)
+            if (admin.AirlineId == null)
             {
-                if (admin.Airline.Destinations.Where(x => x.City == destination.City && x.Country == destination.Country).FirstOrDefault()==null)
+                return BadRequest(new { message = "User haven't added airline yet!" });
+            }
+
+            if (admin.Airline.Destinations.Where(x => x.City == destination.City && x.Country == destination.Country).FirstOrDefault()==null)
+            {
+                destination.AirlineId = (int)admin.AirlineId;
+                if (await destinationService.PostDestination(destination))
                 {
-                    destination.AirlineId = (int)admin.AirlineId;
-
-                    _context.Destinations.Add(destination);
-                    try
-                    {
-                        await _context.SaveChangesAsync();
-
-                    }
-                    catch (Exception e)
-                    {
-                        return BadRequest(new { message = "Unable to add destination." });
-                    }
-
-                    return CreatedAtAction("GetDestination", new { id = destination.DestinationId }, _mapper.Map<DestinationDTO>(destination));
+                    return NoContent();
                 }
                 else
                 {
-                    return BadRequest(new { message = "This destination already exists!" });
+                    return BadRequest(new { message = "Unable to add destination." });
                 }
-                    
             }
-
-            return BadRequest(new { message = "Please add airline first!" });
-
-
-
-            
-            
+            else
+            {
+                return BadRequest(new { message = "This destination already exists!" });
+            }
+                    
         }
+
+
 
         // DELETE: api/Destinations/5
         [HttpDelete("{id}")]
         public async Task<ActionResult<Destination>> DeleteDestination(int id)
         {
-            var destination = await _context.Destinations.FindAsync(id);
-            if (destination == null)
+            if (await destinationService.DeleteDestination(id))
             {
-                return NotFound();
+                return NoContent();
             }
 
-            _context.Destinations.Remove(destination);
-            await _context.SaveChangesAsync();
-
-            return destination;
+            return BadRequest(new { message = "Error while deleting destination! " });
         }
 
-        private bool DestinationExists(int id)
-        {
-            return _context.Destinations.Any(e => e.DestinationId == id);
-        }
+        
     }
 }

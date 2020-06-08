@@ -1,9 +1,11 @@
-﻿using Server.Repositories;
+﻿using Microsoft.AspNetCore.Mvc.Formatters;
+using Server.Repositories;
 using Server.Services;
 using Server.Settings;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 
 namespace Server.UOW
@@ -18,6 +20,12 @@ namespace Server.UOW
         private OfficeService officeService;
         public DiscountDateService discountDateService;
         private BonusPointsDiscountService bpDiscountService;
+        private FriendshipService friendshipService;
+        private AirlineService airlineService;
+        private DestinationService destinationService;
+        private PlaneService planeService;
+        private SegmentService segmentService;
+        private FlightService flightService;
 
         private CarRepository carRepository;
         private RentCarRepository rentCarRepository;
@@ -26,6 +34,12 @@ namespace Server.UOW
         private ReservedDateRepository reservedDateRepository;
         private DiscountDateRepository discountDateRepository;
         private BonusPointsDiscountRepository bpDiscountRepository;
+        private FriendshipRepository friendshipRepository;
+        private AirlineRepository airlineRepository;
+        private DestinationRepository destinationRepository;
+        private PlaneRepository planeRepository;
+        private SegmentRepository segmentRepository;
+        private FlightRepository flightRepository;
 
         public UnitOfWork(DataBaseContext context)
         {
@@ -39,6 +53,39 @@ namespace Server.UOW
             reservedDateRepository = new ReservedDateRepository(_context);
             discountDateRepository = new DiscountDateRepository(_context);
             bpDiscountRepository = new BonusPointsDiscountRepository(_context);
+            friendshipRepository = new FriendshipRepository(_context);
+            airlineRepository = new AirlineRepository(_context);
+            destinationRepository = new DestinationRepository(_context);
+            planeRepository = new PlaneRepository(_context);
+            segmentRepository = new SegmentRepository(_context);
+            flightRepository = new FlightRepository(_context);
+        }
+
+        public FlightService FlightService
+        {
+            get
+            {
+                if (this.flightService == null)
+                {
+                    this.flightService = new FlightService(flightRepository);
+                }
+
+                return this.flightService;
+            }
+        }
+
+
+        public SegmentService SegmentService
+        {
+            get
+            {
+                if (this.segmentService == null)
+                {
+                    this.segmentService = new SegmentService(segmentRepository);
+                }
+
+                return this.segmentService;
+            }
         }
 
         public CarService CarService
@@ -110,6 +157,51 @@ namespace Server.UOW
                 }
                 return this.bpDiscountService;
             } 
+        }
+
+        public FriendshipService FriendshipService {
+            get { 
+                if(friendshipService == null)
+                {
+                    friendshipService = new FriendshipService(friendshipRepository);
+                }
+                return this.friendshipService;
+            }
+        }
+
+        public AirlineService AirlineService
+        {
+            get
+            {
+                if (airlineService == null)
+                {
+                    airlineService = new AirlineService(airlineRepository);
+                }
+                return this.airlineService;
+            }
+        }
+
+        public DestinationService DestinationService {
+            get
+            {
+                if(destinationService == null)
+                {
+                    destinationService = new DestinationService(destinationRepository);
+                }
+                return this.destinationService;
+            }
+        }
+
+        public PlaneService PlaneService
+        {
+            get
+            {
+                if (planeService == null)
+                {
+                    planeService = new PlaneService(planeRepository, segmentRepository);
+                }
+                return this.planeService;
+            }
         }
 
         protected virtual void Dispose(bool disposing)

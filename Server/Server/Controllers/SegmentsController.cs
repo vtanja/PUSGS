@@ -2,11 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Server.DTOs;
 using Server.Models;
+using Server.Services;
 using Server.Settings;
+using Server.UOW;
 
 namespace Server.Controllers
 {
@@ -15,31 +19,42 @@ namespace Server.Controllers
     public class SegmentsController : ControllerBase
     {
         private readonly DataBaseContext _context;
+        private readonly SegmentService segmentService;
+        private readonly IMapper _mapper;
 
-        public SegmentsController(DataBaseContext context)
+        public SegmentsController(DataBaseContext context, UnitOfWork unitOfWork, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
+            segmentService = unitOfWork.SegmentService;
         }
 
         // GET: api/Segments
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Segment>>> GetSegments()
+        public async Task<ActionResult<IEnumerable<SegmentDTO>>> GetSegments()
         {
-            return await _context.Segments.ToListAsync();
+            var segments = await segmentService.GetSegments();
+
+            List<SegmentDTO> retVal = new List<SegmentDTO>();
+            foreach (var item in segments)
+            {
+                retVal.Add(_mapper.Map<Segment, SegmentDTO>(item));
+            }
+            return retVal;
         }
 
         // GET: api/Segments/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Segment>> GetSegment(int id)
+        public async Task<ActionResult<SegmentDTO>> GetSegment(int id)
         {
-            var segment = await _context.Segments.FindAsync(id);
+            var segment = await segmentService.GetSegment(id);
 
             if (segment == null)
             {
                 return NotFound();
             }
 
-            return segment;
+            return _mapper.Map<Segment, SegmentDTO>(segment);
         }
 
         // PUT: api/Segments/5
@@ -53,22 +68,10 @@ namespace Server.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(segment).State = EntityState.Modified;
 
-            try
+            if (!await segmentService.PutSegment(segment))
             {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!SegmentExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return BadRequest(new { message = "Error while updating segment!" });
             }
 
             return NoContent();
@@ -80,31 +83,31 @@ namespace Server.Controllers
         [HttpPost]
         public async Task<ActionResult<Segment>> PostSegment(Segment segment)
         {
-            _context.Segments.Add(segment);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetSegment", new { id = segment.Id }, segment);
+            if (!await segmentService.PostSegment(segment))
+            {
+                return BadRequest(new { message = "Error while adding segment!" });
+            }
+            return NoContent();
         }
 
         // DELETE: api/Segments/5
         [HttpDelete("{id}")]
         public async Task<ActionResult<Segment>> DeleteSegment(int id)
         {
-            var segment = await _context.Segments.FindAsync(id);
+            var segment = await segmentService.GetSegment(id);
             if (segment == null)
             {
                 return NotFound();
             }
 
-            _context.Segments.Remove(segment);
-            await _context.SaveChangesAsync();
+            if(!await segmentService.DeleteSegment(segment))
+            {
+                return BadRequest(new { message = "Error while deleting segment!" });
+            }
 
             return segment;
         }
 
-        private bool SegmentExists(int id)
-        {
-            return _context.Segments.Any(e => e.Id == id);
-        }
+        
     }
 }

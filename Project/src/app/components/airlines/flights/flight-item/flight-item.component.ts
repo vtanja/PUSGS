@@ -3,6 +3,7 @@ import { Flight } from 'src/app/models/flight.model';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { Airline } from 'src/app/models/airline.model';
 import { AirlineService } from 'src/app/services/airline.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-flight-item',
@@ -17,17 +18,22 @@ export class FlightItemComponent implements OnInit, AfterViewInit{
   imgToDisplay:string='';
   hours:number;
   minutes:number;
+  showBuyButton = true;
 
-  constructor( private modalService: NgbModal, private airlineService:AirlineService) { 
+  constructor( private modalService: NgbModal, private airlineService:AirlineService, private route:ActivatedRoute) { 
     
   }
   ngAfterViewInit(): void {
     this.airlineService.getAirline(this.flight.plane.airlineId).subscribe((res:any)=>{
       this.imgToDisplay = this.image+res.image;
     })
+
   }
 
   ngOnInit(): void {
+    if(this.route.snapshot.routeConfig.path.includes('admin-flights')){
+      this.showBuyButton=false;
+    }
     this.hours = Math.floor(this.flight.duration/60);
     this.minutes = this.flight.duration%60;
     // this.thirdFormGroup = this._formBuilder.group({
