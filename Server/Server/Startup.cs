@@ -21,6 +21,8 @@ using Server.Email;
 using AutoMapper;
 using Server.Services;
 using Server.HubConfig;
+using Server.UOW;
+
 namespace Server
 {
     public class Startup
@@ -90,7 +92,7 @@ namespace Server
             };
            });
 
-           
+            services.AddTransient<UnitOfWork>();
 
         }
 

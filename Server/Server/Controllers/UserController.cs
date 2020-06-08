@@ -108,7 +108,6 @@ namespace Server.Controllers
             return NoContent();
         }
 
-
         [HttpGet("{username}")]
         public async Task<ActionResult<UserDTO>> GetUser(string username)
         {
@@ -135,8 +134,6 @@ namespace Server.Controllers
             return retVal;
 
         }
-
-
 
         [HttpPost]
         [Route("Register")]
@@ -197,6 +194,11 @@ namespace Server.Controllers
                 {
                     return Unauthorized(new { message = "We sent you an email with confirmation link. Please confirm your registration with Travellix to log in. " });
                 }
+
+                //if (!user.PasswordChanged)
+                //{
+                //    return Unauthorized(new { message = "You haven't changed your password. Please check your email to get to change password page." });
+                //}
 
                 var role = await _userManager.GetRolesAsync(user);
                 IdentityOptions _options = new IdentityOptions();
@@ -356,7 +358,7 @@ namespace Server.Controllers
             {
                 httpResponseMessage = httpClient.GetAsync(requestUri).Result;
             }
-            catch (Exception ex)
+            catch
             {
                 return null;
             }
@@ -388,16 +390,17 @@ namespace Server.Controllers
                 return new JsonResult("ERROR");
             }
 
-            if (user.EmailConfirmed)
+            if (user.EmailConfirmed && user.PasswordChanged )
             {
-                return Redirect("/login");
+                return Redirect("http://localhost:4200/login");
             }
 
             var result = await _userManager.ConfirmEmailAsync(user, code);
 
             if (result.Succeeded)
             {
-                return RedirectToAction("EmailConfirmed", "Notifications", new { userID, code });
+                var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+                return RedirectToAction("EmailConfirmed", "Notifications", new { userID, token });
             }
             else
             {
@@ -408,6 +411,40 @@ namespace Server.Controllers
                 }
                 return new JsonResult(errors);
             }
+        }
+
+        [HttpPost]
+        [Route("ChangePassword")]
+        public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordModel changePasswordModel)
+        {
+
+            var user = await _userManager.FindByIdAsync(changePasswordModel.UserID);
+
+            if (user == null)
+            {
+                return new JsonResult("ERROR");
+            }
+
+            if (user.PasswordChanged)
+            {
+                return BadRequest(new { message = "Password already changed." });
+            }
+
+
+            
+            var result = await _userManager.ResetPasswordAsync(user, changePasswordModel.Token, changePasswordModel.NewPassword);
+
+            if (result.Succeeded) { 
+                
+                _dataBaseContext.Entry<RegisteredUser>(user).State = EntityState.Modified;
+                user.PasswordChanged = true;
+                await _dataBaseContext.SaveChangesAsync();
+                
+                return Ok();
+            }
+
+            return BadRequest();
+            
         }
 
         private async Task<string> GenerateToken(RegisteredUser user)

@@ -17,6 +17,7 @@ import { RentCarService } from '../../services/rent-a-car.service';
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
+  requestSent:boolean;
 
   constructor(
     private userService: UserService,
@@ -34,6 +35,7 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     this.loginForm.reset();
+    this.requestSent = false;
 
     if (this.userService.isUserLoggedIn()) {
       this.router.navigate(['/user/profile'], { relativeTo: this.route });
@@ -46,14 +48,17 @@ export class LoginComponent implements OnInit {
       Password: this.loginForm.get('password').value,
     };
 
+    this.requestSent = true;
     this.userService.login(loginData).subscribe(
       (res: any) => {
+        this.requestSent = false;
         localStorage.setItem('token', res.token);
         this.userService.userLogged.next(true);
         this.loginForm.reset();
         this.navigate();
       },
       (err) => {
+        this.requestSent = false;
         if (err.status != 0) this.toastr.error(err.error.message);
       }
     );

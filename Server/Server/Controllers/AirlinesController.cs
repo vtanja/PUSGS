@@ -129,7 +129,7 @@ namespace Server.Controllers
             {
                 await _context.SaveChangesAsync();
             }
-            catch (DbUpdateConcurrencyException ex)
+            catch
             {
                 if (!AirlineExists(id))
                 {

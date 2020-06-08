@@ -9,8 +9,12 @@ using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Server.DTOs;
+using Server.IServices;
 using Server.Models;
+using Server.Repositories;
+using Server.Services;
 using Server.Settings;
+using Server.UOW;
 
 namespace Server.Controllers
 {
@@ -20,11 +24,14 @@ namespace Server.Controllers
     {
         private readonly DataBaseContext _context;
         private readonly IMapper _mapper;
+        private OfficeService officeService;
 
-        public OfficesController(DataBaseContext context,IMapper mapper)
+        public OfficesController(DataBaseContext context,IMapper mapper,UnitOfWork unitOfWork)
         {
             _context = context;
             _mapper = mapper;
+            officeService = unitOfWork.OfficeService;
+
         }
 
         // GET: api/Offices
@@ -34,60 +41,32 @@ namespace Server.Controllers
         {
             string userId = User.Claims.First(c => c.Type == "UserID").Value;
             var user = await _context.RentCarAdmins.FindAsync(userId);
-            List<OfficeDTO> offices = _mapper.Map<List<OfficeDTO>>(await _context.Offices.Include(o=>o.Address).Where(o=>o.RentCarId==user.CompanyId).ToListAsync());
+
+            if (user.CompanyId == null)
+                return BadRequest();
+
+            List<OfficeDTO> offices = _mapper.Map<List<OfficeDTO>>(await officeService.GetCompanyOffices((int)user.CompanyId));
 
             var ret = offices.GroupBy(o=>o.Country).ToDictionary(g => g.Key, g => g.ToList());
             return  ret;
         }
 
-        // GET: api/Offices/5
-        [HttpGet("{id}")]
-        [Authorize(Roles = "RENTCARADMIN")]
-        public async Task<ActionResult<Office>> GetOffice(int id)
-        {
-            var office = await _context.Offices.FindAsync(id);
+        //// GET: api/Offices/5
+        //[HttpGet("{id}")]
+        //[Authorize(Roles = "RENTCARADMIN")]
+        //public async Task<ActionResult<Office>> GetOffice(int id)
+        //{
+        // //   var office = await _context.Offices.FindAsync(id);
+        //    var office = await officeService.get
 
-            if (office == null)
-            {
-                return NotFound();
-            }
+        //    if (office == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            return office;
-        }
+        //    return office;
+        //}
 
-
-        // PUT: api/Offices/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [HttpPut("{id}")]
-        [Authorize(Roles = "RENTCARADMIN")]
-        public async Task<IActionResult> PutOffice(int id, Office office)
-        {
-            if (id != office.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(office).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!OfficeExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
 
         // POST: api/Offices
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
@@ -99,32 +78,16 @@ namespace Server.Controllers
             var adminId = User.Claims.First(c => c.Type == "UserID").Value;
             var admin = await _context.RentCarAdmins.FindAsync(adminId);
 
-            _context.Addresses.Add(office.Address);
-            try
-            {
-                await _context.SaveChangesAsync();
-                
-            }
-            catch (Exception e)
-            {
-                return BadRequest(new { message = "Unable to add office." });
-            }
-            office.AddressId = office.Address.AddressId;
-            office.RentCarId = (int)admin.CompanyId;
-            _context.Offices.Add(office);
-            try
-            {
-                await _context.SaveChangesAsync();
-                
-            }
-            catch(Exception e)
-            {
-                var address = await _context.Addresses.FindAsync(office.AddressId);
-                _context.Addresses.Remove(address);
-                return BadRequest(new { message = "Unable to add office." });
-            }
+            if (admin.CompanyId == null)
+                return BadRequest();
 
-            return CreatedAtAction("GetOffice", new { id = office.Id }, _mapper.Map<OfficeDTO>(office));
+            office.RentCarId = (int)admin.CompanyId;
+
+            if(await officeService.AddOffice(office))
+            {
+                return CreatedAtAction("GetOffice", new { id = office.Id }, _mapper.Map<OfficeDTO>(office));
+            }
+            return BadRequest();
         }
 
         // DELETE: api/Offices/5
@@ -132,22 +95,9 @@ namespace Server.Controllers
         [Authorize(Roles = "RENTCARADMIN")]
         public async Task<ActionResult<Office>> DeleteOffice(int id)
         {
-            var office = await _context.Offices.FindAsync(id);
-            if (office == null)
-            {
-                return NotFound();
-            }
-
-            _context.Offices.Remove(office);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
-
-
-        private bool OfficeExists(int id)
-        {
-            return _context.Offices.Any(e => e.Id == id);
+            if(await officeService.DeleteOffice(id))
+                return NoContent();
+            return BadRequest();
         }
     }
 }

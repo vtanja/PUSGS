@@ -105,7 +105,7 @@ export class AddUserComponent implements OnInit {
             text: 'Administrator successfully added!',
             icon: 'success',
             showConfirmButton: false,
-            timer: 1500,
+            timer: 2500,
           });
           if(userData.UserRole==='RENTCARADMIN')
             this.router.navigateByUrl('/rent-car-admins');

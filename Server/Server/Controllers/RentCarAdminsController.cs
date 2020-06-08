@@ -63,39 +63,6 @@ namespace Server.Controllers
             return rentCarAdmin;
         }
 
-        // PUT: api/RentCarAdmins/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [HttpPut("{id}")]
-        [Authorize(Roles = "ADMINISTRATOR")]
-        public async Task<IActionResult> PutRentCarAdmin(string id, RentCarAdmin rentCarAdmin)
-        {
-            if (id != rentCarAdmin.UserId)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(rentCarAdmin).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!RentCarAdminExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
         // POST: api/RentCarAdmins
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
@@ -120,7 +87,6 @@ namespace Server.Controllers
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-
                     await _userManager.AddToRoleAsync(user, "RENTCARADMIN");
                     await _context.RentCarAdmins.AddAsync(new RentCarAdmin { UserId = user.Id });
                     await _context.SaveChangesAsync();
@@ -144,23 +110,6 @@ namespace Server.Controllers
 
                 return BadRequest(ex.Message);
             }
-        }
-
-        // DELETE: api/RentCarAdmins/5
-        [HttpDelete("{id}")]
-        [Authorize(Roles = "ADMINISTRATOR")]
-        public async Task<ActionResult<RentCarAdmin>> DeleteRentCarAdmin(string id)
-        {
-            var rentCarAdmin = await _context.RentCarAdmins.FindAsync(id);
-            if (rentCarAdmin == null)
-            {
-                return NotFound();
-            }
-
-            _context.RentCarAdmins.Remove(rentCarAdmin);
-            await _context.SaveChangesAsync();
-
-            return rentCarAdmin;
         }
 
         [HttpGet]

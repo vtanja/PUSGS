@@ -59,68 +59,11 @@ namespace Server.Controllers
             return _mapper.Map<AirlineAdmin,AirlineAdminDTO>(airlineAdmin);
         }
 
-        // PUT: api/AirlineAdmins/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutAirlineAdmin(string id, AirlineAdmin airlineAdmin)
-        {
-            if (id != airlineAdmin.UserId)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(airlineAdmin).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!AirlineAdminExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-        // POST: api/AirlineAdmins
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [HttpPost]
-        public async Task<ActionResult<AirlineAdmin>> PostAirlineAdmin(AirlineAdmin airlineAdmin)
-        {
-            _context.AirlineAdmins.Add(airlineAdmin);
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateException)
-            {
-                if (AirlineAdminExists(airlineAdmin.UserId))
-                {
-                    return Conflict();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return CreatedAtAction("GetAirlineAdmin", new { id = airlineAdmin.UserId }, airlineAdmin);
-        }
 
         [HttpPost]
         [Route("AddAdmin")]
         //POST : /api/AirlineAdmins/AddAdmin
-        public async Task<Object> PostRentCarAdmin(UserModel model)
+        public async Task<Object> PostAirlineAdmin(UserModel model)
         {
             var user = new RegisteredUser()
             {
@@ -160,22 +103,6 @@ namespace Server.Controllers
             }
         }
 
-        // DELETE: api/AirlineAdmins/5
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<AirlineAdmin>> DeleteAirlineAdmin(string id)
-        {
-            var airlineAdmin = await _context.AirlineAdmins.FindAsync(id);
-            if (airlineAdmin == null)
-            {
-                return NotFound();
-            }
-
-            _context.AirlineAdmins.Remove(airlineAdmin);
-            await _context.SaveChangesAsync();
-
-            return airlineAdmin;
-        }
-
         private bool AirlineAdminExists(string id)
         {
             return _context.AirlineAdmins.Any(e => e.UserId == id);
@@ -207,7 +134,9 @@ namespace Server.Controllers
 
             if (result.Succeeded)
             {
-                return RedirectToAction("EmailConfirmed", "Notifications", new { userID, code });
+
+                var passwordChangeToken =await  _userManager.GeneratePasswordResetTokenAsync(user);
+                return RedirectToAction("EmailConfirmed", "Notifications", new { userID, passwordChangeToken });
             }
             else
             {
@@ -219,5 +148,6 @@ namespace Server.Controllers
                 return new JsonResult(errors);
             }
         }
+
     }
 }

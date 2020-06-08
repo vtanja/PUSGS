@@ -344,6 +344,21 @@ namespace Server.Migrations
 
                     b.ToTable("Airports");
                 });
+            modelBuilder.Entity("Server.Models.BonusPointsDiscount", b =>
+                {
+                    b.Property<double>("Discount")
+                        .HasColumnType("float");
+
+                    b.Property<int>("MaxPoints")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MinPoints")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("BonusPointsDiscounts");
+                });
 
             modelBuilder.Entity("Server.Models.Car", b =>
                 {
@@ -799,6 +814,9 @@ namespace Server.Migrations
 
                     b.Property<string>("LastName")
                         .HasColumnType("nvarchar(150)");
+
+                    b.Property<bool>("PasswordChanged")
+                        .HasColumnType("bit");
 
                     b.Property<string>("SocialUserType")
                         .IsRequired()

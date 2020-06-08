@@ -45,6 +45,8 @@ import { RentACarAddComponent } from './components/rent-a-cars/rent-a-car-admini
 import { AddFirstComponent } from './components/rent-a-cars/rent-a-car-administrator/rent-a-car-add/add-first/add-first.component';
 import { AdminHomeComponent } from './components/administrator/admin-home/admin-home.component';
 import { AuthGuard } from './guards/auth-guard.guard';
+import { ChangePasswordComponent } from './components/user/change-password/change-password.component';
+import { BonusPointsComponent } from './components/administrator/bonus-points/bonus-points.component';
 
 
 const routes: Routes = [
@@ -147,6 +149,8 @@ const routes: Routes = [
   {path: 'rent-car-admins', component: RentCarAdminsComponent,canActivate:[AuthGuard], data:{permittedRoles:['ADMINISTRATOR']}},
   {path: 'airline-admins', component: AirlineAdminsComponent,canActivate:[AuthGuard], data:{permittedRoles:['ADMINISTRATOR']}},
   { path: 'add-user', component: AddUserComponent ,canActivate:[AuthGuard], data:{permittedRoles:['ADMINISTRATOR']} },
+  {path: 'bonus-points',component:BonusPointsComponent,canActivate:[AuthGuard],data:{permittedRoles:['ADMINISTRATOR']}},
+  {path: 'change-password',component:ChangePasswordComponent},
   { path: '**', component: HomePageComponent },
 
 ];

@@ -14,9 +14,22 @@
             <div class="box" style="margin:5%">
                 <h2>Thank You!<br><br /><span>Your email has been confirmed.</span></h2>
                 <p style="align-content:center">
-                    You can now successfuly login. You have full access to our products and services.
+                    In order to have full access to our products and services please change your password.
                 </p>
-                <a class="btn btn-primary btn-block" style="background-color:#440d75;width:30%;margin-left:35%" href="http://localhost:4200/login">LOGIN</a>
+                @*<p style="align-content:center">
+            You can now successfuly login. You have full access to our products and services.
+        </p>*@
+
+                  @*<a class="btn btn-primary btn-block" style="background-color:#440d75;width:30%;margin-left:35%"  href="http://localhost:4200/login">LOGIN</a>*@
+
+                @using (Html.BeginForm("ChangeRoute", "Notifications"))
+                {
+                    <input type="text" value="@ViewBag.userID" hidden name="userID" />
+                    <input type="text" value="@ViewBag.token" hidden name="token" />
+                    <input type="submit" class="btn btn-primary btn-block" style="background-color:#440d75;width:50%;margin-left:25%" value="CHANGE PASSWORD" />
+                }
+
+               @* <button  class="btn btn-primary btn-block" style="background-color:#440d75;width:50%;margin-left:25%">CHANGE PASSWORD</button>*@
             </div>
         </div>
     </div>

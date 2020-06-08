@@ -4,16 +4,20 @@
   </span>
 </ng-template>
 
-<div style="width: 100%;" *ngIf="carCompany!=undefined">
+<ngx-spinner type='ball-spin-clockwise-fade' color="#eea136">
+  <p style="font-size: 20px; color: white ; padding-top: 25%;">Loading...</p>
+</ngx-spinner>
+
+<div style="width: 100%;" *ngIf="carCompany!=undefined && !isSpining">
   <div class=" sticky-top " style=" width: 100%; background-color:#e3cff3;opacity: 0.7;">
-    <app-profile-navbar [company]="navItemInfo" style="width: 100%;"></app-profile-navbar>
+    <app-profile-navbar [company]="navItemInfo" (route)="onInnerRouteChange($event)" style="width: 100%;"></app-profile-navbar>
   </div>
-  <br>
+  <br id="aboutUs" >
   <div class="d-flex justify-content-center">
     <img src="{{carCompany.logo}}" width="240px" height="100px">
   </div>
 
-  <div class="d-flex justify-content-between" style="margin-left:20%;margin-top: 3%;width: 60%;">
+  <div  class="d-flex justify-content-between" style="margin-left:20%;margin-top: 3%;width: 60%;">
     <div>
       <i class="fa fa-map-marker" aria-hidden="true" title="Show on google maps"
         (click)="showMapToggled=!showMapToggled"></i>
@@ -34,7 +38,7 @@
     <p>{{carCompany.description}}</p>
   </div>
 
-  <div style="background-color: whitesmoke; padding-bottom: 2%; margin-top: 2%;">
+  <div id="offices" style="background-color: whitesmoke; padding-bottom: 2%; margin-top: 2%;">
     <div class="d-flex justify-content-center">
       <h4>We have offices all around the world</h4>
       <i style="padding-top: 5%; margin-left: 2%;" class="fa fa-map-marker" aria-hidden="true"
@@ -46,7 +50,7 @@
     <app-profile-offices [items]="carCompany.offices"></app-profile-offices>
   </div>
 
-  <div class="d-flex justify-content-center" style="margin-top: 5%;">
+  <div id="cars" class="d-flex justify-content-center" style="margin-top: 5%;">
     <h4>Check our cars</h4>
   </div>
   <div class="d-flex justify-content-center" style="margin-top: 2%;background-color: whitesmoke;">

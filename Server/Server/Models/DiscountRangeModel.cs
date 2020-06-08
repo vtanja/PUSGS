@@ -8,7 +8,6 @@ namespace Server.Models
     public class DiscountRangeModel
     {
         public List<string> Dates{ get; set; }
-      //  public DateTime EndDate { get; set; }
 
         public int CarId { get; set; }
 

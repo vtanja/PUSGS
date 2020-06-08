@@ -33,6 +33,7 @@ namespace Server.Settings
         public DbSet<Flight> Flights { get; set; }
         public DbSet<OccupiedDate> OccupiedDates { get; set; }
         public DbSet<Airport> Airports { get; set; }
+        public DbSet<BonusPointsDiscount> BonusPointsDiscounts { get; set; }
 
 
     }
