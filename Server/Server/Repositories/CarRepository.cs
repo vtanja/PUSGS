@@ -57,8 +57,7 @@ namespace Server.Repositories
         public  bool CarExists(int id)
         {
             return _context.Cars.Any(e => e.Id == id);
-        }
-        
+        }    
         public async Task<IEnumerable<Car>> SearchCars(SearchCarModel searchCarModel)
         {
             DateTime dateDropOff = Convert.ToDateTime(searchCarModel.DropOffDate);
@@ -119,7 +118,6 @@ namespace Server.Repositories
 
             return ret;
         }
-
         public async Task<IEnumerable<Car>> SearchCompanyCars(SearchCarModel searchCarModel)
         {
             string[] dropOffLocationParams = searchCarModel.DropOffLocation.Split(", ");

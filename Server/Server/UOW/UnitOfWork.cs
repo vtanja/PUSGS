@@ -17,6 +17,7 @@ namespace Server.UOW
         private CarReservationService carReservationService;
         private OfficeService officeService;
         public DiscountDateService discountDateService;
+        private BonusPointsDiscountService bpDiscountService;
 
         private CarRepository carRepository;
         private RentCarRepository rentCarRepository;
@@ -24,6 +25,7 @@ namespace Server.UOW
         private CarReservationRepository carReservationRepository;
         private ReservedDateRepository reservedDateRepository;
         private DiscountDateRepository discountDateRepository;
+        private BonusPointsDiscountRepository bpDiscountRepository;
 
         public UnitOfWork(DataBaseContext context)
         {
@@ -36,6 +38,7 @@ namespace Server.UOW
             carReservationRepository = new CarReservationRepository(_context);
             reservedDateRepository = new ReservedDateRepository(_context);
             discountDateRepository = new DiscountDateRepository(_context);
+            bpDiscountRepository = new BonusPointsDiscountRepository(_context);
         }
 
         public CarService CarService
@@ -97,6 +100,16 @@ namespace Server.UOW
                 }
                 return this.discountDateService;
             }
+        }
+
+        public BonusPointsDiscountService BpDiscountService {
+            get {
+                if (bpDiscountService == null)
+                {
+                    bpDiscountService = new BonusPointsDiscountService(bpDiscountRepository);
+                }
+                return this.bpDiscountService;
+            } 
         }
 
         protected virtual void Dispose(bool disposing)

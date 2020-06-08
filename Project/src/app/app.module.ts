@@ -117,6 +117,8 @@ import { RentACarAddComponent } from './components/rent-a-cars/rent-a-car-admini
 import { AddFirstComponent } from './components/rent-a-cars/rent-a-car-administrator/rent-a-car-add/add-first/add-first.component';
 import { DiscountDateService } from './services/discount-date.service';
 import { ChangePasswordComponent } from './components/user/change-password/change-password.component';
+import { BonusPointsComponent } from './components/administrator/bonus-points/bonus-points.component';
+import { BonusPointsDiscountService } from './services/bonus-points-discount.service';
 
 const fbLoginOptions: LoginOpt = {
   scope: 'first_name,last_name,name,email',
@@ -221,7 +223,8 @@ export function provideConfig() {
     AddFirstComponent,
     AdminHomeComponent,
     AdminHomeCounterCardComponent,
-    ChangePasswordComponent
+    ChangePasswordComponent,
+    BonusPointsComponent
   ],
   imports: [
     BrowserModule,
@@ -273,6 +276,7 @@ export function provideConfig() {
     },
     GoogleMapsAPIWrapper,
     SocialLoginModule,
+    BonusPointsDiscountService
   ],
   bootstrap: [AppComponent],
 })

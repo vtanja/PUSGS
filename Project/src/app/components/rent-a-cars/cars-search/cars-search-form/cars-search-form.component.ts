@@ -284,6 +284,7 @@ export class CarsSearchFormComponent implements OnInit {
 
   private datesValid(group: FormGroup): { [s: string]: boolean } | null {
     if (group) {
+      if(group.get('pickUpDate')!=undefined && group.get('dropOffDate')!=undefined){
       if (
         group.get('pickUpDate').value != '' &&
         group.get('dropOffDate').value != ''
@@ -308,14 +309,19 @@ export class CarsSearchFormComponent implements OnInit {
     }
     return { invalidDates: true };
   }
+  return null;
+  }
 
   private timesValid(group: FormGroup): { [s: string]: boolean } | null {
-    if (group) {
+    if (group && this.searchForm) {
+      if(group.get('pickUpTime')!=undefined && group.get('dropOffTime')!=undefined){
       if (
         group.get('pickUpTime').value != '' &&
         group.get('dropOffTime').value != ''
       ) {
         if (
+          this.searchForm.get('dates.pickUpDate') != undefined &&
+          this.searchForm.get('dates.dropOffDate') != undefined &&
           this.searchForm.get('dates.pickUpDate').value != '' &&
           this.searchForm.get('dates.dropOffDate').value != ''
         ) {
@@ -339,11 +345,14 @@ export class CarsSearchFormComponent implements OnInit {
 
           if (dropoffDate.equals(pickUpDate)) {
             if (+dropOffTimeParts[0] < +pickUpTimeParts[0]) {
-              return { 'times inavlid': true };
+              return { 'times invalid': true };
             }
           }
         }
       }
+      }
     }
+
+    return null;
   }
 }

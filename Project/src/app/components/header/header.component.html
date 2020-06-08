@@ -1,7 +1,7 @@
 
 <nav class="navbar navbar-expand-md">
   <div class="mx-auto order-0">
-    <a class="navbar-brand mx-auto" routerLink='/'><img src="../../assets/images/logo.png" alt="">
+    <a class="navbar-brand mx-auto" (click)="onLogoClick()"><img src="../../assets/images/logo.png" alt="">
       <span> TRAVELLIX</span>
     </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".dual-collapse2">
@@ -62,6 +62,7 @@
 
           <a *ngIf="userRole==='ADMINISTRATOR'" ngbDropdownItem routerLink="/rent-car-admins">Rent car admins</a>
           <a *ngIf="userRole==='ADMINISTRATOR'" ngbDropdownItem routerLink="/airline-admins">Airline admins</a>
+          <a *ngIf="userRole==='ADMINISTRATOR'" ngbDropdownItem routerLink="/bonus-points">Set bonus points discount</a>
 
           <a *ngIf="userRole==='RENTCARADMIN' && !companyExists" ngbDropdownItem routerLink="/add-company">Add company</a>
           <a *ngIf="userRole==='RENTCARADMIN' && companyExists" ngbDropdownItem routerLink="/company-data/edit-main-data">Company data and offices</a>
