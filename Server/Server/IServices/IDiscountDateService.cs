@@ -8,8 +8,9 @@ namespace Server.IServices
 {
     public interface IDiscountDateService 
     {
-
+        Task<List<DiscountDate>> GetCarDiscountDates(int id);
         Task<string> AddDiscountDate(DiscountRangeModel discountRange);
         Task<bool> UpdateDiscountDates(DiscountRangeModel discountRange);
+        Task<string> DeleteDiscountDates(string discountDateIds);
     }
 }

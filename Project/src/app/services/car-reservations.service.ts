@@ -8,6 +8,8 @@ export class CarReservationsService {
 
   ratingModalClose = new Subject();
   searchFormClear = new Subject();
+  barChartSubject = new Subject();
+
 
   constructor(private httpClient: HttpClient) {}
 
@@ -16,5 +18,17 @@ export class CarReservationsService {
   }
 
   cancelCarReservation(){
+  }
+
+  getWeeklyReport(companyId:number){
+    return this.httpClient.get(this.baseUri+"CarReservations/Weekly/" + companyId);
+  }
+
+  getDailyReport(companyId:number){
+    return this.httpClient.get(this.baseUri+"CarReservations/Daily/" + companyId);
+  }
+
+  getMonthlyReport(companyId:number){
+    return this.httpClient.get(this.baseUri+"CarReservations/Monthly/" + companyId);
   }
 }

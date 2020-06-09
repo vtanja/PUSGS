@@ -85,7 +85,7 @@ namespace Server.Controllers
 
             if(await officeService.AddOffice(office))
             {
-                return CreatedAtAction("GetOffice", new { id = office.Id }, _mapper.Map<OfficeDTO>(office));
+                return Ok(_mapper.Map<OfficeDTO>(office));
             }
             return BadRequest();
         }

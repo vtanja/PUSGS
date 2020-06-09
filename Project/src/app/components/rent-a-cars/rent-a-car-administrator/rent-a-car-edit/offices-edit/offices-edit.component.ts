@@ -87,6 +87,7 @@ export class OfficesEditComponent implements OnInit {
 
     this.officesService.addOffice(address).subscribe(
       (res) => {
+        console.log(res);
         this.modalService.dismissAll();
         this.updateOfficesAdd(res);
 

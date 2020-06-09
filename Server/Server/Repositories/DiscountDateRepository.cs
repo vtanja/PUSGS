@@ -20,29 +20,45 @@ namespace Server.Repositories
             disposed = false;
         }
 
-        public async Task<DiscountDate> GetDiscountDate(DateTime date)
+        public async Task<DiscountDate> GetDiscountDate(DateTime date,int carId)
         {
-            return await _context.DiscountDates.Where(d => d.Date == date).FirstAsync();
+            return await _context.DiscountDates.Where(d => d.Date == date && d.CarId==carId).FirstAsync();
         }
-        public async Task<List<DateTime>> GetCarDiscountDates(int carId)
+        public async Task<DiscountDate> GetDiscountDate( int id)
         {
-            return await _context.DiscountDates.Where(d => d.CarId == carId).Select(d=>d.Date).ToListAsync();
+            return await _context.DiscountDates.FindAsync(id);
+        }
+        public async Task<List<DiscountDate>> GetCarDiscountDatesObjects(int carId)
+        {
+            return await _context.DiscountDates.Where(d => d.CarId == carId).ToListAsync();
         }
         public void AddDiscountDate(DiscountDate discountDate)
         {
             _context.DiscountDates.Add(discountDate);
         }
-
-        public async Task Save()
-        {
-            await _context.SaveChangesAsync();
-        }
-
         public void UpdateDiscountDate(DiscountDate discountDate)
         {
             _context.Entry<DiscountDate>(discountDate).State = EntityState.Modified;
         }
-
+        public async Task<List<DateTime>> GetCarDiscountDates(int carId)
+        {
+           return await _context.DiscountDates.Where(d => d.CarId == carId).Select(d => d.Date).ToListAsync();
+        }
+        public void DeleteDiscountDate(DiscountDate discountDate)
+        {
+            _context.DiscountDates.Remove(discountDate);
+        }
+        public async Task<bool> ExistsDate(int id)
+        { 
+            var date = await _context.DiscountDates.FindAsync(id);
+            if (date != null)
+                return true;
+            return false;
+        }
+        public async Task Save()
+        {
+            await _context.SaveChangesAsync();
+        }
         protected virtual void Dispose(bool disposing)
         {
             if (!this.disposed)

@@ -22,12 +22,18 @@ namespace Server.Repositories
 
         public void AddOffice(Office office)
         {
-            throw new NotImplementedException();
+            _context.Offices.Add(office);
         }
 
-        public Task DeleteOffice(int officeId)
+        public bool DeleteOffice(int officeId)
         {
-            throw new NotImplementedException();
+            if (OfficeExists(officeId))
+            {
+                var office = _context.Offices.Find(officeId);
+                _context.Offices.Remove(office);
+                return true;
+            }
+            return false;
         }
 
         public async Task<List<Office>> GetCompanyOffices(int companyId)

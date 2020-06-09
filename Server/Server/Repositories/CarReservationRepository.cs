@@ -24,17 +24,14 @@ namespace Server.Repositories
         {
             _context.CarReservations.Add(reservation);
         }
-
         public async Task<IEnumerable<CarReservation>> GetUserCarReservation(string userId)
         {
             return await _context.CarReservations.Where(r => r.UserId == userId).ToListAsync();
         }
-
         public bool CarReservationExists(int id)
         {
             return _context.CarReservations.Any(e => e.Id == id);
         }
-
         public async Task Save()
         {
             await _context.SaveChangesAsync();
@@ -55,5 +52,33 @@ namespace Server.Repositories
             Dispose(true);
             GC.SuppressFinalize(this);
         }
+        public async Task<bool> CarReservationExists(DateTime date, int carId)
+        {
+            CarReservation reservation = null;
+            try
+            {
+                reservation = await _context.CarReservations.Where(r => r.PickUpDate <= date && r.DropOffDate >= date && r.CarId == carId).FirstOrDefaultAsync();
+            }
+            catch{
+                return false;
+            }
+
+            if (reservation != null)
+                return true;
+            return false;
+        }
+        public async Task<Dictionary<string,int>> GetDailyReservationReport(int companyId)
+        {
+            var ret = await  _context.CarReservations.Include(r => r.Car).Where(r => r.Car.CompanyId == companyId && r.DateCreated.Date == DateTime.Now.Date).ToListAsync();
+            return  ret.GroupBy(r => r.Car.Brand + " " + r.Car.Model + " " + r.Car.Year.ToString() + " " + "[id = " + r.CarId.ToString() + "]").ToDictionary(g => g.Key.ToString(), g => g.ToList().Count());
+        }
+
+        public async Task<Dictionary<string, int>> GetRangeReservationReport(int companyId,DateTime startDate,DateTime endDate)
+        {
+            var ret = await _context.CarReservations.Include(r => r.Car).Where(r => r.Car.CompanyId == companyId && r.DateCreated.Date >= startDate.Date && r.DateCreated <= endDate.Date).ToListAsync();
+             return ret.GroupBy(r => r.Car.Brand + " " + r.Car.Model + " " + r.Car.Year.ToString() + " " + "\n[id = " + r.CarId.ToString() + "]").ToDictionary(g => g.Key, g => g.Count());
+        }
+
+
     }
 }

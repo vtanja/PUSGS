@@ -77,6 +77,7 @@ namespace Server.Repositories
 
 
             IEnumerable<int> carIDS;
+            IEnumerable<int> carOnDiscountIDS = await _context.DiscountDates.Where(d => d.Date >= datepickUp && d.Date <= dateDropOff).Select(c=>c.CarId).ToArrayAsync();
 
             if (searchCarModel.Passengers > 0 && !string.IsNullOrEmpty(searchCarModel.Brand))
             {
@@ -100,6 +101,8 @@ namespace Server.Repositories
                 return new List<Car>();
             }
 
+            carIDS = carIDS.Where(c=>!carOnDiscountIDS.Contains(c)).ToArray();
+
             var companiesPickUp = await _context.Offices.Include(o => o.Address)
                                         .Where(o => o.Address.City == pickUpCity && o.Address.Country == pickUpCountry)
                                         .Select(o => o.RentCarId)
@@ -110,11 +113,14 @@ namespace Server.Repositories
                                        .Select(o => o.RentCarId)
                                        .ToArrayAsync();
 
-            var intersect = companiesPickUp.Intersect(companiesDropOff).Intersect(carIDS).ToArray();
+            var intersectComapnies = companiesPickUp.Intersect(companiesDropOff).ToArray();
+
+            if(intersectComapnies.Count()==0)
+                return new List<Car>();
 
             var reservedCars = await _context.ReservedDates.Where(d => d.Date <= dateDropOff && d.Date >= datepickUp).Select(c => c.CarId).ToArrayAsync();
 
-            var ret = await _context.Cars.Where(c => intersect.Contains(c.CompanyId) && !reservedCars.Contains(c.Id)).ToListAsync();
+            var ret = await _context.Cars.Where(c => intersectComapnies.Contains(c.CompanyId) && !reservedCars.Contains(c.Id) && carIDS.Contains(c.Id)).ToListAsync();
 
             return ret;
         }

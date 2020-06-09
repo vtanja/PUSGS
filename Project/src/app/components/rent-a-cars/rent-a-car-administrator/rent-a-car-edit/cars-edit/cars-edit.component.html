@@ -62,7 +62,9 @@
             <button class="btn  btn-md btn-rounded button-style" style="display: block;width: 100%;"
               (click)="openChangePrice(changePriceModal) ; currentCar=car">Change price</button>
             <button class="btn  btn-md btn-rounded button-style" style="display: block;width: 100%; margin-top: 1%;"
-              (click)="openAddDiscount(addDiscountModal) ; currentCar=car">Add discount</button>
+              (click)="currentCar=car;openAddDiscount(addDiscountModal)">Add discount</button>
+            <button class="btn  btn-md btn-rounded button-style" style="display: block;width: 100%; margin-top: 1%;"
+              (click)="currentCar=car;openRemoveDiscount(removeDiscountModal)">Remove discount</button>
             <button class="btn  btn-md btn-rounded button-style" style="display: block;width: 100%; margin-top: 1%;"
               (click)="deleteCar(car) ">Delete car</button>
           </div>
@@ -111,6 +113,9 @@
       class="lblStyle">Price with discount: {{getDiscountPrice()|currency:'EUR' }} </pre>
     <br>
     <label class="lblStyle"><b>Select dates for discount :</b> </label>
+    <br>
+
+    <!-- <label class="noteStyle"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i><b>Note: You can remove discount by setting discount value to 0% and then selecting dates that are already on discount.</b></label> -->
     <ngb-datepicker #dp (dateSelect)="onSelectDate($event)"  [displayMonths]="2" [dayTemplate]="t"
       outsideDays="hidden"  >
     </ngb-datepicker>
@@ -118,9 +123,10 @@
     <ng-template #t let-date let-focused="focused"  >
       <span class="custom-day" [class.focused]="focused"
       [class.faded]="isInside(date)" (mouseenter)="hoveredDate = date"
-      (mouseleave)="hoveredDate = null" >
+      (mouseleave)="hoveredDate = null" [class.hasDiscount]="isAlreadyOnDiscount(date)!=null && !isInside(date)" >
       {{ date.day }}
     </span>
+    <pre *ngIf="isAlreadyOnDiscount(date)!=null && !isInside(date)" style="font-size: 8px; color: #31124b; font-weight: bolder; margin-top: -50%; text-align: center; justify-content: center;">{{isAlreadyOnDiscount(date)}}%</pre>
     </ng-template>
 
     <hr>
@@ -138,6 +144,51 @@
     <div class="modal-footer">
       <button type="button" [disabled]="addDiscountForm.invalid || datesSelected.length===0" class="btn confirmBtnStyle"
         (click)="modal.close('Save click'); addDiscount()">Confirm</button>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #removeDiscountModal let-modal>
+  <div class="modal-header">
+    <h6 class="modal-title" id="modal-basic-title-adm">Remove discounts for {{currentCar.brand}}&nbsp;{{currentCar.model}}
+    </h6>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">×</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <label class="lblStyle"><b>Select dates that are on discount to remove discount :</b> </label>
+    <br>
+
+    <label class="noteStyle"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i><b>Note: If you select date that has no discount defined it will be ignored.</b></label>
+    <ngb-datepicker #dp (dateSelect)="onRemoveDate($event)"  [displayMonths]="2" [dayTemplate]="t"
+      outsideDays="hidden"  >
+    </ngb-datepicker>
+
+    <ng-template #t let-date let-focused="focused"  >
+      <span class="custom-day" [class.focused]="focused"
+      [class.faded]="isInside(date)" (mouseenter)="hoveredDate = date"
+      (mouseleave)="hoveredDate = null" [class.hasDiscount]="isAlreadyOnDiscount(date)!=null && !isInside(date)" >
+      {{ date.day }}
+    </span>
+    <pre *ngIf="isAlreadyOnDiscount(date)!=null && !isInside(date)" style="font-size: 8px; color: #31124b; font-weight: bolder; margin-top: -50%; text-align: center; justify-content: center;">{{isAlreadyOnDiscount(date)}}%</pre>
+    </ng-template>
+
+    <hr>
+    <b style="font-size: 14px;">Selected dates:&nbsp;</b><br/>
+    <div >
+
+      <ng-container *ngFor="let date of datesSelected;let i=index">
+        <br *ngIf="i%6===0 && i!=0"/>
+      <label style="font-size: smaller;" > {{date}}&nbsp;&nbsp;&nbsp;</label>
+
+    </ng-container>
+    </div>
+
+
+    <div class="modal-footer">
+      <button type="button" [disabled]="datesSelected.length===0" class="btn confirmBtnStyle"
+        (click)="modal.close('Save click'); removeDiscount()">Confirm</button>
     </div>
   </div>
 </ng-template>

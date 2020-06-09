@@ -1,5 +1,5 @@
-import { Component, OnInit, Input, AfterViewInit } from '@angular/core';
-import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
+import { Component, AfterViewInit } from '@angular/core';
+import {  Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 
 @Component({
@@ -16,13 +16,14 @@ export class HomePageComponent implements AfterViewInit {
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe((event: NavigationEnd) => {
-      console.log(event.url);
-      document.getElementById('inner2').scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"});
+      if(document.getElementById('inner2')!=undefined)
+        document.getElementById('inner2').scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"});
     });
   }
 
   ngAfterViewInit(){
-    document.getElementById('inner2').scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"});
+    if(document.getElementById('inner2')!=undefined)
+      document.getElementById('inner2').scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"});
   }
 
 }

@@ -33,7 +33,7 @@ namespace Server.Services
 
         public async Task<bool> DeleteOffice(int officeId)
         {
-            await officeRepository.DeleteOffice(officeId);
+             officeRepository.DeleteOffice(officeId);
             try
             {
                 await officeRepository.Save();

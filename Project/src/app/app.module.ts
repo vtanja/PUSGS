@@ -58,7 +58,6 @@ import { FlightReservationListComponent } from './components/user/reservations/f
 import { NgbDateCustomParserFormatter } from './services/date-formatter.service';
 import { RateDialogComponent } from './components/user/reservations/rate-dialog/rate-dialog.component';
 import { CarReservationsService } from './services/car-reservations.service';
-import { RentACarAdministratorComponent } from './components/rent-a-cars/rent-a-car-administrator/rent-a-car-administrator.component';
 import { RentACarEditComponent } from './components/rent-a-cars/rent-a-car-administrator/rent-a-car-edit/rent-a-car-edit.component';
 import { MainDataEditComponent } from './components/rent-a-cars/rent-a-car-administrator/rent-a-car-edit/main-data-edit/main-data-edit.component';
 import { CarsEditComponent } from './components/rent-a-cars/rent-a-car-administrator/rent-a-car-edit/cars-edit/cars-edit.component';
@@ -119,6 +118,10 @@ import { DiscountDateService } from './services/discount-date.service';
 import { ChangePasswordComponent } from './components/user/change-password/change-password.component';
 import { BonusPointsComponent } from './components/administrator/bonus-points/bonus-points.component';
 import { BonusPointsDiscountService } from './services/bonus-points-discount.service';
+import { ChartsModule } from 'ng2-charts';
+import { RentACarHomeComponent } from './components/rent-a-cars/rent-a-car-administrator/rent-a-car-home/rent-a-car-home.component';
+import { BarChartComponent } from './components/rent-a-cars/rent-a-car-administrator/rent-a-car-home/bar-chart/bar-chart.component';
+import { NavBarComponent } from './components/rent-a-cars/rent-a-car-administrator/rent-a-car-home/nav-bar/nav-bar.component';;
 
 const fbLoginOptions: LoginOpt = {
   scope: 'first_name,last_name,name,email',
@@ -191,7 +194,6 @@ export function provideConfig() {
     FlightReservationItemComponent,
     FlightReservationListComponent,
     RateDialogComponent,
-    RentACarAdministratorComponent,
     RentACarEditComponent,
     MainDataEditComponent,
     CarsEditComponent,
@@ -224,7 +226,10 @@ export function provideConfig() {
     AdminHomeComponent,
     AdminHomeCounterCardComponent,
     ChangePasswordComponent,
-    BonusPointsComponent
+    BonusPointsComponent,
+    RentACarHomeComponent,
+    BarChartComponent,
+    NavBarComponent
   ],
   imports: [
     BrowserModule,
@@ -252,7 +257,8 @@ export function provideConfig() {
     MatChipsModule,
     ToastrModule.forRoot(),
     NgxSpinnerModule,
-    NgSelectModule
+    NgSelectModule,
+    ChartsModule
   ],
   providers: [
     UserService,

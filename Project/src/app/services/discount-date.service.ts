@@ -15,4 +15,12 @@ export class DiscountDateService{
   overrideDiscount(data:{}){
     return this.httpClient.put(this.baseUri+'DiscountDates/Override',data);
   }
+
+  getCarDiscountDates(id:number){
+    return this.httpClient.get(this.baseUri+'DiscountDates/'+ id);
+  }
+
+  removeDiscountDates(data:any){
+    return this.httpClient.delete(this.baseUri+'DiscountDates/'+ data);
+  }
 }

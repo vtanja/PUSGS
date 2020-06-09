@@ -11,7 +11,7 @@ namespace Server.IRepositories
         Task<IEnumerable<Office>> GetOffices();
         Task<List<Office>> GetCompanyOffices(int companyId);
         void AddOffice(Office office);
-        Task DeleteOffice(int officeId);
+        bool DeleteOffice(int officeId);
         Task Save();
         bool OfficeExists(int id);
     }

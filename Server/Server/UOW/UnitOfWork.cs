@@ -96,7 +96,7 @@ namespace Server.UOW
             {
                 if (discountDateService == null)
                 {
-                    discountDateService = new DiscountDateService(discountDateRepository);
+                    discountDateService = new DiscountDateService(discountDateRepository,carReservationRepository);
                 }
                 return this.discountDateService;
             }

@@ -26,6 +26,7 @@
       <h6>Choose office location on map</h6>
 
       <div class="map-container">
+         <label class="noteStyle"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i><b>Note: Pay attention on field values generated using map marker. Please check those values as they may affect appearing in search results.</b></label>
         <agm-map  [(latitude)]="marker.lat" [(longitude)]="marker.lng" [(zoom)]="zoom" [disableDefaultUI]="true"
           (mapClick)="onClick($event)" [zoomControl]="true">
           <agm-marker *ngIf="mapClicked" [(latitude)]="marker.lat" [(longitude)]="marker.lng" [markerDraggable]="marker.draggable"></agm-marker>

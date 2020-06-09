@@ -12,25 +12,17 @@ namespace Server.Services
     public class DiscountDateService : IDiscountDateService
     {
         private IDiscountDateRepository discountDateRepository;
+        private ICarReservationRepository carReservationRepository;
 
-        public DiscountDateService(IDiscountDateRepository discountDateRepository)
+        public DiscountDateService(IDiscountDateRepository discountDateRepository,ICarReservationRepository carReservationRepository)
         {
             this.discountDateRepository = discountDateRepository;
+            this.carReservationRepository = carReservationRepository;
+
         }
 
         public async Task<string> AddDiscountDate(DiscountRangeModel discountRange)
         {
-            //discountDateRepository.AddDiscountDate(discountDate);
-            //try
-            //{
-            //    await discountDateRepository.Save();
-            //}
-            //catch
-            //{
-            //    return false;
-            //}
-            //return true;
-
             var alreadyOnDiscount = new List<DateTime>();
             alreadyOnDiscount = await discountDateRepository.GetCarDiscountDates(discountRange.CarId);
 
@@ -86,7 +78,7 @@ namespace Server.Services
             await foreach (var date in GetAsyncDate(discountRange.Dates))
             {
 
-                var discountDate = await discountDateRepository.GetDiscountDate(Convert.ToDateTime(date));
+                var discountDate = await discountDateRepository.GetDiscountDate(Convert.ToDateTime(date),discountRange.CarId);
                 discountDateRepository.UpdateDiscountDate(discountDate);
                 discountDate.Discount = discountRange.Discount;
                 try
@@ -109,6 +101,65 @@ namespace Server.Services
                 await Task.Delay(1000);
                 yield return dates[i];
             }
+        }
+
+        public async Task<List<DiscountDate>> GetCarDiscountDates(int id)
+        {
+            return await discountDateRepository.GetCarDiscountDatesObjects(id); 
+        }
+
+        public async Task<string> DeleteDiscountDates(string ids)
+        {
+            List<int> discountDateIds = new List<int>();
+            if (ids == null)
+                return "error";
+
+            var parts = ids.Split(';');
+
+            if (parts.Count() == 0)
+                return "error";
+
+            for(int i = 0; i < parts.Count() - 1; i++)
+            {
+                int id;
+                
+                if(Int32.TryParse(parts[i],out id))
+                    discountDateIds.Add(id);
+            }
+
+            if (discountDateIds.Count() == 0)
+                return "error";
+
+            string ret = "";
+            foreach(int id in discountDateIds)
+            {
+                DiscountDate date = await discountDateRepository.GetDiscountDate(id);
+                if (date != null) {
+
+                    if (await carReservationRepository.CarReservationExists(date.Date, date.CarId))
+                    {
+                        ret +=" " + date.Date.ToShortDateString();
+                    }
+                    else
+                    {
+                        discountDateRepository.DeleteDiscountDate(date);
+                    }
+                }
+            }
+
+            try
+            {
+                await discountDateRepository.Save();
+            }
+            catch
+            {
+                return "error";
+            }
+
+            if (ret == "")
+                return "success";
+            else
+                return "Discount for these dates" + ret + " is not deleted beacuse reservations for those dates exist.";
         }
     }
 }

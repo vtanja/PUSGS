@@ -1,0 +1,24 @@
+<ng-template #t let-fill="fill">
+  <span class="star" [class.full]="fill === 100">
+    <span class="half" [style.width.%]="fill">&#9733;</span>&#9733;
+  </span>
+</ng-template>
+
+<div class="row">
+  <div class="col-sm-1.5" style="background-color: #f0b562;">
+    <app-nav-bar></app-nav-bar>
+  </div>
+  <div class="col">
+    <div class="d-flex justify-content-center">
+      <h3>Company business reports</h3>
+    </div>
+    <div class="d-flex justify-content-end">
+      <ngb-rating (rate)=4.7 [starTemplate]="t" [readonly]="true" [max]="5"></ngb-rating>
+    </div>
+    <div class="d-flex justify-content-end">
+      <pre>Rate: <b>4.7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b></pre>
+    </div>
+    <br>
+    <app-bar-chart></app-bar-chart>
+  </div>
+</div>

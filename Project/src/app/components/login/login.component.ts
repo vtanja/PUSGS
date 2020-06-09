@@ -110,7 +110,7 @@ export class LoginComponent implements OnInit {
         let companyExists = data.hasCompany;
 
         if (companyExists) {
-          this.router.navigate(['/company-data/edit-main-data']);
+          this.router.navigate(['/rent-car-admin-home']);
         } else {
           this.router.navigate(['/add-first']);
         }

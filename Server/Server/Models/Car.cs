@@ -34,6 +34,7 @@ namespace Server.Models
         public int Doors { get; set; }
 
         public int CompanyId { get; set; }
+        public bool IsDeleted { get; set; }
 
         [ForeignKey("CompanyId")]
         public virtual RentCar CarCompany { get; set; }

@@ -97,6 +97,10 @@ namespace Server.DTOs
                 .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.RegisteredUser.Email))
                 .ForMember(dest => dest.PhoneNumber, opt => opt.MapFrom(src => src.RegisteredUser.PhoneNumber)).ReverseMap();
 
+            CreateMap<DiscountDate, DiscountDateDTO>()
+                .ForMember(dest => dest.Date, opt => opt.MapFrom(src => src.Date.ToShortDateString()))
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+                .ForMember(dest => dest.Discount, opt => opt.MapFrom(src => src.Discount)).ReverseMap();
            
         }
     }

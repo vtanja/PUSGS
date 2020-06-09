@@ -72,6 +72,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
       this.router.navigate(['/home']);
     } else if (this.userService.getUserRole() === 'ADMINISTRATOR')
       this.router.navigate(['/admin-home']);
+    else if (this.userService.getUserRole()==='RENTCARADMIN')
+      this.router.navigate(['/rent-car-admin-home']);
     else this.router.navigate(['/home']);
   }
 

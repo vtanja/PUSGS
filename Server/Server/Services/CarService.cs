@@ -30,7 +30,6 @@ namespace Server.Services
             }
             return true;
         }
-
         public async Task<string> DeleteCar(int carID)
         {
             if (!carRepository.CarExists(carID))
@@ -50,38 +49,31 @@ namespace Server.Services
             }
             return "success";
         }
-
         public async Task<Car> GetCarByID(int carId)
         {
             return await carRepository.GetCarByID(carId);
         }
-
         public async Task<IEnumerable<Car>> GetCars()
         {
             return await carRepository.GetCars();
         }
-
         public async Task<IEnumerable<Car>> GetCarsWithCompanies()
         {
             return await carRepository.GetCarsWithCompanies();
         }
-
         public async Task<IEnumerable<Car>> GetCompanyCars(int companyID)
         {
 
             return await carRepository.GetCompanyCars(companyID);
         }
-
         public async Task<IEnumerable<Car>> SearchCars(SearchCarModel searchCarModel)
         {
             return await carRepository.SearchCars(searchCarModel);
         }
-
         public async Task<IEnumerable<Car>> SearchCompanyCars(SearchCarModel searchCarModel)
         {
             return await carRepository.SearchCars(searchCarModel);
         }
-
         public async Task<bool> UpdateCar(int carId,Car car)
         {
             if (carId != car.Id)
@@ -98,10 +90,8 @@ namespace Server.Services
             }
             return true;
         }
-
         private async Task<bool> CanBeDeleted(int carID)
-        {
-            
+        {            
             return !(await reservedDateRepository.IsCarReserved(carID));
         }
     }

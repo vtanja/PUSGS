@@ -34,6 +34,8 @@ export class CarsEditComponent implements OnInit {
   isLoading: boolean;
 
   disabled: NgbDate[];
+  alreadyOnDiscount: [any];
+  datesToRemove: number[] = [];
 
   constructor(
     private carService: CarService,
@@ -85,8 +87,43 @@ export class CarsEditComponent implements OnInit {
       );
   }
 
+  openRemoveDiscount(content) {
+    this.clearDates();
+
+    this.discountDateService.getCarDiscountDates(this.currentCar.id).subscribe(
+      (res: any) => {
+        this.alreadyOnDiscount = res;
+        console.log(res);
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+
+    this.modalService
+      .open(content, { ariaLabelledBy: 'modal-basic-title-adm' })
+      .result.then(
+        (result) => {
+          this.closeResult = `Closed with: ${result}`;
+        },
+        (reason) => {
+          this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+        }
+      );
+  }
+
   openAddDiscount(content) {
     this.clearDates();
+
+    this.discountDateService.getCarDiscountDates(this.currentCar.id).subscribe(
+      (res: any) => {
+        this.alreadyOnDiscount = res;
+        console.log(res);
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
 
     this.modalService
       .open(content, { ariaLabelledBy: 'modal-basic-title-adm' })
@@ -112,9 +149,9 @@ export class CarsEditComponent implements OnInit {
   }
 
   private clearDates(): void {
-    this.addDiscountForm.patchValue({
-      discount: null,
-    });
+    this.addDiscountForm.reset();
+    this.datesSelected = [];
+    this.datesToRemove = [];
   }
 
   private getDismissReason(reason: any): string {
@@ -196,7 +233,7 @@ export class CarsEditComponent implements OnInit {
             text: res.conflictDatesStr,
             showConfirmButton: true,
             showCancelButton: true,
-            confirmButtonText: 'Yes, remove it!',
+            confirmButtonText: 'Yes, override!',
             cancelButtonText: 'No, cancel!',
             confirmButtonColor: '#fa9e1c',
             cancelButtonColor: '#31124b',
@@ -221,13 +258,45 @@ export class CarsEditComponent implements OnInit {
             }
           });
         }
-        this.addDiscountForm.reset();
-        this.datesSelected = [];
+        this.clearDates();
       },
       (err) => {
         this.spinner.hide();
-        this.addDiscountForm.reset();
-        this.datesSelected = [];
+        this.clearDates();
+      }
+    );
+  }
+
+  removeDiscount(): void {
+    console.log(this.datesToRemove);
+    this.spinner.show();
+    let data = '';
+    for (let i in this.datesToRemove) {
+      console.log(this.datesToRemove[i]);
+      data += this.datesToRemove[i] + ';';
+    }
+    console.log(data);
+    this.discountDateService.removeDiscountDates(data).subscribe(
+      (res: any) => {
+        this.spinner.hide();
+        Swal.fire({
+          text: 'Discount successfully removed from selected dates.',
+          icon: 'success',
+          showConfirmButton: false,
+          timer: 2500,
+        });
+      },
+      (err) => {
+        this.spinner.hide();
+        if (err.message) {
+          Swal.fire({
+            text: err.message,
+            icon: 'error',
+            showConfirmButton: true,
+          });
+        } else {
+          console.log(err);
+        }
       }
     );
   }
@@ -283,6 +352,41 @@ export class CarsEditComponent implements OnInit {
     return this.datesSelected.find((x) => x == strdate) ? 'selected' : null;
   }
 
+  isAlreadyOnDiscount(date: NgbDate) {
+    let strdate = this.dateToStr(date);
+    if (this.alreadyOnDiscount != undefined) {
+      let found = this.alreadyOnDiscount.find((d) => d.date === strdate);
+      if (found === undefined) return null;
+      return found.discount;
+    }
+    return null;
+  }
+
+  getAlreadyOnDiscountId(date: NgbDate) {
+    let strdate = this.dateToStr(date);
+    let found = this.alreadyOnDiscount.find((d) => d.date === strdate);
+    if (found === undefined) return null;
+    return found.id;
+  }
+
+  onRemoveDate(date: NgbDate) {
+    let strdate = this.dateToString(date);
+
+    let id = this.getAlreadyOnDiscountId(date);
+    console.log(id);
+    if (id != null) {
+      const index = this.datesSelected.findIndex((x) => x == strdate);
+      const indexId = this.datesToRemove.findIndex((x) => x === id);
+      if (index < 0) {
+        this.datesSelected.push(this.dateToString(date));
+        this.datesToRemove.push(id);
+      } else {
+        this.datesSelected.splice(index, 1);
+        this.datesToRemove.splice(indexId, 1);
+      }
+    }
+  }
+
   onSelectDate(date: NgbDate) {
     let strdate = this.dateToString(date);
 
@@ -303,5 +407,45 @@ export class CarsEditComponent implements OnInit {
 
   dateToString(date: NgbDate) {
     return date.day + '/' + date.month + '/' + date.year;
+  }
+
+  dateToStr(date: NgbDate) {
+    let day = date.day<10?"0"+date.day:date.day;
+    return (
+      day +
+      '-' +
+      this.getMonth(date.month) +
+      '-' +
+      date.year.toString().substr(2, 2)
+    );
+  }
+
+  getMonth(num: number): string {
+    switch (num) {
+      case 1:
+        return 'Jan';
+      case 2:
+        return 'Feb';
+      case 3:
+        return 'Mar';
+      case 4:
+        return 'Apr';
+      case 5:
+        return 'May';
+      case 6:
+        return 'Jun';
+      case 7:
+        return 'Jul';
+      case 8:
+        return 'Aug';
+      case 9:
+        return 'Sep';
+      case 10:
+        return 'Oct';
+      case 11:
+        return 'Nov';
+      case 12:
+        return 'Dec';
+    }
   }
 }

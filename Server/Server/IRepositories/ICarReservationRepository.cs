@@ -11,6 +11,9 @@ namespace Server.IRepositories
         Task<IEnumerable<CarReservation>> GetUserCarReservation(string userId);
         void AddCarReservation(CarReservation reservation);
         bool CarReservationExists(int id);
+        Task<bool> CarReservationExists(DateTime date, int carId);
+        Task<Dictionary<string, int>> GetDailyReservationReport(int companyId);
+        Task<Dictionary<string, int>> GetRangeReservationReport(int companyId,DateTime startDate,DateTime endDate);
         Task Save();
     }
 }

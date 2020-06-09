@@ -15,8 +15,8 @@ namespace Server.Models
         public string UserId { get; set; }
         public DateTime PickUpDate { get; set; }
         public DateTime DropOffDate { get; set; }
-        public double PricePerDay{ get; set; }
-        public double TotalPrice{ get; set; }
+        public double PricePerDay { get; set; }
+        public double TotalPrice { get; set; }
         [ForeignKey("UserId")]
         public virtual User User { get; set; }
         public int CarId { get; set; }
@@ -25,6 +25,7 @@ namespace Server.Models
         public bool CarRated { get; set; }
         public bool CompanyRated { get; set; }
         public bool Cancelled { get; set; }
+        public DateTime DateCreated {get; set;}
 
     }
 }

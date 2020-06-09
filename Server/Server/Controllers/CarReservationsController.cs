@@ -38,19 +38,48 @@ namespace Server.Controllers
             return await carReservationService.GetUserCarReservations(userId);
         }
 
-        // GET: api/CarReservations/5
-        //[HttpGet("{id}")]
-        //public async Task<ActionResult<CarReservation>> GetCarReservation(int id)
-        //{
-        //    var carReservation = await _context.CarReservations.FindAsync(id);
+        //GET: api/CarReservations/Daily/5
+        [HttpGet]
+        [Route("Daily/{id}")]
+        public async Task<ActionResult<CarReservation>> GetDailyCarReservation(int id)
+        {
+            var carReservation = await carReservationService.GetDailyReservationReport(id);
 
-        //    if (carReservation == null)
-        //    {
-        //        return NotFound();
-        //    }
+            if (carReservation == null)
+            {
+                return NotFound();
+            }
 
-        //    return carReservation;
-        //}
+            return Ok(carReservation);
+        }
+
+        [HttpGet]
+        [Route("Weekly/{id}")]
+        public async Task<ActionResult<CarReservation>> GetWeeklyReservation(int id)
+        {
+            var carReservation = await carReservationService.GetWeeklyReservationReport(id);
+
+            if (carReservation == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(carReservation);
+        }
+
+        [HttpGet]
+        [Route("Monthly/{id}")]
+        public async Task<ActionResult<CarReservation>> GetMonthlyCarReservation(int id)
+        {
+            var carReservation = await carReservationService.GetMonthlyReservationReport(id);
+
+            if (carReservation == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(carReservation);
+        }
 
         // PUT: api/CarReservations/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
