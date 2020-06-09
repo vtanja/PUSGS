@@ -54,7 +54,7 @@ namespace Server.Repositories
 
         public async  Task<Flight> GetFlight(int id)
         {
-            return await _context.Flights.FindAsync(id);
+            return await _context.Flights.Include(x=>x.LandingLocation).Include(x=>x.TakeOffLocation).Include(x=>x.Plane).ThenInclude(x=>x.Segments).Where(x=>x.Id == id).FirstOrDefaultAsync();
         }
 
         public void DeleteFlight(Flight flight)
@@ -174,5 +174,10 @@ namespace Server.Repositories
             }
             return retVal;
             }
+
+        public async Task<IEnumerable<Flight>> GetAllFlights()
+        {
+            return await _context.Flights.Include(x => x.LandingLocation).Include(x => x.TakeOffLocation).ToListAsync();
         }
+    }
 }

@@ -12,10 +12,12 @@ namespace Server.Services
     public class DestinationService: IDestinationService
     {
         private DestinationRepository destinationRepository;
+        private FlightRepository flightRepository;
 
-        public DestinationService(DestinationRepository destinationRepository)
+        public DestinationService(DestinationRepository destinationRepository, FlightRepository flightRepository)
         {
             this.destinationRepository = destinationRepository;
+            this.flightRepository = flightRepository;
         }
 
         public async Task<bool> DeleteDestination(int id)
@@ -24,6 +26,15 @@ namespace Server.Services
             if(dest == null)
             {
                 return false;
+            }
+
+            var flights = await flightRepository.GetAllFlights();
+            foreach (var item in flights)
+            {
+                if(item.LandingLocation.Location.Contains(dest.City+", " + dest.Country))
+                {
+                    return false;
+                }
             }
 
              destinationRepository.DeleteDestination(dest);

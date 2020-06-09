@@ -12,7 +12,8 @@ namespace Server.Services
     public class PlaneService:IPlaneService
     {
         private PlaneRepository planeRepository;
-        SegmentRepository segmentRepository;
+        private SegmentRepository segmentRepository;
+
         public PlaneService(PlaneRepository planeRepository, SegmentRepository segmentRepository)
         {
             this.planeRepository = planeRepository;
@@ -21,16 +22,24 @@ namespace Server.Services
 
         public async Task<bool> DeletePlane(Plane plane)
         {
-            planeRepository.DeletePlane(plane);
-            try
+            if (plane.OccupiedDates.Count == 0)
             {
-                await planeRepository.Save();
+                planeRepository.DeletePlane(plane);
+                try
+                {
+                    await planeRepository.Save();
+                }
+                catch (Exception)
+                {
+                    return false;
+                }
+                return true;
             }
-            catch (Exception)
+            else
             {
                 return false;
             }
-            return true;
+           
         }
 
         public async Task<bool> DeletePlaneSegments()

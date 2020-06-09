@@ -51,7 +51,7 @@ namespace Server.Repositories
 
         public async Task<Plane> GetPlane(string id)
         {
-            return await _context.Planes.Include(x => x.Segments).Where(x => x.Code == id).FirstOrDefaultAsync();
+            return await _context.Planes.Include(x => x.Segments).Include(x=>x.OccupiedDates).Where(x => x.Code == id).FirstOrDefaultAsync();
         }
 
         public void PostPlane(Plane plane)

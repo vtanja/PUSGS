@@ -14,6 +14,8 @@ export class FlightService {
 
   readonly baseUri = 'http://localhost:51474/api/';
   searchParamsSubject = new Subject<string>();
+  filter=new Subject<{}>();
+  
   constructor(private httpClient: HttpClient, private flightAdapter:FlightAdapter, private roundFlightAdapter:RoundFlightAdapter) { 
 
   }
@@ -48,8 +50,14 @@ export class FlightService {
   }
   
   addFlight(flight:Flight){
-    //console.log(flight);
     return this.httpClient.post(this.baseUri+'Flights',flight);
+  }
+
+  getFlight(id:number){
+    return this.httpClient.get(this.baseUri+'Flights/'+id)
+    .pipe(
+      map(data=>this.flightAdapter.adapt(data))
+  );
   }
 
   getFlights(){

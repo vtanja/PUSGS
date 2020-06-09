@@ -72,7 +72,7 @@ export class EditPlaneComponent implements OnInit {
     let segment =this.addSeatsForm.get('segment').value;
     let rows = +this.addSeatsForm.get('rowsInput').value;
 
-    this.plane.segments.find(x=>x.name===segment).rows += rows;
+    this.plane.segments.find(x=>x.name === segment).rows += rows;
 
     this.planeService.updatePlaneConfig(this.plane.code, this.plane).subscribe((res:any)=>{
       Swal.fire({

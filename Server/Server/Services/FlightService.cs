@@ -30,6 +30,11 @@ namespace Server.Services
             return true;
         }
 
+        public async Task<IEnumerable<Flight>> GetAllFlights()
+        {
+            return await flightRepository.GetAllFlights();
+        }
+
         public async Task<Flight> GetFlight(int id)
         {
             return await flightRepository.GetFlight(id);

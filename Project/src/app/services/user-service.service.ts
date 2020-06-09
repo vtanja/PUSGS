@@ -189,6 +189,10 @@ export class UserService{
       return payload.UserName;
     }
 
+    hasAirline(){
+      return this.httpClient.get(this.baseUri+'Airlines/HasUserAirline/'+this.getUserId());
+    }
+  
     userHasCompany(){
       return this.httpClient.get(this.baseUri + "RentCarAdmins/UserHasCompany");
     }

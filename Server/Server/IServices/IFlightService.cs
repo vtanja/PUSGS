@@ -10,7 +10,7 @@ namespace Server.IServices
     {
         Task<IEnumerable<Flight>> GetFlights(List<Plane> planes);
         Task<Flight> GetFlight(int id);
-
+        Task<IEnumerable<Flight>> GetAllFlights();
         Task<bool> DeleteFlight(Flight flight);
         Task<IEnumerable<Flight>> SearchFlights(SearchFlightModel model);
         Task<IEnumerable<Flight>> SearchMultiFlights(SearchFlightModel model);

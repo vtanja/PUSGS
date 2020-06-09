@@ -186,7 +186,7 @@ namespace Server.UOW
             {
                 if(destinationService == null)
                 {
-                    destinationService = new DestinationService(destinationRepository);
+                    destinationService = new DestinationService(destinationRepository, flightRepository);
                 }
                 return this.destinationService;
             }

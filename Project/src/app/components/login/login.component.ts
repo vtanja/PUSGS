@@ -115,7 +115,15 @@ export class LoginComponent implements OnInit {
           this.router.navigate(['/add-first']);
         }
       });
-    } else {
-    }
+    } else if(role === 'AIRLINEADMIN'){
+      this.userService.hasAirline().subscribe((data: any) => {
+        if(data){
+          this.router.navigate(['/airline-company-data/edit-airline-main-data']);
+        }
+        else{
+          this.router.navigate(['/airline-admin']);
+        }
+      });
+    } 
   }
 }

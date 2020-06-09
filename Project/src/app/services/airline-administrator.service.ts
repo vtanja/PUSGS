@@ -29,10 +29,6 @@ export class AirlineAdministratorService {
       )
    }
 
-   hasAirline(){
-    return this.httpClient.get(this.baseUri+'Airlines/HasUserAirline/'+this.userService.getUserId());
-  }
-
   editCompanyData(id:number, airline:{}){
     return this.httpClient.put(this.baseUri+'Airlines/'+id, airline);
   }

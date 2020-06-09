@@ -1,14 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { Airline } from 'src/app/models/airline.model';
 import { AirlineService } from '../../../../services/airline.service';
 import { NumberValueAccessor } from '@angular/forms';
+import { FlightService } from 'src/app/services/flight.service';
 
 @Component({
   selector: 'app-flights-filter',
   templateUrl: './flights-filter.component.html',
   styleUrls: ['./flights-filter.component.css']
 })
-export class FlightsFilterComponent implements OnInit {
+export class FlightsFilterComponent implements OnInit, AfterViewInit {
   public isCollapsedDuration=true;
   public isCollapsedStops=true;
   public isCollapsedAirlines=true;
@@ -30,15 +31,15 @@ export class FlightsFilterComponent implements OnInit {
     price:number
   };
 
-  constructor(private airlineService:AirlineService) { }
+  constructor(private flightService:FlightService, private airlineService:AirlineService) { }
 
-  ngOnInit(): void {
-    var i:number=0;
+  ngAfterViewInit(): void {
     this.airlineService.getAirlines().subscribe((res:Airline[])=>{
       this.airlines=res;
-    }
-    );
-    for(const airline of this.airlines){
+
+      this.companies=[];
+
+    for(let airline of this.airlines){
       this.companies.push({name:airline.name, isChecked:true});
     }
 
@@ -48,6 +49,13 @@ export class FlightsFilterComponent implements OnInit {
       price:500,
       stops:[0,1,2]
     };
+    });
+    
+  }
+
+  ngOnInit(): void {
+
+    
   }
 
   directChanged(event){
@@ -65,7 +73,7 @@ export class FlightsFilterComponent implements OnInit {
       }
     }
     console.log(this.filter.stops);
-    this.airlineService.filter.next(this.filter);
+    this.flightService.filter.next(this.filter);
   }
 
   oneChanged(event){
@@ -83,7 +91,7 @@ export class FlightsFilterComponent implements OnInit {
       }
     }
     console.log(this.filter.stops);
-    this.airlineService.filter.next(this.filter);
+    this.flightService.filter.next(this.filter);
   }
 
   twoPlusChanged(event){
@@ -101,11 +109,10 @@ export class FlightsFilterComponent implements OnInit {
       }
     }
     console.log(this.filter.stops);
-    this.airlineService.filter.next(this.filter);
+    this.flightService.filter.next(this.filter);
   }
 
   onAirlineChange(event, index:number){
-    //console.log(event);
     if(event.target.checked){
       this.filter.airlines[index].isChecked=true;
       this.companies[index].isChecked=true;
@@ -115,19 +122,17 @@ export class FlightsFilterComponent implements OnInit {
       this.companies[index].isChecked=false;
     }
 
-    console.log(this.filter.airlines);
-    this.airlineService.filter.next(this.filter);
+    this.flightService.filter.next(this.filter);
   }
 
   onPriceChanged(event){
     this.filter.price=event.target.value;
-    this.airlineService.filter.next(this.filter);
+    this.flightService.filter.next(this.filter);
   }
 
 
   onDurationChanged(event){
-    console.log(event.target.value);
     this.filter.duration=event.target.value;
-    this.airlineService.filter.next(this.filter);
+    this.flightService.filter.next(this.filter);
   }
 }

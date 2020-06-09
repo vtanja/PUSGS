@@ -35,6 +35,7 @@ namespace Server.Settings
         public DbSet<Airport> Airports { get; set; }
         public DbSet<BonusPointsDiscount> BonusPointsDiscounts { get; set; }
 
-
+        public DbSet<FlightReservation> FlightReservations{ get; set; }
+        public DbSet<Passenger> Passengers{ get; set; }
     }
 }

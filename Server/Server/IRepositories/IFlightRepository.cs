@@ -10,6 +10,7 @@ namespace Server.IRepositories
     {
         Task Save();
         Task<IEnumerable<Flight>> GetFlights(List<Plane> planes);
+        Task<IEnumerable<Flight>> GetAllFlights();
         Task<Flight> GetFlight(int id);
         void DeleteFlight(Flight flight);
         Task<IEnumerable<Flight>> SearchFlights(SearchFlightModel model);

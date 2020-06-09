@@ -6,13 +6,12 @@ import { Flight } from 'src/app/models/flight.model';
 })
 export class RoundFlightsFilterPipe implements PipeTransform {
 
+  foundOne=false;
+
   transform(flights: {toFlight:Flight, backFlight:Flight}[], filter:{ airlines:{name:string, isChecked:boolean}[], duration:number, price:number, stops:number[]}): {toFlight:Flight, backFlight:Flight}[] {
     console.log(filter);
     var result:{toFlight:Flight, backFlight:Flight}[]=[];
-
-    console.log('filter pipe');
     if (filter===undefined){
-      console.log('leaving pipe')
       return flights;
     }
 
@@ -29,36 +28,44 @@ export class RoundFlightsFilterPipe implements PipeTransform {
     const oneStopIndex=filter.stops.indexOf(1);
     const twoStopsIndex=filter.stops.indexOf(2);
 
+      flight.segmentPrices.forEach(element => {
+        if(element.price<=filter.price){
+          this.foundOne = true;
+        }
+      });
 
-      // if(flight.price>filter.price || flight.duration>filter.duration){
-      //   return false;
-      // }
+      if(!this.foundOne){
+        return false;
+      }
 
-      // console.log(flight.airline);
-      // for(const company of filter.airlines){
-      //   if(flight.airline.name===company.name){
+      if(flight.duration>filter.duration){
+        return false;
+      }
 
-      //     if(!company.isChecked){
-      //       return false;
-      //     }
-      //   }
-      // }
+      for(const company of filter.airlines){
+        if(flight.plane.airline.name===company.name){
 
-      // if(flight.numberOfChangeovers===0){
-      //   if(noStopsIndex===-1){
-      //     return false;
-      //   }
-      // }
-      // else if(flight.numberOfChangeovers===1){
-      //   if(oneStopIndex===-1){
-      //     return false;
-      //   }
-      // }
-      // else{
-      //   if(twoStopsIndex===1){
-      //     return false;
-      //   }
-      // }
+          if(!company.isChecked){
+            return false;
+          }
+        }
+      }
+
+      if(flight.connections.length===0){
+        if(noStopsIndex===-1){
+          return false;
+        }
+      }
+      else if(flight.connections.length===1){
+        if(oneStopIndex===-1){
+          return false;
+        }
+      }
+      else{
+        if(twoStopsIndex===1){
+          return false;
+        }
+      }
 
       return true;
 
