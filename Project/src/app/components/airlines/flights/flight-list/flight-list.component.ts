@@ -2,6 +2,10 @@ import { Component, OnInit, OnChanges } from '@angular/core';
 import { Flight } from 'src/app/models/flight.model';
 import { AirlineService } from '../../../../services/airline.service';
 import { ActivatedRoute, Router, Params } from '@angular/router';
+import { FlightService } from 'src/app/services/flight.service';
+import { Subscription } from 'rxjs';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { RoundFlight } from 'src/app/models/round-flight.model';
 
 @Component({
   selector: 'app-flight-list',
@@ -11,7 +15,10 @@ import { ActivatedRoute, Router, Params } from '@angular/router';
 export class FlightListComponent implements OnInit {
 
   flights:Flight[]=[];
-  roundFlights: {toFlight:Flight, backFlight:Flight}[]=[];
+  roundFlights: RoundFlight[]=[];
+  paramsSubscription: Subscription;
+  
+  isSpining:boolean ;
 
    filterFlight:{
     airlines:{name:string, isChecked:boolean}[],
@@ -31,7 +38,7 @@ export class FlightListComponent implements OnInit {
 
 
 
-  constructor(private airlineService:AirlineService, private route:ActivatedRoute, private router:Router) {}
+  constructor(private flightService:FlightService, private route:ActivatedRoute, private router:Router, private spinner: NgxSpinnerService) {}
   // ngOnChanges(changes: import("@angular/core").SimpleChanges): void {
   //   this.airlineService.filter.subscribe((filter:{airlines:{name:string, isChecked:boolean}[], duration:number, price:number, stops:number[] })=>{
   //     this.filterFlight=filter;
@@ -42,29 +49,78 @@ export class FlightListComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.airlineService.filter.subscribe((filter:{airlines:{name:string, isChecked:boolean}[], duration:number, price:number, stops:number[] })=>{
-       this.filterFlight = {...filter};
-       //this.filterFlightRound = {...filter};
-      console.log(this.filterFlight);
-    });
+    // this.airlineService.filter.subscribe((filter:{airlines:{name:string, isChecked:boolean}[], duration:number, price:number, stops:number[] })=>{
+    //    this.filterFlight = {...filter};
+    //    //this.filterFlightRound = {...filter};
+    //   console.log(this.filterFlight);
+    // });
 
-    //this.flights=this.airlineService.getFlights();
-    //this.roundFlights=this.airlineService.getRoundFlights();
-    this.route.queryParams.subscribe((queryParams:Params)=>{
-      //this.params = this.activeRoute.snapshot.queryParams );
-      console.log(queryParams);
-      if(queryParams['returnDate']==="undefined-undefined-undefined"){
-        console.log('poziv funkcije one way')
-        //this.flights=this.airlineService.getFlights(queryParams);
-        this.roundFlights=[];
-      }
-      else{
-        //this.roundFlights=this.airlineService.getRoundFlights(queryParams);
-        this.flights=[];
-      }
+   
 
-      //console.log(this.flights);
-    });
+      this.route.queryParams.subscribe((queryParams:Params)=>{
+        this.params=queryParams;
+  
+        let params =
+          "departureDate=" + queryParams.departureDate +
+          "&returnDate=" + queryParams.returnDate +
+          "&takeOffLocation=" + queryParams.takeOffLocation +
+          "&landingLocation=" + queryParams.landingLocation +
+          "&passengers=" + queryParams.passengers +
+          "&Class=" + queryParams.class;
+          ;
+  
+          if(queryParams.criteria==='oneWay'){
+                this.showSpinner();
+                this.flightService.searchOneWayFlights(params).subscribe(
+                    res=>{
+                    this.flights = res;
+                    this.roundFlights=[];
+                    this.hideSpinner();
+                  },
+                  err=>{
+                    this.hideSpinner();
+                  }
+                );
+          }
+          else if(queryParams.criteria==='multi'){
+            this.showSpinner();
+                this.flightService.searchMultiFlights(params).subscribe(
+                    res=>{
+                    this.flights = res;
+                    this.roundFlights=[];
+                    this.hideSpinner();
+                  },
+                  err=>{
+                    this.hideSpinner();
+                  }
+                );
+          }
+          else{
+            this.showSpinner();
+                this.flightService.searchRoundFlights(params).subscribe(
+                    res=>{
+                      console.log(res);
+                    this.roundFlights = res;
+                    this.flights=[];
+                    this.hideSpinner();
+                  },
+                  err=>{
+                    this.hideSpinner();
+                  }
+                );
+          }
+        
+        });
+
   }
 
+  showSpinner(){
+    this.isSpining = true;
+    this.spinner.show();
+  }
+  
+  hideSpinner(){
+    this.spinner.hide();
+    this.isSpining = false;
+  }
 }

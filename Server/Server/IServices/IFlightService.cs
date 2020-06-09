@@ -12,5 +12,8 @@ namespace Server.IServices
         Task<Flight> GetFlight(int id);
 
         Task<bool> DeleteFlight(Flight flight);
+        Task<IEnumerable<Flight>> SearchFlights(SearchFlightModel model);
+        Task<IEnumerable<Flight>> SearchMultiFlights(SearchFlightModel model);
+        Task<IEnumerable<Tuple<Flight, Flight>>> SearchRoundFlights(SearchFlightModel model);
     }
 }

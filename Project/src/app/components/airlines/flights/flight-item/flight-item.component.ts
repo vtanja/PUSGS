@@ -19,6 +19,7 @@ export class FlightItemComponent implements OnInit, AfterViewInit{
   hours:number;
   minutes:number;
   showBuyButton = true;
+  price:number;
 
   constructor( private modalService: NgbModal, private airlineService:AirlineService, private route:ActivatedRoute) { 
     
@@ -33,6 +34,10 @@ export class FlightItemComponent implements OnInit, AfterViewInit{
   ngOnInit(): void {
     if(this.route.snapshot.routeConfig.path.includes('admin-flights')){
       this.showBuyButton=false;
+    }
+    else{
+      var klasa = this.route.snapshot.queryParams['class'];
+      this.price = this.flight.segmentPrices.find(x=>x.segment.name === klasa).price;
     }
     this.hours = Math.floor(this.flight.duration/60);
     this.minutes = this.flight.duration%60;

@@ -2,6 +2,7 @@ import { UsersRate } from './users-rate.model';
 import { Airport } from './airport';
 import { Airline } from './airline.model';
 import { Plane } from './plane';
+import { Segment } from './segment';
 
 export class Flight {
     id:number;
@@ -13,7 +14,7 @@ export class Flight {
     landingTime:string;
     duration:number;
     connections:Airport[]
-    segmentPrices:{};
+    segmentPrices:{segment:Segment, price:number}[];
     rate:number;
     image:string;
     rates:UsersRate[];
@@ -24,7 +25,7 @@ export class Flight {
 
   constructor(id:number, takeOffLocation:Airport, landingLocation:Airport, takeOffDate:string,landingDate:string,
                 takeOffTime:string,landingTime:string, duration:number,changeoverLocations:Airport[],
-                  price:{}, planeId:string){
+                  price:{segment:Segment, price:number}[], planeId:string){
 
     this.id = id;
     this.takeOffLocation=takeOffLocation;

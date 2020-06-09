@@ -39,5 +39,20 @@ namespace Server.Services
         {
             return await flightRepository.GetFlights(planes);
         }
+
+        public async Task<IEnumerable<Flight>> SearchFlights(SearchFlightModel model)
+        {
+            return await flightRepository.SearchFlights(model);
+        }
+
+        public async Task<IEnumerable<Flight>> SearchMultiFlights(SearchFlightModel model)
+        {
+            return await flightRepository.SearchMultiFlights(model);
+        }
+
+        public async Task<IEnumerable<Tuple<Flight, Flight>>> SearchRoundFlights(SearchFlightModel model)
+        {
+            return await flightRepository.SearchRoundFlights(model);
+        }
     }
 }

@@ -36,7 +36,7 @@ namespace Server.Controllers
         public async Task<ActionResult<IEnumerable<PlaneDTO>>> GetPlanes()
         {
             var adminId = User.Claims.First(c => c.Type == "UserID").Value;
-            var admin = await _context.AirlineAdmins.FindAsync(adminId);
+            var admin = await _context.AirlineAdmins.Include(x=>x.Airline).FirstOrDefaultAsync(x=>x.UserId == adminId);
             if (admin.Airline != null)
             {
                 var planes = await planeService.GetPlanesByAirline((int)admin.AirlineId);

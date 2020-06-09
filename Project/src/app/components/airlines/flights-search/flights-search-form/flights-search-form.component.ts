@@ -62,7 +62,7 @@ export class FlightsSerachFormComponent implements OnInit {
     const flightClass = params['class']!=undefined?params['class'] :"Economy";
     const passengers = params['passengers']!=undefined?params['passengers'] :"";
 
-    this.classes = new Array<string>("Economy","Premium economy","Business class","First class");
+    this.classes = new Array<string>("Economy class","Premium economy","Business class","First class");
 
     this.searchForm = new FormGroup({
 
@@ -102,7 +102,7 @@ export class FlightsSerachFormComponent implements OnInit {
     let returnDate = this.searchForm.get('returnDate').value;
 
     searchParams['departureDate'] = departureDate.day + "-" + departureDate.month + "-" + departureDate.year;
-    if(this.returnFlight==="oneway"){
+    if(this.returnFlight==="oneway" || this.returnFlight==="multi"){
       searchParams['returnDate']=undefined;
     }else{
       searchParams['returnDate'] = returnDate.day + "-" + returnDate.month + "-" + returnDate.year;
@@ -112,10 +112,8 @@ export class FlightsSerachFormComponent implements OnInit {
     searchParams['landingLocation'] = this.searchForm.get('locations.landingLocation').value;
     searchParams['class'] = this.searchForm.get('class').value;
     searchParams['passengers'] = this.searchForm.get('passengers').value;
+    searchParams['criteria'] = this.returnFlight;
 
-   // this.router.navigate(['/allCars'],{queryParams:searchParams});
-   console.log(searchParams);
-    //console.log(searchParams);
     this.router.navigate(['/allFlights'],{queryParams:searchParams});
 
   }
@@ -128,5 +126,8 @@ export class FlightsSerachFormComponent implements OnInit {
     this.searchForm.get('returnDate').disable();
   }
 
+  onMultiSelect(){
+    this.searchForm.get('returnDate').disable();
+  }
 }
 

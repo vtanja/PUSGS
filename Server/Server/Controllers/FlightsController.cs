@@ -64,7 +64,91 @@ namespace Server.Controllers
             return flight;
         }
 
-        
+
+        // GET: api/Flights
+        [HttpGet("{departureDate}/{returnDate}/{takeOffLocation}/{landingLocation}/{passengers}/{Class}")]
+        [Route("SearchOneWayFlights")]
+        public async Task<ActionResult<IEnumerable<FlightDTO>>> SearchOneWayFlights([FromQuery] string departureDate, [FromQuery] string returnDate,
+            [FromQuery] string takeOffLocation, [FromQuery] string landingLocation, [FromQuery] int passengers, [FromQuery] string Class)
+        {
+            SearchFlightModel model = new SearchFlightModel()
+            {
+                DepartureDate = departureDate,
+                ReturnDate = null,
+                TakeOffLocation = takeOffLocation,
+                LandingLocation = landingLocation,
+                Passengers = passengers,
+                Class = Class
+            };
+
+            var flights = await flightService.SearchFlights(model);
+
+            var retVal = new List<FlightDTO>();
+
+            foreach (var item in flights)
+            {
+                retVal.Add(_mapper.Map<Flight, FlightDTO>(item));
+            }           
+
+            return retVal;
+        }
+
+        [HttpGet("{departureDate}/{returnDate}/{takeOffLocation}/{landingLocation}/{passengers}/{Class}")]
+        [Route("SearchMultiFlights")]
+        public async Task<ActionResult<IEnumerable<FlightDTO>>> SearchMultiFlights([FromQuery] string departureDate, [FromQuery] string returnDate,
+           [FromQuery] string takeOffLocation, [FromQuery] string landingLocation, [FromQuery] int passengers, [FromQuery] string Class)
+        {
+            SearchFlightModel model = new SearchFlightModel()
+            {
+                DepartureDate = departureDate,
+                ReturnDate = null,
+                TakeOffLocation = takeOffLocation,
+                LandingLocation = landingLocation,
+                Passengers = passengers,
+                Class = Class
+            };
+
+            var flights = await flightService.SearchMultiFlights(model);
+
+            var retVal = new List<FlightDTO>();
+
+            foreach (var item in flights)
+            {
+                retVal.Add(_mapper.Map<Flight, FlightDTO>(item));
+            }
+
+            return retVal;
+        }
+
+        [HttpGet("{departureDate}/{returnDate}/{takeOffLocation}/{landingLocation}/{passengers}/{Class}")]
+        [Route("SearchRoundFlights")]
+        public async Task<ActionResult<IEnumerable<Tuple<FlightDTO,FlightDTO>>>> SearchRoundFlights([FromQuery] string departureDate, [FromQuery] string returnDate,
+           [FromQuery] string takeOffLocation, [FromQuery] string landingLocation, [FromQuery] int passengers, [FromQuery] string Class)
+        {
+            SearchFlightModel model = new SearchFlightModel()
+            {
+                DepartureDate = departureDate,
+                ReturnDate = returnDate,
+                TakeOffLocation = takeOffLocation,
+                LandingLocation = landingLocation,
+                Passengers = passengers,
+                Class = Class
+            };
+
+            var flights = await flightService.SearchRoundFlights(model);
+
+            var retVal = new List<Tuple<FlightDTO,FlightDTO>>();
+
+            foreach (var item in flights)
+            {
+                retVal.Add(new Tuple<FlightDTO,FlightDTO>(_mapper.Map<Flight, FlightDTO>(item.Item1), _mapper.Map<Flight, FlightDTO>(item.Item2)));
+            }
+
+            return retVal;
+        }
+
+
+
 
         // POST: api/Flights
         // To protect from overposting attacks, enable the specific properties you want to bind to, for

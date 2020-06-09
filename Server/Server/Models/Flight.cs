@@ -34,6 +34,5 @@ namespace Server.Models
         //public ICollection<CarReservation> Reservations { get; set; }
 
 
-
     }
 }

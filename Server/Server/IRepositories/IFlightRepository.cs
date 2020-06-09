@@ -12,5 +12,8 @@ namespace Server.IRepositories
         Task<IEnumerable<Flight>> GetFlights(List<Plane> planes);
         Task<Flight> GetFlight(int id);
         void DeleteFlight(Flight flight);
+        Task<IEnumerable<Flight>> SearchFlights(SearchFlightModel model);
+        Task<IEnumerable<Flight>> SearchMultiFlights(SearchFlightModel model);
+        Task<IEnumerable<Tuple<Flight, Flight>>> SearchRoundFlights(SearchFlightModel model);
     }
 }
