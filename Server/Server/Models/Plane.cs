@@ -14,6 +14,7 @@ namespace Server.Models
         public int AirlineId { get; set; }
         [ForeignKey("AirlineId")]
         public virtual Airline Airline { get; set; }
-        public ICollection<Segment> Segments { get; set; } 
+        public ICollection<Segment> Segments { get; set; }
+        public ICollection<OccupiedDate> OccupiedDates{ get; set; }
     }
 }

@@ -13,7 +13,7 @@ export class FlightReservationListComponent implements OnInit {
   constructor(private userService:UserService) { }
 
   ngOnInit(): void {
-    this.flightReservations=this.userService.getFlightReservations();
+    //this.flightReservations=this.userService.getFlightReservations();
   }
 
 }

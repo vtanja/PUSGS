@@ -144,28 +144,28 @@ export class AddPlaneComponent implements OnInit {
     if(this.chosenSegments.includes('First class')){
       let rows = +this.firstClass.get('rowsInput').value;
       let columns = +this.firstClass.get('columnsInput').value;
-      let segment = new Segment('First class', rows, columns);
+      let segment = new Segment('First class', rows, columns, -1);
       this.plane.segments.push(segment);
     }
 
     if(this.chosenSegments.includes('Business class')){
       let rows = +this.businessClass.get('rowsInput').value;
       let columns = +this.businessClass.get('columnsInput').value;
-      let segment = new Segment('Business class', rows, columns);
+      let segment = new Segment('Business class', rows, columns, -1);
       this.plane.segments.push(segment);
     }
 
     if(this.chosenSegments.includes('Premium economy')){
       let rows = +this.premium.get('rowsInput').value;
       let columns = +this.premium.get('columnsInput').value;
-      let segment = new Segment('Premium economy', rows, columns);
+      let segment = new Segment('Premium economy', rows, columns, -1);
       this.plane.segments.push(segment);
     }
 
     if(this.chosenSegments.includes('Economy class')){
       let rows = +this.economy.get('rowsInput').value;
       let columns = +this.economy.get('columnsInput').value;
-      let segment = new Segment('Economy class', rows, columns);
+      let segment = new Segment('Economy class', rows, columns, -1);
       this.plane.segments.push(segment);
     }
 

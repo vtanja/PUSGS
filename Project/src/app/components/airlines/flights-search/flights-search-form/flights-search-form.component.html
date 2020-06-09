@@ -1,7 +1,8 @@
 
   <div class="row " style="padding-top: 4%; margin-left: 0.5%;" >
     <label class="radio-inline"><input type="radio" [(ngModel)]="returnFlight" #radioOneWay name="optradio" id="radioOneWay" value="oneWay" (click)="onOneWaySelect()" checked>&nbsp;One way&nbsp;&nbsp;</label>
-  <label class="radio-inline"><input type="radio" [(ngModel)]="returnFlight"  #radioReturn name="optradio" id="radioReturn" value="return" (click)="onReturnSelect()">&nbsp;Return</label>
+  <label class="radio-inline"><input type="radio" [(ngModel)]="returnFlight"  #radioReturn name="optradio" id="radioReturn" value="return" (click)="onReturnSelect()">&nbsp;Return&nbsp;&nbsp;</label>
+  <label class="radio-inline"><input type="radio" [(ngModel)]="returnFlight"  #radioReturn name="optradio" id="radioMulti" value="multi" (click)="onMultiSelect()">&nbsp;Multi city</label>
   </div>
   <form [formGroup]="searchForm" (ngSubmit)="onFormSubmit()">
   <div class="row"formGroupName="locations">

@@ -1,6 +1,8 @@
 import { UsersRate } from './users-rate.model';
 import { Airport } from './airport';
 import { Airline } from './airline.model';
+import { Plane } from './plane';
+import { Segment } from './segment';
 
 export class Flight {
     id:number;
@@ -11,25 +13,19 @@ export class Flight {
     takeOffTime:string;
     landingTime:string;
     duration:number;
-    numberOfChangeovers:number;
-    changeoverLocations:Array<string>;
-    price:number;
+    connections:Airport[]
+    segmentPrices:{segment:Segment, price:number}[];
     rate:number;
     image:string;
-    freeSeats:number[];
-    economySeats:number;
-    premiumEconomySeats:number;
-    businessSeats:number;
-    firstClassSeats:number;
-    airline:Airline;
     rates:UsersRate[];
     planename:string;
+    planeId:string;
+    plane:Plane;
 
 
-  constructor(id:number,takeOffLocation:Airport, landingLocation:Airport, takeOffDate:string,landingDate:string,
-                takeOffTime:string,landingTime:string, duration:number, numberOfChangeovers:number,changeoverLocations:Array<string>,
-                  price:number, economySeats:number, premiumEconomySeats:number,businessSeats:number,
-                  firstClassSeats:number){
+  constructor(id:number, takeOffLocation:Airport, landingLocation:Airport, takeOffDate:string,landingDate:string,
+                takeOffTime:string,landingTime:string, duration:number,changeoverLocations:Airport[],
+                  price:{segment:Segment, price:number}[], planeId:string){
 
     this.id = id;
     this.takeOffLocation=takeOffLocation;
@@ -39,16 +35,11 @@ export class Flight {
     this.takeOffTime=takeOffTime;
     this.landingTime=landingTime;
     this.duration=duration;
-    this.numberOfChangeovers=numberOfChangeovers;
-    this.changeoverLocations=changeoverLocations;
-    this.price=price;
+    this.connections=changeoverLocations;
+    this.segmentPrices=price;
     this.rate=-1;
-    this.economySeats=economySeats;
-    this.premiumEconomySeats=premiumEconomySeats;
-    this.businessSeats=businessSeats;
-    this.firstClassSeats=firstClassSeats;
     this.rates=[];
-
+    this.planeId=planeId;
   }
 
   updateRate():void{

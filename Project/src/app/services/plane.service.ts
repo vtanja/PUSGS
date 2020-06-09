@@ -44,6 +44,7 @@ export class PlaneService {
   }
 
   updatePlaneConfig(id:string, plane:Plane ){
+    console.log(plane);
     return this.httpClient.put(this.baseUri+'Planes/'+id, plane);
   }
 }

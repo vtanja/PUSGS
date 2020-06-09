@@ -29,6 +29,13 @@ namespace Server.Settings
         public DbSet<DiscountDate> DiscountDates { get; set; }
         public DbSet<ReservedDate> ReservedDates { get; set; }
         public DbSet<CarReservation> CarReservations { get; set; }
+        public DbSet<SegmentPrice> Prices { get; set; }
+        public DbSet<Flight> Flights { get; set; }
+        public DbSet<OccupiedDate> OccupiedDates { get; set; }
+        public DbSet<Airport> Airports { get; set; }
         public DbSet<BonusPointsDiscount> BonusPointsDiscounts { get; set; }
+
+        public DbSet<FlightReservation> FlightReservations{ get; set; }
+        public DbSet<Passenger> Passengers{ get; set; }
     }
 }

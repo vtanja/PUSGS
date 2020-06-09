@@ -1,4 +1,5 @@
 import { Segment } from './segment';
+import { Airline } from './airline.model';
 
 export class Plane {
     id:number;
@@ -6,6 +7,7 @@ export class Plane {
     segments:Segment[];
     booked:string[]=[];
     airlineId:number;
+    airline:Airline;
 
     constructor(code:string, segments:Segment[], airlineId:number){
         this.code=code;

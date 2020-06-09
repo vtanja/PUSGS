@@ -5,11 +5,11 @@
   </ng-template>
   
  
-<a  class="list-group-item list-group-item-action ">
+<a  class="list-group-item list-group-item-action " style="width: 80%; margin-left: 10%;">
     <div class="d-flex">
         <div class="row" style="width: 80%; cursor:pointer" (click)="moreInfo(content)">
             <div class="flex-col align-self-center" style="width: 20%;  text-align: center;" >
-                <img src="{{flight.image}}" style="width: 100%; height: 100%;" >
+                <img src="{{imgToDisplay}}" style="width: 100%; height: 100%;" >
             </div>
             <div class="flex-column align-self-center " style="width: 20%; text-align: end; margin-right:1.5% " >
                 <div class="flex-row " style="height: 50%; ">
@@ -22,14 +22,14 @@
               </div>
             <div class="flex-column " style="width: 20%; text-align: center;" >
                 <div class="flex-row " style="height: 33.3%;">
-                    <small style="font-size: x-small; color: #fa9e1c; font-weight: bolder; "> Duration: {{flight.duration}}h</small>
+                    <small style="font-size: x-small; color: #fa9e1c; font-weight: bolder; "> Duration: {{hours}}h {{minutes}}min</small>
                 </div>
                 <div class="flex-row " style="height: 33.3%;">
                     <img src="../../../../assets/images/minus.png" style="width: 80%; height: 20px;">
                     <img src="../../../../assets/images/airplane.png" style="width: 20%; height: 20px;">
                 </div>
                 <div class="flex-row" style="height: 33.3%;">
-                    <small *ngIf="flight.numberOfChangeovers>0; else noStops" style="font-size: x-small; color: #fa9e1c; font-weight: bolder;" >{{flight.numberOfChangeovers}} stop</small>
+                    <small *ngIf="flight.connections.length>0; else noStops" style="font-size: x-small; color: #fa9e1c; font-weight: bolder;" >{{flight.connections.length}} stop</small>
                     <ng-template #noStops><small style="font-size: x-small; color: #fa9e1c; font-weight: bolder;">Direct</small></ng-template>
                 </div>
               </div>
@@ -44,9 +44,9 @@
             </div>
         </div>
         
-        <div class="flex-col align-self-center" style="width: 20%;  text-align: center;">
-                {{flight.price | currency:'EUR':true}}
-                <div class="flex-row " style="height: 50%;  padding-top: 5%;">
+        <div class="flex-col align-self-center" style="width: 20%;  text-align: center;" *ngIf="showBuyButton">
+                {{price | currency:'EUR':true}}
+                <div class="flex-row " style="height: 50%;  padding-top: 5%;" >
                     <button class="btn  btn-md btn-rounded button-style" style="display: block;width: 100%;" routerLink='/create-reservation/{{flight.id}}'>Buy ticket</button>
                 </div>
         </div>
@@ -62,7 +62,63 @@
       </button>
     </div>
     <div class="modal-body">
-      <p>These are flight detsils.</p>
+          <div class="row" style="height: 100px;">
+            <div class="col" style=" height: 80%; justify-content: center;">
+              <img src={{imgToDisplay}} style="width: 100%; height: 100%;">
+            </div>
+          </div>
+          <br>
+          <div class="row" >
+            <div class="col" style="height: 100%; text-align: center; align-content: center;">
+              <div class="row header justify-content-center align-items-center" style="color: #fa9e1c;">Plane code:</div>
+              <div class="row text justify-content-center align-items-center">{{flight.plane.code}}</div>
+            </div>
+          </div>
+          <br>
+          <div class="row" >
+            <div class="col" style="height: 100%; text-align: center; align-content: center;">
+              <div class="row header justify-content-center align-items-center" style="color: #fa9e1c;">Departure:</div>
+              <div class="row text justify-content-center align-items-center">{{flight.takeOffLocation.code}} - {{flight.takeOffLocation.location}}</div>
+              <div class="row text justify-content-center align-items-center">{{flight.takeOffDate}}&nbsp;{{flight.takeOffTime}}h</div>
+            </div>
+          </div>
+          <br>
+          <div class="row" >
+            <div class="col" style="height: 100%; text-align: center; align-content: center;">
+              <div class="row header justify-content-center align-items-center" style="color: #fa9e1c;">Landing:</div>
+              <div class="row text justify-content-center align-items-center">{{flight.landingLocation.code}} - {{flight.landingLocation.location}}</div>
+              <div class="row text justify-content-center align-items-center">{{flight.landingDate}}&nbsp;{{flight.landingTime}}h</div>
+            </div>
+          </div>
+          <br>
+          <div class="row" >
+            <div class="col" style="height: 100%; text-align: center; align-content: center;">
+              <div class="row header justify-content-center align-items-center" style="color: #fa9e1c;">Duration:</div>
+              <div class="row text justify-content-center align-items-center">{{hours}}h {{minutes}}min</div>
+            </div>
+          </div>
+          <br>
+          <div class="row" >
+            <div class="col" style="height: 100%; text-align: center; align-content: center;">
+              <div class="row header justify-content-center align-items-center" style="color: #fa9e1c;">{{flight.connections.length}} connections</div>
+              <div *ngIf="flight.connections.length>0">
+                <div *ngFor="let conn of flight.connections">
+                    {{conn.code}} - {{conn.location}}
+                </div>
+              </div>
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col" style="height: 100%; text-align: center; align-content: center;">
+              <div class="row header justify-content-center align-items-center" style="color: #fa9e1c;">Pricelist:</div>
+              <div *ngIf="flight.segmentPrices!==undefined">
+                <div *ngFor="let item of flight.segmentPrices |keyvalue">
+                    {{item.value.segment.name}} : {{item.value.price | currency:'EUR'}}
+                </div>
+              </div>
+            </div>
+          </div>
     </div>
   </ng-template>
 

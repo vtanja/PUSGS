@@ -12,7 +12,7 @@ export class AirlineItemComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    this.image = '../../../assets/images/'+this.airline.image;
+    this.image = '../../../assets/images/airlines/'+this.airline.image;
   }
 
 }

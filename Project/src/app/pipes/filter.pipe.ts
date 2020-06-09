@@ -11,10 +11,9 @@ export class FilterPipe implements PipeTransform {
     console.log(filter);
     var result:Flight[]=[];
     var companySuites:boolean=true;
+    var foundOne = false;
 
-    console.log('filter pipe');
     if (filter===undefined){
-      console.log('leaving pipe')
       return flights;
     }
 
@@ -23,13 +22,22 @@ export class FilterPipe implements PipeTransform {
     const twoStopsIndex=filter.stops.indexOf(2);
 
     for(const flight of flights){
-      if(flight.price>filter.price || flight.duration>filter.duration){
+      flight.segmentPrices.forEach(element => {
+        if(element.price <= filter.price){
+          foundOne = true;
+        }
+      });
+
+      if(!foundOne){
         continue;
       }
 
-      console.log(flight.airline);
+      if(flight.duration>filter.duration){
+        continue;
+      }
+
       for(const company of filter.airlines){
-        if(flight.airline.name===company.name){
+        if(flight.plane.airline.name===company.name){
 
           if(!company.isChecked){
             companySuites=false;
@@ -40,12 +48,12 @@ export class FilterPipe implements PipeTransform {
       if(!companySuites){
         continue;
       }
-      if(flight.numberOfChangeovers===0){
+      if(flight.connections.length===0){
         if(noStopsIndex===-1){
           continue;
         }
       }
-      else if(flight.numberOfChangeovers===1){
+      else if(flight.connections.length===1){
         if(oneStopIndex===-1){
           continue;
         }
@@ -60,7 +68,6 @@ export class FilterPipe implements PipeTransform {
 
 
     }
-    console.log(result);
     return result;
   }
 

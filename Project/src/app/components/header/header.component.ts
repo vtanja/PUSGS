@@ -78,7 +78,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   onCompanyDataAndDestinations() {
-    this.airlineAdminService.hasAirline().subscribe((res: boolean) => {
+    this.userService.hasAirline().subscribe((res: boolean) => {
       if (res) {
         this.router.navigate(['/airline-company-data/edit-airline-main-data']);
       } else {

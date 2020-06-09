@@ -20,23 +20,23 @@
     <div class="modal-body">
       <form [formGroup]="addSeatsForm">
         <div class="form-group">
-          <label class="control-label" for="segment">Segment:</label>
+          <label class="control-label lbl-style" for="segment">Segment:</label>
           <select formControlName="segment">
             <option *ngFor="let segment of plane.segments" [value]="segment.name">{{segment.name}}</option>
           </select>
           <span class="help-block" *ngIf="addSeatsForm.get('segment').errors?.required && addSeatsForm.get('segment').touched ">This field is required!</span>
         </div>
         <div class="form-group">
-          <label class="control-label" for="erows">Number of rows:</label><br>
+          <label class="control-label lbl-style" for="erows">Number of rows:</label><br>
           <input formControlName="rowsInput" name="rows" id="erows"><br>
           <span class="help-block" *ngIf="addSeatsForm.get('rowsInput').errors?.required && addSeatsForm.get('rowsInput').touched">This field is required!</span>
       </div>
       </form>
     </div>
     <div class="modal-footer">
-      <button type="button" class="btn delete-btn"
-        (click)="addSeats();modal.close('Confirm click') " [disabled]="addSeatsForm.invalid">Add</button>
-        <button type="button"  class="btn delete-btn"
+      <button type="button" class="btn delete-btn confirmBtnStyle"
+        (click)="addSeats(); modal.close('Confirm click') " [disabled]="addSeatsForm.invalid">Add</button>
+        <button type="button"  class="btn delete-btn button-style"
         (click)="modal.close('Cancel click')">Cancel</button>
     </div>
   </ng-template>

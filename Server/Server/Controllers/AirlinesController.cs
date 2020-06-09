@@ -12,7 +12,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.Web.CodeGeneration.Contracts.Messaging;
 using Server.DTOs;
 using Server.Models;
+using Server.Services;
 using Server.Settings;
+using Server.UOW;
 
 namespace Server.Controllers
 {
@@ -22,18 +24,21 @@ namespace Server.Controllers
     {
         private readonly DataBaseContext _context;
         private readonly IMapper _mapper;
+        private readonly AirlineService _airlineService;
 
-        public AirlinesController(DataBaseContext context, IMapper mapper)
+        public AirlinesController(DataBaseContext context, IMapper mapper, UnitOfWork
+            unitOfWork)
         {
             _context = context;
             _mapper = mapper;
+            _airlineService = unitOfWork.AirlineService;
         }
 
         // GET: api/Airlines
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Airline>>> GetAirlines()
         {
-            return await _context.Airlines.Include(rc => rc.Address).Include(x=>x.Destinations).ToListAsync();
+            return await _airlineService.GetAirlines();
         }
 
         // GET: api/Airlines/5
@@ -41,7 +46,7 @@ namespace Server.Controllers
         [Route("GetAirlineById/{id}")]
         public async Task<ActionResult<AirlineDTO>> GetAirlineById(int id)
         {
-            var airline = await _context.Airlines.Include(x=>x.Address).Include(x=>x.Destinations).Where(x=>x.Id==id).FirstOrDefaultAsync();
+            var airline = await _airlineService.GetAirlineById(id);
 
             if (airline == null)
             {
@@ -57,7 +62,7 @@ namespace Server.Controllers
         [Route("GetAirlineByUser/{username}")]
         public async Task<ActionResult<AirlineDTO>> GetAirlineByUser(string username)
         {
-            var airline = await _context.Airlines.Include(x => x.Address).Include(x=>x.Owner).Include(x=>x.Destinations).Where(x => x.Owner.UserName == username).FirstOrDefaultAsync();
+            var airline = await _airlineService.GetAirlineByUser(username);
 
             if (airline == null)
             {
@@ -73,14 +78,7 @@ namespace Server.Controllers
         [Route("HasUserAirline/{userId}")]
         public async Task<ActionResult<bool>> HasAirline(string userId)
         {
-            var airline = await _context.Airlines.Where(x => x.OwnerId == userId).FirstOrDefaultAsync();
-
-            if (airline == null)
-            {
-                return false;
-            }
-
-            return true;
+            return await _airlineService.HasAirline(userId);
         }
 
 
@@ -131,14 +129,14 @@ namespace Server.Controllers
             }
             catch
             {
-                if (!AirlineExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    return BadRequest(new { message = "Updating data failed. Please try again later." });
-                }
+                //if (!AirlineExists(id))
+                //{
+                //    return NotFound();
+                //}
+                //else
+                //{
+                //    return BadRequest(new { message = "Updating data failed. Please try again later." });
+                //}
             }
 
             //var airlineToChange = await _context.Airlines.Where(a => a.Id == id).FirstOrDefaultAsync();
@@ -176,13 +174,17 @@ namespace Server.Controllers
 
             if (user.AirlineId == null)
             {
-                _context.Airlines.Add(airline);
-
                 user.Airline = airline;
                 airline.Owner = user.RegisteredUser;
-                await _context.SaveChangesAsync();
 
-                return CreatedAtAction("GetAirlineById", new { id = airline.Id }, airline);
+                if (await _airlineService.PostAirline(airline))
+                {
+                    return NoContent();
+                }
+                else
+                {
+                    return BadRequest("Error while adding airline!");
+                }
             }
             else
             {
@@ -195,21 +197,10 @@ namespace Server.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<Airline>> DeleteAirline(int id)
         {
-            var airline = await _context.Airlines.FindAsync(id);
-            if (airline == null)
-            {
-                return NotFound();
-            }
+            if (await _airlineService.DeleteAirline(id))
+                return Ok();
 
-            _context.Airlines.Remove(airline);
-            await _context.SaveChangesAsync();
-
-            return airline;
-        }
-
-        private bool AirlineExists(int id)
-        {
-            return _context.Airlines.Any(e => e.Id == id);
+            return BadRequest();
         }
     }
 }

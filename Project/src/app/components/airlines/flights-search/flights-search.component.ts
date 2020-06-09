@@ -65,27 +65,5 @@ export class FlightsSearchComponent implements OnInit {
 
     });
   }
-
-  onFormSubmit(){
-
-    // const searchParams = {};
-
-    // let pickUpDate = this.searchForm.get('dates.pickUpDate').value;
-    // let dropOffDate = this.searchForm.get('dates.dropOffDate').value;
-
-    // searchParams['pickUpDate'] = pickUpDate.day + "-" + pickUpDate.month + "-" + pickUpDate.year;
-    // searchParams['dropOffDate'] = dropOffDate.day + "-" + dropOffDate.month + "-" + dropOffDate.year;
-    // searchParams['pickUpTime'] = this.searchForm.get('times.pickUpTime').value;
-    // searchParams['dropOffTime'] = this.searchForm.get('times.dropOffTime').value;
-    // searchParams['pickUpLocation'] = this.searchForm.get('location.pickUpLocation').value;
-    // searchParams['dropOffLocation'] = this.searchForm.get('location.dropOffLocation').value;
-    // searchParams['carBrand'] = this.searchForm.get('carBrand').value;
-    // searchParams['passengers'] = this.searchForm.get('passengers').value;
-
-   // this.router.navigate(['/allCars'],{queryParams:searchParams});
-
-  
-  }
-
 }
 

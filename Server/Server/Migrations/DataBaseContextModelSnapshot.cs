@@ -319,13 +319,33 @@ namespace Server.Migrations
                     b.ToTable("AirlineAdmins");
                 });
 
-            modelBuilder.Entity("Server.Models.BonusPointsDiscount", b =>
+            modelBuilder.Entity("Server.Models.Airport", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("Code")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("FlightId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Location")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FlightId");
+
+                    b.ToTable("Airports");
+                });
+            modelBuilder.Entity("Server.Models.BonusPointsDiscount", b =>
+                {
                     b.Property<double>("Discount")
                         .HasColumnType("float");
 
@@ -534,6 +554,48 @@ namespace Server.Migrations
                     b.ToTable("DiscountDates");
                 });
 
+            modelBuilder.Entity("Server.Models.Flight", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<double>("Duration")
+                        .HasColumnType("float");
+
+                    b.Property<string>("LandingDate")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("LandingLocationId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("LandingTime")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PlaneId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("TakeOffDate")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("TakeOffLocationId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TakeOffTime")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LandingLocationId");
+
+                    b.HasIndex("PlaneId");
+
+                    b.HasIndex("TakeOffLocationId");
+
+                    b.ToTable("Flights");
+                });
+
             modelBuilder.Entity("Server.Models.Friendship", b =>
                 {
                     b.Property<int>("UserFriendID")
@@ -557,6 +619,26 @@ namespace Server.Migrations
                     b.HasIndex("UserID");
 
                     b.ToTable("Friendships");
+                });
+
+            modelBuilder.Entity("Server.Models.OccupiedDate", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("PlaneId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PlaneId");
+
+                    b.ToTable("OccupiedDates");
                 });
 
             modelBuilder.Entity("Server.Models.Office", b =>
@@ -691,6 +773,31 @@ namespace Server.Migrations
                     b.ToTable("Segments");
                 });
 
+            modelBuilder.Entity("Server.Models.SegmentPrice", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("FlightId")
+                        .HasColumnType("int");
+
+                    b.Property<double>("Price")
+                        .HasColumnType("float");
+
+                    b.Property<int>("SegmentID")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FlightId");
+
+                    b.HasIndex("SegmentID");
+
+                    b.ToTable("Prices");
+                });
+
             modelBuilder.Entity("Server.Models.User", b =>
                 {
                     b.Property<string>("UserId")
@@ -810,6 +917,13 @@ namespace Server.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Server.Models.Airport", b =>
+                {
+                    b.HasOne("Server.Models.Flight", null)
+                        .WithMany("Connections")
+                        .HasForeignKey("FlightId");
+                });
+
             modelBuilder.Entity("Server.Models.Car", b =>
                 {
                     b.HasOne("Server.Models.RentCar", "CarCompany")
@@ -876,6 +990,21 @@ namespace Server.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Server.Models.Flight", b =>
+                {
+                    b.HasOne("Server.Models.Airport", "LandingLocation")
+                        .WithMany()
+                        .HasForeignKey("LandingLocationId");
+
+                    b.HasOne("Server.Models.Plane", "Plane")
+                        .WithMany()
+                        .HasForeignKey("PlaneId");
+
+                    b.HasOne("Server.Models.Airport", "TakeOffLocation")
+                        .WithMany()
+                        .HasForeignKey("TakeOffLocationId");
+                });
+
             modelBuilder.Entity("Server.Models.Friendship", b =>
                 {
                     b.HasOne("Server.Models.User", "Friend")
@@ -885,6 +1014,13 @@ namespace Server.Migrations
                     b.HasOne("Server.Models.User", "User")
                         .WithMany()
                         .HasForeignKey("UserID");
+                });
+
+            modelBuilder.Entity("Server.Models.OccupiedDate", b =>
+                {
+                    b.HasOne("Server.Models.Plane", "Plane")
+                        .WithMany()
+                        .HasForeignKey("PlaneId");
                 });
 
             modelBuilder.Entity("Server.Models.Office", b =>
@@ -951,6 +1087,19 @@ namespace Server.Migrations
                     b.HasOne("Server.Models.Plane", "Plane")
                         .WithMany("Segments")
                         .HasForeignKey("PlaneId");
+                });
+
+            modelBuilder.Entity("Server.Models.SegmentPrice", b =>
+                {
+                    b.HasOne("Server.Models.Flight", null)
+                        .WithMany("SegmentPrices")
+                        .HasForeignKey("FlightId");
+
+                    b.HasOne("Server.Models.Segment", "Segment")
+                        .WithMany()
+                        .HasForeignKey("SegmentID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Server.Models.User", b =>

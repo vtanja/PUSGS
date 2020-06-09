@@ -1,3 +1,4 @@
+<div *ngIf="flight!==undefined">
 <h5 style="text-align: center;">Make a reservation...</h5>
 <br>
 <mat-horizontal-stepper linear #stepper >
@@ -5,13 +6,13 @@
     <ng-template matStepLabel >
        <span [ngStyle]="{'color': '#31124b'}">Choose seats...</span>
     </ng-template>
-    <app-plane-layout [plane]="seatsLayout" [toBeAdded]="toBeAdded" ></app-plane-layout>
+    <app-plane-layout [plane]="flight.plane" [toBeAdded]="toBeAdded" ></app-plane-layout>
     <div style="text-align: right;">
         <button mat-button matStepperNext class="btn  btn-md btn-rounded button-style" style="width: 20%; " [disabled]="toBeAdded.length===0">Next</button>
     </div>
   </mat-step>
   <mat-step [stepControl]="secondFormGroup" optional >
-    <!-- <form [formGroup]="secondFormGroup" style="text-align: center;"> -->
+    <form [formGroup]="secondFormGroup" style="text-align: center;">
       <ng-template matStepLabel >
           <span [ngStyle]="{'color': '#31124b'}">Invite friends...</span>
       </ng-template>
@@ -39,18 +40,18 @@
               [readonly]="toBeAdded.length===1 || toBeAdded.length===0 || toBeAdded===undefined || toBeAdded.length-1===invitedFriends.length">
           </mat-chip-list>
           <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
-            <mat-option *ngFor="let option of filteredOptions | async" [value]="option.name">
-              {{option.name}}
+            <mat-option *ngFor="let option of filteredOptions | async" [value]="option.getName()">
+              {{option.getName()}}
             </mat-option>
           </mat-autocomplete>
         </mat-form-field>
         
+  </form>
         &nbsp;
 
-    <div style="text-align: right;">
-      <button mat-button matStepperNext class="btn  btn-md btn-rounded button-style" style="width: 20%; " >Next</button>
-    </div>
-  <!-- </form> -->
+      <div style="text-align: right;">
+        <button mat-button matStepperNext class="btn  btn-md btn-rounded button-style" style="width: 20%; " (click)="initForm()" >Next</button>
+      </div>
   </mat-step>
   
   <mat-step [stepControl]="thirdFormGroup" >
@@ -63,16 +64,16 @@
     
      <div class="col" formGroupName="passenger1">
       <label style="color: #31124b; font-weight: bolder;">Passenger 1 of {{toBeAdded.length}}</label>
-      <div class="form-group" [ngClass]="{'has-error': thirdFormGroup.get('passenger1.seati').invalid && thirdFormGroup.get('passenger1.seati').touched}">
+      <div class="form-group" >
         <label class="control-label" >Seat:</label>
         <input
           type="text"
           class="form-control"
           [id]="'seati'"
-          formControlName="seati" >
+          formControlName="seati" readonly >
           <span class="help-block" *ngIf="thirdFormGroup.get('passenger1.seati').errors?.required && thirdFormGroup.get('passenger1.seati').touched">Seat is required!</span>
       </div>
-      <div class="form-group" [ngClass]="{'has-error': thirdFormGroup.get('passenger1.firstNamei').invalid && thirdFormGroup.get('passenger1.firstNamei').touched}">
+      <div class="form-group" >
         <label class="control-label">First name:</label>
         <input
           type="text"
@@ -81,7 +82,7 @@
           formControlName="firstNamei" readonly>
           <span class="help-block" *ngIf="thirdFormGroup.get('passenger1.firstNamei').errors?.required && thirdFormGroup.get('passenger1.firstNamei').touched">First name is required!</span>
       </div>
-      <div class="form-group" [ngClass]="{'has-error': thirdFormGroup.get('passenger1.lastNamei').invalid && thirdFormGroup.get('passenger1.lastNamei').touched}">
+      <div class="form-group" >
         <label class="control-label" >Last name:</label>
         <input
           type="text"
@@ -90,7 +91,7 @@
           formControlName="lastNamei" readonly>
           <span class="help-block" *ngIf="thirdFormGroup.get('passenger1.lastNamei').errors?.required && thirdFormGroup.get('passenger1.lastNamei').touched">Last name is required!</span>
       </div>
-      <div class="form-group" [ngClass]="{'has-error': thirdFormGroup.get('passenger1.passporti').invalid && thirdFormGroup.get('passenger1.passporti').touched}">
+      <div class="form-group" >
         <label class="control-label" >Passport:</label>
         <input
           type="text"
@@ -187,7 +188,7 @@
               </div>
               </mat-step>
 </mat-horizontal-stepper>
-
+</div>
 
 <ng-template #content let-modal>
   <div class="modal-header" >

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { Flight } from '../../models/flight.model';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { AirlineService } from '../../services/airline.service';
@@ -17,6 +17,7 @@ import { FlightReservationService } from '../../services/flight-reservation.serv
 import Swal from 'sweetalert2';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Plane } from '../../models/plane';
+import { FlightService } from 'src/app/services/flight.service';
 
 interface Passenger {
   seat: number;
@@ -28,13 +29,12 @@ interface Passenger {
   templateUrl: './create-flight-reservation.component.html',
   styleUrls: ['./create-flight-reservation.component.css']
 })
-export class CreateFlightReservationComponent implements OnInit {
+export class CreateFlightReservationComponent implements OnInit,AfterViewInit {
 
   flight:Flight;
   mySubscription:Subscription;
 
   toBeAdded:string[]=[];
-  seatsLayout:Plane[]=[];
 
   invitedFriends:string[]=[];
   cars:Car[]=[];
@@ -49,6 +49,8 @@ export class CreateFlightReservationComponent implements OnInit {
 
   hiddenButton=false;
 
+  location:string;
+
   visible = true;
   selectable = true;
   removable = true;
@@ -60,34 +62,65 @@ export class CreateFlightReservationComponent implements OnInit {
 
   flightReservation:FlightReservation;
 
+  loggedUser:User;
+
   get passengersControls() {
     return (this.thirdFormGroup.get('passengers') as FormArray).controls;
   }
 
-  constructor(private route:ActivatedRoute,private router:Router,private modalService: NgbModal, private airlineService:AirlineService, private userService:UserService, private _formBuilder:FormBuilder, private rentCarService:RentCarService, private flightReservationService:FlightReservationService) {
+  constructor(private route:ActivatedRoute,private router:Router,private modalService: NgbModal, private flightService:FlightService, private airlineService:AirlineService, private userService:UserService, private _formBuilder:FormBuilder, private rentCarService:RentCarService, private flightReservationService:FlightReservationService) {
 
-      this.options = this.userService.getLoggedUser().friends.slice();
+     
+
+   }
+
+
+  ngAfterViewInit(): void {
+    this.mySubscription = this.route.params.subscribe((params:Params)=>
+      {
+        this.flightService.getFlight(+params['id']).subscribe((res:any)=>{
+          this.flight = res;
+          this.location = this.flight.landingLocation.location;
+        });
+      }
+    )
+
+    this.userService.getFriends().subscribe((res:any)=>{
+      this.options = res;
 
       this.filteredOptions = this.fruitCtrl.valueChanges.pipe(
         startWith(null),
         map((user: string | null) => user ? this._filter(this.options, user) : this.options.slice()));
+    });
 
-   }
+    this.userService.getUser().subscribe((res:any)=>{
+      this.loggedUser = res;
+      console.log('to be added in init: ', this.toBeAdded);
+      this.initForm();
+    });
+
+
+    
+  }
 
    initForm(){
-     var seat = this.toBeAdded[0];
-     console.log(seat);
-     let firstName = this.userService.getLoggedUser().firstName;
-     let lastName = this.userService.getLoggedUser().lastName;
+     let seat:string;
+      for(let added of this.toBeAdded){
+        console.log('init form: ', added);
+        seat =added;
+        break;
+      }
+
+     let firstName = this.loggedUser.firstName;
+     let lastName = this.loggedUser.lastName;
 
     let passenger1 = new FormGroup({
-      'seati': new FormControl('', Validators.required),
+      'seati': new FormControl(seat, Validators.required),
       'firstNamei': new FormControl(firstName, Validators.required),
       'lastNamei':new FormControl(lastName, Validators.required),
       'passporti':new FormControl('', [Validators.required, Validators.pattern(new RegExp("^[A-Z][0-9]{8}$"))])
     });
 
-    passenger1.patchValue({seati:this.toBeAdded[1]});
 
     let passengers = new FormArray([]);
 
@@ -101,9 +134,6 @@ export class CreateFlightReservationComponent implements OnInit {
 
    initThirdForm(){
 
-    console.log(this.thirdFormGroup.get('passenger1'));
-     console.log('To be added');
-     console.log(this.toBeAdded);
      let seat ='';
      let firstName ='';
      let lastName ='';
@@ -111,33 +141,33 @@ export class CreateFlightReservationComponent implements OnInit {
 
      const counter = this.toBeAdded.length;
      for(var i=1; i < counter; i++){
-       if(this.invitedFriends.length>0){
-        while(i < this.invitedFriends.length){
+       console.log('to be added seats: ', this.toBeAdded[0]);
+       if(this.invitedFriends.length>0 && i<=this.invitedFriends.length){
            seat = this.toBeAdded[i];
           console.log(this.toBeAdded[i].toString());
-           firstName = this.invitedFriends[i].split(' ')[0].trim();
-           lastName = this.invitedFriends[i].split(' ')[1].trim();
+           firstName = this.invitedFriends[i-1].split(' ')[0].trim();
+           lastName = this.invitedFriends[i-1].split(' ')[1].trim();
            passport = '';
 
           (<FormArray>this.thirdFormGroup.get('passengers')).push( new FormGroup({
             'seat': new FormControl(seat, Validators.required),
-            'firstName': new FormControl(this.invitedFriends[i].split(' ')[0].trim(), Validators.required),
+            'firstName': new FormControl(firstName, Validators.required),
             'lastName':new FormControl(lastName, Validators.required),
             'passport':new FormControl('', [Validators.required,Validators.pattern(new RegExp("^[A-Z][0-9]{8}$"))])
           }));
-          }
-        }
+
+        }else{
+
           (<FormArray>this.thirdFormGroup.get('passengers')).push( new FormGroup({
             'seat': new FormControl('', Validators.required),
             'firstName': new FormControl('', Validators.required),
             'lastName':new FormControl('', Validators.required),
             'passport':new FormControl('', [Validators.required, Validators.pattern(new RegExp("^[A-Z][0-9]{8}$"))])
           }));
+        }
 
      }
 
-     this.hiddenButton=true;
-     console.log(this.passengersControls);
    }
 
    confirmReservation(){
@@ -152,6 +182,7 @@ export class CreateFlightReservationComponent implements OnInit {
     });
 
    }
+
    openSm(content) {
     this.modalService.open(content);
   }
@@ -163,25 +194,22 @@ export class CreateFlightReservationComponent implements OnInit {
   ngOnInit(): void {
     this.mySubscription = this.route.params.subscribe((params:Params)=>
       {
-        this.flight = this.airlineService.getFlight(+params['id']);
-        console.log(this.flight);
+        this.flightService.getFlight(+params['id']).subscribe((res:any)=>{
+          this.flight = res;
+          this.location = this.flight.landingLocation.location;
+        });
       }
     )
 
+    //this.initForm();
 
-    this.flightReservation = new FlightReservation("REZ1", this.flight.id, this.flight.airline.id, 0, []);
+    this.flightReservation = new FlightReservation("REZ1", this.flight.id, this.flight.plane.airline.id, 0, []);
 
     this.secondFormGroup = new FormGroup({
       'friends':new FormControl('')
     });
 
-    this.initForm();
-
-    //var location=this.flight.landingLocation.place;
-    var location = "Belgrade, Serbia";
-    console.log(location);
-    this.cars.push(...this.rentCarService.getCarsAtLocation(location));
-    console.log(this.cars);
+    //this.cars.push(...this.rentCarService.getCarsAtLocation(this.location));
 
   }
 
@@ -224,17 +252,18 @@ export class CreateFlightReservationComponent implements OnInit {
      passenger:{firstname:this.thirdFormGroup.get('passenger1.firstNamei').value,
      lastname:this.thirdFormGroup.get('passenger1.lastNamei').value,
      passportNo:this.thirdFormGroup.get('passenger1.passporti').value}};
-    this.flightReservation.passengers.push(pass1);
+    //this.flightReservation.passengers.push(pass1);
 
     for(let control of this.passengersControls){
       pass1={seat:control.get('seat').value,
      passenger:{firstname:control.get('firstName').value,
      lastname:control.get('lastName').value,
      passportNo:control.get('passport').value}};
-    this.flightReservation.passengers.push(pass1);
+    //this.flightReservation.passengers.push(pass1);
     }
 
-    const price = this.flightReservation.passengers.length*this.flight.price;
+    //const price = this.flightReservation.passengers.length*this.flight.price;
+    var price = 60;
     console.log(price);
     this.flightReservation.price=price;
     console.log(this.flightReservation.price);

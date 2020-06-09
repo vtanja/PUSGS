@@ -67,8 +67,8 @@ export class CreateCarReservationComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.flight = this.airlineService.getFlight(+this.route.snapshot.params['id']);
-    this.company = this.flight.airline;
+   // this.flight = this.airlineService.getFlight(+this.route.snapshot.params['id']);
+    //this.company = this.flight.airline;
     const carId = +this.route.snapshot.params['carid'];
 
     var startParts = this.flight.landingDate.split('-');
