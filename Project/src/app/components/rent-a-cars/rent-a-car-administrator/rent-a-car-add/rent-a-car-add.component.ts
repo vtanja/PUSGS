@@ -65,12 +65,12 @@ export class RentACarAddComponent implements OnInit {
       reader.readAsDataURL(file);
       reader.onload = (_event) => {
         this.imgPreview = reader.result;
-      };
 
-      this.dataForm.patchValue({
-        fileSource: file,
-        logo: reader.result,
-      });
+        this.dataForm.patchValue({
+          fileSource: file,
+          logo: reader.result,
+        });
+      };
     }
   }
 

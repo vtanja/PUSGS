@@ -89,7 +89,7 @@ namespace Server.Services
             return true;
         }
 
-        public async Task<int> GetCompanyRate(int id)
+        public async Task<double> GetCompanyRate(int id)
         {
             var rentCar = await rentCarRepository.GetRentCar(id);
             return rentCar.Rate;

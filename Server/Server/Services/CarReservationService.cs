@@ -51,7 +51,7 @@ namespace Server.Services
             return "success";
         }
 
-        public async Task<IEnumerable<CarReservation>> GetUserCarReservations(string userId)
+        public async Task<List<CarReservation>> GetUserCarReservations(string userId)
         {
             return await carReservationRepository.GetUserCarReservation(userId);
         }

@@ -19,7 +19,7 @@ export class RentCarProfileAdapter implements Adapter<RentCar>{
   adapt(item:any):RentCar{
     let addr = this.addressAdapter.adapt(item.address);
     let cars:Car[] = item.cars.map(item => this.carAdapter.adapt(item));
-    let rc = new RentCar(item.id,item.name,addr,item.description,cars,item.offices,item.logo);
+    let rc = new RentCar(item.id,item.name,addr,item.description,cars,item.offices,item.logo,item.rate);
     console.log(rc);
     return rc;
   }

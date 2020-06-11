@@ -11,7 +11,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Server.DTOs;
 using Server.Models;
+using Server.Services;
 using Server.Settings;
+using Server.UOW;
 
 namespace Server.Controllers
 {
@@ -23,19 +25,19 @@ namespace Server.Controllers
         private SignInManager<RegisteredUser> _signInManager;
         private readonly ApplicationSettings _appSettings;
         private readonly Email.IEmailSender _emailSender;
-        private readonly DataBaseContext _context;
         private readonly IMapper _mapper;
+        private readonly RentCarAdminService rentCarAdminService;
 
         public RentCarAdminsController(UserManager<RegisteredUser> userManager,
             SignInManager<RegisteredUser> signInManager, IOptions<ApplicationSettings> appSettings,
-            Email.IEmailSender emailSender, DataBaseContext dataBaseContext, IMapper mapper)
+            Email.IEmailSender emailSender, IMapper mapper,UnitOfWork unitOfWork)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _appSettings = appSettings.Value;
             _emailSender = emailSender;
-            _context = dataBaseContext;
             _mapper = mapper;
+            rentCarAdminService = unitOfWork.RentCarAdminService;
         }
 
         // GET: api/RentCarAdmins
@@ -43,7 +45,7 @@ namespace Server.Controllers
         [Authorize(Roles = "ADMINISTRATOR")]
         public async Task<ActionResult<IEnumerable<UserDTO>>> GetRentCarAdmins()
         {
-            var ret = (await _context.RentCarAdmins.Include(a => a.RegisteredUser).ToListAsync());
+            var ret = await rentCarAdminService.GetRentCarAdmins();
             var ret2 = _mapper.Map<List<UserDTO>>(ret);
             return ret2;
         }
@@ -53,7 +55,7 @@ namespace Server.Controllers
         [Authorize(Roles = "ADMINISTRATOR")]
         public async Task<ActionResult<RentCarAdmin>> GetRentCarAdmin(string id)
         {
-            var rentCarAdmin = await _context.RentCarAdmins.FindAsync(id);
+            var rentCarAdmin = await rentCarAdminService.GetRentCarAdmin(id);
 
             if (rentCarAdmin == null)
             {
@@ -88,8 +90,7 @@ namespace Server.Controllers
                 if (result.Succeeded)
                 {
                     await _userManager.AddToRoleAsync(user, "RENTCARADMIN");
-                    await _context.RentCarAdmins.AddAsync(new RentCarAdmin { UserId = user.Id });
-                    await _context.SaveChangesAsync();
+                    await rentCarAdminService.AddRentCarAdmin(new RentCarAdmin { UserId = user.Id });
 
 
                     var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -118,16 +119,12 @@ namespace Server.Controllers
         public async Task<ActionResult<IEnumerable<RentCar>>> UserHasCompany()
         {
             string userId = User.Claims.First(c => c.Type == "UserID").Value;
-            RentCarAdmin user = await _context.RentCarAdmins.FindAsync(userId);
+            RentCarAdmin user = await rentCarAdminService.GetRentCarAdmin(userId);
             if(user.CompanyId != null)
                 return Ok(new { HasCompany = true });
             return Ok(new { HasCompany = false});
         }
 
-        private bool RentCarAdminExists(string id)
-        {
-            return _context.RentCarAdmins.Any(e => e.UserId == id);
-        }
 
         [HttpGet("[action]")]
         [AllowAnonymous]

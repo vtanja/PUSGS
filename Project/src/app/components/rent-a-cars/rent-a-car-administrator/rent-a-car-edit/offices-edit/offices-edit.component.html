@@ -9,7 +9,7 @@
 <div class="container"  *ngIf="officesEmpty()">
   <div class="row" class="row-style">
   <h3> No offices added.</h3>
-   <h3> Click add button in left corner to add first office. </h3>
+   <h3> Click add button in right corner to add first office. </h3>
   </div>
 </div>
 <app-profile-offices *ngIf="!officesEmpty()" style="margin-top: 4%;" [items]="this.offices"></app-profile-offices>

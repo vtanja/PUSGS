@@ -57,9 +57,9 @@
         <small>
           <ngb-rating [(rate)]="car.rate" [starTemplate]="t" [readonly]="true" [max]="5"></ngb-rating>
           <hr>
-          <pre *ngIf="car.rate!=-1"
+          <pre *ngIf="car.rate!=0"
             style="margin-top: -10%;background-color: #bba280; text-align: center; font-size: small;color:white">Rate: <b>{{car.rate}}</b></pre>
-          <pre *ngIf="car.rate===-1"
+          <pre *ngIf="car.rate===0"
             style="margin-top: -10%;background-color: #bba280; text-align: center; font-size: small;color:white"><b>No any rates yet.</b></pre>
         </small>
       </div>

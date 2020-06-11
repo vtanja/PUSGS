@@ -22,18 +22,15 @@ namespace Server.Controllers
     [ApiController]
     public class RentCarsController : ControllerBase
     {
-        private readonly DataBaseContext _context;
         private readonly IMapper _mapper;
-        private readonly UserManager<RegisteredUser> _userManager;
         private RentCarService rentCarService;
+        private RentCarAdminService rentCarAdminService;
 
-        public RentCarsController(DataBaseContext context, IMapper mapper,
-                                   UserManager<RegisteredUser> userManager,UnitOfWork unitOfWork)
+        public RentCarsController( IMapper mapper,UnitOfWork unitOfWork)
         {
-            _context = context;
             _mapper = mapper;
-            _userManager = userManager;
-            this.rentCarService= unitOfWork.RentCarService;
+            rentCarService= unitOfWork.RentCarService;
+            rentCarAdminService = unitOfWork.RentCarAdminService;
         }
 
         // GET: api/RentCars
@@ -63,7 +60,7 @@ namespace Server.Controllers
         public async Task<ActionResult<RentCarDTO>> GetRentCarRate()
         {
             string userId = User.Claims.First(c => c.Type == "UserID").Value;
-            var user = await _context.RentCarAdmins.FindAsync(userId);
+            var user = await rentCarAdminService.GetRentCarAdmin(userId);
 
             if (user.CompanyId == null)
             {
@@ -133,16 +130,15 @@ namespace Server.Controllers
         public async Task<ActionResult<RentCar>> PostRentCar(RentCar rentCar)
         {
             string userId = User.Claims.First(c => c.Type == "UserID").Value;
-            var user = await _context.RentCarAdmins.FindAsync(userId);
+            var user = await rentCarAdminService.GetRentCarAdmin(userId);
             rentCar.OwnerId = userId;
 
             if (await rentCarService.AddRentCar(rentCar))
             {
                 user.CompanyId = rentCar.Id;
 
-                await _context.SaveChangesAsync();
-
-                return CreatedAtAction("GetRentCar", new { id = rentCar.Id }, rentCar);
+                if(await rentCarAdminService.UpdateRentCarAdmin(user))
+                    return CreatedAtAction("GetRentCar", new { id = rentCar.Id }, rentCar);
             }
 
             return BadRequest();

@@ -25,14 +25,14 @@ namespace Server.Repositories
            return await _context.BonusPointsDiscounts.ToListAsync();
         }
 
-        public async Task Save()
-        {
-            await _context.SaveChangesAsync();
-        }
-
         public void Update(BonusPointsDiscount bpDiscount)
         {
             _context.Entry<BonusPointsDiscount>(bpDiscount).State = EntityState.Modified;
+        }
+
+        public async Task Save()
+        {
+            await _context.SaveChangesAsync();
         }
 
         protected virtual void Dispose(bool disposing)

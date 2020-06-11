@@ -15,7 +15,7 @@ export class RentCar{
   rates:UsersRate[];
   rate:number;
 
-  constructor(id:number,name:string,address:Address,description:string,cars:Array<Car>,offices:{},logo:string){
+  constructor(id:number,name:string,address:Address,description:string,cars:Array<Car>,offices:{},logo:string,rate:number){
 
     this.id = id;
     this.name=name;
@@ -26,29 +26,13 @@ export class RentCar{
     this.logo = logo;
     this.city=this.address.city;
     this.rates=[];
-    this.rate=-1;
+    this.rate=rate;
   }
 
   getAddress():string{
     return this.address.toString();
   }
 
-  updateRate():void{
-
-      var ret=0;
-      var i=0;
-      this.rates.forEach(element => {
-        ret+=element.rate;
-        ++i;
-      });
-      this.rate = +(ret/i).toFixed(1);
-
-  }
-
-  addRate(rate:UsersRate){
-    this.rates.push(rate);
-    this.updateRate();
-  }
 
   getOfficesAddresses():Address[]{
     console.log(this.offices);

@@ -16,7 +16,7 @@ namespace Server.IServices
         Task<bool> AddRentCar(RentCar rentCar);
         Task<bool> DeleteRentCar(int rentCarId);
         Task<bool> UpdateRentCar(RentCar rentCar);
-        Task<int> GetCompanyRate(int id);
+        Task<double> GetCompanyRate(int id);
 
     }
 }

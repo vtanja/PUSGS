@@ -8,7 +8,7 @@ namespace Server.IServices
 {
     public interface ICarReservationService 
     {
-        Task<IEnumerable<CarReservation>> GetUserCarReservations(string userId);
+        Task<List<CarReservation>> GetUserCarReservations(string userId);
         Task<string> AddReservation(CarReservation carReservation);
         Task<string> GetDailyReservationReport(int companyId);
         Task<string> GetWeeklyReservationReport(int companyId);

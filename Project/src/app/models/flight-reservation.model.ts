@@ -5,6 +5,7 @@ import { Flight } from './flight.model';
 export class FlightReservation{
    reservationId :number;
    totalPrice :number;
+   canRate: boolean;
    flightRated :boolean;
    airlineRated :boolean;
    cancelled :boolean;

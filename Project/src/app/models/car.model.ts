@@ -24,7 +24,7 @@ export class Car{
 
 
   constructor(id:number,brand:string,model:string,year:number,pricePerDay:number,image:string,maxPassengers:number,
-    doors:number,hasAirCondition:boolean,hasAutomaticGearbox:boolean,companyName:string,companyId:number){
+    doors:number,hasAirCondition:boolean,hasAutomaticGearbox:boolean,companyName:string,companyId:number,rate:number){
 
     this.id=id;
     this.brand=brand;
@@ -38,7 +38,7 @@ export class Car{
     this.hasAutomationGearbox=hasAutomaticGearbox;
     this.companyName=companyName;
     this.companyId=companyId;
-    this.rate = -1;
+    this.rate = rate;
   }
 
 

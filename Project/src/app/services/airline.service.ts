@@ -15,12 +15,10 @@ import { AirlineProfileAdapter } from '../models/adapters/airline-profile.adapte
 export class AirlineService{
     private airlines:Airline[];
 
-    rateModalClose = new Subject();
-    
     readonly baseUri = 'http://localhost:51474/api/';
 
     constructor(private httpClient:HttpClient, private airlineAdapter:AirlineAdapter, private airlineprofileAdapter:AirlineProfileAdapter){
-        
+
     }
 
     getAirlineId(id:string){
@@ -44,10 +42,10 @@ export class AirlineService{
             map(data=>this.airlineprofileAdapter.adapt(data))
         );
     }
-    
+
 
     addFlightRate(companyID:number,flightID:number,flightRate:UsersRate){
-      this.airlines.find(r=>r.id===companyID).flights.find(f=>f.id===flightID).addRate(flightRate);
+     // this.airlines.find(r=>r.id===companyID).flights.find(f=>f.id===flightID).addRate(flightRate);
     }
 
     addCompanyRate(companyID:number,rate:UsersRate){

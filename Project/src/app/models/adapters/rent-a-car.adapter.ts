@@ -16,6 +16,6 @@ export class RentCarAdapter implements Adapter<RentCar>{
 
   adapt(item:any):RentCar{
     let addr = this.addressAdapter.adapt(item.address);
-    return new RentCar(item.id,item.name,addr,item.description,null,null,item.logo)
+    return new RentCar(item.id,item.name,addr,item.description,null,null,item.logo,item.rate)
   }
 }

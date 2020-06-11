@@ -23,14 +23,15 @@ namespace Server.Controllers
     [ApiController]
     public class DiscountDatesController : ControllerBase
     {
-        private readonly DataBaseContext _context;
+
         private readonly DiscountDateService discountDateService;
+        private readonly CarService carService;
         private readonly IMapper _mapper;
 
-        public DiscountDatesController(DataBaseContext context,UnitOfWork unitOfWork,IMapper mapper)
+        public DiscountDatesController(UnitOfWork unitOfWork,IMapper mapper)
         {
-            _context = context;
-            this.discountDateService = unitOfWork.DiscountDateService;
+            discountDateService = unitOfWork.DiscountDateService;
+            carService = unitOfWork.CarService;
             _mapper = mapper;
         }
 
@@ -48,7 +49,7 @@ namespace Server.Controllers
         [Authorize(Roles ="RENTCARADMIN")]
         public async Task<ActionResult<DiscountDate>> PostDiscountDates(DiscountRangeModel discountRange)
         {
-            var car = await _context.Cars.FindAsync(discountRange.CarId);
+            var car = await carService.GetCarByID(discountRange.CarId);
             if (car == null)
             {
                 return BadRequest();
@@ -74,7 +75,7 @@ namespace Server.Controllers
         [Route("Override")]
         public async Task<ActionResult<DiscountDate>> OverrideDiscountDates(DiscountRangeModel discountRange)
         {
-            var car = await _context.Cars.FindAsync(discountRange.CarId);
+            var car = await carService.GetCarByID(discountRange.CarId);
             if (car == null)
             {
                 return BadRequest();

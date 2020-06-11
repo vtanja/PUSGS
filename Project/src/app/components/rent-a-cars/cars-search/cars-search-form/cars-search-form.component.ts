@@ -55,7 +55,7 @@ export class CarsSearchFormComponent implements OnInit {
     },
     {
       letter: 'M',
-      names: ['Mostar, BiH', 'Munich, Germany'],
+      names: ['Mostar, Bosnia and Herzegovina', 'Munich, Germany'],
     },
     {
       letter: 'N',

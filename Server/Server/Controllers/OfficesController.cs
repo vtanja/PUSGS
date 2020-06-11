@@ -22,15 +22,15 @@ namespace Server.Controllers
     [ApiController]
     public class OfficesController : ControllerBase
     {
-        private readonly DataBaseContext _context;
         private readonly IMapper _mapper;
         private OfficeService officeService;
+        private RentCarAdminService rentCarAdminService;
 
-        public OfficesController(DataBaseContext context,IMapper mapper,UnitOfWork unitOfWork)
+        public OfficesController(IMapper mapper,UnitOfWork unitOfWork)
         {
-            _context = context;
             _mapper = mapper;
             officeService = unitOfWork.OfficeService;
+            rentCarAdminService = unitOfWork.RentCarAdminService;
 
         }
 
@@ -40,7 +40,7 @@ namespace Server.Controllers
         public async Task<ActionResult<IDictionary<string,List<OfficeDTO>>>> GetOffices()
         {
             string userId = User.Claims.First(c => c.Type == "UserID").Value;
-            var user = await _context.RentCarAdmins.FindAsync(userId);
+            var user = await rentCarAdminService.GetRentCarAdmin(userId);
 
             if (user.CompanyId == null)
                 return BadRequest();
@@ -51,22 +51,6 @@ namespace Server.Controllers
             return  ret;
         }
 
-        //// GET: api/Offices/5
-        //[HttpGet("{id}")]
-        //[Authorize(Roles = "RENTCARADMIN")]
-        //public async Task<ActionResult<Office>> GetOffice(int id)
-        //{
-        // //   var office = await _context.Offices.FindAsync(id);
-        //    var office = await officeService.get
-
-        //    if (office == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return office;
-        //}
-
 
         // POST: api/Offices
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
@@ -76,7 +60,7 @@ namespace Server.Controllers
         public async Task<ActionResult<OfficeDTO>> PostOffice(Office office)
         {
             var adminId = User.Claims.First(c => c.Type == "UserID").Value;
-            var admin = await _context.RentCarAdmins.FindAsync(adminId);
+            var admin = await rentCarAdminService.GetRentCarAdmin(adminId);
 
             if (admin.CompanyId == null)
                 return BadRequest();

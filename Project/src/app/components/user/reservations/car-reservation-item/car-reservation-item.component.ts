@@ -15,9 +15,6 @@ import { CarReservationsService } from 'src/app/services/car-reservations.servic
 export class CarReservationItemComponent implements OnInit,OnDestroy {
 
   @Input('reservation') reservation:CarReservation;
-  car:Car;
-  company:RentCar;
-  canRate:boolean;
   closeResult: string;
   toRate:string;
   closeModalSubscription:Subscription;
@@ -26,22 +23,14 @@ export class CarReservationItemComponent implements OnInit,OnDestroy {
 
   ngOnInit(): void {
 
-    console.log(this.reservation);
-
-   // this.car = this.rentCarService.getRentCarCompany(this.reservation.companyId).cars.find(c=>c.id==this.reservation.carId);
-    //this.company = this.rentCarService.getRentCarCompany(this.reservation.companyId);
-    this.closeModalSubscription = this.carsReservationsService.ratingModalClose.subscribe(()=>{
+    this.closeModalSubscription = this.carsReservationsService.ratingModalClose.subscribe((data:any)=>{
+      if(data.company){
+        this.reservation.companyRate=data.rate;
+      }else if(data.car){
+        this.reservation.carRate = data.rate;
+      }
       this.modalService.dismissAll();
     })
-
-    var today = new Date();
-
-    var dateParts = this.reservation.returnDate.split('-');
-    var timeParts = this.reservation.returnTime.split(':');
-    var returnDate = new Date(+dateParts[2],+dateParts[1]-1,+dateParts[0],+timeParts[0],+timeParts[1],0);
-
-    if(returnDate<=today)
-      this.canRate = true;
 
   }
 
@@ -53,7 +42,7 @@ export class CarReservationItemComponent implements OnInit,OnDestroy {
 
     this.toRate = rateItem
 
-    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title',centered:true}).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
       this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;

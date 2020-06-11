@@ -83,29 +83,29 @@ export class UserService{
       return this.users.find(u=>u.username===username).flightReservations.slice();
     }
 
-    addCarRate(reservationId:number,rate:number){
+    // addCarRate(reservationId:number,rate:number){
 
-      let username = JSON.parse(localStorage.getItem('loggedUser')).username;
+    //   let username = JSON.parse(localStorage.getItem('loggedUser')).username;
 
-      var reservation = this.users.find(u=>u.username===username).carReservations.find(r=>r.id===reservationId);
-      this.users.find(u=>u.username===username).carReservations.find(r=>r.id===reservationId).carRate=rate;
+    //   var reservation = this.users.find(u=>u.username===username).carReservations.find(r=>r.id===reservationId);
+    //   this.users.find(u=>u.username===username).carReservations.find(r=>r.id===reservationId).carRate=rate;
 
-      var carRate = new UsersRate(rate,username,reservationId);
-      this.rentCarService.addCarRate(reservation.companyId,reservation.carId,carRate);
+    //   var carRate = new UsersRate(rate,username,reservationId);
+    //   this.rentCarService.addCarRate(reservation.companyId,reservation.carId,carRate);
 
-    }
+    // }
 
-    addCarCompanyRate(reservationId:number,rate:number){
+    // addCarCompanyRate(reservationId:number,rate:number){
 
-      let username = JSON.parse(localStorage.getItem('loggedUser')).username;
+    //   let username = JSON.parse(localStorage.getItem('loggedUser')).username;
 
-      let reservation = this.users.find(u=>u.username===username).carReservations.find(r=>r.id===reservationId);
-      this.users.find(u=>u.username===username).carReservations.find(r=>r.id===reservationId).companyRate=rate;
+    //   let reservation = this.users.find(u=>u.username===username).carReservations.find(r=>r.id===reservationId);
+    //   this.users.find(u=>u.username===username).carReservations.find(r=>r.id===reservationId).companyRate=rate;
 
-      let companyRate = new UsersRate(rate,username,reservationId);
-      this.rentCarService.addCompanyRate(reservation.companyId,companyRate);
+    //   let companyRate = new UsersRate(rate,username,reservationId);
+    //   this.rentCarService.addCompanyRate(reservation.companyId,companyRate);
 
-    }
+    // }
 
     // addFlightRate(reservationId:number,rate:number){
 

@@ -12,6 +12,8 @@ namespace Server.IRepositories
         void PostFlightReservation(FlightReservation flightReservation);
         bool CheckSeats(FlightReservation flightReservation);
         Task<IEnumerable<FlightReservation>> GetFlightReservations(string userId);
+        Task<FlightReservation> GetFlightReservation(int reservationId);
+        void UpdateFlightReservation(FlightReservation flightReservation);
         void CancelReservation(FlightReservation reservation);
     }
 }

@@ -1,4 +1,4 @@
-<div *ngIf="flightReservation!==undefined || !flightReservation.canceled">
+<div *ngIf="flightReservation!==undefined || !flightReservation.cancelled">
 <div class="list-group-item" style="margin-top: 1%; margin-bottom: 1%; cursor: pointer;">
   <div class="row">
     <div class="col" style="width: 100%;padding:0%; margin: 0%;" (click)="open(content)">
@@ -49,7 +49,6 @@
         <div class="row d-flex justify-content-center align-items-center row-btn-style">
           <button class="btn btn-md btn-rounded button-style " (click)="cancelReservation()">Cancel</button>
         </div>
-
     </div>
   </div>
 </div>
@@ -63,8 +62,9 @@
       <span aria-hidden="true">×</span>
     </button>
   </div>
+
   <div class="modal-body">
-    <!-- <app-rate-dialog [reservationId]="flightReservation.flightID" [rateItem]="toRate"></app-rate-dialog> -->
+    <app-rate-dialog [reservationId]="flightReservation.reservationId" [rateItem]="toRate"></app-rate-dialog>
   </div>
 </ng-template>
 
@@ -130,18 +130,18 @@
       <br>
       <div >
         <label class="lblStyle header">Rental company: <span class="valueStyle text"> {{flightReservation.carReservation.companyName}}
-            {{rentalCompany.address}}&nbsp; </span></label>
+            &nbsp; </span></label>
         <br>
         <label class="lblStyle header">Car: <span class="valueStyle text">
             {{flightReservation.carReservation.carModel}} &nbsp; </span></label>
         <br>
         <label class="lblStyle header">Pick up: <span class="valueStyle text">
-            {{flightReservation.carReservation.startDate}} &nbsp; {{flightReservation.carReservation.startTime}}h
+            {{flightReservation.carReservation.pickUpDate}} &nbsp;h
           </span></label>
         <br>
         <label class="lblStyle header">Drop off: <span class="valueStyle text">
-            {{flightReservation.carReservation.returnDate}} &nbsp;
-            {{flightReservation.carReservation.returnTime}}h </span></label>
+            {{flightReservation.carReservation.dropOffDate}} &nbsp;
+            {{flightReservation.carReservation.dropOffTime}}h </span></label>
         <br>
       </div>
     </div>

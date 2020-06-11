@@ -166,5 +166,15 @@ namespace Server.Repositories
                 reservation.CarReservation.Cancelled = true;
             }
         }
+
+        public async Task<FlightReservation> GetFlightReservation(int reservationId)
+        {
+            return await _context.FlightReservations.Include(f=>f.Flights).Where( r=> r.ReservationId== reservationId).FirstOrDefaultAsync();
+        }
+
+        public void UpdateFlightReservation(FlightReservation flightReservation)
+        {
+            _context.Entry<FlightReservation>(flightReservation).State = EntityState.Modified;
+        }
     }
 }

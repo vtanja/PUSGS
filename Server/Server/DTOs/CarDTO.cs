@@ -14,7 +14,7 @@ namespace Server.DTOs
         public string Model { get; set; }
 
         public int Year { get; set; }
-        public int Rate { get; set; }
+        public double Rate { get; set; }
         public int Price { get; set; }
         public string Image { get; set; }
 
@@ -29,6 +29,7 @@ namespace Server.DTOs
         public int CompanyId { get; set; }
 
         public string CompanyName { get; set; }
+
 
 
     }

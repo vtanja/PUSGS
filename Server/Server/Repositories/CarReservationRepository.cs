@@ -24,9 +24,24 @@ namespace Server.Repositories
         {
             _context.CarReservations.Add(reservation);
         }
-        public async Task<IEnumerable<CarReservation>> GetUserCarReservation(string userId)
+
+        public void UpdateCarReservation(CarReservation reservation)
         {
-            return await _context.CarReservations.Where(r => r.UserId == userId).ToListAsync();
+            _context.Entry<CarReservation>(reservation).State = EntityState.Modified;
+        }
+
+        public async Task<CarReservation> GetCarReservation(int reservationId)
+        {
+            return await _context.CarReservations.FindAsync(reservationId);
+        }
+        public async Task<List<CarReservation>> GetUserCarReservation(string userId)
+        {
+            return await _context.CarReservations.Include(r=>r.CarRate).Include(r=>r.CompanyRate)
+                .Include(r=>r.Car).ThenInclude(c=>c.CarCompany).Where(r => r.UserId == userId).ToListAsync();
+        }
+        public async Task<IEnumerable<CarReservation>> GetCarReservations(int carId)
+        {
+            return await _context.CarReservations.Where(r => r.CarId == carId).ToListAsync();
         }
         public bool CarReservationExists(int id)
         {

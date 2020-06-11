@@ -53,6 +53,11 @@ namespace Server.Repositories
             return await _context.Airlines.Include(x => x.Address).Include(x => x.Destinations).Where(x => x.Id == id).FirstOrDefaultAsync();
         }
 
+        public async Task<Airline> GetAirline(int id)
+        {
+            return await _context.Airlines.FindAsync(id);
+        }
+
         public async Task<Airline> GetAirlineByUser(string username)
         {
             return await _context.Airlines.Include(x => x.Address).Include(x => x.Owner).Include(x => x.Destinations).Where(x => x.Owner.UserName == username).FirstOrDefaultAsync();
@@ -67,6 +72,11 @@ namespace Server.Repositories
             }
 
             return true;
+        }
+
+        public void UpdateAirline(Airline airline)
+        {
+            _context.Entry<Airline>(airline).State = EntityState.Modified;
         }
 
         public void PostAirline(Airline airline)
