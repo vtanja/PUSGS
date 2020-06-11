@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
@@ -53,6 +54,26 @@ namespace Server.Controllers
             }
 
             return _mapper.Map<RentCarDTO>(rentCar);
+        }
+
+        // GET: api/RentCars/5
+        [HttpGet]
+        [Route("Rate")]
+        [Authorize(Roles="RENTCARADMIN")]
+        public async Task<ActionResult<RentCarDTO>> GetRentCarRate()
+        {
+            string userId = User.Claims.First(c => c.Type == "UserID").Value;
+            var user = await _context.RentCarAdmins.FindAsync(userId);
+
+            if (user.CompanyId == null)
+            {
+                return BadRequest();
+            }
+
+            var id = await rentCarService.GetCompanyRate((int)user.CompanyId);
+            
+            return Ok(id);
+
         }
 
         // GET: api/RentCars/search

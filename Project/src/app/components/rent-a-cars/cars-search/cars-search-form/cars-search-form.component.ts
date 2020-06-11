@@ -96,6 +96,7 @@ export class CarsSearchFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
     let params = this.activeRoute.snapshot.queryParams;
 
     let pickUpDate;

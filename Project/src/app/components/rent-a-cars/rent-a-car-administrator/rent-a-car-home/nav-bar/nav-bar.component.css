@@ -3,7 +3,6 @@
 }
 
 .nav-link{
-  /* background-color: #f0b15a !important; */
   text-align: center;
   justify-content: center;
   font-weight: bold;
@@ -11,6 +10,11 @@
   margin-bottom: 10%;
 }
 .nav-link:active{
+  color: #f0b15a;
+  background-color: #7d589b;
+}
+
+.active-link{
   color: #f0b15a;
   background-color: #7d589b;
 }

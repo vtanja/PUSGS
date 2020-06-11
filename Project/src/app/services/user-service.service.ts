@@ -192,22 +192,22 @@ export class UserService{
     hasAirline(){
       return this.httpClient.get(this.baseUri+'Airlines/HasUserAirline/'+this.getUserId());
     }
-  
+
     userHasCompany(){
       return this.httpClient.get(this.baseUri + "RentCarAdmins/UserHasCompany");
     }
 
     isUserLoggedIn(){
-         if(localStorage.getItem('token')!=undefined)
-      return true;
-    return false;
+        if(localStorage.getItem('token')!=undefined)
+          return true;
+        return false;
     }
 
     roleMatch(allowedRoles):boolean{
       var isMatch = false;
       var userRole = this.getUserRole();
       allowedRoles.forEach(element => {
-        if(userRole==element){
+        if(userRole===element){
           isMatch=true;
           return false;
         }

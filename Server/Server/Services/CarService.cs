@@ -38,7 +38,10 @@ namespace Server.Services
             if (!await CanBeDeleted(carID))
                 return "failed";
 
-            await carRepository.DeleteCar(carID);
+            var car = await carRepository.GetCarByID(carID);
+            carRepository.UpdateCar(car);
+            car.IsDeleted = true;
+
             try
             {
                 await carRepository.Save();

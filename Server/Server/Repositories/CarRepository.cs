@@ -36,15 +36,15 @@ namespace Server.Repositories
         }
         public async Task<IEnumerable<Car>> GetCars()
         {
-            return await _context.Cars.ToListAsync();
+            return await _context.Cars.Where(c => !c.IsDeleted).ToListAsync();
         }
         public async Task<IEnumerable<Car>> GetCarsWithCompanies()
         {
-            return await _context.Cars.Include(c=>c.CarCompany).ToListAsync();
+            return await _context.Cars.Include(c=>c.CarCompany).Where(c=>!c.IsDeleted).ToListAsync();
         }
         public async Task<IEnumerable<Car>> GetCompanyCars(int companyID)
         {
-            return await _context.Cars.Where(c => c.CompanyId == companyID).ToListAsync();
+            return await _context.Cars.Where(c => c.CompanyId == companyID && !c.IsDeleted).ToListAsync();
         }
         public async Task Save()
         {
@@ -56,7 +56,7 @@ namespace Server.Repositories
         }
         public  bool CarExists(int id)
         {
-            return _context.Cars.Any(e => e.Id == id);
+            return _context.Cars.Any(c => c.Id == id && !c.IsDeleted);
         }    
         public async Task<IEnumerable<Car>> SearchCars(SearchCarModel searchCarModel)
         {
@@ -81,19 +81,19 @@ namespace Server.Repositories
 
             if (searchCarModel.Passengers > 0 && !string.IsNullOrEmpty(searchCarModel.Brand))
             {
-                carIDS = await _context.Cars.Where(c => c.PassengersNumber >= searchCarModel.Passengers && c.Brand.ToLower() == searchCarModel.Brand.ToLower()).Select(c => c.Id).ToArrayAsync();
+                carIDS = await _context.Cars.Where(c => !c.IsDeleted && c.PassengersNumber >= searchCarModel.Passengers && c.Brand.ToLower() == searchCarModel.Brand.ToLower()).Select(c => c.Id).ToArrayAsync();
             }
             else if (searchCarModel.Passengers > 0 && string.IsNullOrEmpty(searchCarModel.Brand))
             {
-                carIDS = await _context.Cars.Where(c => c.PassengersNumber >= searchCarModel.Passengers).Select(c => c.Id).ToArrayAsync();
+                carIDS = await _context.Cars.Where(c => !c.IsDeleted && c.PassengersNumber >= searchCarModel.Passengers).Select(c => c.Id).ToArrayAsync();
             }
             else if (!string.IsNullOrEmpty(searchCarModel.Brand))
             {
-                carIDS = await _context.Cars.Where(c => c.Brand.ToLower() == searchCarModel.Brand.ToLower()).Select(c => c.Id).ToArrayAsync();
+                carIDS = await _context.Cars.Where(c => !c.IsDeleted && c.Brand.ToLower() == searchCarModel.Brand.ToLower()).Select(c => c.Id).ToArrayAsync();
             }
             else
             {
-                carIDS = await _context.Cars.Include(c => c.CarCompany).Select(c => c.Id).ToArrayAsync();
+                carIDS = await _context.Cars.Include(c => c.CarCompany).Where(c=> !c.IsDeleted ).Select(c => c.Id).ToArrayAsync();
             }
 
             if (carIDS.Count() == 0)
@@ -120,7 +120,7 @@ namespace Server.Repositories
 
             var reservedCars = await _context.ReservedDates.Where(d => d.Date <= dateDropOff && d.Date >= datepickUp).Select(c => c.CarId).ToArrayAsync();
 
-            var ret = await _context.Cars.Where(c => intersectComapnies.Contains(c.CompanyId) && !reservedCars.Contains(c.Id) && carIDS.Contains(c.Id)).ToListAsync();
+            var ret = await _context.Cars.Include(c=>c.CarCompany).Where(c => intersectComapnies.Contains(c.CompanyId) && !reservedCars.Contains(c.Id) && carIDS.Contains(c.Id)).ToListAsync();
 
             return ret;
         }
@@ -139,19 +139,19 @@ namespace Server.Repositories
 
             if (searchCarModel.Passengers > 0 && !string.IsNullOrEmpty(searchCarModel.Brand))
             {
-                carIDS = await _context.Cars.Where(c => c.PassengersNumber >= searchCarModel.Passengers && c.Brand.ToLower() == searchCarModel.Brand.ToLower() && c.CompanyId == searchCarModel.CompanyID).Select(c => c.Id).ToArrayAsync();
+                carIDS = await _context.Cars.Where(c => !c.IsDeleted && c.PassengersNumber >= searchCarModel.Passengers && c.Brand.ToLower() == searchCarModel.Brand.ToLower() && c.CompanyId == searchCarModel.CompanyID).Select(c => c.Id).ToArrayAsync();
             }
             else if (searchCarModel.Passengers > 0 && string.IsNullOrEmpty(searchCarModel.Brand))
             {
-                carIDS = await _context.Cars.Where(c => c.PassengersNumber >= searchCarModel.Passengers && c.CompanyId == searchCarModel.CompanyID).Select(c => c.Id).ToArrayAsync();
+                carIDS = await _context.Cars.Where(c => !c.IsDeleted && c.PassengersNumber >= searchCarModel.Passengers && c.CompanyId == searchCarModel.CompanyID).Select(c => c.Id).ToArrayAsync();
             }
             else if (!string.IsNullOrEmpty(searchCarModel.Brand))
             {
-                carIDS = await _context.Cars.Where(c => c.Brand.ToLower() == searchCarModel.Brand.ToLower() && c.CompanyId == searchCarModel.CompanyID).Select(c => c.Id).ToArrayAsync();
+                carIDS = await _context.Cars.Where(c => !c.IsDeleted && c.Brand.ToLower() == searchCarModel.Brand.ToLower() && c.CompanyId == searchCarModel.CompanyID).Select(c => c.Id).ToArrayAsync();
             }
             else
             {
-                carIDS = await _context.Cars.Where(rc => rc.CompanyId == searchCarModel.CompanyID).Select(c => c.Id).ToArrayAsync();
+                carIDS = await _context.Cars.Where(c => !c.IsDeleted && c.CompanyId == searchCarModel.CompanyID).Select(c => c.Id).ToArrayAsync();
             }
 
             if (carIDS.Count() == 0)
@@ -171,7 +171,7 @@ namespace Server.Repositories
             {
                 var reservedCars = await _context.ReservedDates.Where(d => d.Date <= dateDropOff && d.Date >= datepickUp).Select(c => c.CarId).ToArrayAsync();
 
-               return await _context.Cars.Where(c => carIDS.Contains(c.CompanyId) && !reservedCars.Contains(c.Id)).ToListAsync();
+               return await _context.Cars.Include(c=>c.CarCompany).Where(c => carIDS.Contains(c.CompanyId) && !reservedCars.Contains(c.Id)).ToListAsync();
             }
 
             return new List<Car>();

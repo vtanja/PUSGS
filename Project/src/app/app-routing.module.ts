@@ -48,6 +48,9 @@ import { AuthGuard } from './guards/auth-guard.guard';
 import { ChangePasswordComponent } from './components/user/change-password/change-password.component';
 import { BonusPointsComponent } from './components/administrator/bonus-points/bonus-points.component';
 import { RentACarHomeComponent } from './components/rent-a-cars/rent-a-car-administrator/rent-a-car-home/rent-a-car-home.component';
+import { BarChartComponent } from './components/rent-a-cars/rent-a-car-administrator/rent-a-car-home/bar-chart/bar-chart.component';
+import { MonthlyIncomesComponent } from './components/rent-a-cars/rent-a-car-administrator/rent-a-car-home/monthly-incomes/monthly-incomes.component';
+import { IncomesComponent } from './components/rent-a-cars/rent-a-car-administrator/rent-a-car-home/incomes/incomes.component';
 
 const routes: Routes = [
   { path: '', component: HomePageComponent, pathMatch: 'full' },
@@ -61,7 +64,21 @@ const routes: Routes = [
   },
   {
     path:'rent-car-admin-home',
-    component:RentACarHomeComponent
+    component:RentACarHomeComponent,
+    children:[
+      {
+        path: 'chart-bar', component: BarChartComponent,canActivate: [AuthGuard],
+        data: { permittedRoles: ['RENTCARADMIN'] },
+      },
+      {
+        path: 'monthly-incomes', component: MonthlyIncomesComponent,canActivate: [AuthGuard],
+        data: { permittedRoles: ['RENTCARADMIN'] },
+      },
+      {
+        path:'annual-incomes',component:IncomesComponent,canActivate: [AuthGuard],
+        data: { permittedRoles: ['RENTCARADMIN'] },
+      }
+    ]
   },
   {
     path: 'admin-home',

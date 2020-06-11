@@ -1,6 +1,7 @@
 import { Component, AfterViewInit } from '@angular/core';
 import {  Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
+import { UserService } from 'src/app/services/user-service.service';
 
 @Component({
   selector: 'app-home-page',
@@ -9,21 +10,24 @@ import { filter } from 'rxjs/operators';
 })
 export class HomePageComponent implements AfterViewInit {
 
-  constructor(private router:Router) {
+  constructor(private router:Router,private userService:UserService) {
   }
 
   ngOnInit(): void {
+
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe((event: NavigationEnd) => {
       if(document.getElementById('inner2')!=undefined)
         document.getElementById('inner2').scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"});
     });
+
   }
 
   ngAfterViewInit(){
     if(document.getElementById('inner2')!=undefined)
       document.getElementById('inner2').scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"});
   }
+
 
 }

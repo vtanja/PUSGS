@@ -110,7 +110,7 @@ export class LoginComponent implements OnInit {
         let companyExists = data.hasCompany;
 
         if (companyExists) {
-          this.router.navigate(['/rent-car-admin-home']);
+          this.router.navigate(['/rent-car-admin-home/chart-bar']);
         } else {
           this.router.navigate(['/add-first']);
         }
@@ -124,6 +124,6 @@ export class LoginComponent implements OnInit {
           this.router.navigate(['/airline-admin']);
         }
       });
-    } 
+    }
   }
 }

@@ -75,8 +75,9 @@ export class AddCarComponent implements OnInit {
   onAddCar(){
 
     let newCar = this.addCarForm.value;
+    console.log(newCar);
     newCar["doors"] = +newCar["doors"];
-    newCar["passengers"] = +newCar["passengers"];
+    newCar["passengersNumber"] = +newCar["passengers"];
     newCar["year"] = +newCar["year"];
     newCar["hasAutomationGearbox"] = newCar["hasAutomationGearbox"]==='true'?true:false;
     newCar["hasAirCondition"] = newCar["hasAirCondition"]==='true'?true:false;

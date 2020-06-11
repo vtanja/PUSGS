@@ -95,5 +95,8 @@ export class RentCarService {
     return result;
   }
 
+  getCompanyRate(){
+    return this.httpClient.get(this.baseUri+"RentCars/Rate");
+  }
 
 }

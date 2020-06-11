@@ -38,12 +38,75 @@ namespace Server.Controllers
             return await carReservationService.GetUserCarReservations(userId);
         }
 
-        //GET: api/CarReservations/Daily/5
+        //GET: api/CarReservations/Daily
         [HttpGet]
-        [Route("Daily/{id}")]
-        public async Task<ActionResult<CarReservation>> GetDailyCarReservation(int id)
+        [Route("Daily")]
+        [Authorize(Roles = "RENTCARADMIN")]
+        public async Task<ActionResult<CarReservation>> GetDailyCarReservation()
         {
-            var carReservation = await carReservationService.GetDailyReservationReport(id);
+            string userId = User.Claims.First(c => c.Type == "UserID").Value;
+            var admin = await _context.RentCarAdmins.FindAsync(userId);
+
+            if (admin.CompanyId == null)
+                return BadRequest();
+
+            var carReservation = await carReservationService.GetDailyReservationReport((int)admin.CompanyId);
+
+            if (carReservation == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(carReservation);
+        }
+
+        //GET: api/CarReservations/MonthlyIncomes
+        [HttpGet]
+        [Route("MonthlyIncomes/{date}")]
+        [Authorize(Roles = "RENTCARADMIN")]
+        public async Task<ActionResult<CarReservation>> GetMonthlyIncomes(string date)
+        {
+            string userId = User.Claims.First(c => c.Type == "UserID").Value;
+            var admin = await _context.RentCarAdmins.FindAsync(userId);
+
+            if (admin.CompanyId == null)
+                return BadRequest();
+
+            string[] parts = date.Split(':');
+            if (parts.Count() == 0)
+                return BadRequest();
+
+            int month;
+            int year;
+            if(Int32.TryParse(parts[0],out month) && Int32.TryParse(parts[1],out year))
+            {
+                var carReservation = await carReservationService.GetMonthlyIncomes((int)admin.CompanyId,month,year);
+
+                if (carReservation == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(carReservation);
+
+            }
+
+            return BadRequest();
+        }
+
+        //GET: api/CarReservations/AnnualIncomes
+        [HttpGet]
+        [Route("AnnualIncomes/{year}")]
+        [Authorize(Roles = "RENTCARADMIN")]
+        public async Task<ActionResult<CarReservation>> GetAnnualIncomes(int year)
+        {
+            string userId = User.Claims.First(c => c.Type == "UserID").Value;
+            var admin = await _context.RentCarAdmins.FindAsync(userId);
+
+            if (admin.CompanyId == null)
+                return BadRequest();
+
+            var carReservation = await carReservationService.GetAnnualIncomes((int)admin.CompanyId,year);
 
             if (carReservation == null)
             {
@@ -54,10 +117,17 @@ namespace Server.Controllers
         }
 
         [HttpGet]
-        [Route("Weekly/{id}")]
-        public async Task<ActionResult<CarReservation>> GetWeeklyReservation(int id)
+        [Route("Weekly")]
+        [Authorize(Roles = "RENTCARADMIN")]
+        public async Task<ActionResult<CarReservation>> GetWeeklyReservation()
         {
-            var carReservation = await carReservationService.GetWeeklyReservationReport(id);
+            string userId = User.Claims.First(c => c.Type == "UserID").Value;
+            var admin = await _context.RentCarAdmins.FindAsync(userId);
+
+            if (admin.CompanyId == null)
+                return BadRequest();
+
+            var carReservation = await carReservationService.GetWeeklyReservationReport((int)admin.CompanyId);
 
             if (carReservation == null)
             {
@@ -68,10 +138,17 @@ namespace Server.Controllers
         }
 
         [HttpGet]
-        [Route("Monthly/{id}")]
-        public async Task<ActionResult<CarReservation>> GetMonthlyCarReservation(int id)
+        [Route("Monthly")]
+        [Authorize(Roles = "RENTCARADMIN")]
+        public async Task<ActionResult<CarReservation>> GetMonthlyCarReservation()
         {
-            var carReservation = await carReservationService.GetMonthlyReservationReport(id);
+            string userId = User.Claims.First(c => c.Type == "UserID").Value;
+            var admin = await _context.RentCarAdmins.FindAsync(userId);
+
+            if (admin.CompanyId == null)
+                return BadRequest();
+
+            var carReservation = await carReservationService.GetMonthlyReservationReport((int)admin.CompanyId);
 
             if (carReservation == null)
             {

@@ -1,6 +1,7 @@
 <nav class="nav nav-pills flex-column" class="nav-style">
-  <a class="nav-link" href="#">Daily report</a>
-  <a class="nav-link" href="#">Weekly report</a>
-  <a class="nav-link" href="#">Monthly report</a>
-  <a class="nav-link" href="#">Company incomes</a>
+  <a class="nav-link" [class.active-link]="isActive('daily')" (click)="onClick('daily')">Daily report</a>
+  <a class="nav-link" [class.active-link]="isActive('weekly')" (click)="onClick('weekly')">Weekly report</a>
+  <a class="nav-link" [class.active-link]="isActive('monthly')" (click)="onClick('monthly')">Monthly report</a>
+  <a class="nav-link" [class.active-link]="isActive('monthlyIncomes')" (click)="onMonthIncomesClick()">Monthly incomes</a>
+  <a class="nav-link" [class.active-link]="isActive('annualIncomes')" (click)="onAnnualIncomesClick()">Annual  incomes</a>
 </nav>

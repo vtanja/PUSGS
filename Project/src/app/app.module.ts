@@ -121,7 +121,10 @@ import { BonusPointsDiscountService } from './services/bonus-points-discount.ser
 import { ChartsModule } from 'ng2-charts';
 import { RentACarHomeComponent } from './components/rent-a-cars/rent-a-car-administrator/rent-a-car-home/rent-a-car-home.component';
 import { BarChartComponent } from './components/rent-a-cars/rent-a-car-administrator/rent-a-car-home/bar-chart/bar-chart.component';
-import { NavBarComponent } from './components/rent-a-cars/rent-a-car-administrator/rent-a-car-home/nav-bar/nav-bar.component';;
+import { NavBarComponent } from './components/rent-a-cars/rent-a-car-administrator/rent-a-car-home/nav-bar/nav-bar.component';
+import { IncomesComponent } from './components/rent-a-cars/rent-a-car-administrator/rent-a-car-home/incomes/incomes.component';;
+import { MatDatepicker, MatDatepickerModule } from '@angular/material/datepicker';
+import { MonthlyIncomesComponent } from './components/rent-a-cars/rent-a-car-administrator/rent-a-car-home/monthly-incomes/monthly-incomes.component';
 
 const fbLoginOptions: LoginOpt = {
   scope: 'first_name,last_name,name,email',
@@ -229,7 +232,9 @@ export function provideConfig() {
     BonusPointsComponent,
     RentACarHomeComponent,
     BarChartComponent,
-    NavBarComponent
+    NavBarComponent,
+    IncomesComponent,
+    MonthlyIncomesComponent
   ],
   imports: [
     BrowserModule,
@@ -258,7 +263,8 @@ export function provideConfig() {
     ToastrModule.forRoot(),
     NgxSpinnerModule,
     NgSelectModule,
-    ChartsModule
+    ChartsModule,
+    MatDatepickerModule
   ],
   providers: [
     UserService,

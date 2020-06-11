@@ -9,6 +9,8 @@ export class CarReservationsService {
   ratingModalClose = new Subject();
   searchFormClear = new Subject();
   barChartSubject = new Subject();
+  monthlyIncomesSubject = new Subject();
+  annualIncomesSubject = new Subject();
 
 
   constructor(private httpClient: HttpClient) {}
@@ -20,15 +22,25 @@ export class CarReservationsService {
   cancelCarReservation(){
   }
 
-  getWeeklyReport(companyId:number){
-    return this.httpClient.get(this.baseUri+"CarReservations/Weekly/" + companyId);
+  getWeeklyReport(){
+    return this.httpClient.get(this.baseUri+"CarReservations/Weekly");
   }
 
-  getDailyReport(companyId:number){
-    return this.httpClient.get(this.baseUri+"CarReservations/Daily/" + companyId);
+  getDailyReport(){
+    return this.httpClient.get(this.baseUri+"CarReservations/Daily");
   }
 
-  getMonthlyReport(companyId:number){
-    return this.httpClient.get(this.baseUri+"CarReservations/Monthly/" + companyId);
+  getMonthlyReport(){
+    return this.httpClient.get(this.baseUri+"CarReservations/Monthly");
   }
+
+  getMonthlyIncomes(data){
+    return this.httpClient.get(this.baseUri+"CarReservations/MonthlyIncomes/" + data);
+  }
+
+  getAnnualIncomes(data){
+    return this.httpClient.get(this.baseUri+"CarReservations/AnnualIncomes/" + data);
+  }
+
+
 }

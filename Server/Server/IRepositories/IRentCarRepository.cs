@@ -11,6 +11,7 @@ namespace Server.IRepositories
         Task<IEnumerable<RentCar>> GetRentCars();
         Task<List<RentCar>> SearchRentCars(string name,string address,int rate);
         Task<RentCar> GetRentCarByID(int rentCarId);
+        Task<RentCar> GetRentCar(int rentCarId);
         Task<RentCar> GetRentCarMainData(string ownerId);
         void AddRentCar(RentCar rentCar);
         Task DeleteRentCar(int rentCarId);

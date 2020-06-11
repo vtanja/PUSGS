@@ -254,6 +254,7 @@ namespace Server.Controllers
                 return BadRequest();
             }
 
+            car.CompanyId = (int)user.CompanyId;
             if (await carService.AddCar(car))
                 return Ok();
 

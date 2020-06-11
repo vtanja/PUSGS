@@ -12,13 +12,14 @@
     <div class="d-flex justify-content-center">
       <h3>Company business reports</h3>
     </div>
-    <div class="d-flex justify-content-end">
-      <ngb-rating (rate)=4.7 [starTemplate]="t" [readonly]="true" [max]="5"></ngb-rating>
+    <div class="d-flex justify-content-end" style="margin-right: 13%;">
+      <ngb-rating [rate]="carRate" [starTemplate]="t" [readonly]="true" [max]="5"></ngb-rating>
     </div>
-    <div class="d-flex justify-content-end">
-      <pre>Rate: <b>4.7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b></pre>
+    <div class="d-flex justify-content-end" style="margin-right: 15%;">
+      <pre *ngIf="carRate!=-1">Rate: <b>{{carRate}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b></pre>
+      <pre *ngIf="carRate===-1">Rate: <b>No any rates yet.</b></pre>
     </div>
     <br>
-    <app-bar-chart></app-bar-chart>
+    <router-outlet></router-outlet>
   </div>
 </div>

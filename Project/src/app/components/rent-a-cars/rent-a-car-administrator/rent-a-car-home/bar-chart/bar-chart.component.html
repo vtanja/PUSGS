@@ -1,10 +1,14 @@
-<div class="chart-wrapper" style="width: 60%; margin-left: 20%;">
+<ngx-spinner type='ball-spin-clockwise-fade' color="#eea136">
+  <p style="font-size: 20px; color: white ; padding-top: 25%;">Loading...</p>
+</ngx-spinner>
+<div class="chart-wrapper chart-wrapper-style" *ngIf="!isSpinning">
   <canvas baseChart
   [datasets]="barChartData"
   [labels]="barChartLabels"
   [options]="barChartOptions"
   [plugins]="barChartPlugins"
   [legend]="barChartLegend"
-  [chartType]="barChartType">
+  [chartType]="barChartType"
+  [colors]="lineChartColors">
 </canvas>
 </div>

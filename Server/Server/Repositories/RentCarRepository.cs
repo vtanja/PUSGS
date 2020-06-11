@@ -31,10 +31,29 @@ namespace Server.Repositories
             _context.RentCars.Remove(rentCar);
         }
 
+        public async Task<RentCar> GetRentCar(int rentCarId)
+        {
+            return await _context.RentCars.FindAsync(rentCarId);
+        }
+
         public async Task<RentCar> GetRentCarByID(int rentCarId)
         {
-            return await _context.RentCars.Include(rc => rc.Address).Include(rc => rc.Cars)
-                .Include(rc => rc.Offices).ThenInclude(o => o.Address).FirstOrDefaultAsync(rc => rc.Id == rentCarId);
+            try
+            {
+                var ret = await _context.RentCars.Include(rc => rc.Cars)
+                                                 .Include(rc => rc.Address)
+                                                .Include(rc => rc.Offices)
+                                                .ThenInclude(o => o.Address)
+                                                .FirstOrDefaultAsync(rc => rc.Id == rentCarId);
+                 ret.Cars = ret.Cars.Where(c => !c.IsDeleted).ToList();
+                return ret;
+            }
+            catch
+            {
+                return null;
+            }
+
+            
         }
 
         public async Task<RentCar> GetRentCarMainData(string ownerId)

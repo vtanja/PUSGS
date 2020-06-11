@@ -69,16 +69,54 @@ namespace Server.Repositories
         }
         public async Task<Dictionary<string,int>> GetDailyReservationReport(int companyId)
         {
-            var ret = await  _context.CarReservations.Include(r => r.Car).Where(r => r.Car.CompanyId == companyId && r.DateCreated.Date == DateTime.Now.Date).ToListAsync();
-            return  ret.GroupBy(r => r.Car.Brand + " " + r.Car.Model + " " + r.Car.Year.ToString() + " " + "[id = " + r.CarId.ToString() + "]").ToDictionary(g => g.Key.ToString(), g => g.ToList().Count());
+            var ret = await  _context.CarReservations.Include(r => r.Car).Where(r => r.Car.CompanyId == companyId && !r.Cancelled && r.DateCreated.Date == DateTime.Now.Date).ToListAsync();
+            var carIDS = ret.Select(c => c.CarId).ToList();
+            var notIn = await _context.Cars.Where(c => c.CompanyId == companyId && !carIDS.Contains(c.Id) && !c.IsDeleted).ToListAsync();
+
+            var result =  ret.GroupBy(r => r.Car.Brand + " " + r.Car.Model + " " + r.Car.Year.ToString() + " " + "[id = " + r.CarId.ToString() + "]").ToDictionary(g => g.Key.ToString(), g => g.ToList().Count());
+            
+            foreach(var car in notIn)
+            {
+                result.Add(car.Brand + " " + car.Model + " " + car.Year.ToString() + " " + "[id = " + car.Id.ToString() + "]", 0);
+            }
+
+            return result;
         }
 
         public async Task<Dictionary<string, int>> GetRangeReservationReport(int companyId,DateTime startDate,DateTime endDate)
         {
-            var ret = await _context.CarReservations.Include(r => r.Car).Where(r => r.Car.CompanyId == companyId && r.DateCreated.Date >= startDate.Date && r.DateCreated <= endDate.Date).ToListAsync();
-             return ret.GroupBy(r => r.Car.Brand + " " + r.Car.Model + " " + r.Car.Year.ToString() + " " + "\n[id = " + r.CarId.ToString() + "]").ToDictionary(g => g.Key, g => g.Count());
+            var ret = await _context.CarReservations.Include(r => r.Car).Where(r => r.Car.CompanyId == companyId && !r.Cancelled && r.DateCreated.Date >= startDate.Date && r.DateCreated <= endDate.Date).ToListAsync();
+            var carIDS = ret.Select(c => c.CarId).ToList();
+            var notIn = await _context.Cars.Where(c => c.CompanyId == companyId && !carIDS.Contains(c.Id) && !c.IsDeleted).ToListAsync();
+            var result = ret.GroupBy(r => r.Car.Brand + " " + r.Car.Model + " " + r.Car.Year.ToString() + " " + "\n[id = " + r.CarId.ToString() + "]").ToDictionary(g => g.Key, g => g.Count());
+
+            foreach (var car in notIn)
+            {
+                result.Add(car.Brand + " " + car.Model + " " + car.Year.ToString() + " " + "[id = " + car.Id.ToString() + "]", 0);
+            }
+
+            return result;
+
         }
 
+        public async Task<Dictionary<int, double>> GetMonthlyIncomes(int companyId,int month,int year)
+        {
 
+            var ret = await _context.CarReservations.Include(r => r.Car).Where(r => r.Car.CompanyId == companyId && !r.Cancelled && r.DateCreated.Date.Year == year && r.DateCreated.Month == month).ToListAsync();
+
+            var result = ret.GroupBy(r => r.DateCreated.Date.Day).ToDictionary(g => g.Key, g => g.Sum(r => r.TotalPrice));
+
+            return result; ;
+        }
+
+        public async Task<Dictionary<int, double>> GetAnnualIncomes(int companyId,int year)
+        {
+            var ret = await _context.CarReservations.Include(r => r.Car).Where(r => r.Car.CompanyId == companyId && !r.Cancelled && r.DateCreated.Date.Year==year).ToListAsync();
+
+            var result = ret.GroupBy(r => r.DateCreated.Date.Month).ToDictionary(g => g.Key, g => g.Sum(r => r.TotalPrice));
+           
+            return result;
+        
+        }
     }
 }
