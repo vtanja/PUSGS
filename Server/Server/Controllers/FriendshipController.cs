@@ -12,7 +12,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Server.DTOs;
-using Server.HubConfig;
 using Server.Models;
 using Server.Services;
 using Server.Settings;

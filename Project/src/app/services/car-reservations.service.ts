@@ -43,4 +43,7 @@ export class CarReservationsService {
   }
 
 
+  getReservations(){
+    return this.httpClient.get(this.baseUri + 'CarReservations');
+  }
 }

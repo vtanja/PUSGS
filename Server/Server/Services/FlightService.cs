@@ -45,6 +45,11 @@ namespace Server.Services
             return await flightRepository.GetFlights(planes);
         }
 
+        public async Task<IEnumerable<Seat>> GetOccupiedSeats(int flightId)
+        {
+            return await flightRepository.GetOccupiedSeats(flightId);
+        }
+
         public async Task<IEnumerable<Flight>> SearchFlights(SearchFlightModel model)
         {
             return await flightRepository.SearchFlights(model);

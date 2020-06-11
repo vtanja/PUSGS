@@ -1,27 +1,23 @@
 import { CarReservation } from './car-reservation.model';
-
-interface Passenger {
-  seat: number;
-  passenger: {firstname:string, lastname:string, passportNo:string};
-}
+import { Passenger } from './passenger.model';
+import { Flight } from './flight.model';
 
 export class FlightReservation{
-  code:string;
-  flightID:number;
-  companyID:number;
-  price:number;
-  passengers:Passenger[];
-  carReservation:CarReservation;
-  airlineRate:number;
-  flightRate:number;
+   reservationId :number;
+   totalPrice :number;
+   flightRated :boolean;
+   airlineRated :boolean;
+   cancelled :boolean;
+   carReservation :CarReservation ;
+   passengers: Passenger[];
+   flights:Flight[];
+   flightsIds:number[]=[];
 
-  constructor(code:string, flightID:number, companyID:number, price:number, passengers:Passenger[]){
-    this.code=code;
-    this.flightID=flightID;
-    this.companyID= companyID;
-    this.price = price;
-    this.passengers=passengers;
-    this.flightRate=-1;
-    this.airlineRate=-1;
+  constructor(){
+    this.passengers =[];
+    this.cancelled=false;
+    this.airlineRated=false;
+    this.flightRated=false;
+    this.flights = [];
   }
 }

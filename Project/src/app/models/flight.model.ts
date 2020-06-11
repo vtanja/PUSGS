@@ -3,6 +3,7 @@ import { Airport } from './airport';
 import { Airline } from './airline.model';
 import { Plane } from './plane';
 import { Segment } from './segment';
+import { Seat } from './seat.model';
 
 export class Flight {
     id:number;
@@ -15,12 +16,11 @@ export class Flight {
     duration:number;
     connections:Airport[]
     segmentPrices:{segment:Segment, price:number}[];
-    rate:number;
-    image:string;
-    rates:UsersRate[];
+    //image:string;
     planename:string;
     planeId:string;
     plane:Plane;
+    occupiedSeats:Seat[];
 
 
   constructor(id:number, takeOffLocation:Airport, landingLocation:Airport, takeOffDate:string,landingDate:string,
@@ -37,27 +37,28 @@ export class Flight {
     this.duration=duration;
     this.connections=changeoverLocations;
     this.segmentPrices=price;
-    this.rate=-1;
-    this.rates=[];
+    //this.rate=-1;
+    //this.rates=[];
     this.planeId=planeId;
+    this.occupiedSeats = [];
   }
 
-  updateRate():void{
+//   updateRate():void{
 
-    var ret =0;
-    var i= 0
-    this.rates.forEach(element => {
+//     var ret =0;
+//     var i= 0
+//     this.rates.forEach(element => {
 
-      ret+=element.rate;
-      ++i;
+//       ret+=element.rate;
+//       ++i;
 
-    });
-    this.rate=+(ret/i).toFixed(1);
+//     });
+//     this.rate=+(ret/i).toFixed(1);
 
-}
+// }
 
-addRate(rate:UsersRate){
-  this.rates.push(rate);
-  this.updateRate();
-}
+// addRate(rate:UsersRate){
+//   this.rates.push(rate);
+//   this.updateRate();
+// }
 }

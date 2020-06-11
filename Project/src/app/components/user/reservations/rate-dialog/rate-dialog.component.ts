@@ -41,13 +41,13 @@ export class RateDialogComponent implements OnInit {
     }
     else  if(this.rateItem==='flight') {
 
-      this.userService.addFlightRate(this.reservationId,this.rateControl.value);
-      this.airlinesService.rateModalClose.next();
+      //this.userService.addFlightRate(this.reservationId,this.rateControl.value);
+      //this.airlinesService.rateModalClose.next();
 
     } else if (this.rateItem==='airline'){
 
-      this.userService.addAirlineRate(this.reservationId,this.rateControl.value);
-      this.airlinesService.rateModalClose.next();
+      //this.userService.addAirlineRate(this.reservationId,this.rateControl.value);
+      //this.airlinesService.rateModalClose.next();
 
     }
 

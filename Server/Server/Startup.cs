@@ -20,7 +20,6 @@ using System.Text;
 using Server.Email;
 using AutoMapper;
 using Server.Services;
-using Server.HubConfig;
 using Server.UOW;
 
 namespace Server
@@ -131,7 +130,6 @@ namespace Server
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-                endpoints.MapHub<RequestsHub>("/requests");
             });
         }
     }

@@ -1,15 +1,21 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, AfterViewInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Plane } from '../../models/plane';
+import { FlightService } from 'src/app/services/flight.service';
+import { Flight } from 'src/app/models/flight.model';
 
 @Component({
   selector: 'app-plane-layout',
   templateUrl: './plane-layout.component.html',
   styleUrls: ['./plane-layout.component.css']
 })
-export class PlaneLayoutComponent implements OnInit {
+export class PlaneLayoutComponent implements OnInit, AfterViewInit {
   @Input() plane:Plane;
   @Input() toBeAdded: string[]=[];
+  @Input() flight: Flight;
+
+  booked:string[]=[];
+
   selected:string[]=[];
   firstRows = new Array();
   businessRows = new Array();
@@ -19,12 +25,21 @@ export class PlaneLayoutComponent implements OnInit {
   done=false;
   hidden=true;
 
-  constructor(private route:ActivatedRoute) { }
+  constructor(private route:ActivatedRoute, private flightService:FlightService) { }
 
+  ngAfterViewInit(): void {
+    console.log(this.flight);
+    this.flightService.getOccupiedSeats(this.flight.id).subscribe((res:any)=>{
+      res.forEach(element => {
+        this.booked.push(element.code);
+      });
+    })
+  }
 
 
   ngOnInit() {
 
+    
 
     if(this.route.snapshot.routeConfig.path.includes('add-plane')){
       this.settingConfig=true;

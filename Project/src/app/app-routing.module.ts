@@ -146,7 +146,7 @@ const routes: Routes = [
     data: { permittedRoles: ['RENTCARADMIN'] },
   },
   {
-    path: 'create-reservation/:id',
+    path: 'create-reservation/:id/:criteria/:passengers',
     component: CreateFlightReservationComponent,
     canActivate: [AuthGuard],
     data: { permittedRoles: ['USER'] },
