@@ -371,3 +371,4 @@ C:\Users\vukmi\OneDrive\Dokumenti\GitHub\PUSGS\Server\Server\obj\Debug\netcoreap
 C:\Users\vukmi\OneDrive\Dokumenti\GitHub\PUSGS\Server\Server\obj\Debug\netcoreapp3.1\Server.dll
 C:\Users\vukmi\OneDrive\Dokumenti\GitHub\PUSGS\Server\Server\obj\Debug\netcoreapp3.1\Server.pdb
 C:\Users\vukmi\OneDrive\Dokumenti\GitHub\PUSGS\Server\Server\obj\Debug\netcoreapp3.1\Server.genruntimeconfig.cache
+C:\Users\vukmi\OneDrive\Dokumenti\GitHub\PUSGS\Server\Server\obj\Debug\netcoreapp3.1\Razor\Views\Notifications\ReservationConfirmed.cshtml.g.cs

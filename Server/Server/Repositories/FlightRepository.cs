@@ -5,6 +5,7 @@ using Server.Settings;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 
 namespace Server.Repositories
@@ -47,14 +48,14 @@ namespace Server.Repositories
             var flights = new List<Flight>();
             foreach (var item in planes)
             {
-                flights.AddRange(await _context.Flights.Where(x => x.PlaneId == item.Code).Include(x => x.Connections).Include(x => x.SegmentPrices).ThenInclude(x => x.Segment).Include(x => x.Plane).ThenInclude(x => x.Airline).Include(x => x.TakeOffLocation).Include(x => x.LandingLocation).ToListAsync());
+                flights.AddRange(await _context.Flights.Where(x => x.PlaneId == item.Code).Include(x => x.Connections).Include(x=>x.OccupiedSeats).Include(x => x.SegmentPrices).ThenInclude(x => x.Segment).Include(x => x.Plane).ThenInclude(x => x.Airline).Include(x => x.TakeOffLocation).Include(x => x.LandingLocation).ToListAsync());
             }
             return flights;
         }
 
         public async  Task<Flight> GetFlight(int id)
         {
-            return await _context.Flights.Include(x=>x.LandingLocation).Include(x=>x.TakeOffLocation).Include(x=>x.Plane).ThenInclude(x=>x.Segments).Where(x=>x.Id == id).FirstOrDefaultAsync();
+            return await _context.Flights.Include(x=>x.LandingLocation).Include(x=>x.TakeOffLocation).Include(x=>x.SegmentPrices).Include(x => x.Connections).Include(x=>x.OccupiedSeats).Include(x=>x.Plane).ThenInclude(x=>x.Segments).Where(x=>x.Id == id).FirstOrDefaultAsync();
         }
 
         public void DeleteFlight(Flight flight)
@@ -66,7 +67,7 @@ namespace Server.Repositories
         {
             //DateTime takeOffDate = new DateTime(Convert.ToInt32(model.DepartureDate.Split('-')[2]),Convert.ToInt32( model.DepartureDate.Split('-')[1]),Convert.ToInt32( model.DepartureDate.Split('-')[0]));
 
-            var allFlights = await _context.Flights.Include(x => x.Connections).Include(x => x.TakeOffLocation).Include(x => x.LandingLocation).Include(x=>x.Plane).ThenInclude(x=>x.Segments).Include(x=>x.SegmentPrices).ToListAsync();
+            var allFlights = await _context.Flights.Include(x => x.Connections).Include(x => x.TakeOffLocation).Include(x => x.LandingLocation).Include(x=>x.Plane).ThenInclude(x=>x.Segments).Include(x=>x.OccupiedSeats).Include(x=>x.SegmentPrices).ToListAsync();
             var searched = new List<Flight>();
             searched.AddRange(allFlights.Where(x => x.TakeOffDate == model.DepartureDate && x.Connections.Count == 0 && x.TakeOffLocation.Code == model.TakeOffLocation && x.LandingLocation.Code == model.LandingLocation).ToList());
             var classFits = new List<Flight>();
@@ -93,7 +94,7 @@ namespace Server.Repositories
         {
             //DateTime takeOffDate = new DateTime(Convert.ToInt32(model.DepartureDate.Split('-')[2]),Convert.ToInt32( model.DepartureDate.Split('-')[1]),Convert.ToInt32( model.DepartureDate.Split('-')[0]));
 
-            var allFlights = await _context.Flights.Include(x => x.Connections).Include(x => x.TakeOffLocation).Include(x => x.LandingLocation).Include(x => x.Plane).ThenInclude(x => x.Segments).Include(x => x.SegmentPrices).ToListAsync();
+            var allFlights = await _context.Flights.Include(x => x.Connections).Include(x => x.TakeOffLocation).Include(x => x.OccupiedSeats).Include(x => x.LandingLocation).Include(x => x.Plane).ThenInclude(x => x.Segments).Include(x => x.SegmentPrices).ToListAsync();
             var searched = new List<Flight>();
             searched.AddRange(allFlights.Where(x => x.TakeOffDate == model.DepartureDate && x.Connections.Count > 0 && x.TakeOffLocation.Code == model.TakeOffLocation && x.LandingLocation.Code == model.LandingLocation).ToList());
             var classFits = new List<Flight>();
@@ -178,6 +179,19 @@ namespace Server.Repositories
         public async Task<IEnumerable<Flight>> GetAllFlights()
         {
             return await _context.Flights.Include(x => x.LandingLocation).Include(x => x.TakeOffLocation).ToListAsync();
+        }
+
+        public void UpdateFlight(Flight flight)
+        {
+            _context.Entry<Flight>(flight).State = EntityState.Detached;
+            _context.Entry<Flight>(flight).State = EntityState.Modified;
+        }
+
+        public async Task<IEnumerable<Seat>> GetOccupiedSeats(int flightId)
+        {
+            var seats = await _context.Seats.Where(x => x.FlightId == flightId).ToListAsync();
+
+            return seats;
         }
     }
 }

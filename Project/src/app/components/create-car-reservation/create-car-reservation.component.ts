@@ -149,7 +149,7 @@ export class CreateCarReservationComponent implements OnInit {
 
     if(this.flightReservation!==undefined){
     this.flightReservation.carReservation = new CarReservation(this.flight.takeOffDate, this.flight.landingTime, date, "10:00", days, days*this.car.price, companyId, this.car.companyName, this.car.id, this.userService.getLoggedUser().username, this.car.model );
-    this.flightReservation.price +=this.flightReservation.carReservation.price;
+    //this.flightReservation.price +=this.flightReservation.carReservation.price;
     this.flightReservationService.saveReservation(this.flightReservation);
     console.log(this.flightReservation);
   }
@@ -159,7 +159,7 @@ export class CreateCarReservationComponent implements OnInit {
 
 
   saveReservation(){
-    this.flightReservationService.completeReservation();
+    //this.flightReservationService.completeReservation();
 
      Swal.fire({
       text: 'Reservation successfully made. Please check your email for more information!',

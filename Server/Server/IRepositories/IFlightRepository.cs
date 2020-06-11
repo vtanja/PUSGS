@@ -16,5 +16,6 @@ namespace Server.IRepositories
         Task<IEnumerable<Flight>> SearchFlights(SearchFlightModel model);
         Task<IEnumerable<Flight>> SearchMultiFlights(SearchFlightModel model);
         Task<IEnumerable<Tuple<Flight, Flight>>> SearchRoundFlights(SearchFlightModel model);
+        Task<IEnumerable<Seat>> GetOccupiedSeats(int flightId);
     }
 }

@@ -9,7 +9,7 @@
         <div style="text-align: center; font-weight: bold; color: #31124b;" >FIRST CLASS</div>
         <div class="row"  *ngFor="let seats of firstRows">
           <div class="col" *ngFor="let seat of seats" class="seat" style="text-align: center;">
-            <input (click)="seatAction(seat)" type="checkbox" [disabled]="plane?.booked?.includes(seat)" [checked]="toBeAdded?.includes(seat)" [id]="seat" />
+            <input (click)="seatAction(seat)" type="checkbox" [disabled]="booked?.includes(seat)" [checked]="toBeAdded?.includes(seat)" [id]="seat" />
             
               <label [for]="seat">{{seat}}</label>
           </div>
@@ -20,7 +20,7 @@
         <div style="text-align: center; font-weight: bold; color: #31124b;" >BUSINESS CLASS</div>
         <div class="row"  *ngFor="let seats of businessRows">
           <div class="col" *ngFor="let seat of seats" class="seat">
-            <input   (click)="seatAction(seat)" type="checkbox" [disabled]="plane?.booked?.includes(seat)" [checked]="toBeAdded?.includes(seat)" [id]="seat" />
+            <input   (click)="seatAction(seat)" type="checkbox" [disabled]="booked?.includes(seat)" [checked]="toBeAdded?.includes(seat)" [id]="seat" />
             
               <label [for]="seat">{{seat}}</label>
           </div>
@@ -35,7 +35,7 @@
         <div style="text-align: center; font-weight: bold; color: #31124b;" >PREMIUM ECONOMY</div>
         <div class="row"  *ngFor="let seats of premiumRows">
           <div class="col" *ngFor="let seat of seats" class="seat">
-            <input  (click)="seatAction(seat)" type="checkbox" [disabled]="plane?.booked?.includes(seat)" [checked]="toBeAdded?.includes(seat)" [id]="seat" />
+            <input  (click)="seatAction(seat)" type="checkbox" [disabled]="booked?.includes(seat)" [checked]="toBeAdded?.includes(seat)" [id]="seat" />
               <label [for]="seat">{{seat}}</label>
           </div>
         </div>
@@ -45,7 +45,7 @@
         <div style="text-align: center; font-weight: bold; color: #31124b;">ECONOMY CLASS</div>
         <div class="row"  *ngFor="let seats of economyRows">
           <div class="col" *ngFor="let seat of seats" class="seat">
-            <input  (click)="seatAction(seat)" type="checkbox" [disabled]="plane?.booked?.includes(seat)" [checked]="toBeAdded?.includes(seat)" [id]="seat" />
+            <input  (click)="seatAction(seat)" type="checkbox" [disabled]="booked?.includes(seat)" [checked]="toBeAdded?.includes(seat)" [id]="seat" />
             <label [for]="seat">{{seat}}</label>
          </div>
         </div>

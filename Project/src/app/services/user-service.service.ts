@@ -107,29 +107,29 @@ export class UserService{
 
     }
 
-    addFlightRate(reservationId:number,rate:number){
+    // addFlightRate(reservationId:number,rate:number){
 
-      let username = JSON.parse(localStorage.getItem('loggedUser')).username;
+    //   let username = JSON.parse(localStorage.getItem('loggedUser')).username;
 
-      let reservation = this.users.find(u=>u.username===username).flightReservations.find(r=>r.flightID===reservationId);
-      this.users.find(u=>u.username===username).flightReservations.find(r=>r.flightID===reservationId).flightRate=rate;
+    //   let reservation = this.users.find(u=>u.username===username).flightReservations.find(r=>r.flightID===reservationId);
+    //   this.users.find(u=>u.username===username).flightReservations.find(r=>r.flightID===reservationId).flightRate=rate;
 
-      let flightRate = new UsersRate(rate,username,reservationId);
-      this.airlineService.addFlightRate(reservation.companyID,reservation.flightID,flightRate);
+    //   let flightRate = new UsersRate(rate,username,reservationId);
+    //   this.airlineService.addFlightRate(reservation.companyID,reservation.flightID,flightRate);
 
-    }
+    // }
 
-    addAirlineRate(reservationId:number,rate:number){
+    // addAirlineRate(reservationId:number,rate:number){
 
-      let username = JSON.parse(localStorage.getItem('loggedUser')).username;
+    //   let username = JSON.parse(localStorage.getItem('loggedUser')).username;
 
-      let reservation = this.users.find(u=>u.username===username).flightReservations.find(r=>r.flightID===reservationId);
-      this.users.find(u=>u.username===username).flightReservations.find(r=>r.flightID===reservationId).airlineRate=rate;
+    //   let reservation = this.users.find(u=>u.username===username).flightReservations.find(r=>r.flightID===reservationId);
+    //   this.users.find(u=>u.username===username).flightReservations.find(r=>r.flightID===reservationId).airlineRate=rate;
 
-      let companyRate = new UsersRate(rate,username,reservationId);
-      this.airlineService.addCompanyRate(reservation.companyID,companyRate);
+    //   let companyRate = new UsersRate(rate,username,reservationId);
+    //   this.airlineService.addCompanyRate(reservation.companyID,companyRate);
 
-    }
+    // }
 
 
     getAllUsers():Observable<User[]>{

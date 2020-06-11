@@ -37,5 +37,6 @@ namespace Server.Settings
 
         public DbSet<FlightReservation> FlightReservations{ get; set; }
         public DbSet<Passenger> Passengers{ get; set; }
+        public DbSet<Seat> Seats { get; set; }
     }
 }

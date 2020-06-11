@@ -31,4 +31,8 @@ export class CarReservationsService {
   getMonthlyReport(companyId:number){
     return this.httpClient.get(this.baseUri+"CarReservations/Monthly/" + companyId);
   }
+
+  getReservations(){
+    return this.httpClient.get(this.baseUri + 'CarReservations');
+  }
 }

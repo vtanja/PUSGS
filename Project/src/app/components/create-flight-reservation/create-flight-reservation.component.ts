@@ -18,11 +18,8 @@ import Swal from 'sweetalert2';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Plane } from '../../models/plane';
 import { FlightService } from 'src/app/services/flight.service';
-
-interface Passenger {
-  seat: number;
-  passenger: {firstname:string, lastname:string, passportNo:string};
-}
+import { Passenger } from 'src/app/models/passenger.model';
+import { Seat } from 'src/app/models/seat.model';
 
 @Component({
   selector: 'app-create-flight-reservation',
@@ -30,11 +27,12 @@ interface Passenger {
   styleUrls: ['./create-flight-reservation.component.css']
 })
 export class CreateFlightReservationComponent implements OnInit,AfterViewInit {
-
+  showForm:boolean = false;
   flight:Flight;
   mySubscription:Subscription;
 
   toBeAdded:string[]=[];
+  occupiedSeats:string[]=[];
 
   invitedFriends:string[]=[];
   cars:Car[]=[];
@@ -47,7 +45,10 @@ export class CreateFlightReservationComponent implements OnInit,AfterViewInit {
   thirdFormGroup: FormGroup;
   fourthFormGroup: FormGroup;
 
-  hiddenButton=false;
+  firstStep: FormGroup = new FormGroup({});
+  secondStep: FormGroup = new FormGroup({});
+  thirdStep: FormGroup = new FormGroup({});
+  fourthStep: FormGroup = new FormGroup({});
 
   location:string;
 
@@ -61,17 +62,17 @@ export class CreateFlightReservationComponent implements OnInit,AfterViewInit {
   @ViewChild('auto') matAutocomplete: MatAutocomplete;
 
   flightReservation:FlightReservation;
-
   loggedUser:User;
+
+  numOfPassengers:number;
+  class:string;
 
   get passengersControls() {
     return (this.thirdFormGroup.get('passengers') as FormArray).controls;
   }
 
   constructor(private route:ActivatedRoute,private router:Router,private modalService: NgbModal, private flightService:FlightService, private airlineService:AirlineService, private userService:UserService, private _formBuilder:FormBuilder, private rentCarService:RentCarService, private flightReservationService:FlightReservationService) {
-
-     
-
+      //this.toBeAdded=[];
    }
 
 
@@ -81,6 +82,9 @@ export class CreateFlightReservationComponent implements OnInit,AfterViewInit {
         this.flightService.getFlight(+params['id']).subscribe((res:any)=>{
           this.flight = res;
           this.location = this.flight.landingLocation.location;
+          this.flight.occupiedSeats.forEach(element => {
+            this.occupiedSeats.push(element.code);
+          });
         });
       }
     )
@@ -95,8 +99,8 @@ export class CreateFlightReservationComponent implements OnInit,AfterViewInit {
 
     this.userService.getUser().subscribe((res:any)=>{
       this.loggedUser = res;
-      console.log('to be added in init: ', this.toBeAdded);
       this.initForm();
+      
     });
 
 
@@ -104,18 +108,12 @@ export class CreateFlightReservationComponent implements OnInit,AfterViewInit {
   }
 
    initForm(){
-     let seat:string;
-      for(let added of this.toBeAdded){
-        console.log('init form: ', added);
-        seat =added;
-        break;
-      }
-
+    console.log(this.toBeAdded);
      let firstName = this.loggedUser.firstName;
      let lastName = this.loggedUser.lastName;
 
     let passenger1 = new FormGroup({
-      'seati': new FormControl(seat, Validators.required),
+      'seati': new FormControl(this.toBeAdded[0], Validators.required),
       'firstNamei': new FormControl(firstName, Validators.required),
       'lastNamei':new FormControl(lastName, Validators.required),
       'passporti':new FormControl('', [Validators.required, Validators.pattern(new RegExp("^[A-Z][0-9]{8}$"))])
@@ -171,16 +169,36 @@ export class CreateFlightReservationComponent implements OnInit,AfterViewInit {
    }
 
    confirmReservation(){
-     this.flightReservationService.completeReservation();
-     Swal.fire({
-      text: 'Reservation successfully made. Please check your email for more information!',
-      icon: 'success',
-      showConfirmButton: false,
-      timer: 1500
-    }).then(()=>{
-      this.router.navigate(['/user/reservations/flight-reservations']);
-    });
+    this.flightReservation = new FlightReservation();
+    this.flightReservation.passengers = this.getPassengers();
+    this.flightReservation.flightsIds.push(this.flight.id);
+    //this.flightReservation.carReservation=undefined;
 
+     if(this.flightReservation.carReservation===undefined){
+      this.flightReservation.totalPrice = this.flightReservation.passengers.length * this.flight.segmentPrices.find(x=>x.segment.name===this.class).price;
+      console.log('total price: ',this.flightReservation.totalPrice );
+     }
+
+     this.flightReservationService.completeReservation(this.flightReservation).subscribe((res:any)=>{
+      Swal.fire({
+        text: 'Reservation successfully made. Please check your email for more information!',
+        icon: 'success',
+        showConfirmButton: false,
+        timer: 1500
+      })
+      .then(()=>{
+        //this.flightReservationService.resetReservation();
+        this.router.navigate(['/user/reservations/flight-reservations']);
+      })
+  
+     }, (err)=>{
+      Swal.fire({
+        text: err.error.message,
+        icon: 'error',
+        showConfirmButton: true
+      })
+     });
+     
    }
 
    openSm(content) {
@@ -192,22 +210,28 @@ export class CreateFlightReservationComponent implements OnInit,AfterViewInit {
    }
 
   ngOnInit(): void {
+    
+
     this.mySubscription = this.route.params.subscribe((params:Params)=>
       {
+        this.class = params['criteria'];
+        this.numOfPassengers = +params['passengers'];
+
+        console.log('class: ', this.class);
+        console.log('passengers: ', this.numOfPassengers);
         this.flightService.getFlight(+params['id']).subscribe((res:any)=>{
           this.flight = res;
           this.location = this.flight.landingLocation.location;
         });
       }
     )
+    
+    //sthis.initForm();
 
-    //this.initForm();
 
-    this.flightReservation = new FlightReservation("REZ1", this.flight.id, this.flight.plane.airline.id, 0, []);
-
-    this.secondFormGroup = new FormGroup({
-      'friends':new FormControl('')
-    });
+    // this.secondFormGroup = new FormGroup({
+    //   'fruitCtrl':new FormControl('')
+    // });
 
     //this.cars.push(...this.rentCarService.getCarsAtLocation(this.location));
 
@@ -247,28 +271,25 @@ export class CreateFlightReservationComponent implements OnInit,AfterViewInit {
   }
 
 
-  getPassengers(){
-    let pass1:Passenger={seat:this.thirdFormGroup.get('passenger1.seati').value,
-     passenger:{firstname:this.thirdFormGroup.get('passenger1.firstNamei').value,
-     lastname:this.thirdFormGroup.get('passenger1.lastNamei').value,
-     passportNo:this.thirdFormGroup.get('passenger1.passporti').value}};
-    //this.flightReservation.passengers.push(pass1);
+  getPassengers():Passenger[]{
+    let passengers:Passenger[]=[];
+    var seats:Seat[]=[];
+    seats.push(new Seat(this.thirdFormGroup.get('passenger1.seati').value, this.flight.id));
+    let passenger1:Passenger = new Passenger(this.thirdFormGroup.get('passenger1.firstNamei').value, this.thirdFormGroup.get('passenger1.lastNamei').value, seats , this.thirdFormGroup.get('passenger1.passporti').value);
+    passengers.push(passenger1);
 
     for(let control of this.passengersControls){
-      pass1={seat:control.get('seat').value,
-     passenger:{firstname:control.get('firstName').value,
-     lastname:control.get('lastName').value,
-     passportNo:control.get('passport').value}};
-    //this.flightReservation.passengers.push(pass1);
+      var passengerSeats:Seat[]=[];
+      passengerSeats.push(new Seat(control.get('seat').value, this.flight.id));
+      let passenger = new Passenger(control.get('firstName').value, control.get('lastName').value, passengerSeats, control.get('passport').value );
+      if(this.invitedFriends.includes(passenger.firstName+' '+passenger.lastName)){
+        passenger.sendInvitation=true;
+        passenger.acceptedInvitation=false;
+      }
+      passengers.push(passenger);
     }
 
-    //const price = this.flightReservation.passengers.length*this.flight.price;
-    var price = 60;
-    console.log(price);
-    this.flightReservation.price=price;
-    console.log(this.flightReservation.price);
-    this.flightReservationService.saveReservation(this.flightReservation);
-    console.log(this.flightReservation.passengers);
+    return passengers;
   }
 
   private _filter = (opt: User[], value: string): User[] => {

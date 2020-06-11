@@ -69,4 +69,8 @@ export class FlightService {
     )
     );
   }
+
+  getOccupiedSeats(id:number){
+    return this.httpClient.get(this.baseUri+'Flights/'+id+'/OccupiedSeats');
+  }
 }

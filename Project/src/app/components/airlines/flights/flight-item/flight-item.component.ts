@@ -3,7 +3,7 @@ import { Flight } from 'src/app/models/flight.model';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { Airline } from 'src/app/models/airline.model';
 import { AirlineService } from 'src/app/services/airline.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-flight-item',
@@ -21,7 +21,7 @@ export class FlightItemComponent implements OnInit, AfterViewInit{
   showBuyButton = true;
   price:number;
 
-  constructor( private modalService: NgbModal, private airlineService:AirlineService, private route:ActivatedRoute) { 
+  constructor( private modalService: NgbModal, private airlineService:AirlineService, private route:ActivatedRoute, private router:Router) { 
     
   }
   ngAfterViewInit(): void {
@@ -55,14 +55,19 @@ export class FlightItemComponent implements OnInit, AfterViewInit{
     //   fourthCtrl: ['', Validators.required]
     // });
 
-   
+    
   
   }
 
  
 
   
+  buyTicket(){
+    var klasa = this.route.snapshot.queryParams['class'];
+    var passengers = this.route.snapshot.queryParams['passengers'];
 
+    this.router.navigate(['/create-reservation', this.flight.id, klasa, passengers]);
+  }
 
   moreInfo(content) {
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {

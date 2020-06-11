@@ -32,6 +32,12 @@
     <Compile Remove="Migrations\20200603213210_CarReservationUpdateSecond.Designer.cs" />
     <Compile Remove="Migrations\20200605155539_FlightModelCreated.cs" />
     <Compile Remove="Migrations\20200605155539_FlightModelCreated.Designer.cs" />
+    <Compile Remove="Migrations\20200610183429_FlightRservationModelUpdate.cs" />
+    <Compile Remove="Migrations\20200610183429_FlightRservationModelUpdate.Designer.cs" />
+    <Compile Remove="Migrations\20200610184543_FlightRservationModelUpdate.cs" />
+    <Compile Remove="Migrations\20200610184543_FlightRservationModelUpdate.Designer.cs" />
+    <Compile Remove="Migrations\20200610193104_SeatModelUpdated.cs" />
+    <Compile Remove="Migrations\20200610193104_SeatModelUpdated.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

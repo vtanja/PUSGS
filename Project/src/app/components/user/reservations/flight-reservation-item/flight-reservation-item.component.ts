@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, AfterViewInit } from '@angular/core';
 import { FlightReservation } from 'src/app/models/flight-reservation.model';
 import { Flight } from 'src/app/models/flight.model';
 import { Airline } from 'src/app/models/airline.model';
@@ -8,54 +8,53 @@ import { Car } from 'src/app/models/Car.model';
 import { RentCar } from 'src/app/models/rent-a-car.model';
 import { RentCarService } from 'src/app/services/rent-a-car.service';
 import { Subscription } from 'rxjs';
-
+import Swal from 'sweetalert2';
+import { FlightReservationService } from 'src/app/services/flight-reservation.service';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-flight-reservation-item',
   templateUrl: './flight-reservation-item.component.html',
   styleUrls: ['./flight-reservation-item.component.css']
 })
-export class FlightReservationItemComponent implements OnInit,OnDestroy {
+export class FlightReservationItemComponent implements OnInit,OnDestroy, AfterViewInit {
 
   @Input() flightReservation:FlightReservation;
-  flight:Flight;
-  company:Airline;
+ 
   closeResult = '';
-  car:Car;
-  rentalCompany:RentCar;
+ 
   toRate:string;
   canRate:boolean;
   modalCloseSubscription:Subscription;
+  private readonly image = '../../../../../assets/images/airlines/';
+  imgToDisplay:string;
 
-  constructor(private airlineService:AirlineService, private modalService: NgbModal, private rentCarService:RentCarService) { }
+  constructor(private airlineService:AirlineService, private modalService: NgbModal, private rentCarService:RentCarService, private router:Router, private flightReservationService:FlightReservationService) { }
+
+  ngAfterViewInit(): void {
+    this.airlineService.getAirline(this.flightReservation.flights[0].plane.airlineId).subscribe((res:any)=>{
+      this.imgToDisplay = this.image + res.image;
+      console.log(res.image);
+    });
+    
+  }
 
   ngOnInit(): void {
-    //this.flight = this.airlineService.getAirline(this.flightReservation.companyID).flights.find(c=>c.id==this.flightReservation.flightID);
-    //this.company = this.airlineService.getAirline(this.flightReservation.companyID);
-    console.log(this.company);
-    if(this.flightReservation.carReservation!==undefined){
-      //this.rentalCompany = this.rentCarService.getRentCarCompany(this.flightReservation.carReservation.companyId);
-      console.log(this.rentalCompany);
-    }
 
+    
     this.modalCloseSubscription = this.airlineService.rateModalClose.subscribe(()=>{
       this.modalService.dismissAll();
     })
 
     var i = 0;
-    if(this.flightReservation.carReservation!==undefined){
-        //this.rentalCompany=this.rentCarService.getRentCarCompany(this.flightReservation.carReservation.companyId);
-    }
-
     var today = new Date();
 
-    var dateParts = this.flight.landingDate.split('-');
-    var timeParts = this.flight.landingTime.split(':');
-    var landingDate = new Date(+dateParts[2],+dateParts[1]-1,+dateParts[0],+timeParts[0],+timeParts[1],0);
+    //var dateParts = this.flight.landingDate.split('-');
+    //var timeParts = this.flight.landingTime.split(':');
+    //var landingDate = new Date(+dateParts[2],+dateParts[1]-1,+dateParts[0],+timeParts[0],+timeParts[1],0);
 
-    if(landingDate<=today)
-      this.canRate = true;
+    // if(landingDate<=today)
+    //   this.canRate = true;
 
-    console.log(this.flightReservation);
 
   }
 
@@ -80,6 +79,49 @@ export class FlightReservationItemComponent implements OnInit,OnDestroy {
     }, (reason) => {
       this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
     });
+  }
+
+  cancelReservation(){
+    var currentMoment = new Date();
+    currentMoment.setHours(currentMoment.getHours()-1);
+    console.log('current moment: ',currentMoment);
+    var parts=this.flightReservation.flights[0].takeOffDate.split('-');
+    console.log(parts);
+    var timeParts = this.flightReservation.flights[0].takeOffTime.split(':');
+    var takeOff = new Date(+parts[2], +parts[1]-1, +parts[0], +timeParts[0], +timeParts[1]);
+    console.log('take off: ', takeOff);
+
+    var duration = (takeOff.getTime()-currentMoment.getTime())/1000/60/60;
+    console.log('duration: ', duration);
+
+    if(duration>=3){
+      this.flightReservationService.cancelReservation(this.flightReservation).subscribe((res:any)=>{
+        Swal.fire({
+          text: 'Successfully canceled reservation',
+          icon: 'success',
+          showConfirmButton: false,
+          timer:1500
+        }).then(()=>{
+          this.router.navigate(['/user/reservations/flight-reservations']);
+        })
+      }, 
+      (err)=>{
+        Swal.fire({
+          text: err.error.message,
+          icon: 'error',
+          showConfirmButton: true
+        })
+      })
+    }
+    else{
+      Swal.fire({
+        text: 'It is possible to cancel reservation only 3 hours before departure time!',
+        icon: 'warning',
+        showConfirmButton: true
+      })
+    }
+
+
   }
 
   private getDismissReason(reason: any): string {

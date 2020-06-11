@@ -570,6 +570,9 @@ namespace Server.Migrations
                     b.Property<double>("Duration")
                         .HasColumnType("float");
 
+                    b.Property<int?>("FlightReservationReservationId")
+                        .HasColumnType("int");
+
                     b.Property<string>("LandingDate")
                         .HasColumnType("nvarchar(max)");
 
@@ -592,6 +595,8 @@ namespace Server.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("FlightReservationReservationId");
 
                     b.HasIndex("LandingLocationId");
 
@@ -618,9 +623,6 @@ namespace Server.Migrations
                     b.Property<int?>("CarReservationId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("FlightId")
-                        .HasColumnType("int");
-
                     b.Property<bool>("FlightRated")
                         .HasColumnType("bit");
 
@@ -633,8 +635,6 @@ namespace Server.Migrations
                     b.HasKey("ReservationId");
 
                     b.HasIndex("CarReservationId");
-
-                    b.HasIndex("FlightId");
 
                     b.HasIndex("UserId");
 
@@ -730,8 +730,8 @@ namespace Server.Migrations
                     b.Property<string>("Passport")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Seat")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<bool>("SendInvitation")
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -822,6 +822,31 @@ namespace Server.Migrations
                     b.HasIndex("CarId");
 
                     b.ToTable("ReservedDates");
+                });
+
+            modelBuilder.Entity("Server.Models.Seat", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Code")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("FlightId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PassengerId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FlightId");
+
+                    b.HasIndex("PassengerId");
+
+                    b.ToTable("Seats");
                 });
 
             modelBuilder.Entity("Server.Models.Segment", b =>
@@ -1069,6 +1094,10 @@ namespace Server.Migrations
 
             modelBuilder.Entity("Server.Models.Flight", b =>
                 {
+                    b.HasOne("Server.Models.FlightReservation", null)
+                        .WithMany("Flights")
+                        .HasForeignKey("FlightReservationReservationId");
+
                     b.HasOne("Server.Models.Airport", "LandingLocation")
                         .WithMany()
                         .HasForeignKey("LandingLocationId");
@@ -1087,10 +1116,6 @@ namespace Server.Migrations
                     b.HasOne("Server.Models.CarReservation", "CarReservation")
                         .WithMany()
                         .HasForeignKey("CarReservationId");
-
-                    b.HasOne("Server.Models.Flight", null)
-                        .WithMany("Reservations")
-                        .HasForeignKey("FlightId");
 
                     b.HasOne("Server.Models.User", "User")
                         .WithMany("FlightReservations")
@@ -1177,6 +1202,21 @@ namespace Server.Migrations
                     b.HasOne("Server.Models.Car", "Car")
                         .WithMany("ReservedDates")
                         .HasForeignKey("CarId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Server.Models.Seat", b =>
+                {
+                    b.HasOne("Server.Models.Flight", "Flight")
+                        .WithMany("OccupiedSeats")
+                        .HasForeignKey("FlightId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Server.Models.Passenger", "Passenger")
+                        .WithMany("Seats")
+                        .HasForeignKey("PassengerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

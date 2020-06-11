@@ -64,6 +64,14 @@ namespace Server.Controllers
             return flight;
         }
 
+        [HttpGet("{flightId}/OccupiedSeats")]
+        public async Task<IEnumerable<Seat>> GetOccupiedSeats([FromQuery] int flightId)
+        {
+            return await flightService.GetOccupiedSeats(flightId);
+        }
+
+       
+
 
         // GET: api/Flights
         [HttpGet("{departureDate}/{returnDate}/{takeOffLocation}/{landingLocation}/{passengers}/{Class}")]

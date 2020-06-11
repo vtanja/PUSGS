@@ -22,6 +22,7 @@ namespace Server.Models
         public int? CarReservationId { get; set; }
         [ForeignKey("CarReservationId")]
         public virtual CarReservation CarReservation { get; set; }
+        public ICollection<Flight> Flights { get; set; } = new List<Flight>();
         public ICollection<Passenger> Passengers { get; set; }
     }
 }
