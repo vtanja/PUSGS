@@ -110,6 +110,14 @@ namespace Server.DTOs
                 .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.RegisteredUser.Email))
                 .ForMember(dest => dest.PhoneNumber, opt => opt.MapFrom(src => src.RegisteredUser.PhoneNumber)).ReverseMap();
 
+            CreateMap<RegisteredUser, RegisteredUserDTO>()
+                .ForMember(dest => dest.Address, opt => opt.MapFrom(src => src.Address))
+                .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email))
+                .ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => src.FirstName))
+                .ForMember(dest => dest.LastName, opt => opt.MapFrom(src => src.LastName))
+                .ForMember(dest => dest.PhoneNumber, opt => opt.MapFrom(src => src.PhoneNumber))
+                .ForMember(dest => dest.ProfileImage, opt => opt.MapFrom(src => src.ProfileImage));
+
             CreateMap<DiscountDate, DiscountDateDTO>()
                 .ForMember(dest => dest.Date, opt => opt.MapFrom(src => src.Date.ToShortDateString()))
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))

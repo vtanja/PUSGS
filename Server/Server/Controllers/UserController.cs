@@ -52,24 +52,23 @@ namespace Server.Controllers
 
         [HttpGet]
         [Route("Profile")]
-        public async Task<ActionResult<UserDTO>> GetUserProfile()
+        public async Task<ActionResult<RegisteredUserDTO>> GetUserProfile()
         {
-            //string userId = User.Claims.First(c => c.Type == "UserID").Value;
-            //var role = await _dataBaseContext.UserRoles.FindAsync(userId);
-            //var user = await _dataBaseContext.RegisteredUsers.Where(x=>x.Id == userId).FirstOrDefaultAsync();
 
-            //if(user == null)
-            //{
-            //    return BadRequest(new { message = "User with this username doesn't exist!" });
-            //}
+            string userID = User.Claims.First(c => c.Type == "UserID").Value;
 
-            //if(user.SocialUserType == "USER")
-            //{
+            var user = await _userManager.FindByIdAsync(userID);
 
-            //}
 
-            //return _mapper.Map<RegisteredUser, UserDTO>(user);
-            return null;
+                var founded = await _dataBaseContext.RegisteredUsers.Where(x => x.Id == userID).FirstOrDefaultAsync();
+
+                if (founded == null)
+                {
+                    return BadRequest(new { message = "User wasn't found!" });
+                }
+            
+
+            return _mapper.Map<RegisteredUser, RegisteredUserDTO>(founded);
         }
 
         [HttpPut("{username}")]
@@ -80,23 +79,49 @@ namespace Server.Controllers
                 return BadRequest();
             }
 
-            var user = new RegisteredUser()
-            {
-                UserName = model.UserName,
-                Email = model.Email,
-                FirstName = model.FirstName,
-                LastName = model.LastName,
-                Address = model.Address,
-                PhoneNumber = model.PhoneNumber
-            };
+            var affectedUser = await _dataBaseContext.RegisteredUsers.Where(x => x.UserName == model.UserName).FirstOrDefaultAsync();
 
-            _dataBaseContext.Entry(user).State = EntityState.Modified;
+            affectedUser.FirstName = model.FirstName;
+            affectedUser.LastName = model.LastName;
+            affectedUser.PhoneNumber = model.PhoneNumber;
+            affectedUser.Email = model.Email;
+            affectedUser.Address = model.Address;
+            affectedUser.ProfileImage = model.ProfileImage;
+
+            //var user = new RegisteredUser()
+            //{
+            //    UserName = model.UserName,
+            //    Email = model.Email,
+            //    FirstName = model.FirstName,
+            //    LastName = model.LastName,
+            //    Address = model.Address,
+            //    PhoneNumber = model.PhoneNumber,
+            //    Id = affectedUser.Id
+            //};
+
+            if (!String.IsNullOrEmpty(model.Password))
+            {
+                var token = await _userManager.GeneratePasswordResetTokenAsync(affectedUser);
+                var result = await _userManager.ResetPasswordAsync(affectedUser, token, model.Password);
+
+                if (result.Succeeded)
+                {
+                    affectedUser.PasswordChanged = true;
+                }
+                else
+                {
+                    return BadRequest(new { message="Error while chaniging password."});
+                }
+            }
+
+            //_dataBaseContext.Entry(user).State = EntityState.Detached;
+            _dataBaseContext.Entry(affectedUser).State = EntityState.Modified;
 
             try
             {
                 await _dataBaseContext.SaveChangesAsync();
             }
-            catch (DbUpdateConcurrencyException)
+            catch (DbUpdateConcurrencyException e)
             {
                 if (_dataBaseContext.RegisteredUsers.Where(x => x.UserName == username).FirstOrDefault() == null)
                 {

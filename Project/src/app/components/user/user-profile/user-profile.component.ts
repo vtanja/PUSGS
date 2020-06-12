@@ -4,7 +4,8 @@ import { UserService } from '../../../services/user-service.service';
 import { User } from 'src/app/models/user';
 import { UserAdapter } from 'src/app/models/adapters/user.adapter';
 import { ToastrService } from 'ngx-toastr';
-import { LoginComponent } from 'src/app/components/login/login.component';
+import { LoginComponent } from 'src/app/components/login/login.component'
+import { file } from 'jszip';
 
 @Component({
   selector: 'app-user-profile',
@@ -17,8 +18,8 @@ export class UserProfileComponent implements OnInit {
   profileImage:string | ArrayBuffer;
   loggedUser:User;
   fileToUpload: File = null;
-  isDataLoaded:boolean;
-
+  readonly img = '../../../../assets/images/';
+  isDataLoaded:boolean=false;
   constructor(private userService:UserService, private toastr:ToastrService) {
     //this.profileImage = this.img+'profilna.png';
     this.editForm = new FormGroup({
@@ -27,8 +28,9 @@ export class UserProfileComponent implements OnInit {
       'email': new FormControl(null, [Validators.required, Validators.email]),
       'phone': new FormControl(null, [Validators.required, Validators.pattern(new RegExp('(([+][(]?[0-9]{1,3}[)]?)|([(]?[0-9]{4}[)]?))\s*[)]?[-\s\.]?[(]?[0-9]{1,3}[)]?([-\s\.]?[0-9]{3})([-\s\.]?[0-9]{3,4})'))]),
       'address': new FormControl(null, Validators.required),
-      'file': new FormControl('', [Validators.required]),
-      'profileImage': new FormControl('', [Validators.required]),
+      'file': new FormControl('', []),
+      'logo': new FormControl('', []),
+      'profileImage': new FormControl('', []),
       'passwordData' : new FormGroup({
          'password': new FormControl('',[
            Validators.pattern(new RegExp("^(?=.*[0-9]+.*)(?=.*[a-zA-Z]+.*)[0-9a-zA-Z]{8,}$"))]),
@@ -44,10 +46,23 @@ export class UserProfileComponent implements OnInit {
     this.isDataLoaded = false;
     this.userService.getUserProfile().subscribe((res:any)=>{
         this.loggedUser=res;
+        this.editForm.reset();
         this.setFormValues();
         this.isDataLoaded = true;
+        console.log(this.loggedUser);
+        if(this.loggedUser.profileImage!==null && this.loggedUser.profileImage!==""){
+          this.profileImage = this.img+this.loggedUser.profileImage;
+        }
+        else{
+          this.profileImage = this.img+'profilna.png';
+        }
     });
 
+    // if(this.loggedUser!==undefined && (this.loggedUser.profileImage===null || this.loggedUser.profileImage==="")){
+    //   this.profileImage = this.img+'profilna.png';
+    // }
+
+    console.log(this.editForm);
   }
 
   onFileChange(event) {
@@ -67,8 +82,10 @@ export class UserProfileComponent implements OnInit {
         this.profileImage = reader.result;
         this.editForm.patchValue({
           fileSource: file,
-          logo:reader.result
+          logo:file.name
         });
+        
+        console.log(this.editForm);
       }
 
 
@@ -147,18 +164,36 @@ export class UserProfileComponent implements OnInit {
   }
 
   onSaveChanges(){
-    var user={
-      'UserName' : this.editForm.get('userName').value,
-      'FirstName' : this.editForm.get('firstName').value,
-      'LastName' : this.editForm.get('lastName').value,
-      'Password' : this.editForm.get('passwordData.password').value!==''?this.editForm.get('passwordData.password').value:this.loggedUser.password,
-      'Email' : this.editForm.get('email').value,
-      'Address' : this.editForm.get('address').value,
-      'PhoneNumber' : this.editForm.get('phoneNumber').value,
-    }
-    this.userService.updateProfile(user).subscribe((res:User)=>{
+    let username:string = this.userService.getUserName();
+    var user :{} =
+            {
+                UserName: username,
+                Email : this.editForm.get('email').value,
+                FirstName: this.editForm.get('firstName').value,
+                LastName : this.editForm.get('lastName').value,
+                Address : this.editForm.get('address').value,
+                PhoneNumber :this.editForm.get('phone').value,
+                ProfileImage: this.editForm.get('logo').value,
+                Password : this.editForm.get('passwordData.password').value
+            };
+
+
+    this.userService.updateProfile(user).subscribe((res:any)=>{
+      
       this.toastr.success('Successfully updated profile!', "Success!");
-      this.loggedUser=res;
+      this.userService.getUserProfile().subscribe((result:any)=>{
+        this.loggedUser=result;
+        this.editForm.reset();
+        this.setFormValues();
+        if(this.loggedUser.profileImage!==null && this.loggedUser.profileImage!==""){
+          this.profileImage = this.img + this.loggedUser.profileImage;
+        }
+        else{
+          this.profileImage = this.img + 'profilna.png';
+        }
+      })
+    }, (err)=>{
+      this.toastr.error('Error while updating profile!', "Success!");
     });
   }
 
