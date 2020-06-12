@@ -10,7 +10,7 @@ namespace Server.IRepositories
     {
         Task Save();
         void PostFlightReservation(FlightReservation flightReservation);
-        bool CheckSeats(FlightReservation flightReservation);
+        bool CheckSeats(FlightReservation flightReservation, List<int> flightIds);
         Task<IEnumerable<FlightReservation>> GetFlightReservations(string userId);
         Task<FlightReservation> GetFlightReservation(int reservationId);
         void UpdateFlightReservation(FlightReservation flightReservation);

@@ -6,17 +6,26 @@
     <ng-template matStepLabel >
        <span [ngStyle]="{'color': '#31124b'}">Choose seats...</span>
     </ng-template>
-    <app-plane-layout [plane]="flight.plane" [toBeAdded]="toBeAdded" [flight]="flight"></app-plane-layout>
-    <div style="text-align: right;">
-        <button mat-button matStepperNext class="btn  btn-md btn-rounded button-style" style="width: 20%; " [disabled]="toBeAdded.length!==numOfPassengers">Next</button>
-    </div>
+      <app-plane-layout [plane]="flight.plane" [toBeAdded]="toBeAdded" [booked]="occupiedSeats"></app-plane-layout>
+      <div style="text-align: right;">
+          <button mat-button matStepperNext class="btn  btn-md btn-rounded button-style" style="width: 20%; " [disabled]="toBeAdded.length!==numOfPassengers" (click)="resetSeats()">Next</button>
+      </div>
+  </mat-step>
+  <mat-step [stepControl]="firstBFormGroup" *ngIf="backFlight!==undefined">
+    <ng-template matStepLabel >
+       <span [ngStyle]="{'color': '#31124b'}">Choose seats for return flight...</span>
+    </ng-template>
+      <app-plane-layout [plane]="backFlight.plane" [toBeAdded]="toBeAdded" [booked]="occupiedSeats"></app-plane-layout>
+      <div style="text-align: right;">
+          <button mat-button matStepperNext class="btn  btn-md btn-rounded button-style" style="width: 20%; " [disabled]="toBeAdded.length!==numOfPassengers">Next</button>
+      </div>
   </mat-step>
   <mat-step [stepControl]="secondFormGroup" optional >
     <form [formGroup]="secondFormGroup" style="text-align: center;">
       <ng-template matStepLabel >
           <span [ngStyle]="{'color': '#31124b'}">Invite friends...</span>
       </ng-template>
-      <p [hidden]="!(toBeAdded.length===1 || toBeAdded.length===0 || toBeAdded===undefined)"><ngb-alert [dismissible]="false"><strong>Notice!</strong> You can invite friends if you choose more than one seat. Please choose more seats or skip this step.</ngb-alert></p>
+      <p [hidden]="numOfPassengers>1"><ngb-alert [dismissible]="false"><strong>Notice!</strong> You can invite friends if you choose more than one seat. Please choose more seats or skip this step.</ngb-alert></p>
       
       <br>
         <mat-form-field class="example-chip-list" style="margin-left: 10%; width: 80%;">
@@ -37,7 +46,7 @@
               [matChipInputFor]="chipList"
               [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
               (matChipInputTokenEnd)="add($event)"
-              [readonly]="toBeAdded.length===1 || toBeAdded.length===0 || toBeAdded===undefined || toBeAdded.length-1===invitedFriends.length">
+              [readonly]="numOfPassengers===invitedFriends.length || !(numOfPassengers>1)">
           </mat-chip-list>
           <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
             <mat-option *ngFor="let option of filteredOptions | async" [value]="option.getName()">
@@ -63,7 +72,7 @@
    <form [formGroup]="thirdFormGroup">
     
      <div class="col" formGroupName="passenger1">
-      <label style="color: #31124b; font-weight: bolder;">Passenger 1 of {{toBeAdded.length}}</label>
+      <label style="color: #31124b; font-weight: bolder;">Passenger 1 of {{numOfPassengers}}</label>
       <div class="form-group" >
         <label class="control-label" >Seat:</label>
         <input
@@ -100,7 +109,7 @@
           formControlName="passporti">
           <span class="help-block" *ngIf="thirdFormGroup.get('passenger1.passporti').errors?.required && thirdFormGroup.get('passenger1.passporti').touched">Passport is required!</span>
       </div>
-      <button class="btn btn-rounded button-style" style="width: 30%;" (click)="initThirdForm()" [hidden]="toBeAdded.length===1 || toBeAdded.length===0" >Fill in other passengers personal data</button>
+      <button class="btn btn-rounded button-style" style="width: 30%;" (click)="initThirdForm()" [hidden]="numOfPassengers===1 || numOfPassengers===0" >Fill in other passengers personal data</button>
      </div>
     <div class="col" formArrayName="passengers" >
       <div
@@ -108,7 +117,7 @@
         [formGroupName]="i"
         style="margin-top: 10px;">
         <hr>
-        <label  style="color: #31124b; font-weight: bolder;">Passenger {{i+2}} of {{toBeAdded.length}}</label>
+        <label  style="color: #31124b; font-weight: bolder;">Passenger {{i+2}} of {{numOfPassengers}}</label>
         <div class="form-group" [ngClass]="{'has-error': passengerCtrl.get('seat').invalid && passengerCtrl.get('seat').touched}">
           <label class="control-label" [attr.for]="'seat'+i">Seat:</label>
           <input

@@ -75,6 +75,9 @@
         </div>
         <div class="flex-col align-self-center" style="width: 20%;  text-align: center;">
             {{price | currency:'EUR':true}}
+            <div class="flex-row " style="height: 50%;  padding-top: 5%;" >
+                <button class="btn  btn-md btn-rounded button-style" style="display: block;width: 100%;" (click)="buyTicket()">Buy ticket</button>
+            </div>
         </div>
     </div>
 </a>  

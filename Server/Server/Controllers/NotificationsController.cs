@@ -30,5 +30,48 @@ namespace Server.Controllers
             Response.Cookies.Append("token",token);
             Response.Redirect("http://localhost:4200/change-password");
         }
+
+        [HttpGet]
+        [Route("[action]")]
+        public IActionResult AlreadyConfirmed()
+        {
+            return View("ReservationAlreadyConfirmed");
+        }
+
+        [HttpGet]
+        [Route("[action]")]
+        public IActionResult InvitationConfirmed()
+        {
+            return View("InvitationConfirmed");
+        }
+
+        [HttpGet]
+        [Route("[action]")]
+        public IActionResult LateConfirm()
+        {
+            return View("LateConfirm");
+        }
+
+        [HttpGet]
+        [Route("[action]")]
+        public IActionResult ReservationAlreadyConfirmed()
+        {
+            return View("ReservationAlreadyConfirmed");
+        }
+
+        [HttpGet]
+        [Route("[action]")]
+        public IActionResult AlreadyDeclined()
+        {
+            return View("AlreadyDeclined");
+        }
+
+        [HttpGet]
+        [Route("[action]")]
+        public IActionResult InvitationDeclined()
+        {
+            return View("InvitationDeclined");
+        }
+
     }
 }

@@ -16,6 +16,6 @@ namespace Server.Models
         public virtual RegisteredUser RegisteredUser { get; set; }
 
         public ICollection<CarReservation> CarReservations { get; set; }
-        public ICollection<FlightReservation> FlightReservations { get; set; }
+        public ICollection<UserFlightReservation> FlightReservations { get; set; }
     }
 }

@@ -5,3 +5,12 @@ div{
     color: #31124b;
     font-size: x-large;
 }
+
+.button-style{
+    background-color:  #fa871b;
+    color: white;
+    border-color: #fa871b;
+    height: 100%;
+    width: 80%;
+    padding: 0%;
+  }

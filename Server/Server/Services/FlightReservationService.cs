@@ -38,21 +38,11 @@ namespace Server.Services
             return await flightReservationRepository.GetFlightReservations(userId);
         }
 
-        public async Task<bool> PostFlightReservation(FlightReservation flightReservation)
+        public async Task<bool> PostFlightReservation(FlightReservation flightReservation, List<int> flightIds)
         {
-            if (flightReservationRepository.CheckSeats(flightReservation))
+            if (flightReservationRepository.CheckSeats(flightReservation, flightIds))
             {
                 flightReservationRepository.PostFlightReservation(flightReservation);
-                //foreach (var item in flightReservation.Passengers)
-                //{
-                //    foreach (var item2 in item.Seats)
-                //    {
-                //        var flight = await flightRepository.GetFlight(item2.FlightId);
-                //        flight.OccupiedSeats.Add(item2);
-
-                //        flightRepository.UpdateFlight(flight);
-                //    }
-                //}
                 try
                 {
                     await flightReservationRepository.Save();

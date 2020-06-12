@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, AfterViewInit } from '@angular/core';
 import { Flight } from 'src/app/models/flight.model';
 import { RoundFlight } from 'src/app/models/round-flight.model';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AirlineService } from 'src/app/services/airline.service';
 @Component({
   selector: 'app-round-flight-item',
@@ -18,7 +18,7 @@ export class RoundFlightItemComponent implements OnInit,AfterViewInit {
   imgToDisplay1:string;
   imgToDisplay2:string;
   @Input() roundFlight:RoundFlight;
-  constructor(private route:ActivatedRoute, private airlineService:AirlineService) { }
+  constructor(private route:ActivatedRoute, private airlineService:AirlineService, private router:Router) { }
 
   ngAfterViewInit(): void {
     this.hours1 = Math.floor(this.roundFlight.toFlight.duration/60);
@@ -42,6 +42,13 @@ export class RoundFlightItemComponent implements OnInit,AfterViewInit {
   }
 
   ngOnInit(): void {
+  }
+
+  buyTicket(){
+    var klasa = this.route.snapshot.queryParams['class'];
+    var passengers = this.route.snapshot.queryParams['passengers'];
+
+    this.router.navigate(['/create-reservation', this.roundFlight.toFlight.id+'-'+this.roundFlight.backFlight.id, klasa, passengers]);
   }
 
 }

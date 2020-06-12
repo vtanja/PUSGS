@@ -12,6 +12,7 @@ import { PlaneAdapter } from './plane.adapter';
     adapt(item: any) {
       let flight = new Flight(item.id, item.takeOffLocation,item.landingLocation,item.takeOffDate, item.landingDate, item.takeOffTime, item.landingTime, item.duration, item.connections, item.segmentPrices, item.plane.code);
       flight.plane = this.planeAdapter.adapt(item.plane);
+      flight.occupiedSeats = item.occupiedSeats;
       console.log(flight);
       return flight;
     }

@@ -27,6 +27,7 @@ export class FlightReservationItemComponent implements OnInit,OnDestroy, AfterVi
   modalCloseSubscription:Subscription;
   private readonly image = '../../../../../assets/images/airlines/';
   imgToDisplay:string;
+  imgToDisplay2:string;
 
   constructor(private airlineService:AirlineService, private modalService: NgbModal, private rentCarService:RentCarService, private router:Router, private flightReservationService:FlightReservationService) { }
 
@@ -35,7 +36,13 @@ export class FlightReservationItemComponent implements OnInit,OnDestroy, AfterVi
       this.imgToDisplay = this.image + res.image;
       console.log(res.image);
     });
-
+    
+    if(this.flightReservation.flights[1]!==undefined){
+      this.airlineService.getAirline(this.flightReservation.flights[1].plane.airlineId).subscribe((res:any)=>{
+        this.imgToDisplay2 = this.image + res.image;
+        console.log(res.image);
+      });
+    }
   }
 
   ngOnInit(): void {

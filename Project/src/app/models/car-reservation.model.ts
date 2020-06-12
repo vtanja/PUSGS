@@ -1,4 +1,6 @@
 import { RentCarService } from '../services/rent-a-car.service';
+import { RentCar } from './rent-a-car.model';
+import { Car } from './Car.model';
 
 export class CarReservation{
 

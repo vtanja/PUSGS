@@ -5,6 +5,7 @@ using Server.Settings;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 
@@ -33,73 +34,45 @@ namespace Server.Repositories
             this.disposed = true;
         }
 
-        public bool CheckSeats(FlightReservation flightReservation)
+        public bool CheckSeats(FlightReservation flightReservation, List<int> flightIds)
         {
             var occupiedSeatsTo = new List<Seat>();
             var occupiedSeatsBack = new List<Seat>();
+            List<FlightFlightReservation> flights = new List<FlightFlightReservation>();
 
-            var firstflight = _context.Flights.Where(x=>x.Id == flightReservation.Flights.First().Id).FirstOrDefault();
-            List<Seat> occupiedSeats1 = new List<Seat>();
-            if (firstflight != null)
+            foreach (var item in flightIds)
             {
-                if (firstflight.OccupiedSeats != null)
+                var toAdd = _context.FlightFlightReservation.Include(x => x.Reservation).ThenInclude(x=>x.Passengers).ThenInclude(x=>x.Seats).Include(x=>x.Flight).ThenInclude(x=>x.OccupiedSeats).Where(x => x.FlightId == item && !x.Reservation.Cancelled).ToList();
+                foreach (var item2 in toAdd)
                 {
-                    occupiedSeats1.AddRange(firstflight.OccupiedSeats);
+                    flights.Add(item2);
                 }
             }
 
-            Flight returnFlight=null;
-            List<Seat> occupiedSeats2 = new List<Seat>();
-            if (flightReservation.Flights.Count == 2)
+            if (flights != null)
             {
-                returnFlight = _context.Flights.Where(x => x.Id == flightReservation.Flights.Last().Id).FirstOrDefault();
-                if (returnFlight != null)
+                foreach (var item in flights)
                 {
-                    if (returnFlight.OccupiedSeats != null)
+                    List<Seat> chosenSeats = new List<Seat>();
+                    foreach (var item2 in flightReservation.Passengers)
                     {
-                        occupiedSeats2.AddRange(returnFlight.OccupiedSeats);
+                        item2.Seats.ToList().ForEach(x => chosenSeats.Add(x));
                     }
-                }
-            }
-
-            if (occupiedSeats1 != null)
-            {
-                foreach (var item in flightReservation.Passengers)
-                {
-                    var seats = occupiedSeats1.Where(x => x.Code == item.Seats.First().Code).ToList();
-                    if (seats.Count > 0)
+                    foreach (var item2 in chosenSeats)
                     {
-                        return false;
+                        if (item.Flight.OccupiedSeats.Where(x => x.Code == item2.Code).ToList().Count > 0)
+                        {
+                            return false;
+                        }
+                        else
+                        {
+                            item.Flight.OccupiedSeats.ToList().AddRange(chosenSeats);
+                        }
                     }
+
                 }
             }
-
-            if (occupiedSeats2 != null)
-            {
-                foreach (var item in flightReservation.Passengers)
-                {
-                    var seats = occupiedSeats2.Where(x => x.Code == item.Seats.Last().Code).ToList();
-                    if (seats.Count > 0)
-                    {
-                        return false;
-                    }
-                }
-            }
-
-            foreach (var item in flightReservation.Passengers)
-            {
-                _context.Passengers.Add(item);
-                try
-                {
-                     _context.SaveChanges();
-                }
-                catch (Exception)
-                {
-                    return false;
-                }
-            }
-
-           
+            
             return true;
         }
 
@@ -121,30 +94,60 @@ namespace Server.Repositories
 
         public async Task<IEnumerable<FlightReservation>> GetFlightReservations(string userId)
         {
-            var reservations = await _context.FlightReservations.Where(x => x.UserId == userId && !x.Cancelled).Include(x => x.CarReservation).Include(x => x.Passengers).ThenInclude(x => x.Seats).ToListAsync();
-            foreach (var item in reservations)
+            var user = await  _context.Users.Include(x => x.FlightReservations).Where(x => x.UserId == userId).FirstOrDefaultAsync();
+            var userFlights = _context.UserFlightReservations.Where(x => x.UserId == userId).Include(x=>x.Reservation);
+
+            List<FlightFlightReservation> flightReservations = new List<FlightFlightReservation>();
+
+            foreach (var item in userFlights)
             {
-                List<int> flightIds = new List<int>();
-                foreach (var item2 in item.Passengers)
+                var res = await _context.FlightFlightReservation.Where(x => x.ReservationId == item.ReservationId && !x.Reservation.Cancelled).Include(x => x.Flight).ThenInclude(x => x.LandingLocation).Include(x => x.Flight).ThenInclude(x => x.TakeOffLocation).Include(x => x.Flight).ThenInclude(x => x.OccupiedSeats).Include(x => x.Flight).ThenInclude(x => x.Plane).Include(x => x.Flight).ThenInclude(x => x.SegmentPrices).Include(x => x.Reservation).ThenInclude(x => x.Passengers).Include(x => x.Reservation).ThenInclude(x => x.CarReservation).FirstOrDefaultAsync();
+                if (res != null)
                 {
-                    flightIds.Add(item2.Seats.ToArray()[0].FlightId);
-                    if (item2.Seats.ToArray().Length == 2)
-                    {
-                        flightIds.Add(item2.Seats.ToArray()[1].FlightId);
-                    }
-                }
-                foreach (var item2 in flightIds)
-                {
-                    Flight flight = await _context.Flights.Where(x => x.Id == item2).Include(x => x.LandingLocation).Include(x => x.TakeOffLocation).Include(x => x.Plane).ThenInclude(x => x.Airline).Include(x => x.OccupiedSeats).FirstOrDefaultAsync();
-                    if (flight != null)
-                    {
-                        item.Flights.Add(flight);
-                    }
-
-
+                    flightReservations.Add(res);
                 }
             }
 
+
+            //var toAdd = await _context.FlightFlightReservation.Include(x => x.Flight).ThenInclude(x => x.LandingLocation).Include(x => x.Flight).ThenInclude(x => x.TakeOffLocation).Include(x => x.Flight).ThenInclude(x => x.OccupiedSeats).Include(x => x.Flight).ThenInclude(x => x.Plane).Include(x => x.Flight).ThenInclude(x => x.SegmentPrices).Include(x => x.Reservation).ThenInclude(x => x.Passengers).Include(x => x.Reservation).ThenInclude(x => x.CarReservation).Where(x => x.Reservation.UserId == userId && !x.Reservation.Cancelled).ToListAsync();
+
+            //if (toAdd != null)
+            //{
+            //    flightReservations.AddRange(toAdd);
+            //}
+
+            foreach (var item in flightReservations)
+            {
+                //List<int> flightIds = new List<int>();
+                //foreach (var item2 in item.Passengers)
+                //{
+                //    flightIds.Add(item2.Seats.ToArray()[0].FlightId);
+                //    if (item2.Seats.ToArray().Length == 2)
+                //    {
+                //        flightIds.Add(item2.Seats.ToArray()[1].FlightId);
+                //    }
+                //}
+
+                //item.Value.First().Reservation.Flights.Add(item.Value.First().Flight);
+
+                item.Reservation.Flights.Add(item.Flight);
+            }
+
+            List<FlightReservation> reservations = new List<FlightReservation>();
+            //foreach (var item in flightReservations)
+            //{
+            //    reservations.Add(item.Value.First().Reservation);
+            //}
+
+            foreach (var item in flightReservations)
+            {
+                if (reservations.Where(x => x.ReservationId == item.ReservationId).ToList().Count == 0)
+                {
+                    reservations.Add(item.Reservation);
+                }
+            }
+
+            //flightReservations.ForEach(x => reservations.Add(x.Reservation));
             return reservations;
         }
 

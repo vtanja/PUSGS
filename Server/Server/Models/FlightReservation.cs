@@ -12,10 +12,10 @@ namespace Server.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ReservationId { get; set; }
-        public string UserId { get; set; }
+        //public string UserId { get; set; }
         public double TotalPrice { get; set; }
-        [ForeignKey("UserId")]
-        public virtual User User { get; set; }
+       // [ForeignKey("UserId")]
+        //public virtual User User { get; set; }
         public bool FlightRated { get; set; }
         public bool AirlineRated { get; set; }
         public bool Cancelled { get; set; }
@@ -24,5 +24,7 @@ namespace Server.Models
         public virtual CarReservation CarReservation { get; set; }
         public ICollection<Flight> Flights { get; set; } = new List<Flight>();
         public ICollection<Passenger> Passengers { get; set; }
+        public ICollection<User> Users { get; set; }
+        public DateTime DateCreated { get; set; }
     }
 }

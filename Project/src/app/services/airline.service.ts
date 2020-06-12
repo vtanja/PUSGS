@@ -48,7 +48,7 @@ export class AirlineService{
      // this.airlines.find(r=>r.id===companyID).flights.find(f=>f.id===flightID).addRate(flightRate);
     }
 
-    addCompanyRate(companyID:number,rate:UsersRate){
-      this.airlines.find(r=>r.id===companyID).addRate(rate);
-    }
+    // addCompanyRate(companyID:number,rate:UsersRate){
+    //   this.airlines.find(r=>r.id===companyID).addRate(rate);
+    // }
 }

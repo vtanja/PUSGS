@@ -35,7 +35,7 @@ export class FlightReservationService {
   }
 
   getFlightReservations(){
-    return this.httpClient.get(this.baseUri + 'FlightReservations');
+    return this.httpClient.get(this.baseUri + 'FlightReservations/All');
   }
 
   cancelReservation(reservation:FlightReservation){

@@ -189,9 +189,12 @@ namespace Server.Repositories
 
         public async Task<IEnumerable<Seat>> GetOccupiedSeats(int flightId)
         {
-            var seats = await _context.Seats.Where(x => x.FlightId == flightId).ToListAsync();
+            var seats = await _context.FlightFlightReservation.Include(x=>x.Flight).ThenInclude(x=>x.OccupiedSeats).Where(x => x.FlightId == flightId).ToListAsync();
 
-            return seats;
+            List<Seat> retVal = new List<Seat>();
+
+            seats.ForEach(x => retVal.AddRange(x.Flight.OccupiedSeats));
+            return retVal;
         }
     }
 }
