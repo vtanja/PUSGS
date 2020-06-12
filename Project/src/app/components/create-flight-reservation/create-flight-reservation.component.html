@@ -26,7 +26,7 @@
           <span [ngStyle]="{'color': '#31124b'}">Invite friends...</span>
       </ng-template>
       <p [hidden]="numOfPassengers>1"><ngb-alert [dismissible]="false"><strong>Notice!</strong> You can invite friends if you choose more than one seat. Please choose more seats or skip this step.</ngb-alert></p>
-      
+
       <br>
         <mat-form-field class="example-chip-list" style="margin-left: 10%; width: 80%;">
           <mat-chip-list #chipList aria-label="Invited friends...">
@@ -54,7 +54,7 @@
             </mat-option>
           </mat-autocomplete>
         </mat-form-field>
-        
+
   </form>
         &nbsp;
 
@@ -62,15 +62,15 @@
         <button mat-button matStepperNext class="btn  btn-md btn-rounded button-style" style="width: 20%; " (click)="initForm()" >Next</button>
       </div>
   </mat-step>
-  
+
   <mat-step [stepControl]="thirdFormGroup" >
     <ng-template matStepLabel >
       <span [ngStyle]="{'color': '#31124b'}">Fill in passengers' data...</span>
    </ng-template>
    <br>
-   
+
    <form [formGroup]="thirdFormGroup">
-    
+
      <div class="col" formGroupName="passenger1">
       <label style="color: #31124b; font-weight: bolder;">Passenger 1 of {{numOfPassengers}}</label>
       <div class="form-group" >
@@ -174,10 +174,10 @@
       <div *ngIf="cars.length===0">
         <h5 style="color:red;">We're sorry, there are no cars to offer for rent on your landing location.</h5>
       </div>
-      <div class="d-flex justify-content-center" style="margin-top: 2%;" *ngIf="cars.length!==0"> 
+      <div class="d-flex justify-content-center" style="margin-top: 2%;" *ngIf="cars.length!==0">
         <app-cars-cards [cars]="cars"></app-cars-cards>
       </div>
-      
+
       <br>
       <div style="text-align: right;">
         <button mat-button matStepperNext class="btn  btn-md btn-rounded button-style" style="width: 20%; ">Next</button>

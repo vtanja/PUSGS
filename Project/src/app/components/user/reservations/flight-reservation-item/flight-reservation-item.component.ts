@@ -36,7 +36,7 @@ export class FlightReservationItemComponent implements OnInit,OnDestroy, AfterVi
       this.imgToDisplay = this.image + res.image;
       console.log(res.image);
     });
-    
+
     if(this.flightReservation.flights[1]!==undefined){
       this.airlineService.getAirline(this.flightReservation.flights[1].plane.airlineId).subscribe((res:any)=>{
         this.imgToDisplay2 = this.image + res.image;
@@ -51,7 +51,7 @@ export class FlightReservationItemComponent implements OnInit,OnDestroy, AfterVi
     this.modalCloseSubscription = this.flightReservationService.rateModalClose.subscribe((data:any)=>{
       if(data.airline){
       //  this.flightReservation.airlineRate=data.rate;
-      }else if(data.car){
+      }else if(data.flight){
        // this.flightReservation.flightRate = data.rate;
       }
       this.modalService.dismissAll();
