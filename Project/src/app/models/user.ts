@@ -13,13 +13,7 @@ export class User {
      password:string;
      phoneNumber:string;
      address:string;
-     friends:User[];
-     friendRequests:User[];
      profileImage:string;
-     carReservations:CarReservation[];
-     flightReservations:FlightReservation[];
-     carCompany:number;
-     airlineCompany:number;
 
     constructor(firstName:string, lastName:string,
           email:string,role:string, userName:string, password:string, phone:string, address:string, friends:User[] ){
@@ -31,12 +25,7 @@ export class User {
             this.role=role;
             this.phoneNumber=phone;
             this.address=address;
-            this.friends=friends;
-            this.friendRequests=[];
-            this.profileImage="../../assets/images/profilna.png";
-            this.carReservations = [];
-            this.flightReservations=[];
-
+            this.profileImage="profilna.png";
          }
         
 

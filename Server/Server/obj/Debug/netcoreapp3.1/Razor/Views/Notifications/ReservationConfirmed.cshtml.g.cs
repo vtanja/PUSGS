@@ -19,7 +19,7 @@ namespace AspNetCore
         public async override global::System.Threading.Tasks.Task ExecuteAsync()
         {
 #nullable restore
-#line 1 "C:\Users\Andjela\Desktop\PUSGS\Server\Server\Views\Notifications\ReservationConfirmed.cshtml"
+#line 1 "C:\Users\vukmi\OneDrive\Dokumenti\GitHub\PUSGS\Server\Server\Views\Notifications\ReservationConfirmed.cshtml"
   
     ViewData["Title"] = " Travellix - Reservation Confirmed";
 
@@ -27,7 +27,7 @@ namespace AspNetCore
 #line hidden
 #nullable disable
 #nullable restore
-#line 4 "C:\Users\Andjela\Desktop\PUSGS\Server\Server\Views\Notifications\ReservationConfirmed.cshtml"
+#line 4 "C:\Users\vukmi\OneDrive\Dokumenti\GitHub\PUSGS\Server\Server\Views\Notifications\ReservationConfirmed.cshtml"
   
     ViewData["Title"] = "Techhowdy - Reservation Confirmation";
 

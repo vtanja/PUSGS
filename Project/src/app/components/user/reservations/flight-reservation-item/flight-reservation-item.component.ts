@@ -48,14 +48,14 @@ export class FlightReservationItemComponent implements OnInit,OnDestroy, AfterVi
   ngOnInit(): void {
 
 
-    this.modalCloseSubscription = this.flightReservationService.rateModalClose.subscribe((data:any)=>{
-      if(data.airline){
-      //  this.flightReservation.airlineRate=data.rate;
-      }else if(data.flight){
-       // this.flightReservation.flightRate = data.rate;
-      }
-      this.modalService.dismissAll();
-    })
+    // this.modalCloseSubscription = this.flightReservationService.rateModalClose.subscribe((data:any)=>{
+    //   if(data.airline){
+    //   //  this.flightReservation.airlineRate=data.rate;
+    //   }else if(data.car){
+    //    // this.flightReservation.flightRate = data.rate;
+    //   }
+    //   this.modalService.dismissAll();
+    // })
 
     var i = 0;
     var today = new Date();
@@ -71,7 +71,7 @@ export class FlightReservationItemComponent implements OnInit,OnDestroy, AfterVi
   }
 
   ngOnDestroy():void{
-    this.modalCloseSubscription.unsubscribe();
+    //this.modalCloseSubscription.unsubscribe();
   }
 
   openRateModal(content,rateItem) {

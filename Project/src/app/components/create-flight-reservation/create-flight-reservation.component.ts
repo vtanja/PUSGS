@@ -139,15 +139,26 @@ export class CreateFlightReservationComponent implements OnInit,AfterViewInit {
     
   }
 
-   initForm(){
-    console.log(this.toBeAddedTo);
+fillForm(){
+  console.log(this.toBeAddedTo);
      let firstName = this.loggedUser.firstName;
      let lastName = this.loggedUser.lastName;
 
+  this.thirdFormGroup.patchValue({
+    passenger1:{
+      'seati':this.toBeAddedTo[0],
+      'firstNamei':firstName,
+      'lastNamei':lastName,
+    }
+  })
+}
+
+   initForm(){
+    
     let passenger1 = new FormGroup({
-      'seati': new FormControl(this.toBeAddedTo[0], Validators.required),
-      'firstNamei': new FormControl(firstName, Validators.required),
-      'lastNamei':new FormControl(lastName, Validators.required),
+      'seati': new FormControl('', Validators.required),
+      'firstNamei': new FormControl('', Validators.required),
+      'lastNamei':new FormControl('', Validators.required),
       'passporti':new FormControl('', [Validators.required, Validators.pattern(new RegExp("^[A-Z][0-9]{8}$"))])
     });
 
@@ -158,7 +169,6 @@ export class CreateFlightReservationComponent implements OnInit,AfterViewInit {
       'passenger1': passenger1,
       'passengers': passengers
     });
-
 
    }
 
@@ -257,6 +267,7 @@ export class CreateFlightReservationComponent implements OnInit,AfterViewInit {
 
   ngOnInit(): void {
     
+    this.initForm();
 
     this.mySubscription = this.route.params.subscribe((params:Params)=>
       {
@@ -275,14 +286,13 @@ export class CreateFlightReservationComponent implements OnInit,AfterViewInit {
     //sthis.initForm();
 
 
-    // this.secondFormGroup = new FormGroup({
-    //   'fruitCtrl':new FormControl('')
-    // });
+    this.secondFormGroup = new FormGroup({
+      'fruitCtrl':new FormControl('')
+    });
 
     //this.cars.push(...this.rentCarService.getCarsAtLocation(this.location));
 
   }
-
 
   add(event: MatChipInputEvent): void {
     const input = event.input;
