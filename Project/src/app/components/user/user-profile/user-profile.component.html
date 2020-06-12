@@ -140,7 +140,7 @@
           <div class="container-login100-form-btn" style="align-self: center;">
             <div class="wrap-login100-form-btn">
               <div class="login100-form-bgbtn"></div>
-              <button class="login100-form-btn" [disabled]="editForm.invalid">
+              <button class="login100-form-btn" [disabled]="editForm.invalid || !editForm.dirty">
                 Save changes
               </button>
             </div>

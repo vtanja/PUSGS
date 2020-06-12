@@ -53,7 +53,13 @@ namespace Server.Controllers
                 return NotFound();
             }
 
-            return _mapper.Map<Airline,AirlineDTO>(airline);
+            var owner = airline.Owner;
+
+            var mappedOwner = _mapper.Map<RegisteredUser, RegisteredUserDTO>(owner);
+
+            var mapped = _mapper.Map<Airline, AirlineDTO>(airline);
+            mapped.Owner = mappedOwner;
+            return mapped;
         }
 
 
@@ -87,12 +93,11 @@ namespace Server.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        [Authorize(Roles = "AIRLINEADMIN")]
         public async Task<IActionResult> PutAirline(int id, Airline airline)
         {
             if (id != airline.Id)
             {
-                return BadRequest(new { message ="An error ocured. Please try again later."});
+                return BadRequest(new { message = "An error ocured. Please try again later." });
             }
 
             //airline.OwnerId  = User.Claims.First(c => c.Type == "UserID").Value;
@@ -118,44 +123,28 @@ namespace Server.Controllers
                 return BadRequest(new { message = "Updating data failed. Please try again later." });
             }
 
-            _context.Entry(airline).Property(a => a.Destinations).IsModified = false;
+            _context.Entry(airline).Property(a => a.Id).IsModified = false;
             _context.Entry(airline).Property(a => a.AddressId).IsModified = false;
             _context.Entry(airline).Property(a => a.OwnerId).IsModified = false;
             _context.Entry(airline).Property(a => a.Rate).IsModified = false;
 
+
+
             try
             {
-                await _context.SaveChangesAsync();
+                 await _context.SaveChangesAsync();
             }
-            catch
+            catch(Exception e)
             {
-                //if (!AirlineExists(id))
-                //{
-                //    return NotFound();
-                //}
-                //else
-                //{
-                //    return BadRequest(new { message = "Updating data failed. Please try again later." });
-                //}
+                if (!AirlineExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    return BadRequest(new { message = "Updating data failed. Please try again later." });
+                }
             }
-
-            //var airlineToChange = await _context.Airlines.Where(a => a.Id == id).FirstOrDefaultAsync();
-
-            //airlineToChange.Logo = airline.Logo;
-            //airlineToChange.Name = airline.Name;
-            //airlineToChange.Description = airline.Description;
-            //airlineToChange.Address = airline.Address;
-
-            //try
-            //{
-            //    _context.Entry<Airline>(airlineToChange).State = EntityState.Detached;
-            //    _context.Entry<Airline>(airlineToChange).State = EntityState.Modified;
-            //}
-            //catch (Exception)
-            //{
-            //    _context.Entry(airlineToChange).State = EntityState.Unchanged;
-            //    return BadRequest(new { message = "Updating data failed. Please try again later." });
-            //}
 
 
             return NoContent();
@@ -191,6 +180,11 @@ namespace Server.Controllers
                 return BadRequest("Airline already added!");
             }
             
+        }
+
+        private bool AirlineExists(int id)
+        {
+            return _context.Airlines.Any(e => e.Id == id);
         }
 
         // DELETE: api/Airlines/5

@@ -25,7 +25,7 @@ export class AirlineAdministratorService {
    getAirline():Observable<Airline>{
      return this.httpClient.get(this.baseUri + 'Airlines/GetAirlineByUser/'+this.userService.getUserName())
       .pipe(
-        map(data=>this.airlineProfileAdapter.adapt(data))
+        map(data=>this.airlineAdapter.adapt(data))
       )
    }
 

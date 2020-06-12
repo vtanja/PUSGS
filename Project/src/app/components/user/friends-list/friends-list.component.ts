@@ -8,7 +8,6 @@ import { MatSelect } from '@angular/material/select';
 import { takeUntil } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
 import { HttpClient } from '@angular/common/http';
-
 @Component({
   selector: 'app-friends-list',
   templateUrl: './friends-list.component.html',
@@ -49,6 +48,7 @@ export class FriendsListComponent implements OnInit, AfterViewInit{
 
   ngOnInit(): void {
     this.users = this.getAllUsers();
+    console.log(this.users);
     this.sortedData = this.getFriends();
   }
 
@@ -67,14 +67,15 @@ export class FriendsListComponent implements OnInit, AfterViewInit{
 
   sendRequests(){
     console.log(this.selected);
-
-    var toSend = {'username':this.selected};
-    this.userService.sendRequests(toSend).subscribe((res:any)=>{
+    let friend:{}={
+        Id:this.selected
+    }
+    this.userService.sendRequests(friend).subscribe((res:any)=>{
 
         this.toastr.success('Friend request sent!','Success!');
       }
       , (err)=> {
-        this.toastr.error(err.message,'Eroor!');
+        this.toastr.error(err.error.message,'Error!');
       }
     );
 
@@ -115,7 +116,11 @@ export class FriendsListComponent implements OnInit, AfterViewInit{
 
   removeUser(user:User){
     this.userService.delete(user).subscribe((res:any)=>{
-      this.sortedData=this.getFriends()
+      this.sortedData=this.getFriends();
+      this.toastr.success('Friend removed successfully!','Success!');
+    }, 
+    (err)=>{
+      this.toastr.error(err.error.message,'Error!');
     })
   }
 

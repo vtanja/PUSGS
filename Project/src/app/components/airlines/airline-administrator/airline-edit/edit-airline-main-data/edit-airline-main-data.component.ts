@@ -6,6 +6,7 @@ import { Address } from 'src/app/models/address';
 import { from } from 'rxjs';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
+import { UserService } from 'src/app/services/user-service.service';
 @Component({
   selector: 'app-edit-airline-main-data',
   templateUrl: './edit-airline-main-data.component.html',
@@ -18,7 +19,7 @@ export class EditAirlineMainDataComponent implements OnInit, AfterViewInit {
   imgPreview:string | ArrayBuffer;
   img='../../../../../assets/images/airlines/';
   
-  constructor(private airlineAdministratorService:AirlineAdministratorService, private router:Router) { }
+  constructor(private airlineAdministratorService:AirlineAdministratorService, private router:Router, private userService:UserService) { }
 
 
   ngAfterViewInit(): void {
@@ -68,19 +69,28 @@ export class EditAirlineMainDataComponent implements OnInit, AfterViewInit {
 
 
   editCompanyData():void{
+    let data=this.dataForm.value;
+    data['address']['addressId'] = this.airline.address.addressId;
+    data['id']=this.airline.id; 
+    delete data ['fileSource'];
+    delete data ['file'];
+    console.log(data);
 
-
-    this.airlineAdministratorService.editCompanyData(this.airline.id, this.dataForm.value).subscribe((res:any)=>{
+    this.airlineAdministratorService.editCompanyData(this.airline.id, data).subscribe((res:any)=>{
       Swal.fire({
         text: 'Airline successfully added!',
         icon: 'success',
         showConfirmButton: false,
         timer: 1500,
       });
-      this.router.navigate(['/airline-company-data/edit-airline-main-data']);
+      this.dataForm.reset();
+      this.airlineAdministratorService.getAirline().subscribe((res:Airline)=>{
+        this.airline = res;
+        this.setFormValues();
+      });
     }, (err)=>{
       Swal.fire({
-        text: 'Error while changing airline data!',
+        text: err.error.message,
         icon: 'error',
         showConfirmButton: true,
         timer: 1500,

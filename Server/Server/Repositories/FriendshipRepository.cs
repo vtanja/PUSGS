@@ -88,7 +88,7 @@ namespace Server.Repositories
 
         public async Task<Friendship> FindFriendship(string userID, string friendId)
         {
-            return await _context.Friendships.FirstOrDefaultAsync(x => x.FriendID == userID && x.UserID == friendId);
+            return await _context.Friendships.FirstOrDefaultAsync(x => (x.FriendID == userID && x.UserID == friendId) || (x.UserID==friendId && x.FriendID==userID));
         }
 
     }

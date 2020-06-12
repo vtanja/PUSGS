@@ -52,53 +52,78 @@ namespace Server.Controllers
 
         [HttpGet]
         [Route("Profile")]
-        public async Task<ActionResult<UserDTO>> GetUserProfile()
+        public async Task<ActionResult<RegisteredUserDTO>> GetUserProfile()
         {
-            //string userId = User.Claims.First(c => c.Type == "UserID").Value;
-            //var role = await _dataBaseContext.UserRoles.FindAsync(userId);
-            //var user = await _dataBaseContext.RegisteredUsers.Where(x=>x.Id == userId).FirstOrDefaultAsync();
 
-            //if(user == null)
-            //{
-            //    return BadRequest(new { message = "User with this username doesn't exist!" });
-            //}
+            string userID = User.Claims.First(c => c.Type == "UserID").Value;
 
-            //if(user.SocialUserType == "USER")
-            //{
+            var user = await _userManager.FindByIdAsync(userID);
 
-            //}
 
-            //return _mapper.Map<RegisteredUser, UserDTO>(user);
-            return null;
+                var founded = await _dataBaseContext.RegisteredUsers.Where(x => x.Id == userID).FirstOrDefaultAsync();
+
+                if (founded == null)
+                {
+                    return BadRequest(new { message = "User wasn't found!" });
+                }
+            
+
+            return _mapper.Map<RegisteredUser, RegisteredUserDTO>(founded);
         }
 
-        [HttpPut("{username}")]
-        public async Task<IActionResult> UpdateProfile(string username, UserModel model)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateProfile(string id, UserModel model)
         {
-            if (username != model.UserName)
+            if (id != model.Id)
             {
                 return BadRequest();
             }
 
-            var user = new RegisteredUser()
-            {
-                UserName = model.UserName,
-                Email = model.Email,
-                FirstName = model.FirstName,
-                LastName = model.LastName,
-                Address = model.Address,
-                PhoneNumber = model.PhoneNumber
-            };
+            var affectedUser = await _dataBaseContext.RegisteredUsers.Where(x => x.Id == model.Id).FirstOrDefaultAsync();
 
-            _dataBaseContext.Entry(user).State = EntityState.Modified;
+            affectedUser.FirstName = model.FirstName;
+            affectedUser.LastName = model.LastName;
+            affectedUser.PhoneNumber = model.PhoneNumber;
+            affectedUser.Email = model.Email;
+            affectedUser.Address = model.Address;
+            affectedUser.ProfileImage = model.ProfileImage;
+
+            //var user = new RegisteredUser()
+            //{
+            //    UserName = model.UserName,
+            //    Email = model.Email,
+            //    FirstName = model.FirstName,
+            //    LastName = model.LastName,
+            //    Address = model.Address,
+            //    PhoneNumber = model.PhoneNumber,
+            //    Id = affectedUser.Id
+            //};
+
+            if (!String.IsNullOrEmpty(model.Password))
+            {
+                var token = await _userManager.GeneratePasswordResetTokenAsync(affectedUser);
+                var result = await _userManager.ResetPasswordAsync(affectedUser, token, model.Password);
+
+                if (result.Succeeded)
+                {
+                    affectedUser.PasswordChanged = true;
+                }
+                else
+                {
+                    return BadRequest(new { message="Error while chaniging password."});
+                }
+            }
+
+            //_dataBaseContext.Entry(user).State = EntityState.Detached;
+            _dataBaseContext.Entry(affectedUser).State = EntityState.Modified;
 
             try
             {
                 await _dataBaseContext.SaveChangesAsync();
             }
-            catch (DbUpdateConcurrencyException)
+            catch (DbUpdateConcurrencyException e)
             {
-                if (_dataBaseContext.RegisteredUsers.Where(x => x.UserName == username).FirstOrDefault() == null)
+                if (_dataBaseContext.RegisteredUsers.Where(x => x.Id == id).FirstOrDefault() == null)
                 {
                     return NotFound();
                 }
@@ -111,10 +136,10 @@ namespace Server.Controllers
             return NoContent();
         }
 
-        [HttpGet("{username}")]
-        public async Task<ActionResult<UserDTO>> GetUser(string username)
+        [HttpGet("{id}")]
+        public async Task<ActionResult<UserDTO>> GetUser(string id)
         {
-            var user = await _dataBaseContext.Users.Include(x => x.RegisteredUser).Where(x => x.RegisteredUser.UserName == username).FirstOrDefaultAsync();
+            var user = await _dataBaseContext.Users.Include(x => x.RegisteredUser).Where(x => x.RegisteredUser.Id == id).FirstOrDefaultAsync();
 
             if (user == null)
             {
@@ -128,11 +153,11 @@ namespace Server.Controllers
         [Route("AllUsers")]
         public async Task<ActionResult<IEnumerable<UserDTO>>> GetAllUsers()
         {
-            string userName = User.Claims.First(c => c.Type == "UserName").Value;
+            string userId = User.Claims.First(c => c.Type == "UserID").Value;
             //string userName = "tanja";
 
             List<UserDTO> retVal = new List<UserDTO>();
-            var users = await _dataBaseContext.Users.Include(user => user.RegisteredUser).Where(u => u.RegisteredUser.UserName != userName).ToListAsync();
+            var users = await _dataBaseContext.Users.Include(user => user.RegisteredUser).Where(u => u.RegisteredUser.Id != userId).ToListAsync();
             users.ForEach(r => retVal.Add(_mapper.Map<User, UserDTO>(r)));
             return retVal;
 
@@ -325,8 +350,8 @@ namespace Server.Controllers
                             await _dataBaseContext.Users.AddAsync(new User { UserId = newUser.Id });
                             await _dataBaseContext.SaveChangesAsync();
 
-                            var Token = await GenerateToken(newUser);
-                            return Ok(new { Token });
+                            var token = await GenerateToken(newUser);
+                            return Ok(new { token });
                         }
                     }
                     catch (Exception ex)

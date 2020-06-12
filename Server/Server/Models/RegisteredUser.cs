@@ -15,7 +15,7 @@ namespace Server.Models
         public string LastName { get; set; }
         [Column(TypeName = "nvarchar(150)")]
         public string Address { get; set; }
-
+        public string ProfileImage { get; set; }
         [Column(TypeName = "nvarchar(1)")]
         public char SocialUserType { get; set; }
         public bool PasswordChanged { get; set; }
