@@ -52,21 +52,24 @@ namespace Server.Controllers
 
         [HttpGet]
         [Route("Profile")]
-        public async Task<Object> GetUserProfile()
+        public async Task<ActionResult<UserDTO>> GetUserProfile()
         {
-            string userId = User.Claims.First(c => c.Type == "UserID").Value;
+            //string userId = User.Claims.First(c => c.Type == "UserID").Value;
+            //var role = await _dataBaseContext.UserRoles.FindAsync(userId);
+            //var user = await _dataBaseContext.RegisteredUsers.Where(x=>x.Id == userId).FirstOrDefaultAsync();
 
-            var user = await _userManager.FindByIdAsync(userId);
+            //if(user == null)
+            //{
+            //    return BadRequest(new { message = "User with this username doesn't exist!" });
+            //}
 
-            return new
-            {
-                user.FirstName,
-                user.LastName,
-                user.UserName,
-                user.Email,
-                user.Address,
-                user.PhoneNumber
-            };
+            //if(user.SocialUserType == "USER")
+            //{
+
+            //}
+
+            //return _mapper.Map<RegisteredUser, UserDTO>(user);
+            return null;
         }
 
         [HttpPut("{username}")]

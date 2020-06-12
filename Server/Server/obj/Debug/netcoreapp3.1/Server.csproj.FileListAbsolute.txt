@@ -165,9 +165,6 @@ C:\Users\vukmi\OneDrive\Dokumenti\GitHub\PUSGS\Server\Server\bin\Debug\netcoreap
 C:\Users\vukmi\OneDrive\Dokumenti\GitHub\PUSGS\Server\Server\obj\Debug\netcoreapp3.1\Server.csprojAssemblyReference.cache
 C:\Users\vukmi\OneDrive\Dokumenti\GitHub\PUSGS\Server\Server\obj\Debug\netcoreapp3.1\Server.AssemblyInfoInputs.cache
 C:\Users\vukmi\OneDrive\Dokumenti\GitHub\PUSGS\Server\Server\obj\Debug\netcoreapp3.1\Server.AssemblyInfo.cs
-C:\Users\vukmi\OneDrive\Dokumenti\GitHub\PUSGS\Server\Server\obj\Debug\netcoreapp3.1\Server.csproj.CoreCompileInputs.cache
-C:\Users\vukmi\OneDrive\Dokumenti\GitHub\PUSGS\Server\Server\obj\Debug\netcoreapp3.1\Server.MvcApplicationPartsAssemblyInfo.cs
-C:\Users\vukmi\OneDrive\Dokumenti\GitHub\PUSGS\Server\Server\obj\Debug\netcoreapp3.1\Server.MvcApplicationPartsAssemblyInfo.cache
 C:\Users\vukmi\OneDrive\Dokumenti\GitHub\PUSGS\Server\Server\obj\Debug\netcoreapp3.1\Server.RazorAssemblyInfo.cache
 C:\Users\vukmi\OneDrive\Dokumenti\GitHub\PUSGS\Server\Server\obj\Debug\netcoreapp3.1\Server.RazorAssemblyInfo.cs
 C:\Users\vukmi\OneDrive\Dokumenti\GitHub\PUSGS\Server\Server\obj\Debug\netcoreapp3.1\Server.TagHelpers.input.cache
@@ -376,3 +373,8 @@ C:\Users\vukmi\OneDrive\Dokumenti\GitHub\PUSGS\Server\Server\obj\Debug\netcoreap
 C:\Users\vukmi\OneDrive\Dokumenti\GitHub\PUSGS\Server\Server\obj\Debug\netcoreapp3.1\Razor\Views\Notifications\ReservationAlreadyConfirmed.cshtml.g.cs
 C:\Users\vukmi\OneDrive\Dokumenti\GitHub\PUSGS\Server\Server\obj\Debug\netcoreapp3.1\Razor\Views\Notifications\InvitationConfirmed.cshtml.g.cs
 C:\Users\Andjela\Desktop\PUSGS\Server\Server\obj\Debug\netcoreapp3.1\Razor\Views\Notifications\ReservationConfirmed.cshtml.g.cs
+C:\Users\vukmi\OneDrive\Dokumenti\GitHub\PUSGS\Server\Server\obj\Debug\netcoreapp3.1\Razor\Views\Notifications\AlreadyDeclined.cshtml.g.cs
+C:\Users\vukmi\OneDrive\Dokumenti\GitHub\PUSGS\Server\Server\obj\Debug\netcoreapp3.1\Razor\Views\Notifications\InvitationDeclined.cshtml.g.cs
+C:\Users\vukmi\OneDrive\Dokumenti\GitHub\PUSGS\Server\Server\obj\Debug\netcoreapp3.1\Server.csproj.CoreCompileInputs.cache
+C:\Users\vukmi\OneDrive\Dokumenti\GitHub\PUSGS\Server\Server\obj\Debug\netcoreapp3.1\Server.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\vukmi\OneDrive\Dokumenti\GitHub\PUSGS\Server\Server\obj\Debug\netcoreapp3.1\Server.MvcApplicationPartsAssemblyInfo.cache

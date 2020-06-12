@@ -20,7 +20,7 @@
           <button mat-button matStepperNext class="btn  btn-md btn-rounded button-style" style="width: 20%; " [disabled]="toBeAdded.length!==numOfPassengers">Next</button>
       </div>
   </mat-step>
-  <mat-step [stepControl]="secondFormGroup" optional >
+  <mat-step [stepControl]="'secondFormGroup'" optional >
     <form [formGroup]="secondFormGroup" style="text-align: center;">
       <ng-template matStepLabel >
           <span [ngStyle]="{'color': '#31124b'}">Invite friends...</span>
@@ -41,7 +41,7 @@
             <input
               placeholder="Find a friend..."
               #fruitInput
-              [formControl]="fruitCtrl"
+              formControlName="fruitCtrl"
               [matAutocomplete]="auto"
               [matChipInputFor]="chipList"
               [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
@@ -59,7 +59,7 @@
         &nbsp;
 
       <div style="text-align: right;">
-        <button mat-button matStepperNext class="btn  btn-md btn-rounded button-style" style="width: 20%; " (click)="initForm()" >Next</button>
+        <button mat-button matStepperNext class="btn  btn-md btn-rounded button-style" style="width: 20%; " (click)="fillForm()" >Next</button>
       </div>
   </mat-step>
   
@@ -114,7 +114,7 @@
     <div class="col" formArrayName="passengers" >
       <div
         *ngFor="let passengerCtrl of passengersControls; let i = index"
-        [formGroupName]="i"
+        formGroupName="i"
         style="margin-top: 10px;">
         <hr>
         <label  style="color: #31124b; font-weight: bolder;">Passenger {{i+2}} of {{numOfPassengers}}</label>
