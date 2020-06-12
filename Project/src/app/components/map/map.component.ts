@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild, NgZone, OnInit } from '@angular/core';
+import { Component, Input, ViewChild, NgZone, OnInit, OnDestroy } from '@angular/core';
 import { MapsAPILoader, AgmMap, AgmMarker } from '@agm/core';
 import { GoogleMapsAPIWrapper } from '@agm/core';
 import { Address } from '../../models/address';
@@ -14,7 +14,7 @@ declare var google: any;
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.css'],
 })
-export class MapComponent implements OnInit {
+export class MapComponent implements OnInit,OnDestroy {
   geocoder: any;
   @Input('addresses') addresses: Address[];
   @Input('address') address: Address;
@@ -64,34 +64,7 @@ export class MapComponent implements OnInit {
       );
     });
 
-    this.zoom = 5;
-  }
-
-  async
-  (
-    num: number,
-    street: string,
-    city: string,
-    country: string
-  ) {
-    // const data = await fetch(
-    //   'https://nominatim.openstreetmap.org/search?q=' +
-    //     num +
-    //     '+' +
-    //     street +
-    //     ',+' +
-    //     city +
-    //     ',+' +
-    //     country +
-    //     '&format=json',
-    //   {
-    //     headers: {
-    //       'Accept-Language': 'en-US',
-    //     },
-    //   }
-    // );
-
-   // const res = await data.json();
+    this.zoom = 6;
   }
 
   onClick(event: any, markerIndex: number) {
@@ -104,7 +77,9 @@ export class MapComponent implements OnInit {
           this.markers[markerIndex].lat = event.coords.lat;
           this.markers[markerIndex].lng = event.coords.lng;
         })
+  }
 
-
+  ngOnDestroy(){
+    this.changeMapMarkers.unsubscribe();
   }
 }

@@ -39,8 +39,25 @@ export class AddCarComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.brands = new Array<string>("BMW","VW","Renault","Toyota","Peugeot","Citroen","Nissan","Audi","Yugo","Mercedec");
-    this.years = new Array<number>(2020,2019,2018,2017,2016);
+    this.brands = new Array<string>( 'BMW',
+    'Kia',
+    'Ford',
+    'Renault',
+    'Toyota',
+    'Peugeot',
+    'Citroen',
+    'Nissan',
+    'Audi',
+    'Yugo',
+    'Mercedes',
+    'Volkswagen',
+    'Honda',
+    'Chevrolet',
+    'Fiat',
+    'Jeep',
+    'Hyundai',
+    'Mazda');
+    this.years = new Array<number>(2020,2019,2018,2017,2016,2015,2014,2013,2012,2011,2010,2009,2008,2007,2006,2005,2004,2003,2002,2001,2000,1999,1998,1997);
     this.gearboxTypes = new Array<string>("Automatic","Manual");
     this.passengersNumbers = new Array<number>(2,5,7,9);
     this.doorsNumber = new Array<number>(3,5);
@@ -75,7 +92,6 @@ export class AddCarComponent implements OnInit {
   onAddCar(){
 
     let newCar = this.addCarForm.value;
-    console.log(newCar);
     newCar["doors"] = +newCar["doors"];
     newCar["passengersNumber"] = +newCar["passengers"];
     newCar["year"] = +newCar["year"];

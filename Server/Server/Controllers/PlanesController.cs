@@ -36,8 +36,8 @@ namespace Server.Controllers
         public async Task<ActionResult<IEnumerable<PlaneDTO>>> GetPlanes()
         {
             var adminId = User.Claims.First(c => c.Type == "UserID").Value;
-            var admin = await _context.AirlineAdmins.Include(x=>x.Airline).FirstOrDefaultAsync(x=>x.UserId == adminId);
-            if (admin.Airline != null)
+            var admin = await _context.AirlineAdmins.FirstOrDefaultAsync(x=>x.UserId == adminId);
+            if (admin.AirlineId != null)
             {
                 var planes = await planeService.GetPlanesByAirline((int)admin.AirlineId);
                 List<PlaneDTO> retVal = new List<PlaneDTO>();
@@ -90,10 +90,10 @@ namespace Server.Controllers
         [HttpPost]
         public async Task<ActionResult<Plane>> PostPlane(Plane plane)
         {
-            var adminId = User.Claims.First(c => c.Type == "UserID").Value;
-            var admin = await _context.AirlineAdmins.Include(x => x.Airline).Where(x => x.UserId == adminId).FirstOrDefaultAsync();
+            var adminId =  User.Claims.First(c => c.Type == "UserID").Value;
+            var admin = await _context.AirlineAdmins.Where(x => x.UserId == adminId).FirstOrDefaultAsync();
 
-            if (admin.Airline == null)
+            if (admin.AirlineId == null)
             {
                 return BadRequest(new { message = "User haven't added airline yet!" });
             }

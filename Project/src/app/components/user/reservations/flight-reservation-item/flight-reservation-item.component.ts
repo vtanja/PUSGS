@@ -36,7 +36,7 @@ export class FlightReservationItemComponent implements OnInit,OnDestroy, AfterVi
       this.imgToDisplay = this.image + res.image;
       console.log(res.image);
     });
-    
+
     if(this.flightReservation.flights[1]!==undefined){
       this.airlineService.getAirline(this.flightReservation.flights[1].plane.airlineId).subscribe((res:any)=>{
         this.imgToDisplay2 = this.image + res.image;
