@@ -15,12 +15,13 @@ import { RentCarService } from '../../services/rent-a-car.service';
 import { FlightReservation } from '../../models/flight-reservation.model';
 import { FlightReservationService } from '../../services/flight-reservation.service';
 import Swal from 'sweetalert2';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbCalendar } from '@ng-bootstrap/ng-bootstrap';
 import { Plane } from '../../models/plane';
 import { FlightService } from 'src/app/services/flight.service';
 import { Passenger } from 'src/app/models/passenger.model';
 import { Seat } from 'src/app/models/seat.model';
 import { element } from 'protractor';
+import { CarService } from 'src/app/services/car.service';
 
 @Component({
   selector: 'app-create-flight-reservation',
@@ -74,11 +75,21 @@ export class CreateFlightReservationComponent implements OnInit,AfterViewInit {
   numOfPassengers:number;
   class:string;
 
+  isReturnFlight:boolean;
+  submittedCarsSearch:boolean = false;
+  carsSearched:boolean = false;
+  carSearchData:{} = {};
+  forwardResData:{}={};
+
   get passengersControls() {
     return (this.thirdFormGroup.get('passengers') as FormArray).controls;
   }
 
-  constructor(private route:ActivatedRoute,private router:Router,private modalService: NgbModal, private flightService:FlightService, private airlineService:AirlineService, private userService:UserService, private _formBuilder:FormBuilder, private rentCarService:RentCarService, private flightReservationService:FlightReservationService) {
+  constructor(private route:ActivatedRoute,private router:Router,
+    private modalService: NgbModal, private flightService:FlightService,
+    private airlineService:AirlineService, private userService:UserService,
+    private _formBuilder:FormBuilder, private carService:CarService,
+    private flightReservationService:FlightReservationService,private calendar:NgbCalendar) {
       //this.toBeAdded=[];
    }
 
@@ -87,11 +98,12 @@ export class CreateFlightReservationComponent implements OnInit,AfterViewInit {
     this.mySubscription = this.route.params.subscribe((params:Params)=>
       {
         if(params['id'].includes('-')){
+          this.isReturnFlight = true;
           var parts=params['id'].split('-');
           this.flightService.getFlight(+parts[0]).subscribe((res:any)=>{
             this.flight = res;
             this.location = this.flight.landingLocation.location;
-  
+
             this.flight.occupiedSeats.forEach(element=>{
               this.occupiedSeats.push(element.code);
             })
@@ -100,23 +112,44 @@ export class CreateFlightReservationComponent implements OnInit,AfterViewInit {
           this.flightService.getFlight(+parts[1]).subscribe((res:any)=>{
             this.backFlight = res;
             //this.location = this.flight.landingLocation.location;
-  
+
             this.backFlight.occupiedSeats.forEach(element=>{
               this.occupiedSeatsBack.push(element.code);
             })
           });
+
+          let pickUpParts = this.flight.landingDate.split('-');
+          let dropOffParts = this.backFlight.landingDate.split('-');
+
+          this.forwardResData={
+            pickUpDate : pickUpParts[1]+'/'+pickUpParts[0]+'/'+pickUpParts[2],
+            dropOffDate : dropOffParts[1]+'/'+dropOffParts[0]+'/'+dropOffParts[2],
+            pickUpLocation : this.flight.landingLocation,
+            dropOffLocation : this.backFlight.landingLocation
+          }
+
+          let searchParams =
+              "pickUpLocation=" + this.flight.landingLocation.location +
+              "&dropOffLocation="  + this.backFlight.landingLocation.location +
+              "&pickUpDate=" + this.flight.landingDate +
+              "&dropOffDate="+ this.backFlight.landingDate +
+              "&daysNumber=";
+
+          this.searchCars(searchParams);
         }
         else{
+          this.isReturnFlight=false;
           this.flightService.getFlight(+params['id']).subscribe((res:any)=>{
             this.flight = res;
             this.location = this.flight.landingLocation.location;
-  
             this.flight.occupiedSeats.forEach(element=>{
               this.occupiedSeats.push(element.code);
             })
           });
+
+
         }
-        
+
 
       }
     )
@@ -130,13 +163,14 @@ export class CreateFlightReservationComponent implements OnInit,AfterViewInit {
     });
 
     this.userService.getUser().subscribe((res:any)=>{
+      console.log(res);
       this.loggedUser = res;
       this.initForm();
-      
+
     });
 
 
-    
+
   }
 
 fillForm(){
@@ -154,7 +188,7 @@ fillForm(){
 }
 
    initForm(){
-    
+
     let passenger1 = new FormGroup({
       'seati': new FormControl('', Validators.required),
       'firstNamei': new FormControl('', Validators.required),
@@ -169,6 +203,10 @@ fillForm(){
       'passenger1': passenger1,
       'passengers': passengers
     });
+
+    this.fourthFormGroup = new FormGroup({
+      'daysNumber' : new FormControl(1,Validators.required)
+    })
 
    }
 
@@ -227,10 +265,12 @@ fillForm(){
       this.flightReservation.flightsIds.push(this.backFlight.id);
       this.flightReservation.totalPrice += this.flightReservation.passengers.length * this.backFlight.segmentPrices.find(x=>x.segment.name===this.class).price;
     }
-    this.flightReservation.carReservation=undefined;
+    this.flightReservation.carReservation=this.flightReservationService.getPendingCarReservation();
+
+
 
      if(this.flightReservation.carReservation!==undefined){
-      this.flightReservation.totalPrice = this.flightReservation.totalPrice+this.flightReservation.carReservation.price;
+      this.flightReservation.totalPrice = this.flightReservation.totalPrice+this.flightReservation.carReservation.totalPrice;
       console.log('total price: ',this.flightReservation.totalPrice );
      }
 
@@ -243,10 +283,10 @@ fillForm(){
         timer: 1500
       })
       .then(()=>{
-        //this.flightReservationService.resetReservation();
+        this.flightReservationService.resetPendingCarReservation();
         this.router.navigate(['/user/reservations/flight-reservations']);
       })
-  
+
      }, (err)=>{
       Swal.fire({
         text: err.error.message,
@@ -254,7 +294,7 @@ fillForm(){
         showConfirmButton: true
       })
      });
-     
+
    }
 
    openSm(content) {
@@ -266,7 +306,7 @@ fillForm(){
    }
 
   ngOnInit(): void {
-    
+
     this.initForm();
 
     this.mySubscription = this.route.params.subscribe((params:Params)=>
@@ -282,7 +322,7 @@ fillForm(){
         });
       }
     )
-    
+
     //sthis.initForm();
 
 
@@ -356,10 +396,48 @@ fillForm(){
     return passengers;
   }
 
+  submitCarsSearch(){
+
+      let params =
+      "pickUpLocation=" + this.flight.landingLocation.location +
+      "&dropOffLocation="  +
+      "&pickUpDate=" + this.flight.landingDate +
+      "&dropOffDate="+
+      "&daysNumber="+ (+this.fourthFormGroup.get('daysNumber').value)
+
+
+      let dateParts = this.flight.landingDate.split('-');
+      let dropOffDate = new Date(+dateParts[2],+dateParts[1]-1,+dateParts[0]);
+      dropOffDate.setDate (dropOffDate.getDate() + (+this.fourthFormGroup.get('daysNumber').value));
+      let dropOffDateParts = dropOffDate.toLocaleDateString().split('/');
+
+      this.forwardResData={
+        pickUpDate : this.flight.landingDate,
+        dropOffDate : dropOffDateParts[1] + '-' + dropOffDateParts[0]+'-'+dropOffDateParts[2],
+        pickUpLocation : this.flight.landingLocation.location,
+        dropOffLocation : this.flight.landingLocation.location
+      }
+
+      this.searchCars(params);
+
+    }
   private _filter = (opt: User[], value: string): User[] => {
     const filterValue = value.toLowerCase();
 
     return opt.filter(item => item.getName().toLowerCase().indexOf(filterValue) === 0 );
   };
+
+  searchCars(params:string){
+    this.submittedCarsSearch = true;
+    this.carService.searchDiscountCars(params).subscribe(
+      (res:any)=>{
+        this.cars = res;
+        this.carsSearched=true;
+      },
+      (err)=>{
+        this.carsSearched=true;
+      }
+    )
+  }
 
 }

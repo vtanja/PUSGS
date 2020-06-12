@@ -24,11 +24,13 @@ namespace Server.Controllers
         private readonly CarReservationService carReservationService;
         private readonly RentCarAdminService rentCarAdminService;
         private readonly IMapper _mapper;
+        private readonly DataBaseContext _context;
         
 
-        public CarReservationsController( UnitOfWork unitOfWork,IMapper mapper)
+        public CarReservationsController( UnitOfWork unitOfWork,IMapper mapper,DataBaseContext dataBaseContext)
         {
             _mapper = mapper;
+            _context = dataBaseContext;
             carReservationService = unitOfWork.CarReservationService;
             rentCarAdminService = unitOfWork.RentCarAdminService;
         }
@@ -169,7 +171,7 @@ namespace Server.Controllers
         public async Task<ActionResult<CarReservation>> PostCarReservation(CarReservation carReservation)
         {
             string userId = User.Claims.First(c => c.Type == "UserID").Value;
-            var user = await rentCarAdminService.GetRentCarAdmin(userId);
+            var user = await _context.RegisteredUsers.FindAsync(userId);
 
             if (user == null)
             {
@@ -177,7 +179,7 @@ namespace Server.Controllers
             }
 
             carReservation.UserId = userId;
-            var ret = await carReservationService.AddReservation(carReservation);
+            var ret = await carReservationService.AddQuickReservation(carReservation);
 
             if (ret == "success")
             {
@@ -192,5 +194,34 @@ namespace Server.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("QuickReservation")]
+        [Authorize(Roles = "USER")]
+        public async Task<ActionResult<CarReservation>> PostQuickCarReservation(CarReservation carReservation)
+        {
+            string userId = User.Claims.First(c => c.Type == "UserID").Value;
+            var user = await _context.RegisteredUsers.FindAsync(userId);
+
+            if (user == null)
+            {
+                return BadRequest();
+            }
+
+            carReservation.UserId = userId;
+            var ret = await carReservationService.AddQuickReservation(carReservation);
+
+            if (ret == "success")
+            {
+                return Ok();
+            }
+            else if (ret == "error")
+            {
+                return BadRequest();
+            }
+            else
+            {
+                return BadRequest(new { message = ret });
+            }
+        }
     }
 }

@@ -78,59 +78,6 @@ export class UserService{
       );
     }
 
-    getFlightReservations(){
-      let username = JSON.parse(localStorage.getItem('loggedUser')).username;
-      return this.users.find(u=>u.username===username).flightReservations.slice();
-    }
-
-    // addCarRate(reservationId:number,rate:number){
-
-    //   let username = JSON.parse(localStorage.getItem('loggedUser')).username;
-
-    //   var reservation = this.users.find(u=>u.username===username).carReservations.find(r=>r.id===reservationId);
-    //   this.users.find(u=>u.username===username).carReservations.find(r=>r.id===reservationId).carRate=rate;
-
-    //   var carRate = new UsersRate(rate,username,reservationId);
-    //   this.rentCarService.addCarRate(reservation.companyId,reservation.carId,carRate);
-
-    // }
-
-    // addCarCompanyRate(reservationId:number,rate:number){
-
-    //   let username = JSON.parse(localStorage.getItem('loggedUser')).username;
-
-    //   let reservation = this.users.find(u=>u.username===username).carReservations.find(r=>r.id===reservationId);
-    //   this.users.find(u=>u.username===username).carReservations.find(r=>r.id===reservationId).companyRate=rate;
-
-    //   let companyRate = new UsersRate(rate,username,reservationId);
-    //   this.rentCarService.addCompanyRate(reservation.companyId,companyRate);
-
-    // }
-
-    // addFlightRate(reservationId:number,rate:number){
-
-    //   let username = JSON.parse(localStorage.getItem('loggedUser')).username;
-
-    //   let reservation = this.users.find(u=>u.username===username).flightReservations.find(r=>r.flightID===reservationId);
-    //   this.users.find(u=>u.username===username).flightReservations.find(r=>r.flightID===reservationId).flightRate=rate;
-
-    //   let flightRate = new UsersRate(rate,username,reservationId);
-    //   this.airlineService.addFlightRate(reservation.companyID,reservation.flightID,flightRate);
-
-    // }
-
-    // addAirlineRate(reservationId:number,rate:number){
-
-    //   let username = JSON.parse(localStorage.getItem('loggedUser')).username;
-
-    //   let reservation = this.users.find(u=>u.username===username).flightReservations.find(r=>r.flightID===reservationId);
-    //   this.users.find(u=>u.username===username).flightReservations.find(r=>r.flightID===reservationId).airlineRate=rate;
-
-    //   let companyRate = new UsersRate(rate,username,reservationId);
-    //   this.airlineService.addCompanyRate(reservation.companyID,companyRate);
-
-    // }
-
 
     getAllUsers():Observable<User[]>{
       return this.httpClient.get(this.baseUri+'User/AllUsers')

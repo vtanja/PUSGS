@@ -8,7 +8,7 @@ export class CarReservation{
   pickUpTime:string;
   dropOffDate:string;
   dropOffTime:string;
-  price:number;
+  totalPrice:number;
   companyName:string;
   carModel:string;
   carBrand:string;
@@ -17,14 +17,15 @@ export class CarReservation{
   carLogo:string
   id:number;
   canRate:boolean;
+  carId:number;
 
   constructor(id:number,pickUpDate:string,pickUpTime:string, dropOffDate:string, dropOffTime:string, price:number, companyName:string, carModel:string,
-    carBrand:string,carRate:number,companyRate:number,canRate:boolean,carLogo:string){
+    carBrand:string,carRate:number,companyRate:number,canRate:boolean,carLogo:string,carId:number){
     this.pickUpDate=pickUpDate;
     this.pickUpTime = pickUpTime;
     this.dropOffDate=dropOffDate;
     this.dropOffTime=dropOffTime;
-    this.price=price;
+    this.totalPrice=price;
     this.companyName =companyName;
     this.carModel = carModel;
     this.carBrand = carBrand;
@@ -33,5 +34,8 @@ export class CarReservation{
     this.canRate = canRate;
     this.carLogo = carLogo;
     this.id = id;
+    this.carId = carId;
   }
+
+
 }

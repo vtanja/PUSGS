@@ -4,17 +4,11 @@ import { RentCarService } from '../../../../services/rent-a-car.service';
 import { Car } from 'src/app/models/Car.model';
 import { Subscription, Observable } from 'rxjs';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
-import { CarReservation } from 'src/app/models/car-reservation.model';
-import { UserService } from 'src/app/services/user-service.service';
 import Swal from 'sweetalert2';
-import { AirlineService } from 'src/app/services/airline.service';
-import { Flight } from 'src/app/models/flight.model';
-import { startWith, map } from 'rxjs/operators';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { FlightReservation } from 'src/app/models/flight-reservation.model';
 import { CarService } from 'src/app/services/car.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { CarReservationsService } from 'src/app/services/car-reservations.service';
+import { FlightReservationService } from 'src/app/services/flight-reservation.service';
 
 @Component({
   selector: 'app-cars-cards',
@@ -23,6 +17,7 @@ import { CarReservationsService } from 'src/app/services/car-reservations.servic
 })
 export class CarsCardsComponent implements OnInit, OnDestroy {
   @Input('cars') cars: Car[];
+  @Input('quickReservationInput') quickResInput: any;
   searched: boolean = false;
   searchParamsSubscription: Subscription;
   params: {};
@@ -31,6 +26,7 @@ export class CarsCardsComponent implements OnInit, OnDestroy {
   closeResult: string;
   notFlightRes: boolean = true;
   isSpining: boolean = false;
+  carReserved:boolean=false;
 
   constructor(
     private route: ActivatedRoute,
@@ -38,10 +34,14 @@ export class CarsCardsComponent implements OnInit, OnDestroy {
     private carService: CarService,
     private spinner: NgxSpinnerService,
     private modalService: NgbModal,
-    private carReservationsService: CarReservationsService
+    private carReservationsService: CarReservationsService,
+    private flightReservationService:FlightReservationService
   ) {}
 
   ngOnInit() {
+
+    this.carReserved=false;
+
     this.searchParamsSubscription = this.rentCarsService.searchCarsParamsSubject.subscribe(
       (queryParams: '') => {
         this.searched = true;
@@ -132,33 +132,50 @@ export class CarsCardsComponent implements OnInit, OnDestroy {
   }
 
   makeReservation(): void {
+      let data = {
+        pickUpDate:
+          this.changeDateFormat(this.params['pickUpDate']) +
+          ' ' +
+          this.params['pickUpTime'],
+        dropOffDate:
+          this.changeDateFormat(this.params['dropOffDate']) +
+          ' ' +
+          this.params['dropOffTime'],
+        pricePerDay: this.currentCar.price,
+        carId: this.currentCar.id,
+      };
 
+      this.carReservationsService.makeCarReservation(data).subscribe(
+        (ret) => {
+          Swal.fire({
+            text: 'Reservation successfully made!',
+            icon: 'success',
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        },
+        (err) => {
+          Swal.fire({
+            title: 'Reservation making failed.',
+            text: err.error.message,
+            icon: 'error',
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        }
+      );
+  }
+
+  makeQuickReservation(): void {
     let data = {
-      'pickUpDate': this.changeDateFormat(this.params['pickUpDate']) + ' ' + this.params['pickUpTime'],
-      'dropOffDate': this.changeDateFormat(this.params['dropOffDate']) + ' ' + this.params['dropOffTime'],
-      'pricePerDay' : this.currentCar.price,
-      'carId': this.currentCar.id
-    };
-
-    this.carReservationsService.makeCarReservation(data).subscribe(
-      (ret) => {
-        Swal.fire({
-          text: 'Reservation successfully made!',
-          icon: 'success',
-          showConfirmButton: false,
-          timer: 1500,
-        });
-      },
-      (err) => {
-        Swal.fire({
-          title: 'Reservation making failed.',
-          text: err.error.message,
-          icon: 'error',
-          showConfirmButton: false,
-          timer: 1500,
-        });
+       pickUpDate :  this.changeDateFormat(this.quickResInput.pickUpDate),
+       dropOffDate :  this.changeDateFormat(this.quickResInput.dropOffDate),
+       carId : this.currentCar.id,
+       totalPrice : this.currentCar.price
       }
-    );
+
+    this.flightReservationService.setPendingCarReservation(data);
+    this.carReserved=true;
   }
 
   showSpinner() {
@@ -171,12 +188,12 @@ export class CarsCardsComponent implements OnInit, OnDestroy {
     this.isSpining = false;
   }
 
-  changeDateFormat(date:string):string{
+  changeDateFormat(date: string): string {
     let dateParts = date.split('-');
     let day = dateParts[0];
     let month = dateParts[1];
     let year = dateParts[2];
 
-    return month + '-' + day + '-' +year;
+    return month + '-' + day + '-' + year;
   }
 }

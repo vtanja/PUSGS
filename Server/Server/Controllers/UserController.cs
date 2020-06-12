@@ -234,7 +234,7 @@ namespace Server.Controllers
 
             if (googleApiTokenInfo!=null)
             {
-                var user = await _dataBaseContext.RegisteredUsers.Where(u => u.Email == googleApiTokenInfo.email && u.SocialUserType == 'g').FirstAsync();
+                var user = await _dataBaseContext.RegisteredUsers.Where(u => u.Email == googleApiTokenInfo.email && u.SocialUserType == 'g').FirstOrDefaultAsync();
 
                 if (user == null)
                 {
@@ -242,7 +242,7 @@ namespace Server.Controllers
 
                     var newUser = new RegisteredUser()
                     {
-                        UserName = googleApiTokenInfo.email,
+                        UserName = googleApiTokenInfo.email+'g',
                         FirstName = googleApiTokenInfo.given_name,
                         LastName = googleApiTokenInfo.family_name,
                         Email = googleApiTokenInfo.email,
@@ -258,7 +258,7 @@ namespace Server.Controllers
                             await _dataBaseContext.Users.AddAsync(new User { UserId = newUser.Id });
                             await _dataBaseContext.SaveChangesAsync();
 
-                            var token = await GenerateToken(user);
+                            var token = await GenerateToken(newUser);
                             return Ok(new { token });
 
                         }

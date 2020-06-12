@@ -20,12 +20,14 @@ namespace Server.Controllers
     {
         private readonly DataBaseContext _context;
         private readonly FlightReservationService flightReservationService;
+        private readonly CarReservationService carReservationService;
         private readonly Email.IEmailSender _emailSender;
 
         public FlightReservationsController(DataBaseContext context, UnitOfWork unitOfWork, Email.IEmailSender emailSender)
         {
             _context = context;
             flightReservationService = unitOfWork.FlightReservationService;
+            carReservationService = unitOfWork.CarReservationService;
             _emailSender = emailSender;
         }
 
@@ -107,7 +109,8 @@ namespace Server.Controllers
 
             FlightReservation fr = new FlightReservation()
             {
-                CarReservation = flightReservation.CarReservation,
+                //mislim da ovo ne treba sad da se ne bi dva puta dodalo
+                //CarReservation = flightReservation.CarReservation,
                 Cancelled = flightReservation.Cancelled,
                 FlightRated = flightReservation.FlightRated,
                 AirlineRated = flightReservation.AirlineRated,
@@ -116,8 +119,22 @@ namespace Server.Controllers
                 DateCreated = DateTime.Now
             };
 
-            
-            
+            //ako postoji carReservation upisem je
+            // result ako je dodata rezervacija je success_idRez
+            //i onda ovo na null da se ne bi dva puta dodala rezervacija
+            if (flightReservation.CarReservation != null)
+            {
+                flightReservation.CarReservation.UserId = userId;
+                string result = await carReservationService.AddQuickReservation(flightReservation.CarReservation);
+                if (result.Contains("success"))
+                {
+                    int reservationId = Int32.Parse(result.Split('_')[1]);
+                    fr.CarReservationId = reservationId;
+                }
+            }
+
+
+
             if (await flightReservationService.PostFlightReservation(fr, flightReservation.FlightsIds))
             {
                 UserFlightReservation resToAdd = new UserFlightReservation();
@@ -127,6 +144,7 @@ namespace Server.Controllers
                 resToAdd.Reservation = fr;
 
                 _context.UserFlightReservations.Add(resToAdd);
+              
 
                 foreach (var item in flightReservation.FlightsIds)
                 {
@@ -141,10 +159,6 @@ namespace Server.Controllers
                         reservation.ReservationId = fr.ReservationId;
                         _context.FlightFlightReservation.Add(reservation);
                     }
-                }
-                if (flightReservation.CarReservation != null)
-                {
-                    fr.CarReservationId = flightReservation.CarReservation.Id;
                 }
 
                 //user.FlightReservations.Add(fr);

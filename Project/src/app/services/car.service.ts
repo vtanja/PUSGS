@@ -43,4 +43,11 @@ export class CarService {
     )
   }
 
+  searchDiscountCars(params:string){
+    console.log(params);
+    return this.httpClient.get(this.baseUri+"Cars/DiscountCarsSearch?"+params).pipe(
+      map((data:any[]) => data.map(item => this.carAdapter.adapt(item))),
+    )
+  }
+
 }

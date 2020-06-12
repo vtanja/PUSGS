@@ -115,6 +115,25 @@ namespace Server.Controllers
         }
 
 
+
+        // GET: api/Cars/DiscountCarsSearch
+        [HttpGet("{pickUpLocation}/{dropOffLocation}/{pickUpDate}/{dropOffDate}/{daysNumber}")]
+        [Route("DiscountCarsSearch")]
+        public async Task<ActionResult<IEnumerable<CarDTO>>> SearchDiscountCars([FromQuery] string pickUpLocation, [FromQuery] string dropOffLocation,
+            [FromQuery] string pickUpDate, [FromQuery] string dropOffDate, [FromQuery] int daysNumber)
+        {
+            SearchCarModel searchCarModel = new SearchCarModel()
+            {
+                DropOffDate = dropOffDate,
+                PickUpDate = pickUpDate,
+                DropOffLocation = dropOffLocation,
+                PickUpLocation = pickUpLocation,
+                DaysNumber = daysNumber
+            };
+
+            return _mapper.Map<List<CarDTO>>(await carService.SearchCarsOnDiscount(searchCarModel));
+        }
+
         // PUT: api/Cars/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.

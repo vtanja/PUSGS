@@ -21,6 +21,10 @@ export class CarReservationsService {
     return this.httpClient.post(this.baseUri+"CarReservations" , carReservation);
   }
 
+  makeCarQuickReservation(carReservation:{}) {
+    return this.httpClient.post(this.baseUri+"CarReservations/QuickReservation" , carReservation);
+  }
+
   cancelCarReservation(){
   }
 
@@ -43,7 +47,6 @@ export class CarReservationsService {
   getAnnualIncomes(data){
     return this.httpClient.get(this.baseUri+"CarReservations/AnnualIncomes/" + data);
   }
-
 
   getReservations(){
     return this.httpClient.get(this.baseUri + 'CarReservations').pipe(

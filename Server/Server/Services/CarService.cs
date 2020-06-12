@@ -77,6 +77,20 @@ namespace Server.Services
         {
             return await carRepository.SearchCars(searchCarModel);
         }
+        public async Task<IEnumerable<Car>> SearchCarsOnDiscount(SearchCarModel searchCarModel)
+        {
+            if (searchCarModel.DaysNumber > 0)
+            {
+                searchCarModel.DropOffDate = Convert.ToDateTime(searchCarModel.PickUpDate).AddDays(searchCarModel.DaysNumber).ToString();
+            }
+
+            if (String.IsNullOrEmpty(searchCarModel.DropOffLocation))
+            {
+                searchCarModel.DropOffLocation = searchCarModel.PickUpLocation;
+            }
+
+            return await carRepository.SearchCarsOnDiscount(searchCarModel);
+        }
         public async Task<bool> UpdateCar(int carId,Car car)
         {
             if (carId != car.Id)

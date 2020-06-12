@@ -176,6 +176,82 @@ namespace Server.Repositories
 
             return new List<Car>();
         }
+        public async Task<IEnumerable<Car>> SearchCarsOnDiscount(SearchCarModel searchCarModel)
+        {
+            DateTime datepickUp = Convert.ToDateTime(searchCarModel.PickUpDate);
+            DateTime dateDropOff = dateDropOff = Convert.ToDateTime(searchCarModel.DropOffDate);                    
+
+            if (!searchCarModel.PickUpLocation.Contains(", ") || datepickUp > dateDropOff)
+            {
+                return new List<Car>();
+            }
+
+            string[] dropOffLocationParams = searchCarModel.DropOffLocation.Split(", ");
+            string[] pickUpLocationParams = searchCarModel.PickUpLocation.Split(", ");
+            string dropOffCity = dropOffLocationParams[0];
+            string dropOffCountry = dropOffLocationParams[1];
+            string pickUpCity = pickUpLocationParams[0];
+            string pickUpCountry = pickUpLocationParams[1];
+
+
+            IEnumerable<int> carIDS;
+            IEnumerable<int> carOnDiscountIDS = await _context.DiscountDates.Where(d => d.Date >= datepickUp && d.Date <= dateDropOff).Select(c => c.CarId).ToArrayAsync();
+
+
+           carIDS = await _context.Cars.Include(c => c.CarCompany).Where(c => !c.IsDeleted).Select(c => c.Id).ToArrayAsync();
+
+            if (carIDS.Count() == 0)
+            {
+                return new List<Car>();
+            }
+
+
+            var companiesPickUp = await _context.Offices.Include(o => o.Address)
+                                        .Where(o => o.Address.City == pickUpCity && o.Address.Country == pickUpCountry)
+                                        .Select(o => o.RentCarId)
+                                        .ToArrayAsync();
+
+            var companiesDropOff = await _context.Offices.Include(o => o.Address)
+                                       .Where(o => o.Address.City == dropOffCity && o.Address.Country == dropOffCountry)
+                                       .Select(o => o.RentCarId)
+                                       .ToArrayAsync();
+
+            var intersectComapnies = companiesPickUp.Intersect(companiesDropOff).ToArray();
+
+            if (intersectComapnies.Count() == 0)
+                return new List<Car>();
+
+            var reservedCars = await _context.ReservedDates.Where(d => d.Date < dateDropOff && d.Date >= datepickUp).Select(c => c.CarId).ToArrayAsync();
+
+            var ret = await _context.Cars.Include(c => c.CarCompany).Include(c=>c.DisocuntDates).Where(c => intersectComapnies.Contains(c.CompanyId) && !reservedCars.Contains(c.Id) && carIDS.Contains(c.Id)).ToListAsync();
+
+            List<Car> retCars = new List<Car>();
+            foreach( Car car in ret)
+            {
+                bool allDaysFree = true;
+                double totalPrice = 0;
+                for (DateTime date = datepickUp; date < dateDropOff; date = date.AddDays(1))
+                {
+                    if (!car.DisocuntDates.Any(d => d.Date == date))
+                    {
+                        allDaysFree = false;
+                        break;
+                    }
+                    else
+                    {
+                        totalPrice += (car.Price - (car.Price * car.DisocuntDates.FirstOrDefault(d => d.Date == date).Discount / 100));
+                    }
+                }
+
+                if (allDaysFree)
+                {
+                    car.Price = totalPrice;
+                    retCars.Add(car);
+                }
+            }
+
+            return retCars;
+        }
         protected virtual void Dispose(bool disposing)
         {
             if (!this.disposed)

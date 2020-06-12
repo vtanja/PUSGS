@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Server.Interfaces;
 using Server.IRepositories;
 using Server.IServices;
 using Server.Models;
@@ -14,11 +15,15 @@ namespace Server.Services
     {
         private ICarReservationRepository carReservationRepository;
         private IReservedDateRepository reservedDateRepository;
+        private IDiscountDateRepository discountDateRepository;
+        private ICarRepository carRepository;
 
-        public CarReservationService(ICarReservationRepository carReservationRepository, IReservedDateRepository reservedDateRepository)
+        public CarReservationService(ICarRepository carRepository,ICarReservationRepository carReservationRepository, IReservedDateRepository reservedDateRepository,IDiscountDateRepository discountDateRepository)
         {
             this.carReservationRepository = carReservationRepository;
             this.reservedDateRepository = reservedDateRepository;
+            this.discountDateRepository = discountDateRepository;
+            this.carRepository = carRepository;
         }
 
         public async Task<string> AddReservation(CarReservation carReservation)
@@ -27,10 +32,10 @@ namespace Server.Services
                 return "Not all dates in this range are still available. Please reload page to get changed results.";
 
             carReservation.DateCreated = DateTime.Now;
-            carReservation.TotalPrice = (carReservation.DropOffDate - carReservation.PickUpDate).TotalDays * carReservation.PricePerDay;
+            carReservation.TotalPrice = (carReservation.DropOffDate.Date - carReservation.PickUpDate.Date).TotalDays * carReservation.PricePerDay;
             carReservationRepository.AddCarReservation(carReservation);
 
-            for (DateTime date = carReservation.PickUpDate; date <= carReservation.DropOffDate; date = date.AddDays(1))
+            for (DateTime date = carReservation.PickUpDate; date < carReservation.DropOffDate; date = date.AddDays(1))
             {
                 var reservedDate = new ReservedDate()
                 {
@@ -49,6 +54,53 @@ namespace Server.Services
                 return "error";
             }
             return "success";
+        }
+
+        public async Task<string> AddQuickReservation(CarReservation carReservation)
+        {
+            if (await reservedDateRepository.AreDatesReserved(carReservation.CarId, carReservation.PickUpDate, carReservation.DropOffDate))
+                return "Not all dates in this range are still available. Please reload page to get changed results.";
+
+            List<DiscountDate> discountDates = new List<DiscountDate>();
+            discountDates = await discountDateRepository.GetCarDiscountDatesObjects(carReservation.CarId);
+
+            carReservation.DateCreated = DateTime.Now;
+
+            double totalPrice = 0;
+            var car = await carRepository.GetCarByID(carReservation.CarId);
+
+            if (car == null || car.IsDeleted)
+                return "Adding car reservation failed.No car was found.Please reload page to get up to dated data.";
+
+            for (DateTime date = carReservation.PickUpDate; date < carReservation.DropOffDate; date = date.AddDays(1))
+            {
+                var reservedDate = new ReservedDate()
+                {
+                    CarId = carReservation.CarId,
+                    Date = date
+                };
+
+                reservedDateRepository.AddReservedDate(reservedDate);
+                var discount = discountDates.Find(d => d.Date.Date == date.Date);
+                if (discount == null)
+                {
+                    return "error";
+                }
+                totalPrice += car.Price - (car.Price * (discount.Discount / 100));
+            }
+
+            carReservation.TotalPrice = totalPrice;
+            carReservationRepository.AddCarReservation(carReservation);
+
+            try
+            {
+                await carReservationRepository.Save();
+            }
+            catch
+            {
+                return "error";
+            }
+            return "success_" + carReservation.Id;
         }
 
         public async Task<List<CarReservation>> GetUserCarReservations(string userId)

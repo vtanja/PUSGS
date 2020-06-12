@@ -1,3 +1,10 @@
+h5{
+  margin-top: 2%;
+  font-weight: bold;
+  font-size: x-large;
+  text-align: center;
+}
+
 .carousel-inner {
   overflow: visible;
 }
