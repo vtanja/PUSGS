@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild, NgZone, OnInit, OnDestroy } from '@angular/core';
+import { Component, Input, ViewChild, NgZone, OnInit } from '@angular/core';
 import { MapsAPILoader, AgmMap, AgmMarker } from '@agm/core';
 import { GoogleMapsAPIWrapper } from '@agm/core';
 import { Address } from '../../models/address';
@@ -8,12 +8,13 @@ import { Marker } from '../helper-classes/marker';
 
 declare var google: any;
 
+
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.css'],
 })
-export class MapComponent implements OnInit, OnDestroy {
+export class MapComponent implements OnInit {
   geocoder: any;
   @Input('addresses') addresses: Address[];
   @Input('address') address: Address;
@@ -66,23 +67,44 @@ export class MapComponent implements OnInit, OnDestroy {
     this.zoom = 5;
   }
 
-  onClick(event: any, markerIndex: number) {
-    fetch(
-      'http://nominatim.openstreetmap.org/reverse?format=json&lon=' +
-        event.coords.lng +
-        '&lat=' +
-        event.coords.lat
-    )
-      .then(function (response) {
-        return response.json();
-      })
-      .then(function (json) {
-        this.markers[markerIndex].lat = event.coords.lat;
-        this.markers[markerIndex].lng = event.coords.lng;
-      });
+  async
+  (
+    num: number,
+    street: string,
+    city: string,
+    country: string
+  ) {
+    // const data = await fetch(
+    //   'https://nominatim.openstreetmap.org/search?q=' +
+    //     num +
+    //     '+' +
+    //     street +
+    //     ',+' +
+    //     city +
+    //     ',+' +
+    //     country +
+    //     '&format=json',
+    //   {
+    //     headers: {
+    //       'Accept-Language': 'en-US',
+    //     },
+    //   }
+    // );
+
+   // const res = await data.json();
   }
 
-  ngOnDestroy(){
-    this.changeMapMarkers.unsubscribe();
+  onClick(event: any, markerIndex: number) {
+
+    fetch('http://nominatim.openstreetmap.org/reverse?format=json&lon='+ event.coords.lng + '&lat=' + event.coords.lat)
+        .then(function(response){
+          return response.json();
+        }).then(function(json){
+          console.log(json);
+          this.markers[markerIndex].lat = event.coords.lat;
+          this.markers[markerIndex].lng = event.coords.lng;
+        })
+
+
   }
 }

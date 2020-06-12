@@ -49,9 +49,9 @@ export class OfficesEditComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.marker = new Marker(45.20, 19.51, '');
+    this.marker = new Marker(46.1212313, 23.1213, '');
     this.marker.draggable = true;
-    this.zoom = 8;
+    this.zoom = 5;
 
     this.modalService.dismissAll();
     this.officesService.getOffices().subscribe(
@@ -64,7 +64,6 @@ export class OfficesEditComponent implements OnInit {
 
   openModal(content) {
     this.addOfficeForm.reset();
-    this.marker = new Marker(45.20, 19.51, '');
 
     this.modalService
       .open(content, {

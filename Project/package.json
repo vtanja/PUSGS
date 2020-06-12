@@ -66,7 +66,7 @@
     "@angular/cli": "^9.1.8",
     "@angular/compiler-cli": "^9.1.11",
     "@angular/language-service": "^9.1.11",
-    "@igniteui/angular-schematics": "^9.1.520",
+    "@igniteui/angular-schematics": "^9.1.511",
     "@types/jasmine": "~3.5.0",
     "@types/jasminewd2": "~2.0.3",
     "@types/node": "^12.12.46",
