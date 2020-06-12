@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Server.Settings;
 
 namespace Server.Migrations
 {
     [DbContext(typeof(DataBaseContext))]
-    partial class DataBaseContextModelSnapshot : ModelSnapshot
+    [Migration("20200611163513_FlightreservationModelUpdate")]
+    partial class FlightreservationModelUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -654,9 +656,14 @@ namespace Server.Migrations
                     b.Property<double>("TotalPrice")
                         .HasColumnType("float");
 
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("ReservationId");
 
                     b.HasIndex("CarReservationId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("FlightReservations");
                 });
@@ -925,36 +932,9 @@ namespace Server.Migrations
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int?>("FlightReservationReservationId")
-                        .HasColumnType("int");
-
                     b.HasKey("UserId");
 
-                    b.HasIndex("FlightReservationReservationId");
-
                     b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("Server.Models.UserFlightReservation", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("ReservationId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ReservationId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserFlightReservations");
                 });
 
             modelBuilder.Entity("Server.Models.RegisteredUser", b =>
@@ -1178,6 +1158,10 @@ namespace Server.Migrations
                     b.HasOne("Server.Models.CarReservation", "CarReservation")
                         .WithMany()
                         .HasForeignKey("CarReservationId");
+
+                    b.HasOne("Server.Models.User", "User")
+                        .WithMany("FlightReservations")
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("Server.Models.Friendship", b =>
@@ -1301,28 +1285,11 @@ namespace Server.Migrations
 
             modelBuilder.Entity("Server.Models.User", b =>
                 {
-                    b.HasOne("Server.Models.FlightReservation", null)
-                        .WithMany("Users")
-                        .HasForeignKey("FlightReservationReservationId");
-
                     b.HasOne("Server.Models.RegisteredUser", "RegisteredUser")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Server.Models.UserFlightReservation", b =>
-                {
-                    b.HasOne("Server.Models.FlightReservation", "Reservation")
-                        .WithMany()
-                        .HasForeignKey("ReservationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Server.Models.User", "User")
-                        .WithMany("FlightReservations")
-                        .HasForeignKey("UserId");
                 });
 #pragma warning restore 612, 618
         }

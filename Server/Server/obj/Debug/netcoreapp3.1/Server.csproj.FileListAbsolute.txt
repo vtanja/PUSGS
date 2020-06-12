@@ -372,3 +372,7 @@ C:\Users\Andjela\Desktop\PUSGS\Server\Server\obj\Debug\netcoreapp3.1\staticwebas
 C:\Users\Andjela\Desktop\PUSGS\Server\Server\obj\Debug\netcoreapp3.1\Server.dll
 C:\Users\Andjela\Desktop\PUSGS\Server\Server\obj\Debug\netcoreapp3.1\Server.pdb
 C:\Users\Andjela\Desktop\PUSGS\Server\Server\obj\Debug\netcoreapp3.1\Server.genruntimeconfig.cache
+C:\Users\vukmi\OneDrive\Dokumenti\GitHub\PUSGS\Server\Server\obj\Debug\netcoreapp3.1\Razor\Views\Notifications\ReservationConfirmed.cshtml.g.cs
+C:\Users\vukmi\OneDrive\Dokumenti\GitHub\PUSGS\Server\Server\obj\Debug\netcoreapp3.1\Razor\Views\Notifications\LateConfirm.cshtml.g.cs
+C:\Users\vukmi\OneDrive\Dokumenti\GitHub\PUSGS\Server\Server\obj\Debug\netcoreapp3.1\Razor\Views\Notifications\ReservationAlreadyConfirmed.cshtml.g.cs
+C:\Users\vukmi\OneDrive\Dokumenti\GitHub\PUSGS\Server\Server\obj\Debug\netcoreapp3.1\Razor\Views\Notifications\InvitationConfirmed.cshtml.g.cs

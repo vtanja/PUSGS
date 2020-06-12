@@ -1,21 +1,22 @@
 import { Component, OnInit, Input, Output, EventEmitter, AfterViewInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Params } from '@angular/router';
 import { Plane } from '../../models/plane';
 import { FlightService } from 'src/app/services/flight.service';
 import { Flight } from 'src/app/models/flight.model';
+import { Subscribable, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-plane-layout',
   templateUrl: './plane-layout.component.html',
   styleUrls: ['./plane-layout.component.css']
 })
-export class PlaneLayoutComponent implements OnInit, AfterViewInit {
+export class PlaneLayoutComponent implements OnInit {
   @Input() plane:Plane;
   @Input() toBeAdded: string[]=[];
-  @Input() flight: Flight;
 
-  booked:string[]=[];
+  @Input() booked:string[]=[];
 
+  mySubscription:Subscription;
   selected:string[]=[];
   firstRows = new Array();
   businessRows = new Array();
@@ -24,17 +25,8 @@ export class PlaneLayoutComponent implements OnInit, AfterViewInit {
   settingConfig=false;
   done=false;
   hidden=true;
-
+  class:string;
   constructor(private route:ActivatedRoute, private flightService:FlightService) { }
-
-  ngAfterViewInit(): void {
-    console.log(this.flight);
-    this.flightService.getOccupiedSeats(this.flight.id).subscribe((res:any)=>{
-      res.forEach(element => {
-        this.booked.push(element.code);
-      });
-    })
-  }
 
 
   ngOnInit() {
@@ -47,6 +39,13 @@ export class PlaneLayoutComponent implements OnInit, AfterViewInit {
     }
     if(this.route.snapshot.routeConfig.path.includes('edit-plane')){
       this.settingConfig=true;
+    }
+    if(this.route.snapshot.routeConfig.path.includes('create-reservation')){
+      this.mySubscription = this.route.params.subscribe((params:Params)=>{
+        this.class = params['criteria'];
+        console.log('class: ', this.class);
+      }
+      );
     }
 
     this.firstRows=this.getSeatsPerSegment(0,'First class');

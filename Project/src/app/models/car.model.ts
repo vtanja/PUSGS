@@ -1,6 +1,7 @@
 import { CarReservation } from './car-reservation.model';
 import { UsersRate } from './users-rate.model';
 import { Discount } from './discount.model';
+import { RentCar } from './rent-a-car.model';
 
 export class Car{
 
@@ -21,7 +22,7 @@ export class Car{
   rates:UsersRate[];
   reservations:CarReservation[];
   discounts:Discount[];
-
+  carCompany:RentCar;
 
   constructor(id:number,brand:string,model:string,year:number,pricePerDay:number,image:string,maxPassengers:number,
     doors:number,hasAirCondition:boolean,hasAutomaticGearbox:boolean,companyName:string,companyId:number){

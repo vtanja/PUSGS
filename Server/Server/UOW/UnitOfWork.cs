@@ -27,6 +27,7 @@ namespace Server.UOW
         private SegmentService segmentService;
         private FlightService flightService;
         private FlightReservationService flightReservationService;
+        private FlightFlightReservationService flightFlightReservationService;
 
         private CarRepository carRepository;
         private RentCarRepository rentCarRepository;
@@ -42,6 +43,7 @@ namespace Server.UOW
         private SegmentRepository segmentRepository;
         private FlightRepository flightRepository;
         private FlightReservationRepository flightReservationRepository;
+        private FlightFlightReservationRepository flightFlightReservationRepository;
 
         public UnitOfWork(DataBaseContext context)
         {
@@ -62,6 +64,19 @@ namespace Server.UOW
             segmentRepository = new SegmentRepository(_context);
             flightRepository = new FlightRepository(_context);
             flightReservationRepository = new FlightReservationRepository(_context);
+            flightFlightReservationRepository = new FlightFlightReservationRepository(_context);
+        }
+
+        public FlightFlightReservationService FlightFlightReservationService
+        {
+            get
+            {
+                if (this.flightFlightReservationService == null)
+                {
+                    this.flightFlightReservationService = new FlightFlightReservationService(flightFlightReservationRepository);
+                }
+                return this.flightFlightReservationService;
+            }
         }
 
         public FlightReservationService FlightReservationService

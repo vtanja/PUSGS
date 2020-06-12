@@ -1,4 +1,4 @@
-<div *ngIf="flightReservation!==undefined || !flightReservation.canceled">
+<div *ngIf="flightReservation!==undefined || !flightReservation.cancelled">
 <div class="list-group-item" style="margin-top: 1%; margin-bottom: 1%; cursor: pointer;">
   <div class="row">
     <div class="col" style="width: 100%;padding:0%; margin: 0%;" (click)="open(content)">
@@ -77,12 +77,60 @@
     </button>
   </div>
   <div class="modal-body">
-    <img src={{imgToDisplay}} style="width: 100%; height: 150px;">
-    <!-- <h6 class="lblStyle header" style="text-align: center;">Airline: <span class="valueStyle text"> {{company.name}}</span></h6> -->
+      <img src={{imgToDisplay}} style="width: 100%; height: 150px;">
     <br>
-    <!-- <label class="lblStyle">Plane: <span class="valueStyle"> {{flight.plane}}</span></label>
-        <br>  -->
-    <div style="display: inline;">
+    <div style="display: inline;" *ngIf="flightReservation.flights[1]===undefined">
+      <div style="display: inline-block; width: 50%; align-self: center;">
+        <h6 class="modal-title header" id="modal-basic-title">Departure:</h6>
+        <br>
+        <label class="lblStyle header">Airport: <span class="valueStyle text"> {{flightReservation.flights[0].takeOffLocation.code}}&nbsp;
+          </span></label><br>
+        <label class="lblStyle header">Date: <span class="valueStyle text"> {{flightReservation.flights[0].takeOffDate}}&nbsp;
+          </span></label><br>
+        <label class="lblStyle header">Time: <span class="valueStyle text"> {{flightReservation.flights[0].takeOffTime}}h &nbsp;
+          </span></label>
+
+      </div>
+      <div style="display: inline-block; width: 50%; align-self: center;">
+        <h6 class="modal-title header" id="modal-basic-title">Landing:</h6>
+        <br>
+        <label class="lblStyle header">Airport: <span class="valueStyle text"> {{flightReservation.flights[0].landingLocation.code}}&nbsp;
+          </span></label><br>
+        <label class="lblStyle header">Date: <span class="valueStyle text"> {{flightReservation.flights[0].landingDate}}&nbsp;
+          </span></label><br>
+        <label class="lblStyle header">Time: <span class="valueStyle text"> {{flightReservation.flights[0].landingTime}}h&nbsp;
+          </span></label>
+
+      </div>
+    </div>
+    <br>
+    <div style="display: inline;" *ngIf="flightReservation.flights[1]!==undefined">
+      <div style="display: inline-block; width: 50%; align-self: center;">
+        <br>
+        <h6 class="modal-title header" id="modal-basic-title">Departure:</h6>
+        <br>
+        <label class="lblStyle header">Airport: <span class="valueStyle text"> {{flightReservation.flights[0].takeOffLocation.code}}&nbsp;
+          </span></label><br>
+        <label class="lblStyle header">Date: <span class="valueStyle text"> {{flightReservation.flights[0].takeOffDate}}&nbsp;
+          </span></label><br>
+        <label class="lblStyle header">Time: <span class="valueStyle text"> {{flightReservation.flights[0].takeOffTime}}h &nbsp;
+          </span></label>
+
+      </div>
+      <div style="display: inline-block; width: 50%; align-self: center;">
+        <br>
+        <h6 class="modal-title header" id="modal-basic-title">Landing:</h6>
+        <br>
+        <label class="lblStyle header">Airport: <span class="valueStyle text"> {{flightReservation.flights[0].landingLocation.code}}&nbsp;
+          </span></label><br>
+        <label class="lblStyle header">Date: <span class="valueStyle text"> {{flightReservation.flights[0].landingDate}}&nbsp;
+          </span></label><br>
+        <label class="lblStyle header">Time: <span class="valueStyle text"> {{flightReservation.flights[0].landingTime}}h&nbsp;
+          </span></label>
+
+      </div>
+    </div>
+    <div style="display: inline;" *ngIf="flightReservation.flights[1]!==undefined">
       <div style="display: inline-block; width: 50%; align-self: center;">
         <h6 class="modal-title header" id="modal-basic-title">Departure:</h6>
         <br>
@@ -129,14 +177,14 @@
       <h6 class="modal-title header" id="modal-basic-title">Cars rented:</h6>
       <br>
       <div >
-        <label class="lblStyle header">Rental company: <span class="valueStyle text"> {{flightReservation.carReservation.companyName}}
-            {{rentalCompany.address}}&nbsp; </span></label>
+        <label class="lblStyle header">Rental company: <span class="valueStyle text"> {{flightReservation.carReservation.Car.carCompany.name}}
+            {{flightReservation.carReservation.Car.carCompany.address}}&nbsp; </span></label>
         <br>
         <label class="lblStyle header">Car: <span class="valueStyle text">
             {{flightReservation.carReservation.carModel}} &nbsp; </span></label>
         <br>
         <label class="lblStyle header">Pick up: <span class="valueStyle text">
-            {{flightReservation.carReservation.startDate}} &nbsp; {{flightReservation.carReservation.startTime}}h
+            {{flightReservation.carReservation.startDate}} &nbsp; {{flightReservation.carReservation.pickUpTime}}h
           </span></label>
         <br>
         <label class="lblStyle header">Drop off: <span class="valueStyle text">

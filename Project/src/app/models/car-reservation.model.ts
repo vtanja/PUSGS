@@ -1,4 +1,6 @@
 import { RentCarService } from '../services/rent-a-car.service';
+import { RentCar } from './rent-a-car.model';
+import { Car } from './Car.model';
 
 export class CarReservation{
 
@@ -15,7 +17,8 @@ export class CarReservation{
   companyRate:number;
   carRate:number;
   id:number;
-  username:string
+  username:string;
+  Car:Car;
 
   constructor(startDate:string,pickUpTime:string, returnDate:string, returnTime:string, numberOfDays:number, price:number, companyId:number, companyName:string, carId:number,username:string, carModel:string){
     this.startDate=startDate;

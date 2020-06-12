@@ -20,6 +20,7 @@ import { Plane } from '../../models/plane';
 import { FlightService } from 'src/app/services/flight.service';
 import { Passenger } from 'src/app/models/passenger.model';
 import { Seat } from 'src/app/models/seat.model';
+import { element } from 'protractor';
 
 @Component({
   selector: 'app-create-flight-reservation',
@@ -29,10 +30,15 @@ import { Seat } from 'src/app/models/seat.model';
 export class CreateFlightReservationComponent implements OnInit,AfterViewInit {
   showForm:boolean = false;
   flight:Flight;
+  backFlight:Flight;
+
   mySubscription:Subscription;
 
   toBeAdded:string[]=[];
   occupiedSeats:string[]=[];
+
+  toBeAddedTo:string[]=[];
+  occupiedSeatsBack:string[]=[];
 
   invitedFriends:string[]=[];
   cars:Car[]=[];
@@ -41,6 +47,7 @@ export class CreateFlightReservationComponent implements OnInit,AfterViewInit {
   options:User[];
 
   firstFormGroup: FormGroup;
+  firstBFormGroup:FormGroup;
   secondFormGroup: FormGroup;
   thirdFormGroup: FormGroup;
   fourthFormGroup: FormGroup;
@@ -79,13 +86,38 @@ export class CreateFlightReservationComponent implements OnInit,AfterViewInit {
   ngAfterViewInit(): void {
     this.mySubscription = this.route.params.subscribe((params:Params)=>
       {
-        this.flightService.getFlight(+params['id']).subscribe((res:any)=>{
-          this.flight = res;
-          this.location = this.flight.landingLocation.location;
-          this.flight.occupiedSeats.forEach(element => {
-            this.occupiedSeats.push(element.code);
+        if(params['id'].includes('-')){
+          var parts=params['id'].split('-');
+          this.flightService.getFlight(+parts[0]).subscribe((res:any)=>{
+            this.flight = res;
+            this.location = this.flight.landingLocation.location;
+  
+            this.flight.occupiedSeats.forEach(element=>{
+              this.occupiedSeats.push(element.code);
+            })
           });
-        });
+
+          this.flightService.getFlight(+parts[1]).subscribe((res:any)=>{
+            this.backFlight = res;
+            //this.location = this.flight.landingLocation.location;
+  
+            this.backFlight.occupiedSeats.forEach(element=>{
+              this.occupiedSeatsBack.push(element.code);
+            })
+          });
+        }
+        else{
+          this.flightService.getFlight(+params['id']).subscribe((res:any)=>{
+            this.flight = res;
+            this.location = this.flight.landingLocation.location;
+  
+            this.flight.occupiedSeats.forEach(element=>{
+              this.occupiedSeats.push(element.code);
+            })
+          });
+        }
+        
+
       }
     )
 
@@ -108,12 +140,12 @@ export class CreateFlightReservationComponent implements OnInit,AfterViewInit {
   }
 
    initForm(){
-    console.log(this.toBeAdded);
+    console.log(this.toBeAddedTo);
      let firstName = this.loggedUser.firstName;
      let lastName = this.loggedUser.lastName;
 
     let passenger1 = new FormGroup({
-      'seati': new FormControl(this.toBeAdded[0], Validators.required),
+      'seati': new FormControl(this.toBeAddedTo[0], Validators.required),
       'firstNamei': new FormControl(firstName, Validators.required),
       'lastNamei':new FormControl(lastName, Validators.required),
       'passporti':new FormControl('', [Validators.required, Validators.pattern(new RegExp("^[A-Z][0-9]{8}$"))])
@@ -137,12 +169,12 @@ export class CreateFlightReservationComponent implements OnInit,AfterViewInit {
      let lastName ='';
      let passport='';
 
-     const counter = this.toBeAdded.length;
+     const counter = this.toBeAddedTo.length;
      for(var i=1; i < counter; i++){
-       console.log('to be added seats: ', this.toBeAdded[0]);
+       console.log('to be added seats: ', this.toBeAddedTo[0]);
        if(this.invitedFriends.length>0 && i<=this.invitedFriends.length){
-           seat = this.toBeAdded[i];
-          console.log(this.toBeAdded[i].toString());
+           seat = this.toBeAddedTo[i];
+          console.log(this.toBeAddedTo[i].toString());
            firstName = this.invitedFriends[i-1].split(' ')[0].trim();
            lastName = this.invitedFriends[i-1].split(' ')[1].trim();
            passport = '';
@@ -157,7 +189,7 @@ export class CreateFlightReservationComponent implements OnInit,AfterViewInit {
         }else{
 
           (<FormArray>this.thirdFormGroup.get('passengers')).push( new FormGroup({
-            'seat': new FormControl('', Validators.required),
+            'seat': new FormControl(this.toBeAddedTo[i], Validators.required),
             'firstName': new FormControl('', Validators.required),
             'lastName':new FormControl('', Validators.required),
             'passport':new FormControl('', [Validators.required, Validators.pattern(new RegExp("^[A-Z][0-9]{8}$"))])
@@ -168,17 +200,31 @@ export class CreateFlightReservationComponent implements OnInit,AfterViewInit {
 
    }
 
+
+   resetSeats(){
+     this.toBeAddedTo.push(...this.toBeAdded);
+     this.toBeAdded=[];
+    this.occupiedSeats=[];
+     this.occupiedSeats.push(...this.occupiedSeatsBack);
+   }
+
    confirmReservation(){
     this.flightReservation = new FlightReservation();
     this.flightReservation.passengers = this.getPassengers();
     this.flightReservation.flightsIds.push(this.flight.id);
-    //this.flightReservation.carReservation=undefined;
+    this.flightReservation.totalPrice = this.flightReservation.passengers.length * this.flight.segmentPrices.find(x=>x.segment.name===this.class).price;
+    if(this.backFlight!==undefined){
+      this.flightReservation.flightsIds.push(this.backFlight.id);
+      this.flightReservation.totalPrice += this.flightReservation.passengers.length * this.backFlight.segmentPrices.find(x=>x.segment.name===this.class).price;
+    }
+    this.flightReservation.carReservation=undefined;
 
-     if(this.flightReservation.carReservation===undefined){
-      this.flightReservation.totalPrice = this.flightReservation.passengers.length * this.flight.segmentPrices.find(x=>x.segment.name===this.class).price;
+     if(this.flightReservation.carReservation!==undefined){
+      this.flightReservation.totalPrice = this.flightReservation.totalPrice+this.flightReservation.carReservation.price;
       console.log('total price: ',this.flightReservation.totalPrice );
      }
 
+     console.log(this.flightReservation);
      this.flightReservationService.completeReservation(this.flightReservation).subscribe((res:any)=>{
       Swal.fire({
         text: 'Reservation successfully made. Please check your email for more information!',
@@ -288,6 +334,14 @@ export class CreateFlightReservationComponent implements OnInit,AfterViewInit {
       }
       passengers.push(passenger);
     }
+
+    if(this.backFlight!==undefined){
+      for(var i=0; i< this.toBeAdded.length; i++){
+        passengers[i].seats.push(new Seat(this.toBeAdded[i], this.backFlight.id));
+      }
+    }
+
+    console.log('passengers: ', passengers);
 
     return passengers;
   }

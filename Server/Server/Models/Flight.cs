@@ -31,7 +31,7 @@ namespace Server.Models
 
         public ICollection<Airport> Connections { get; set; }
         public ICollection<SegmentPrice> SegmentPrices { get; set; }
-        //public ICollection<FlightReservation> Reservations { get; set; }
+        public ICollection<FlightFlightReservation> Reservations { get; set; }
 
         public ICollection<Seat> OccupiedSeats { get; set; }
     }

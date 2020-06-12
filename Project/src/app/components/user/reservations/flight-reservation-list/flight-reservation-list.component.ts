@@ -13,10 +13,10 @@ export class FlightReservationListComponent implements OnInit, AfterViewInit {
   flightReservations:FlightReservation[]=[];
   constructor(private flightReservationService:FlightReservationService) { }
   ngAfterViewInit(): void {
-    this.flightReservationService.getFlightReservations().subscribe((res:any)=>{
-      this.flightReservations = res;
-      console.log(this.flightReservations);
-    })
+    // this.flightReservationService.getFlightReservations().subscribe((res:any)=>{
+    //   this.flightReservations = res;
+    //   console.log(this.flightReservations);
+    // })
   }
 
   ngOnInit(): void {

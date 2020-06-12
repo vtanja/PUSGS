@@ -8,7 +8,7 @@ namespace Server.IServices
 {
     public interface IFlightReservationService
     {
-        Task<bool> PostFlightReservation(FlightReservation flightReservation);
+        Task<bool> PostFlightReservation(FlightReservation flightReservation, List<int> flightIds);
         Task<IEnumerable<FlightReservation>> GetFlightReservations(string userId);
         Task<bool> CancelReservation(FlightReservation reservation);
     }
