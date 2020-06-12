@@ -126,6 +126,7 @@ import { IncomesComponent } from './components/rent-a-cars/rent-a-car-administra
 import { MatDatepicker, MatDatepickerModule } from '@angular/material/datepicker';
 import { MonthlyIncomesComponent } from './components/rent-a-cars/rent-a-car-administrator/rent-a-car-home/monthly-incomes/monthly-incomes.component';
 import { RatesService } from './services/rates.service';
+import { DateService } from './services/date-service';
 
 const fbLoginOptions: LoginOpt = {
   scope: 'first_name,last_name,name,email',
@@ -290,7 +291,8 @@ export function provideConfig() {
     GoogleMapsAPIWrapper,
     SocialLoginModule,
     BonusPointsDiscountService,
-    RatesService
+    RatesService,
+    DateService
   ],
   bootstrap: [AppComponent],
 })

@@ -10,11 +10,9 @@
                     matInput [matAutocomplete]="auto">
               </div>
               <mat-autocomplete #auto="matAutocomplete">
-                <mat-optgroup *ngFor="let group of pickUpLocationOptions | async" [label]="group.letter">
-                  <mat-option style="height: fit-content;" *ngFor="let name of group.names" [value]="name">
+                  <mat-option style="height: fit-content;" *ngFor="let name of pickUpLocationOptions | async" [value]="name">
                    <span>{{name}}</span>
                     </mat-option>
-                </mat-optgroup>
                 </mat-autocomplete>
             <span class="invalid-input-span" *ngIf="searchForm.get('location.pickUpLocation').invalid && searchForm.get('location.pickUpLocation').touched && searched">Pick up location is required</span>
           </div>
@@ -28,11 +26,9 @@
               placeholder="Drop off location...">
             </div>
             <mat-autocomplete #autoGroup="matAutocomplete">
-              <mat-optgroup *ngFor="let group of dropOffLocationOptions | async" [label]="group.letter">
-                <mat-option *ngFor="let name of group.names" [value]="name">
+                <mat-option *ngFor="let name of dropOffLocationOptions|async" [value]="name">
                   {{name}}
                 </mat-option>
-                </mat-optgroup>
                 </mat-autocomplete>
             <span class="invalid-input-span" *ngIf="searchForm.get('location.dropOffLocation').invalid && searchForm.get('location.dropOffLocation').touched && searched">Drop off location is required</span>
         </div>
@@ -116,7 +112,7 @@
             <i class="fa fa-users" aria-hidden="true"></i>
             <select formControlName="passengers" name="passengers" class="input100" >
               <option value="" disabled selected hidden>Passengers..</option>
-              <option *ngFor="let item of [].constructor(9); let i = index" value={{i+1}}>{{i+1}}</option>
+              <option *ngFor="let pass of passengersNumber" value={{pass}}>{{pass}}</option>
             </select>
         </div>
         </div>

@@ -18,11 +18,8 @@ import { RentCarService } from '../../../../services/rent-a-car.service';
 import { Observable } from 'rxjs/internal/Observable';
 import { startWith, map } from 'rxjs/operators';
 import { NgbTime } from '@ng-bootstrap/ng-bootstrap/timepicker/ngb-time';
+import { DateService } from 'src/app/services/date-service';
 
-export interface LocationGroup {
-  letter: string;
-  names: string[];
-}
 
 export const _filter = (opt: string[], value: string): string[] => {
   const filterValue = value.toLowerCase();
@@ -36,42 +33,16 @@ export const _filter = (opt: string[], value: string): string[] => {
   styleUrls: ['./cars-search-form.component.css'],
 })
 export class CarsSearchFormComponent implements OnInit {
-  stateForm: FormGroup = this._formBuilder.group({
-    locationGroup: '',
-  });
 
-  locationGroups: LocationGroup[] = [
-    {
-      letter: 'B',
-      names: [
-        'Belgrade, Serbia',
-        'Budapest, Hungary',
-        'Banja Luka, Bosnia and Herzegovina',
-      ],
-    },
-    {
-      letter: 'D',
-      names: ['Dubrovnik, Croatia'],
-    },
-    {
-      letter: 'M',
-      names: ['Mostar, Bosnia and Herzegovina', 'Munich, Germany'],
-    },
-    {
-      letter: 'N',
-      names: ['Novi Sad, Serbia', 'Novo Mesto, Slovenia'],
-    },
-    {
-      letter: 'T',
-      names: ['Trebinje, Bosnia and Herzegovina'],
-    },
-  ];
 
-  pickUpLocationOptions: Observable<LocationGroup[]>;
-  dropOffLocationOptions: Observable<LocationGroup[]>;
+  options: string[] = ['Belgrade, Serbia', 'Novi Sad, Serbia', 'Banja Luka, Bosnia and Herzegovina',"Budapest, Hungary","Rome, Italy"];
+
+  pickUpLocationOptions: Observable<string[]>;
+  dropOffLocationOptions: Observable<string[]>;
 
   times: Array<string>;
   cars: Array<string>;
+  passengersNumber:Array<number>;
 
   searchForm: FormGroup;
   searched: boolean;
@@ -84,7 +55,7 @@ export class CarsSearchFormComponent implements OnInit {
     private _formBuilder: FormBuilder,
     private rentCarsService: RentCarService,
     private config: NgbDatepickerConfig,
-    private calendar: NgbCalendar
+    private calendar: NgbCalendar,
   ) {
     const current = new Date();
     config.minDate = {
@@ -164,9 +135,10 @@ export class CarsSearchFormComponent implements OnInit {
       '23:00'
     );
 
+    this.passengersNumber = new Array<number>(2,5,7,9);
+
     this.cars = new Array<string>(
       'BMW',
-      'Golf',
       'Kia',
       'Ford',
       'Renault',
@@ -176,7 +148,15 @@ export class CarsSearchFormComponent implements OnInit {
       'Nissan',
       'Audi',
       'Yugo',
-      'Mercedes'
+      'Mercedes',
+      'Volkswagen',
+      'Honda',
+      'Chevrolet',
+      'Fiat',
+      'Jeep',
+      'Hyundai',
+      'Mazda'
+
     );
 
     this.searchForm = new FormGroup({
@@ -211,28 +191,23 @@ export class CarsSearchFormComponent implements OnInit {
       .get('location.pickUpLocation')!
       .valueChanges.pipe(
         startWith(''),
-        map((value) => this._filterGroup(value))
+        map((value) => this._filter(value))
       );
 
     this.dropOffLocationOptions = this.searchForm
       .get('location.dropOffLocation')!
       .valueChanges.pipe(
         startWith(''),
-        map((value) => this._filterGroup(value))
+        map((value) => this._filter(value))
       );
-  }
 
-  private _filterGroup(value: string): LocationGroup[] {
-    if (value) {
-      return this.locationGroups
-        .map((group) => ({
-          letter: group.letter,
-          names: _filter(group.names, value),
-        }))
-        .filter((group) => group.names.length > 0);
-    }
+      }
 
-    return this.locationGroups;
+
+  private _filter(value: string): string[] {
+    const filterValue = value.toLowerCase();
+
+    return this.options.filter(option => option.toLowerCase().includes(filterValue));
   }
 
   onFormSubmit() {
@@ -259,6 +234,8 @@ export class CarsSearchFormComponent implements OnInit {
     searchParams['carBrand'] = this.searchForm.get('carBrand').value;
     searchParams['passengers'] = +this.searchForm.get('passengers').value;
 
+    console.log(searchParams);
+
     if (this.companyID === undefined) {
       this.router.navigate(['/allCars'], { queryParams: searchParams });
     } else {
@@ -269,19 +246,12 @@ export class CarsSearchFormComponent implements OnInit {
 
   private requireMatch(control: FormControl): ValidationErrors | null {
     const selection: string = control.value;
-
-    if (selection != undefined && selection != '') {
-      let group = this.locationGroups.find(
-        (e) => e.letter === selection.substring(0, 1).toUpperCase()
-      );
-      if (group != undefined) {
-        if (group.names.indexOf(selection) < 0) {
+        if (this.options.indexOf(selection) < 0) {
           return { requireMatch: true };
         }
-      }
       return null;
     }
-  }
+
 
   private datesValid(group: FormGroup): { [s: string]: boolean } | null {
     if (group) {
