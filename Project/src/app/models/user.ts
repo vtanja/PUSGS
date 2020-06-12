@@ -5,6 +5,7 @@ import { Adapter } from './adapter';
 import { isRegExp } from 'util';
 
 export class User {
+    userID:string;
      firstName:string;
      lastName:string;
      email:string;
@@ -25,7 +26,7 @@ export class User {
             this.role=role;
             this.phoneNumber=phone;
             this.address=address;
-            this.profileImage="profilna.png";
+            this.profileImage='profilna.png'
          }
         
 

@@ -45,12 +45,12 @@ namespace Server.Repositories
 
         public async Task<ActionResult<IEnumerable<Airline>>> GetAirlines()
         {
-            return await _context.Airlines.Include(rc => rc.Address).Include(x => x.Destinations).ToListAsync();
+            return await _context.Airlines.Include(rc => rc.Address).Include(x => x.Destinations).Include(x=>x.Owner).Include(x=>x.Planes).ToListAsync();
         }
 
         public async Task<Airline> GetAirlineById(int id)
         {
-            return await _context.Airlines.Include(x => x.Address).Include(x => x.Destinations).Where(x => x.Id == id).FirstOrDefaultAsync();
+            return await _context.Airlines.Include(x => x.Address).Include(x => x.Destinations).Include(x=>x.Planes).Include(x=>x.Owner).Where(x => x.Id == id).FirstOrDefaultAsync();
         }
 
         public async Task<Airline> GetAirline(int id)
@@ -60,7 +60,7 @@ namespace Server.Repositories
 
         public async Task<Airline> GetAirlineByUser(string username)
         {
-            return await _context.Airlines.Include(x => x.Address).Include(x => x.Owner).Include(x => x.Destinations).Where(x => x.Owner.UserName == username).FirstOrDefaultAsync();
+            return await _context.Airlines.Include(x => x.Address).Include(x => x.Owner).Include(x => x.Planes).Include(x => x.Destinations).Where(x => x.Owner.UserName == username).FirstOrDefaultAsync();
         }
 
         public async Task<bool> HasAirline(string userId)

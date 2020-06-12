@@ -14,6 +14,8 @@ namespace Server.DTOs
         public string Username { get; set; }
         public string PhoneNumber { get; set; }
         public string Address { get; set; }
+        public string ProfileImage { get; set; }
+        public string UserID { get; set; }
         List<CarReservation> CarReservations { get; set; }
     }
 }

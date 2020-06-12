@@ -24,6 +24,7 @@ import { RentCarService } from '../../services/rent-a-car.service';
 export class HeaderComponent implements OnInit, OnDestroy {
   loggedIn: boolean = false;
   companyExists: boolean;
+  airlineExists:boolean;
   userName: string = '';
   userRole: string = '';
   invitations: User[] = [];
@@ -61,6 +62,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
         this.userName = '';
       }
     });
+
+    
 
     this.rentCarService.firstCompanyAdded.subscribe((addedCompany: boolean) => {
       if (addedCompany) this.companyExists = true;

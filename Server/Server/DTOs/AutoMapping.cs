@@ -31,7 +31,8 @@ namespace Server.DTOs
                 .ForMember(dest => dest.Logo, opt => opt.MapFrom(src => src.Logo))
                 .ForMember(dest => dest.Rate, opt => opt.MapFrom(src => src.Rate))
                 .ForMember(dest => dest.Planes, opt => opt.MapFrom(src => src.Planes))
-                .ForMember(dest => dest.Destinations, opt => opt.MapFrom(src => src.Destinations.GroupBy(g => g.Country).ToDictionary(g => g.Key, g =>g.ToList()))).ReverseMap();
+                .ForMember(dest=>dest.Owner, opt=>opt.MapFrom(src=>src.Owner))
+                .ForMember(dest => dest.Destinations, opt => opt.MapFrom(src => src.Destinations.GroupBy(g => g.Country).ToDictionary(g => g.Key, g =>g.ToList())));
 
             CreateMap<Plane, PlaneDTO>()
                 .ForMember(dest=>dest.Code, opt=>opt.MapFrom(src=>src.Code))
@@ -92,7 +93,7 @@ namespace Server.DTOs
                 .ForMember(dest => dest.LastName, opt => opt.MapFrom(src => src.RegisteredUser.LastName))
                 .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.RegisteredUser.Email))
                 .ForMember(dest => dest.PhoneNumber, opt => opt.MapFrom(src => src.RegisteredUser.PhoneNumber))
-                .ForMember(dest => dest.Address, opt => opt.MapFrom(src => src.RegisteredUser.Address));
+                .ForMember(dest => dest.Address, opt => opt.MapFrom(src => src.RegisteredUser.Address)) ;
 
             CreateMap<RentCarAdmin, UserDTO>()
                 .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.RegisteredUser.UserName))
@@ -108,7 +109,9 @@ namespace Server.DTOs
                 .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.RegisteredUser.UserName))
                 .ForMember(dest => dest.Address, opt => opt.MapFrom(src => src.RegisteredUser.Address))
                 .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.RegisteredUser.Email))
-                .ForMember(dest => dest.PhoneNumber, opt => opt.MapFrom(src => src.RegisteredUser.PhoneNumber)).ReverseMap();
+                .ForMember(dest => dest.PhoneNumber, opt => opt.MapFrom(src => src.RegisteredUser.PhoneNumber))
+                .ForMember(dest => dest.ProfileImage, opt => opt.MapFrom(src => src.RegisteredUser.ProfileImage))
+                .ForMember(dest=>dest.UserID, opt=>opt.MapFrom(src=>src.UserId)).ReverseMap();
 
             CreateMap<RegisteredUser, RegisteredUserDTO>()
                 .ForMember(dest => dest.Address, opt => opt.MapFrom(src => src.Address))
@@ -116,6 +119,9 @@ namespace Server.DTOs
                 .ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => src.FirstName))
                 .ForMember(dest => dest.LastName, opt => opt.MapFrom(src => src.LastName))
                 .ForMember(dest => dest.PhoneNumber, opt => opt.MapFrom(src => src.PhoneNumber))
+                .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.UserName))
+                .ForMember(dest => dest.UserID, opt => opt.MapFrom(src => src.Id))
+                .ForMember(dest => dest.Role, opt => opt.MapFrom(src => ""))
                 .ForMember(dest => dest.ProfileImage, opt => opt.MapFrom(src => src.ProfileImage));
 
             CreateMap<DiscountDate, DiscountDateDTO>()

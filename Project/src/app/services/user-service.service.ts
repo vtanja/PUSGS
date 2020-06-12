@@ -60,7 +60,7 @@ export class UserService{
     }
 
     delete(user:User){
-      return this.httpClient.delete(this.baseUri+'Friendship/'+user.username);
+      return this.httpClient.delete(this.baseUri+'Friendship/'+user.userID);
     }
 
     getLoggedUser():User{
@@ -69,8 +69,8 @@ export class UserService{
     }
 
     getUser():Observable<Object>{
-      let username = this.getUserName();
-       return this.httpClient.get(this.baseUri+'User/'+username)
+      let id = this.getUserId();
+       return this.httpClient.get(this.baseUri+'User/'+id)
        .pipe(
         map((data:any)=>
              this.userAdapter.adapt(data)
@@ -116,7 +116,7 @@ export class UserService{
 
     updateProfile(userData:{}){
       console.log(userData);
-      return this.httpClient.put(this.baseUri+'User/'+ this.getUserName() ,userData);
+      return this.httpClient.put(this.baseUri+'User/'+ this.getUserId() ,userData);
     }
 
     getUserProfile(){

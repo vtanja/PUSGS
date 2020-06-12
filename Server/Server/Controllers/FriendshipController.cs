@@ -38,19 +38,19 @@ namespace Server.Controllers
         [Authorize(Roles = "USER")]
         [Route("SendRequest")]
         //POST : /api/Friendship/SendRequest
-        public async Task<ActionResult> SendRequest(LoginModel model)
+        public async Task<ActionResult> SendRequest(UserModel model)
         {
             //loggedUser
             string userId = User.Claims.First(c => c.Type == "UserID").Value;
 
             //logged user friends
-            var friends = friendshipService.GetUserFriends(userId);
+            //var friends = friendshipService.GetUserFriends(userId);
 
             List <User> users = await _dataBaseContext.Users.Include(x => x.RegisteredUser).ToListAsync();
            List<Friendship> friendships = await _dataBaseContext.Friendships.ToListAsync();
 
             User loggedUser = users.Find(x => x.UserId == userId);
-            User toAdd = users.Find(x => x.RegisteredUser.UserName == model.UserName);
+            User toAdd = users.Find(x => x.RegisteredUser.Id == model.Id);
 
 
             if (toAdd != null && friendships.Find(x => x.FriendID == toAdd.UserId && x.UserID == userId) == null && friendships.Find(x => x.FriendID == userId && x.UserID == toAdd.UserId)==null)
@@ -133,12 +133,12 @@ namespace Server.Controllers
 
         }
 
-        [HttpDelete("{username}")]
+        [HttpDelete("{id}")]
         [Authorize(Roles = "USER")]
-        public async Task<ActionResult<Friendship>> DeclineRequest(string username)
+        public async Task<ActionResult<Friendship>> DeclineRequest(string id)
         {
             string userID = User.Claims.First(c => c.Type == "UserID").Value;
-            string friendID = _dataBaseContext.Users.Include(x => x.RegisteredUser).FirstOrDefault(u => u.RegisteredUser.UserName == username).UserId;
+            string friendID = _dataBaseContext.Users.Include(x => x.RegisteredUser).FirstOrDefault(u => u.RegisteredUser.Id == id).UserId;
 
             if(await friendshipService.DeclineRequest(userID, friendID))
             {

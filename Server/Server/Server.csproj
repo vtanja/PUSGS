@@ -44,6 +44,8 @@
     <Compile Remove="Migrations\20200611090040_CarRateUpdate.Designer.cs" />
     <Compile Remove="Migrations\20200611142908_AirlineRatesUpdate.cs" />
     <Compile Remove="Migrations\20200611142908_AirlineRatesUpdate.Designer.cs" />
+    <Compile Remove="Migrations\20200612161453_rateColumnUpdate.cs" />
+    <Compile Remove="Migrations\20200612161453_rateColumnUpdate.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

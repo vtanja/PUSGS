@@ -2,6 +2,7 @@ import { Flight } from './flight.model';
 import { Address } from './address';
 import { UsersRate } from './users-rate.model';
 import { Plane } from './plane';
+import { User } from './user';
 
 export class Airline {
     id:number;
@@ -11,6 +12,7 @@ export class Airline {
     rate:number;
     flights:Array<Flight>;
     destinations:{};
+    owner:User;
     image:string;
     rates:UsersRate[];
     private city:string;

@@ -71,15 +71,15 @@ namespace Server.Controllers
             return _mapper.Map<RegisteredUser, RegisteredUserDTO>(founded);
         }
 
-        [HttpPut("{username}")]
-        public async Task<IActionResult> UpdateProfile(string username, UserModel model)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateProfile(string id, UserModel model)
         {
-            if (username != model.UserName)
+            if (id != model.Id)
             {
                 return BadRequest();
             }
 
-            var affectedUser = await _dataBaseContext.RegisteredUsers.Where(x => x.UserName == model.UserName).FirstOrDefaultAsync();
+            var affectedUser = await _dataBaseContext.RegisteredUsers.Where(x => x.Id == model.Id).FirstOrDefaultAsync();
 
             affectedUser.FirstName = model.FirstName;
             affectedUser.LastName = model.LastName;
@@ -123,7 +123,7 @@ namespace Server.Controllers
             }
             catch (DbUpdateConcurrencyException e)
             {
-                if (_dataBaseContext.RegisteredUsers.Where(x => x.UserName == username).FirstOrDefault() == null)
+                if (_dataBaseContext.RegisteredUsers.Where(x => x.Id == id).FirstOrDefault() == null)
                 {
                     return NotFound();
                 }
@@ -136,10 +136,10 @@ namespace Server.Controllers
             return NoContent();
         }
 
-        [HttpGet("{username}")]
-        public async Task<ActionResult<UserDTO>> GetUser(string username)
+        [HttpGet("{id}")]
+        public async Task<ActionResult<UserDTO>> GetUser(string id)
         {
-            var user = await _dataBaseContext.Users.Include(x => x.RegisteredUser).Where(x => x.RegisteredUser.UserName == username).FirstOrDefaultAsync();
+            var user = await _dataBaseContext.Users.Include(x => x.RegisteredUser).Where(x => x.RegisteredUser.Id == id).FirstOrDefaultAsync();
 
             if (user == null)
             {
@@ -153,11 +153,11 @@ namespace Server.Controllers
         [Route("AllUsers")]
         public async Task<ActionResult<IEnumerable<UserDTO>>> GetAllUsers()
         {
-            string userName = User.Claims.First(c => c.Type == "UserName").Value;
+            string userId = User.Claims.First(c => c.Type == "UserID").Value;
             //string userName = "tanja";
 
             List<UserDTO> retVal = new List<UserDTO>();
-            var users = await _dataBaseContext.Users.Include(user => user.RegisteredUser).Where(u => u.RegisteredUser.UserName != userName).ToListAsync();
+            var users = await _dataBaseContext.Users.Include(user => user.RegisteredUser).Where(u => u.RegisteredUser.Id != userId).ToListAsync();
             users.ForEach(r => retVal.Add(_mapper.Map<User, UserDTO>(r)));
             return retVal;
 
@@ -259,7 +259,7 @@ namespace Server.Controllers
 
             if (googleApiTokenInfo!=null)
             {
-                var user = await _dataBaseContext.RegisteredUsers.Where(u => u.Email == googleApiTokenInfo.email && u.SocialUserType == 'g').FirstAsync();
+                var user = await _dataBaseContext.RegisteredUsers.Where(u => u.Email == googleApiTokenInfo.email && u.SocialUserType == 'g').FirstOrDefaultAsync();
 
                 if (user == null)
                 {
@@ -267,7 +267,7 @@ namespace Server.Controllers
 
                     var newUser = new RegisteredUser()
                     {
-                        UserName = googleApiTokenInfo.email,
+                        UserName = googleApiTokenInfo.email+'g',
                         FirstName = googleApiTokenInfo.given_name,
                         LastName = googleApiTokenInfo.family_name,
                         Email = googleApiTokenInfo.email,
@@ -350,8 +350,8 @@ namespace Server.Controllers
                             await _dataBaseContext.Users.AddAsync(new User { UserId = newUser.Id });
                             await _dataBaseContext.SaveChangesAsync();
 
-                            var Token = await GenerateToken(newUser);
-                            return Ok(new { Token });
+                            var token = await GenerateToken(newUser);
+                            return Ok(new { token });
                         }
                     }
                     catch (Exception ex)

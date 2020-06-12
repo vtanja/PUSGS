@@ -19,6 +19,7 @@ namespace Server.DTOs
         public double Rate { get; set; }
 
         public string Logo { get; set; }
+        public RegisteredUserDTO Owner { get; set; }
 
         public List<PlaneDTO> Planes { get; set; }
 

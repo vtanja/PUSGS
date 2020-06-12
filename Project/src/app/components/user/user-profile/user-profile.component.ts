@@ -174,7 +174,8 @@ export class UserProfileComponent implements OnInit {
                 Address : this.editForm.get('address').value,
                 PhoneNumber :this.editForm.get('phone').value,
                 ProfileImage: this.editForm.get('logo').value,
-                Password : this.editForm.get('passwordData.password').value
+                Password : this.editForm.get('passwordData.password').value,
+                Id: this.userService.getUserId()
             };
 
 
