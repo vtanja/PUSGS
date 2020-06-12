@@ -106,6 +106,10 @@ namespace Server.Repositories
             return true;
         }
 
+        public void UpdateRentCarRate(RentCar rentCar)
+        {
+            _context.Entry<RentCar>(rentCar).State = EntityState.Modified;
+        }
         public async Task<List<RentCar>> SearchRentCars(string name, string address, int rate)
         {
             List<RentCar> rentCars = new List<RentCar>();

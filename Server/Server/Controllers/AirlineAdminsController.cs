@@ -11,7 +11,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Server.DTOs;
 using Server.Models;
+using Server.Services;
 using Server.Settings;
+using Server.UOW;
 
 namespace Server.Controllers
 {
@@ -23,33 +25,34 @@ namespace Server.Controllers
         private SignInManager<RegisteredUser> _signInManager;
         private readonly ApplicationSettings _appSettings;
         private readonly Email.IEmailSender _emailSender;
-        private readonly DataBaseContext _context;
         private readonly IMapper _mapper;
+        private readonly AirlineAdminService airlineAdminService;
 
         public AirlineAdminsController(UserManager<RegisteredUser> userManager,
             SignInManager<RegisteredUser> signInManager, IOptions<ApplicationSettings> appSettings, 
-            Email.IEmailSender emailSender, DataBaseContext dataBaseContext,IMapper mapper)
+            Email.IEmailSender emailSender, IMapper mapper,UnitOfWork unitOfWork)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _appSettings = appSettings.Value;
             _emailSender = emailSender;
-            _context = dataBaseContext;
             _mapper = mapper;
+            airlineAdminService = unitOfWork.AirlineAdminService;
         }
 
         // GET: api/AirlineAdmins
         [HttpGet]
+        [Authorize(Roles = "ADMINISTRATOR")]
         public async Task<ActionResult<IEnumerable<UserDTO>>> GetAirlineAdmins()
         {
-            return  _mapper.Map<List<UserDTO>>(await _context.AirlineAdmins.Include(a=>a.RegisteredUser).ToListAsync());
+            return  _mapper.Map<List<UserDTO>>(await airlineAdminService.GetAirlineAdmins());
         }
 
         // GET: api/AirlineAdmins/5
         [HttpGet("{id}")]
         public async Task<ActionResult<AirlineAdminDTO>> GetAirlineAdmin(string id)
         {
-            var airlineAdmin = await _context.AirlineAdmins.FindAsync(id);
+            var airlineAdmin = await airlineAdminService.GetAirlineAdmin(id);
 
             if (airlineAdmin == null)
             {
@@ -62,6 +65,7 @@ namespace Server.Controllers
 
         [HttpPost]
         [Route("AddAdmin")]
+        [Authorize(Roles ="ADMINISTRATOR")]
         //POST : /api/AirlineAdmins/AddAdmin
         public async Task<Object> PostAirlineAdmin(UserModel model)
         {
@@ -82,8 +86,7 @@ namespace Server.Controllers
                 {
 
                     await _userManager.AddToRoleAsync(user, "AIRLINEADMIN");
-                    await _context.AirlineAdmins.AddAsync(new AirlineAdmin { UserId = user.Id });
-                    await _context.SaveChangesAsync();
+                    await airlineAdminService.AddAirlineAdmin(new AirlineAdmin { UserId = user.Id });
 
 
                     var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -103,10 +106,6 @@ namespace Server.Controllers
             }
         }
 
-        private bool AirlineAdminExists(string id)
-        {
-            return _context.AirlineAdmins.Any(e => e.UserId == id);
-        }
 
         [HttpGet("[action]")]
         [AllowAnonymous]

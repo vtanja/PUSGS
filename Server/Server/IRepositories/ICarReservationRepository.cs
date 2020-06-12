@@ -8,8 +8,11 @@ namespace Server.IRepositories
 {
     public interface ICarReservationRepository : IDisposable
     {
-        Task<IEnumerable<CarReservation>> GetUserCarReservation(string userId);
+        Task<List<CarReservation>> GetUserCarReservation(string userId);
+        Task<CarReservation> GetCarReservation(int reservationId);
+        Task<IEnumerable<CarReservation>> GetCarReservations(int carId);
         void AddCarReservation(CarReservation reservation);
+        void UpdateCarReservation(CarReservation reservation);
         bool CarReservationExists(int id);
         Task<bool> CarReservationExists(DateTime date, int carId);
         Task<Dictionary<string, int>> GetDailyReservationReport(int companyId);

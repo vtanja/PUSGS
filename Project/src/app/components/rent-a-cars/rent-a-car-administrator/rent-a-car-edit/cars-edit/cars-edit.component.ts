@@ -234,7 +234,7 @@ export class CarsEditComponent implements OnInit {
             showConfirmButton: true,
             showCancelButton: true,
             confirmButtonText: 'Yes, override!',
-            cancelButtonText: 'No, cancel!',
+            cancelButtonText: 'No, leave!',
             confirmButtonColor: '#fa9e1c',
             cancelButtonColor: '#31124b',
             icon: 'warning',

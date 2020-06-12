@@ -28,6 +28,7 @@ namespace Server.Models
         public string LandingTime { get; set; }
 
         public double Duration { get; set; }
+        public double Rate { get; set; }
 
         public ICollection<Airport> Connections { get; set; }
         public ICollection<SegmentPrice> SegmentPrices { get; set; }

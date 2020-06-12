@@ -3,7 +3,7 @@ import { FlightReservation } from '../models/flight-reservation.model';
 import { UserService } from './user-service.service';
 import { HttpClient } from '@angular/common/http';
 import { regExpEscape } from '@ng-bootstrap/ng-bootstrap/util/util';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -11,10 +11,11 @@ import { Observable } from 'rxjs';
 export class FlightReservationService {
 
   pendingReservation:FlightReservation;
+  rateModalClose = new Subject<{}>();
   readonly baseUri = 'http://localhost:51474/api/';
 
   constructor(private userService:UserService, private httpClient:HttpClient) { }
-  
+
   saveReservation(reservation:FlightReservation){
     this.pendingReservation=reservation;
   }

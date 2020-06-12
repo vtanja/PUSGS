@@ -114,7 +114,22 @@ namespace Server.DTOs
                 .ForMember(dest => dest.Date, opt => opt.MapFrom(src => src.Date.ToShortDateString()))
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
                 .ForMember(dest => dest.Discount, opt => opt.MapFrom(src => src.Discount)).ReverseMap();
-           
+
+            CreateMap<CarReservation, CarReservationDTO>()
+                .ForMember(dest => dest.PickUpDate, opt => opt.MapFrom(src => src.PickUpDate.ToShortDateString()))
+                .ForMember(dest => dest.DropOffDate, opt => opt.MapFrom(src => src.DropOffDate.ToShortDateString()))
+                .ForMember(dest => dest.PickUpTime, opt => opt.MapFrom(src => src.PickUpDate.ToShortTimeString()))
+                .ForMember(dest => dest.DropOffTime, opt => opt.MapFrom(src => src.DropOffDate.ToShortTimeString()))
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+                .ForMember(dest => dest.CarBrand, opt => opt.MapFrom(src => src.Car.Brand))
+                .ForMember(dest => dest.CarLogo, opt => opt.MapFrom(src => src.Car.Image))
+                .ForMember(dest => dest.CarModel, opt => opt.MapFrom(src => src.Car.Model))
+                .ForMember(dest => dest.CompanyName, opt => opt.MapFrom(src => src.Car.CarCompany.Name))
+                .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.TotalPrice))
+                .ForMember(dest => dest.CarRate, opt => opt.MapFrom(src => (src.CarRateId == null ? -1 : src.CarRate.Rate)))
+                .ForMember(dest => dest.CompanyRate, opt => opt.MapFrom(src => (src.CompanyRateId == null ? -1 : src.CompanyRate.Rate)))
+                .ForMember(dest => dest.CanRate, opt => opt.MapFrom(src => (src.DropOffDate < DateTime.Now ? true : false)));
+        
         }
     }
 }

@@ -148,7 +148,8 @@ export class CreateCarReservationComponent implements OnInit {
     console.log(companyId);
 
     if(this.flightReservation!==undefined){
-    this.flightReservation.carReservation = new CarReservation(this.flight.takeOffDate, this.flight.landingTime, date, "10:00", days, days*this.car.price, companyId, this.car.companyName, this.car.id, this.userService.getLoggedUser().username, this.car.model );
+      // days, companyId, this.car.companyName,"",-1,-1,false, this.car.id,
+    this.flightReservation.carReservation = new CarReservation(-1,this.flight.takeOffDate, this.flight.landingTime, date, "10:00",10,"","","",-1,-1,false,"");
     //this.flightReservation.price +=this.flightReservation.carReservation.price;
     this.flightReservationService.saveReservation(this.flightReservation);
     console.log(this.flightReservation);

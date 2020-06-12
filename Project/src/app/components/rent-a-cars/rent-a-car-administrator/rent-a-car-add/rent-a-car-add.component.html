@@ -18,39 +18,36 @@
         <div class="wrap-input100">
           <span class="label-input100" style="margin-right: 10%;">Name :</span>
           <input id="nameInput" class="input100 input-margin" formControlName="name" type="text">
-          <i *ngIf="dataForm.get('name').invalid && dataForm.get('name').touched"
-                    class="fa fa-exclamation"></i>
-          <span class="invalid-input-span"
-                    *ngIf="dataForm.get('name').invalid && dataForm.get('name').touched">
-                    This field is required! </span>
+          <i *ngIf="dataForm.get('name').invalid && dataForm.get('name').touched" class="fa fa-exclamation"></i>
+          <span class="invalid-input-span" *ngIf="dataForm.get('name').invalid && dataForm.get('name').touched">
+            This field is required! </span>
         </div>
       </div>
       <div class="row">
-          <span class="logo-label-input100" >Logo :</span>
-          <img class="logo-img" [src]="imgPreview" *ngIf="imgPreview!=undefined">
+        <span class="logo-label-input100">Logo :</span>
+        <img class="logo-img" [src]="imgPreview" *ngIf="imgPreview!=undefined">
       </div>
       <div class="row" style="margin-top: 45px;">
-          <span class="logo-label-input100">Change logo:</span>
-          <input formControlName="file" accept='image/*' id="file" type="file" class="input100-logo"
-            (change)="onFileChange($event)">
-            <i *ngIf="dataForm.get('file').invalid && dataForm.get('file').touched"
-                    class="fa fa-exclamation"></i>
-          <span class="invalid-input-span"
-                    *ngIf="dataForm.get('file').invalid && dataForm.get('file').touched">
-                    This field is required! </span>
+        <span class="logo-label-input100">Change logo:</span>
+        <input formControlName="file" accept='image/*' id="file" type="file" class="input100-logo"
+          (change)="onFileChange($event)">
+        <i *ngIf="dataForm.get('file').invalid && dataForm.get('file').touched" class="fa fa-exclamation"></i>
+        <span class="invalid-input-span" *ngIf="dataForm.get('file').invalid && dataForm.get('file').touched">
+          This field is required! </span>
       </div>
     </div>
     <div class="col" style="margin-left: 5%;">
       <div class="row">
         <div class="wrap-input100 " formGroupName="address">
           <span class="label-input100">Street and num :</span>
-          <input id="streetInput" class="input100 input-margin" style="width:50%"  formControlName="street" type="text">
-          <input id="numberInput" class="input100 input-margin" style="width:10%;margin-left:5px"  formControlName="number" type="text">
+          <input id="streetInput" class="input100 input-margin" style="width:50%" formControlName="street" type="text">
+          <input id="numberInput" class="input100 input-margin" style="width:10%;margin-left:5px"
+            formControlName="number" type="text">
           <i *ngIf="(dataForm.get('address.street').invalid && dataForm.get('address.street').touched)||(dataForm.get('address.number').invalid && dataForm.get('address.number').touched)"
-                    class="fa fa-exclamation"></i>
+            class="fa fa-exclamation"></i>
           <span class="invalid-input-span"
-                    *ngIf="(dataForm.get('address.street').invalid && dataForm.get('address.street').touched)||(dataForm.get('address.number').invalid && dataForm.get('address.number').touched)">
-                    Both street and number are required! </span>
+            *ngIf="(dataForm.get('address.street').invalid && dataForm.get('address.street').touched)||(dataForm.get('address.number').invalid && dataForm.get('address.number').touched)">
+            Both street and number are required! </span>
         </div>
       </div>
       <div class="row">
@@ -58,25 +55,25 @@
           <span class="label-input100">City :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           </span>
-          <input id="cityInput" class="input100 input-margin"  formControlName="city" type="text">
+          <input id="cityInput" class="input100 input-margin" formControlName="city" type="text">
           <i *ngIf="dataForm.get('address.city').invalid && dataForm.get('address.city').touched"
-                    class="fa fa-exclamation"></i>
+            class="fa fa-exclamation"></i>
           <span class="invalid-input-span"
-                    *ngIf="dataForm.get('address.city').invalid && dataForm.get('address.city').touched">
-                    This field is required! </span>
+            *ngIf="dataForm.get('address.city').invalid && dataForm.get('address.city').touched">
+            This field is required! </span>
         </div>
       </div>
       <div class="row">
         <div class="wrap-input100 " formGroupName="address">
-          <span class="label-input100" >Country :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <span class="label-input100">Country :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           </span>
           <input id="countryInput" class="input100 input-margin" formControlName="country" type="text">
           <i *ngIf="dataForm.get('address.country').invalid && dataForm.get('address.country').touched"
-                    class="fa fa-exclamation"></i>
+            class="fa fa-exclamation"></i>
           <span class="invalid-input-span"
-                    *ngIf="dataForm.get('address.country').invalid && dataForm.get('address.country').touched">
-                    This field is required! </span>
+            *ngIf="dataForm.get('address.country').invalid && dataForm.get('address.country').touched">
+            This field is required! </span>
         </div>
       </div>
     </div>
@@ -90,12 +87,11 @@
     <div class="col">
       <textarea id="descriptionInput" class="input100" formControlName="description"
         style="width: 92%; height: 100%; margin-left: -3%; resize: none;" type="text"></textarea>
-        <i *ngIf="dataForm.get('description').invalid && dataForm.get('description').touched"
-                    class="fa fa-exclamation"></i>
-          <span class="invalid-input-span"
-                    *ngIf="dataForm.get('description').invalid && dataForm.get('description').touched">
-                    This field is required! </span>
-
+      <i *ngIf="dataForm.get('description').invalid && dataForm.get('description').touched"
+        class="fa fa-exclamation"></i>
+      <span class="invalid-input-span"
+        *ngIf="dataForm.get('description').invalid && dataForm.get('description').touched">
+        This field is required! </span>
     </div>
   </div>
   <div class="d-flex justify-content-center" style="margin-top: 7%;margin-bottom: 5%;">

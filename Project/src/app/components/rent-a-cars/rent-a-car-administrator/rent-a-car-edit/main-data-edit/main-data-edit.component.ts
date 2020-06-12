@@ -19,7 +19,6 @@ declare var google: any;
   templateUrl: './main-data-edit.component.html',
   styleUrls: ['./main-data-edit.component.css'],
 })
-
 export class MainDataEditComponent implements OnInit {
   dataForm: FormGroup;
   rentCarCompany: RentCar;
@@ -44,8 +43,8 @@ export class MainDataEditComponent implements OnInit {
         number: new FormControl(null, Validators.required),
         city: new FormControl(null, Validators.required),
         country: new FormControl(null, Validators.required),
-        longitude : new FormControl(null),
-        latitude : new FormControl(null),
+        longitude: new FormControl(null),
+        latitude: new FormControl(null),
       }),
       description: new FormControl(null, Validators.required),
       file: new FormControl(''),
@@ -62,12 +61,15 @@ export class MainDataEditComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
     this.rentCarService.getRentCarMainData().subscribe(
       (res) => {
         this.rentCarCompany = this.rentCarAdapter.adapt(res);
         this.setFormValues();
-        this.marker = new Marker(this.rentCarCompany.address.latitude, this.rentCarCompany.address.longitude,'');
+        this.marker = new Marker(
+          this.rentCarCompany.address.latitude,
+          this.rentCarCompany.address.longitude,
+          ''
+        );
         this.marker.draggable = true;
         this.zoom = 8;
       },
@@ -75,11 +77,10 @@ export class MainDataEditComponent implements OnInit {
     );
   }
 
-  editData():void{
-    if(this.dataForm.get('address').dirty && !this.mapToggled)
+  editData(): void {
+    if (this.dataForm.get('address').dirty && !this.mapToggled)
       this.checkLatLon();
-    else
-      this.editCompanyData();
+    else this.editCompanyData();
   }
 
   editCompanyData(): void {
@@ -118,12 +119,6 @@ export class MainDataEditComponent implements OnInit {
 
     this.dataForm.patchValue({
       name: this.rentCarCompany.name,
-      // 'address.street': this.rentCarCompany.address.street,
-      // 'address.number': this.rentCarCompany.address.num,
-      // 'address.city': this.rentCarCompany.address.city,
-      // 'address.country': this.rentCarCompany.address.country,
-      // 'address.longitude': this.rentCarCompany.address.longitude,
-      // 'address.latitude': this.rentCarCompany.address.latitude,
       description: this.rentCarCompany.description,
       logo: this.rentCarCompany.logo,
     });
@@ -164,49 +159,62 @@ export class MainDataEditComponent implements OnInit {
     document.getElementById(name).focus();
   }
 
-  checkLatLon(){
-      var address = this.dataForm.get('address').value;
-      let street = address.street.replace(' ','+')
-      let city = address.city.replace(' ','+')
-      var that = this;
+  checkLatLon() {
+    var address = this.dataForm.get('address').value;
+    let street = address.street.replace(' ', '+');
+    let city = address.city.replace(' ', '+');
+    var that = this;
 
-    fetch(('https://nominatim.openstreetmap.org/search?q='+ address.number + '+'+street+',+'+city + '&format=json&addressdetails=1&limit=1&polygon_svg=1'))
-    .then(function(result){
-            return result.json();
-          })
-          .then(function(json){
-            that.dataForm.get('address').patchValue({
-            'longitude' : +json[0].lon,
-            'latitude' : +json[0].lat,
-            })
-            that.marker.lat = +json[0].lat;
-            that.marker.lng = +json[0].lon;
-            that.editCompanyData();
-          })
-
+    fetch(
+      'https://nominatim.openstreetmap.org/search?q=' +
+        address.number +
+        '+' +
+        street +
+        ',+' +
+        city +
+        '&format=json&addressdetails=1&limit=1&polygon_svg=1'
+    )
+      .then(function (result) {
+        return result.json();
+      })
+      .then(function (json) {
+        that.dataForm.get('address').patchValue({
+          longitude: +json[0].lon,
+          latitude: +json[0].lat,
+        });
+        that.marker.lat = +json[0].lat;
+        that.marker.lng = +json[0].lon;
+        that.editCompanyData();
+      });
   }
 
   onClick(event: any) {
-
     var that = this;
 
-    fetch('http://nominatim.openstreetmap.org/reverse?format=json&lon='+ event.coords.lng + '&lat=' + event.coords.lat)
-        .then(function(response){
-          return response.json();
-        }).then(function(json){
+    fetch(
+      'http://nominatim.openstreetmap.org/reverse?format=json&lon=' +
+        event.coords.lng +
+        '&lat=' +
+        event.coords.lat
+    )
+      .then(function (response) {
+        return response.json();
+      })
+      .then(function (json) {
+        that.marker.lat = json.lat;
+        that.marker.lng = json.lon;
 
-          that.marker.lat = json.lat;
-          that.marker.lng = json.lon;
-
-          that.dataForm.get('address').patchValue({
-            'street' : json.address.road,
-            'number' : json.address.house_number,
-            'city' : json.address.city != undefined ? json.address.city : json.address.county,
-            'country' : json.address.country,
-            'longitude' : +json.lon,
-            'latitude' : +json.lat,
-          })
-        })
+        that.dataForm.get('address').patchValue({
+          street: json.address.road,
+          number: json.address.house_number,
+          city:
+            json.address.city != undefined
+              ? json.address.city
+              : json.address.county,
+          country: json.address.country,
+          longitude: +json.lon,
+          latitude: +json.lat,
+        });
+      });
   }
-
 }

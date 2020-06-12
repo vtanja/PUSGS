@@ -49,7 +49,6 @@
         <div class="row d-flex justify-content-center align-items-center row-btn-style">
           <button class="btn btn-md btn-rounded button-style " (click)="cancelReservation()">Cancel</button>
         </div>
-
     </div>
   </div>
 </div>
@@ -63,8 +62,9 @@
       <span aria-hidden="true">×</span>
     </button>
   </div>
+
   <div class="modal-body">
-    <!-- <app-rate-dialog [reservationId]="flightReservation.flightID" [rateItem]="toRate"></app-rate-dialog> -->
+    <app-rate-dialog [reservationId]="flightReservation.reservationId" [rateItem]="toRate"></app-rate-dialog>
   </div>
 </ng-template>
 
@@ -177,19 +177,19 @@
       <h6 class="modal-title header" id="modal-basic-title">Cars rented:</h6>
       <br>
       <div >
-        <label class="lblStyle header">Rental company: <span class="valueStyle text"> {{flightReservation.carReservation.Car.carCompany.name}}
-            {{flightReservation.carReservation.Car.carCompany.address}}&nbsp; </span></label>
+        <label class="lblStyle header">Rental company: <span class="valueStyle text"> {{flightReservation.carReservation.companyName}}
+            &nbsp; </span></label>
         <br>
         <label class="lblStyle header">Car: <span class="valueStyle text">
             {{flightReservation.carReservation.carModel}} &nbsp; </span></label>
         <br>
         <label class="lblStyle header">Pick up: <span class="valueStyle text">
-            {{flightReservation.carReservation.startDate}} &nbsp; {{flightReservation.carReservation.pickUpTime}}h
+            {{flightReservation.carReservation.pickUpDate}} &nbsp;h
           </span></label>
         <br>
         <label class="lblStyle header">Drop off: <span class="valueStyle text">
-            {{flightReservation.carReservation.returnDate}} &nbsp;
-            {{flightReservation.carReservation.returnTime}}h </span></label>
+            {{flightReservation.carReservation.dropOffDate}} &nbsp;
+            {{flightReservation.carReservation.dropOffTime}}h </span></label>
         <br>
       </div>
     </div>

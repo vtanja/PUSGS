@@ -87,6 +87,8 @@ export class CarsCardsComponent implements OnInit, OnDestroy {
     if (this.route.snapshot.routeConfig.path.includes('create-reservation')) {
       this.notFlightRes = false;
     }
+
+    console.log(this.cars);
   }
 
   ngOnDestroy(): void {

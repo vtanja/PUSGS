@@ -28,7 +28,7 @@ namespace Server.Models
 
         public string Description { get; set; }
 
-        public int Rate  { get; set; }
+        public double Rate  { get; set; }
 
         public string Logo { get; set; }
 

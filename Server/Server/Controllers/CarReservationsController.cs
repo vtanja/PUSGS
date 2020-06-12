@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Server.DTOs;
 using Server.Models;
 using Server.Repositories;
 using Server.Services;
@@ -19,23 +21,27 @@ namespace Server.Controllers
     [ApiController]
     public class CarReservationsController : ControllerBase
     {
-        private readonly DataBaseContext _context;
         private readonly CarReservationService carReservationService;
+        private readonly RentCarAdminService rentCarAdminService;
+        private readonly IMapper _mapper;
         
 
-        public CarReservationsController(DataBaseContext context,UnitOfWork unitOfWork)
+        public CarReservationsController( UnitOfWork unitOfWork,IMapper mapper)
         {
-            _context = context;
+            _mapper = mapper;
             carReservationService = unitOfWork.CarReservationService;
+            rentCarAdminService = unitOfWork.RentCarAdminService;
         }
 
         // GET: api/CarReservations
         [HttpGet]
         [Authorize(Roles ="USER")]
-        public async Task<IEnumerable<CarReservation>> GetCarReservations()
+        public async Task<List<CarReservationDTO>> GetCarReservations()
         {
             string userId = User.Claims.First(c => c.Type == "UserID").Value;
-            return await carReservationService.GetUserCarReservations(userId);
+            var ret = _mapper.Map<List<CarReservationDTO>>(await carReservationService.GetUserCarReservations(userId));
+            
+            return ret;
         }
 
         //GET: api/CarReservations/Daily
@@ -45,7 +51,7 @@ namespace Server.Controllers
         public async Task<ActionResult<CarReservation>> GetDailyCarReservation()
         {
             string userId = User.Claims.First(c => c.Type == "UserID").Value;
-            var admin = await _context.RentCarAdmins.FindAsync(userId);
+            var admin = await rentCarAdminService.GetRentCarAdmin(userId);
 
             if (admin.CompanyId == null)
                 return BadRequest();
@@ -67,7 +73,7 @@ namespace Server.Controllers
         public async Task<ActionResult<CarReservation>> GetMonthlyIncomes(string date)
         {
             string userId = User.Claims.First(c => c.Type == "UserID").Value;
-            var admin = await _context.RentCarAdmins.FindAsync(userId);
+            var admin = await rentCarAdminService.GetRentCarAdmin(userId);
 
             if (admin.CompanyId == null)
                 return BadRequest();
@@ -101,7 +107,7 @@ namespace Server.Controllers
         public async Task<ActionResult<CarReservation>> GetAnnualIncomes(int year)
         {
             string userId = User.Claims.First(c => c.Type == "UserID").Value;
-            var admin = await _context.RentCarAdmins.FindAsync(userId);
+            var admin = await rentCarAdminService.GetRentCarAdmin(userId);
 
             if (admin.CompanyId == null)
                 return BadRequest();
@@ -122,7 +128,7 @@ namespace Server.Controllers
         public async Task<ActionResult<CarReservation>> GetWeeklyReservation()
         {
             string userId = User.Claims.First(c => c.Type == "UserID").Value;
-            var admin = await _context.RentCarAdmins.FindAsync(userId);
+            var admin = await rentCarAdminService.GetRentCarAdmin(userId);
 
             if (admin.CompanyId == null)
                 return BadRequest();
@@ -143,7 +149,7 @@ namespace Server.Controllers
         public async Task<ActionResult<CarReservation>> GetMonthlyCarReservation()
         {
             string userId = User.Claims.First(c => c.Type == "UserID").Value;
-            var admin = await _context.RentCarAdmins.FindAsync(userId);
+            var admin = await rentCarAdminService.GetRentCarAdmin(userId); 
 
             if (admin.CompanyId == null)
                 return BadRequest();
@@ -158,47 +164,12 @@ namespace Server.Controllers
             return Ok(carReservation);
         }
 
-        // PUT: api/CarReservations/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        //[HttpPut("{id}")]
-        //public async Task<IActionResult> PutCarReservation(int id, CarReservation carReservation)
-        //{
-        //    if (id != carReservation.Id)
-        //    {
-        //        return BadRequest();
-        //    }
-
-        //    _context.Entry(carReservation).State = EntityState.Modified;
-
-        //    try
-        //    {
-        //        await _context.SaveChangesAsync();
-        //    }
-        //    catch (DbUpdateConcurrencyException)
-        //    {
-        //        if (!CarReservationExists(id))
-        //        {
-        //            return NotFound();
-        //        }
-        //        else
-        //        {
-        //            throw;
-        //        }
-        //    }
-
-        //    return NoContent();
-        //}
-
-        // POST: api/CarReservations
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
         [Authorize(Roles = "USER")]
         public async Task<ActionResult<CarReservation>> PostCarReservation(CarReservation carReservation)
         {
             string userId = User.Claims.First(c => c.Type == "UserID").Value;
-            var user = await _context.Users.FindAsync(userId);
+            var user = await rentCarAdminService.GetRentCarAdmin(userId);
 
             if (user == null)
             {

@@ -27,7 +27,12 @@ namespace Server.UOW
         private SegmentService segmentService;
         private FlightService flightService;
         private FlightReservationService flightReservationService;
-        private FlightFlightReservationService flightFlightReservationService;
+        private CarRateService carRateService;
+        private CompanyRateService companyRateService;
+        private FlightRateService flightRateService;
+        private AirlineRateService airlineRateService;
+        private RentCarAdminService rentCarAdminService;
+        private AirlineAdminService airlineAdminService;
 
         private CarRepository carRepository;
         private RentCarRepository rentCarRepository;
@@ -43,7 +48,12 @@ namespace Server.UOW
         private SegmentRepository segmentRepository;
         private FlightRepository flightRepository;
         private FlightReservationRepository flightReservationRepository;
-        private FlightFlightReservationRepository flightFlightReservationRepository;
+        private CarRateRepository carRateRepository;
+        private CompanyRateRepository companyRateRepository;
+        private AirlineRateRepository airlineRateRepository;
+        private FlightRateRepository flightRateRepository;
+        private RentCarAdminRepository rentCarAdminRepository;
+        private AirlineAdminRepository airlineAdminRepository;
 
         public UnitOfWork(DataBaseContext context)
         {
@@ -64,19 +74,12 @@ namespace Server.UOW
             segmentRepository = new SegmentRepository(_context);
             flightRepository = new FlightRepository(_context);
             flightReservationRepository = new FlightReservationRepository(_context);
-            flightFlightReservationRepository = new FlightFlightReservationRepository(_context);
-        }
-
-        public FlightFlightReservationService FlightFlightReservationService
-        {
-            get
-            {
-                if (this.flightFlightReservationService == null)
-                {
-                    this.flightFlightReservationService = new FlightFlightReservationService(flightFlightReservationRepository);
-                }
-                return this.flightFlightReservationService;
-            }
+            carRateRepository = new CarRateRepository(_context);
+            companyRateRepository = new CompanyRateRepository(_context);
+            airlineRateRepository = new AirlineRateRepository(_context);
+            flightRateRepository = new FlightRateRepository(_context);
+            rentCarAdminRepository = new RentCarAdminRepository(_context);
+            airlineAdminRepository = new AirlineAdminRepository(_context);
         }
 
         public FlightReservationService FlightReservationService
@@ -231,6 +234,80 @@ namespace Server.UOW
                     planeService = new PlaneService(planeRepository, segmentRepository);
                 }
                 return this.planeService;
+            }
+        }
+
+        public CarRateService CarRateService
+        {
+            get
+            {
+                if (carRateService == null)
+                {
+                    carRateService = new CarRateService(carRepository, carRateRepository, carReservationRepository);
+                }
+                return carRateService;
+            }
+        }
+
+        public CompanyRateService CompanyRateService
+        {
+            get
+            {
+                if(companyRateService == null)
+                {
+                    companyRateService = new CompanyRateService(carRepository, rentCarRepository, companyRateRepository, carReservationRepository);
+                }
+
+                return companyRateService;
+            }
+        }
+
+        public FlightRateService FlightRateService
+        {
+            get
+            {
+                if (flightRateService == null)
+                {
+                    flightRateService = new FlightRateService(flightRepository,flightRateRepository,flightReservationRepository);
+                }
+                return flightRateService;
+            }
+        }
+
+        public AirlineRateService AirlineRateService
+        {
+            get
+            {
+                if (airlineRateService == null)
+                {
+                    airlineRateService = new AirlineRateService(airlineRateRepository,flightReservationRepository,airlineRepository);
+                }
+
+                return airlineRateService;
+            }
+        }
+
+        public RentCarAdminService RentCarAdminService
+        {
+            get
+            {
+                if (rentCarAdminService == null)
+                {
+                    rentCarAdminService = new RentCarAdminService(rentCarAdminRepository);
+                }
+                return rentCarAdminService;
+            }
+        }
+
+        public AirlineAdminService AirlineAdminService
+        {
+            get
+            {
+                if (airlineAdminService == null)
+                {
+                    airlineAdminService = new AirlineAdminService(airlineAdminRepository);
+                }
+                return airlineAdminService;
             }
         }
 

@@ -16,6 +16,7 @@ namespace Server.IRepositories
         void AddRentCar(RentCar rentCar);
         Task DeleteRentCar(int rentCarId);
         bool UpdateRentCar(RentCar rentCar);
+        void UpdateRentCarRate(RentCar rentCar);
         Task Save();
         bool RentCarExists(int id);
     }

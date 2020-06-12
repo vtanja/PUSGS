@@ -4,35 +4,34 @@ import { Car } from './Car.model';
 
 export class CarReservation{
 
-  startDate:string;
+  pickUpDate:string;
   pickUpTime:string;
-  returnDate:string;
-  returnTime:string;
-  numberOfDays:number;
+  dropOffDate:string;
+  dropOffTime:string;
   price:number;
-  compayName:string;
-  companyId:number;
-  carId:number;
+  companyName:string;
   carModel:string;
+  carBrand:string;
   companyRate:number;
   carRate:number;
+  carLogo:string
   id:number;
-  username:string;
-  Car:Car;
+  canRate:boolean;
 
-  constructor(startDate:string,pickUpTime:string, returnDate:string, returnTime:string, numberOfDays:number, price:number, companyId:number, companyName:string, carId:number,username:string, carModel:string){
-    this.startDate=startDate;
+  constructor(id:number,pickUpDate:string,pickUpTime:string, dropOffDate:string, dropOffTime:string, price:number, companyName:string, carModel:string,
+    carBrand:string,carRate:number,companyRate:number,canRate:boolean,carLogo:string){
+    this.pickUpDate=pickUpDate;
     this.pickUpTime = pickUpTime;
-    this.returnDate=returnDate;
-    this.returnTime=returnTime;
-    this.numberOfDays=numberOfDays;
+    this.dropOffDate=dropOffDate;
+    this.dropOffTime=dropOffTime;
     this.price=price;
-    this.companyId=companyId;
-    this.compayName =companyName;
-    this.carId=carId;
+    this.companyName =companyName;
     this.carModel = carModel;
-    this.carRate=-1;
-    this.companyRate=-1;
-    this.username = username;
+    this.carBrand = carBrand;
+    this.carRate= carRate;
+    this.companyRate= companyRate;
+    this.canRate = canRate;
+    this.carLogo = carLogo;
+    this.id = id;
   }
 }

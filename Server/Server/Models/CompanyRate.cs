@@ -15,9 +15,5 @@ namespace Server.Models
 
         public int Rate { get; set; }
 
-        public int ReservationId { get; set; }
-
-        [ForeignKey("ReservationId")]
-        public virtual CarReservation CarReservation { get; set; }
     }
 }

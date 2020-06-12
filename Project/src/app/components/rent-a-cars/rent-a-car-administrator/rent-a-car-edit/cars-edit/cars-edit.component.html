@@ -14,7 +14,7 @@
   <div class="container" *ngIf="carsEmpty() && !isLoading">
     <div class="row" class="row-style">
       <h3> No cars added.</h3>
-      <h3> Click add button in left corner to add first car. </h3>
+      <h3> Click add button in right corner to add first car. </h3>
     </div>
   </div>
   <div class="container" style="margin-top: 3%;" *ngIf="!carsEmpty() && !isLoading">
@@ -24,8 +24,8 @@
           <div class="container c1">
             <img class="card-img-top main-image-style" [src]="car.image" alt="My image {{i + 1}} description">
             <div class="text-block">
-              <p *ngIf="car.rate!=-1" style="margin-top:-25%">{{car.rate}}</p>
-              <p *ngIf="car.rate===-1" style="margin-top:-5%">No any rates yet.</p>
+              <p *ngIf="car.rate!=0" style="margin-top:-25%">{{car.rate}}</p>
+              <p *ngIf="car.rate===0" style="margin-top:-5%">No any rates yet.</p>
             </div>
           </div>
 

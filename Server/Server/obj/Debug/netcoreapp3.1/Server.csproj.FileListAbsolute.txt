@@ -349,7 +349,6 @@ C:\Users\Andjela\Desktop\PUSGS\Server\Server\bin\Debug\netcoreapp3.1\runtimes\wi
 C:\Users\Andjela\Desktop\PUSGS\Server\Server\bin\Debug\netcoreapp3.1\runtimes\unix\lib\netcoreapp2.0\System.Runtime.Caching.dll
 C:\Users\Andjela\Desktop\PUSGS\Server\Server\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp2.0\System.Runtime.Caching.dll
 C:\Users\Andjela\Desktop\PUSGS\Server\Server\bin\Debug\netcoreapp3.1\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll
-C:\Users\Andjela\Desktop\PUSGS\Server\Server\obj\Debug\netcoreapp3.1\Server.csprojAssemblyReference.cache
 C:\Users\Andjela\Desktop\PUSGS\Server\Server\obj\Debug\netcoreapp3.1\Server.csproj.CoreCompileInputs.cache
 C:\Users\Andjela\Desktop\PUSGS\Server\Server\obj\Debug\netcoreapp3.1\Server.MvcApplicationPartsAssemblyInfo.cs
 C:\Users\Andjela\Desktop\PUSGS\Server\Server\obj\Debug\netcoreapp3.1\Server.MvcApplicationPartsAssemblyInfo.cache
@@ -376,3 +375,4 @@ C:\Users\vukmi\OneDrive\Dokumenti\GitHub\PUSGS\Server\Server\obj\Debug\netcoreap
 C:\Users\vukmi\OneDrive\Dokumenti\GitHub\PUSGS\Server\Server\obj\Debug\netcoreapp3.1\Razor\Views\Notifications\LateConfirm.cshtml.g.cs
 C:\Users\vukmi\OneDrive\Dokumenti\GitHub\PUSGS\Server\Server\obj\Debug\netcoreapp3.1\Razor\Views\Notifications\ReservationAlreadyConfirmed.cshtml.g.cs
 C:\Users\vukmi\OneDrive\Dokumenti\GitHub\PUSGS\Server\Server\obj\Debug\netcoreapp3.1\Razor\Views\Notifications\InvitationConfirmed.cshtml.g.cs
+C:\Users\Andjela\Desktop\PUSGS\Server\Server\obj\Debug\netcoreapp3.1\Razor\Views\Notifications\ReservationConfirmed.cshtml.g.cs

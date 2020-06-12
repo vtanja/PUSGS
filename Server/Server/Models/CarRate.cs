@@ -13,12 +13,7 @@ namespace Server.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-
         public int Rate { get; set; }
 
-        public int ReservationId { get; set; }
-
-        [ForeignKey("ReservationId")]
-        public virtual CarReservation CarReservation {get; set;}
     }
 }

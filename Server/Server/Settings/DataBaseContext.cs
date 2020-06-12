@@ -40,5 +40,11 @@ namespace Server.Settings
         public DbSet<Seat> Seats { get; set; }
         public DbSet<FlightFlightReservation> FlightFlightReservation { get; set; }
         public DbSet<UserFlightReservation> UserFlightReservations { get; set; }
+
+        public DbSet<CarRate> CarRates { get; set; }
+        public DbSet<CompanyRate> CompanyRates { get; set; }
+
+        public DbSet<FlightRate> FlightRates { get; set; }
+        public DbSet<AirlineRate> AirlineRates { get; set; }
     }
 }

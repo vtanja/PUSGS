@@ -1,22 +1,23 @@
 <div class="list-group-item" style="margin-top: 1%; margin-bottom: 1%;">
   <div class="row" style=" height: 100px;">
     <div class="col-md-2" style=" height: 100%; justify-content: center;">
-      <img src={{car.image}} style="width: 100%; height: 100%;">
+      <img src={{reservation.carLogo}} style="width: 100%; height: 100%;">
     </div>
-    <div class="col-md-3" style="height: 100%; text-align: center; align-content: center;">
+    <div class="col-md-2" style="height: 100%; text-align: center; align-content: center;">
+      <div class="row header">Car :</div>
+      <div class="row text">{{reservation.carBrand}}&nbsp;{{reservation.carModel}}</div>
       <div class="row header">Rental company:</div>
-      <div class="row text">{{company.name}}</div>
-      <div class="row text">{{company.address}}</div>
+      <div class="row text">{{reservation.companyName}}</div>
     </div>
     <div class="col-md-1" style="height: 100%; text-align: center; align-content: center;">
       <div class="row header">Pick up:</div>
-      <div class="row text">{{reservation.startDate}}</div>
+      <div class="row text">{{reservation.pickUpDate}}</div>
       <div class="row text">{{reservation.pickUpTime}}h</div>
     </div>
     <div class="col-md-1" style="height: 100%; text-align: center; align-content: center;">
       <div class="row header">Drop off:</div>
-      <div class="row text">{{reservation.returnDate}}</div>
-      <div class="row text">{{reservation.returnTime}}h</div>
+      <div class="row text">{{reservation.dropOffDate}}</div>
+      <div class="row text">{{reservation.dropOffTime}}h</div>
     </div>
     <div class="col-md-1" style="height: 100%; text-align: center; align-content: center;">
       <div class="row header">Total price:</div>
@@ -33,11 +34,11 @@
       <div *ngIf="reservation.carRate===-1" class="row text">No rate</div>
     </div>
     <div class="col-md-2" style="height: 100%; text-align: center; align-content: center;">
-      <div *ngIf="reservation.companyRate===-1 && canRate"
+      <div *ngIf="reservation.companyRate===-1 && reservation.canRate"
         class="row d-flex justify-content-center align-items-center row-btn-style">
         <button class="btn btn-md btn-rounded button-style" (click)="open(mymodal,'carCompany')">Rate company</button>
       </div>
-      <div *ngIf="reservation.carRate===-1 && canRate"
+      <div *ngIf="reservation.carRate===-1 && reservation.canRate"
         class="row d-flex justify-content-center align-items-center row-btn-style">
         <button class="btn btn-md btn-rounded button-style" (click)="open(mymodal,'car')">Rate car</button>
       </div>
@@ -57,6 +58,6 @@
     </button>
   </div>
   <div class="modal-body">
-    <app-rate-dialog [reservationId]="reservation.id" [vehicleId]="reservation.carId" [companyId]="reservation.companyId" [rateItem]="toRate"></app-rate-dialog>
+    <app-rate-dialog [reservationId]="reservation.id" [rateItem]="toRate"></app-rate-dialog>
   </div>
 </ng-template>

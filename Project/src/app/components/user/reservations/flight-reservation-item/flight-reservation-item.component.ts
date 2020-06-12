@@ -19,9 +19,9 @@ import { Router } from '@angular/router';
 export class FlightReservationItemComponent implements OnInit,OnDestroy, AfterViewInit {
 
   @Input() flightReservation:FlightReservation;
- 
+
   closeResult = '';
- 
+
   toRate:string;
   canRate:boolean;
   modalCloseSubscription:Subscription;
@@ -47,8 +47,13 @@ export class FlightReservationItemComponent implements OnInit,OnDestroy, AfterVi
 
   ngOnInit(): void {
 
-    
-    this.modalCloseSubscription = this.airlineService.rateModalClose.subscribe(()=>{
+
+    this.modalCloseSubscription = this.flightReservationService.rateModalClose.subscribe((data:any)=>{
+      if(data.airline){
+      //  this.flightReservation.airlineRate=data.rate;
+      }else if(data.car){
+       // this.flightReservation.flightRate = data.rate;
+      }
       this.modalService.dismissAll();
     })
 
@@ -73,7 +78,7 @@ export class FlightReservationItemComponent implements OnInit,OnDestroy, AfterVi
 
     this.toRate = rateItem
 
-    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title',centered:true}).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
       this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
@@ -111,7 +116,7 @@ export class FlightReservationItemComponent implements OnInit,OnDestroy, AfterVi
         }).then(()=>{
           this.router.navigate(['/user/reservations/flight-reservations']);
         })
-      }, 
+      },
       (err)=>{
         Swal.fire({
           text: err.error.message,
