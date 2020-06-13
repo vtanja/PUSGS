@@ -15,7 +15,7 @@ export class CarReservationsService {
   monthlyIncomesSubject = new Subject();
   annualIncomesSubject = new Subject();
 
-
+  reload=new Subject();
   constructor(private httpClient: HttpClient,private carReservationAdapter:CarReservationAdapter) {}
 
   makeCarReservation(carReservation:{}) {
@@ -55,7 +55,7 @@ export class CarReservationsService {
     );
   }
 
-  cancelReservation(reservation:CarReservation){
-    return this.httpClient.put(this.baseUri + 'CarReservations/'+reservation.id, reservation);
+  cancelReservation(id:number,reservation:{}){
+    return this.httpClient.put(this.baseUri + 'CarReservations/'+id, reservation);
   }
 }

@@ -64,14 +64,23 @@ export class CarReservationItemComponent implements OnInit,OnDestroy {
 console.log(diffDays);
     if(diff>=2){
       console.log(this.reservation);
-      this.carsReservationsService.cancelReservation(this.reservation).subscribe((res:any)=>{
+
+      var toCancel={
+        PickUpDate : this.reservation.pickUpDate,
+        DropOffDate : this.reservation.dropOffDate,
+        TotalPrice : this.reservation.totalPrice,
+        CarId : this.reservation.carId,
+        Id : this.reservation.id
+      }
+
+      this.carsReservationsService.cancelReservation(this.reservation.id, toCancel).subscribe((res:any)=>{
         Swal.fire({
           text: 'Successfully canceled reservation',
           icon: 'success',
           showConfirmButton: false,
           timer:1500
         }).then(()=>{
-          this.router.navigate(['/user/reservations/car-reservations']);
+          this.carsReservationsService.reload.next();
         })
       },
       (err)=>{

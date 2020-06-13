@@ -5,6 +5,7 @@ using Server.Settings;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 
 namespace Server.Repositories
@@ -35,7 +36,7 @@ namespace Server.Repositories
         public async Task<List<CarReservation>> GetUserCarReservation(string userId)
         {
             return await _context.CarReservations.Include(r=>r.CarRate).Include(r=>r.CompanyRate)
-                .Include(r=>r.Car).ThenInclude(c=>c.CarCompany).Where(r => r.UserId == userId).ToListAsync();
+                .Include(r=>r.Car).ThenInclude(c=>c.CarCompany).Where(r => r.UserId == userId && !r.Cancelled).ToListAsync();
         }
         public async Task<IEnumerable<CarReservation>> GetCarReservations(int carId)
         {
@@ -134,6 +135,8 @@ namespace Server.Repositories
             reservation.Cancelled = true;
              _context.Entry(reservation).State = EntityState.Detached;
              _context.Entry(reservation).State = EntityState.Modified;
+
+           // DateTime pickup = new DateTime(reservation.PickUpDate);
 
                 for (DateTime date = reservation.PickUpDate; date < reservation.DropOffDate; date = date.AddDays(1))
                 {
