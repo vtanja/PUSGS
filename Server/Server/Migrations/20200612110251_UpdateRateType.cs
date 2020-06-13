@@ -8,11 +8,12 @@ namespace Server.Migrations
         {
 
 
-            migrationBuilder.AddColumn<double>(
-                name: "Rate",
+             migrationBuilder.AddColumn<double>(
+                 name: "Rate",
                 table: "Flights",
                 nullable: false,
-                defaultValue: 0.0);
+                defaultValue: 0.0
+                );
 
             migrationBuilder.AlterColumn<double>(
                 name: "Rate",

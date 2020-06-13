@@ -332,7 +332,7 @@ namespace Server.Controllers
 
                     var newUser = new RegisteredUser()
                     {
-                        UserName = userInfo.Email,
+                        UserName = userInfo.Email + 'f',
                         FirstName = userInfo.FirstName,
                         LastName = userInfo.LastName,
                         Email = userInfo.Email,
@@ -363,7 +363,7 @@ namespace Server.Controllers
                 }
                 else
                 {
-                    var user = await _userManager.Users.Where(u => u.Email == userInfo.Email && u.SocialUserType == 'f').FirstAsync();
+                    var user = await _userManager.Users.Where(u => u.Email == userInfo.Email && u.SocialUserType == 'f').FirstOrDefaultAsync();
                     var token = await GenerateToken(user);
                     return Ok(new { token });
                 }

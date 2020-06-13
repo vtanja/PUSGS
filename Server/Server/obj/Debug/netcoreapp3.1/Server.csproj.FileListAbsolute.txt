@@ -190,7 +190,6 @@ C:\Users\Andjela\Desktop\PUSGS\Server\Server\obj\Debug\netcoreapp3.1\Razor\Views
 C:\Users\Andjela\Desktop\PUSGS\Server\Server\obj\Debug\netcoreapp3.1\Razor\Views\Notifications\InvitationDeclined.cshtml.g.cs
 C:\Users\Andjela\Desktop\PUSGS\Server\Server\obj\Debug\netcoreapp3.1\Razor\Views\Notifications\LateConfirm.cshtml.g.cs
 C:\Users\Andjela\Desktop\PUSGS\Server\Server\obj\Debug\netcoreapp3.1\Razor\Views\Notifications\ReservationAlreadyConfirmed.cshtml.g.cs
-C:\Users\Andjela\Desktop\PUSGS\Server\Server\obj\Debug\netcoreapp3.1\Server.csprojAssemblyReference.cache
 C:\Users\vukmi\OneDrive\Dokumenti\GitHub\PUSGS\Server\Server\bin\Debug\netcoreapp3.1\appsettings.Development.json
 C:\Users\vukmi\OneDrive\Dokumenti\GitHub\PUSGS\Server\Server\bin\Debug\netcoreapp3.1\appsettings.json
 C:\Users\vukmi\OneDrive\Dokumenti\GitHub\PUSGS\Server\Server\bin\Debug\netcoreapp3.1\Properties\launchSettings.json

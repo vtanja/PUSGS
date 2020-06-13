@@ -63,17 +63,17 @@ namespace Server.Repositories
             DateTime dateDropOff = Convert.ToDateTime(searchCarModel.DropOffDate);
             DateTime datepickUp = Convert.ToDateTime(searchCarModel.PickUpDate);
 
-            if (!searchCarModel.DropOffLocation.Contains(", ") || !searchCarModel.PickUpLocation.Contains(", ") || datepickUp > dateDropOff)
+            if (!searchCarModel.DropOffLocation.Contains(",") || !searchCarModel.PickUpLocation.Contains(",") || datepickUp > dateDropOff)
             {
                 return new List<Car>();
             }
 
-            string[] dropOffLocationParams = searchCarModel.DropOffLocation.Split(", ");
-            string[] pickUpLocationParams = searchCarModel.PickUpLocation.Split(", ");
-            string dropOffCity = dropOffLocationParams[0];
-            string dropOffCountry = dropOffLocationParams[1];
-            string pickUpCity = pickUpLocationParams[0];
-            string pickUpCountry = pickUpLocationParams[1];
+            string[] dropOffLocationParams = searchCarModel.DropOffLocation.Split(",");
+            string[] pickUpLocationParams = searchCarModel.PickUpLocation.Split(",");
+            string dropOffCity = dropOffLocationParams[0].Trim();
+            string dropOffCountry = dropOffLocationParams[1].Trim();
+            string pickUpCity = pickUpLocationParams[0].Trim();
+            string pickUpCountry = pickUpLocationParams[1].Trim();
 
 
             IEnumerable<int> carIDS;
@@ -104,12 +104,12 @@ namespace Server.Repositories
             carIDS = carIDS.Where(c=>!carOnDiscountIDS.Contains(c)).ToArray();
 
             var companiesPickUp = await _context.Offices.Include(o => o.Address)
-                                        .Where(o => o.Address.City == pickUpCity && o.Address.Country == pickUpCountry)
+                                        .Where(o => o.Address.City.ToLower() == pickUpCity.ToLower() && o.Address.Country.ToLower() == pickUpCountry.ToLower())
                                         .Select(o => o.RentCarId)
                                         .ToArrayAsync();
 
             var companiesDropOff = await _context.Offices.Include(o => o.Address)
-                                       .Where(o => o.Address.City == dropOffCity && o.Address.Country == dropOffCountry)
+                                       .Where(o => o.Address.City.ToLower() == dropOffCity.ToLower() && o.Address.Country.ToLower() == dropOffCountry.ToLower())
                                        .Select(o => o.RentCarId)
                                        .ToArrayAsync();
 
@@ -126,12 +126,12 @@ namespace Server.Repositories
         }
         public async Task<IEnumerable<Car>> SearchCompanyCars(SearchCarModel searchCarModel)
         {
-            string[] dropOffLocationParams = searchCarModel.DropOffLocation.Split(", ");
-            string[] pickUpLocationParams = searchCarModel.PickUpLocation.Split(", ");
-            string dropOffCity = dropOffLocationParams[0];
-            string dropOffCountry = dropOffLocationParams[1];
-            string pickUpCity = pickUpLocationParams[0];
-            string pickUpCountry = pickUpLocationParams[1];
+            string[] dropOffLocationParams = searchCarModel.DropOffLocation.Split(",");
+            string[] pickUpLocationParams = searchCarModel.PickUpLocation.Split(",");
+            string dropOffCity = dropOffLocationParams[0].Trim();
+            string dropOffCountry = dropOffLocationParams[1].Trim();
+            string pickUpCity = pickUpLocationParams[0].Trim();
+            string pickUpCountry = pickUpLocationParams[1].Trim();
             DateTime dateDropOff = Convert.ToDateTime(searchCarModel.DropOffDate);
             DateTime datepickUp = Convert.ToDateTime(searchCarModel.PickUpDate);
 
@@ -160,11 +160,11 @@ namespace Server.Repositories
             }
 
             var companiesPickUp = await _context.Offices.Include(o => o.Address)
-                                        .Where(o => o.Address.City == pickUpCity && o.Address.Country == pickUpCountry && o.RentCarId == searchCarModel.CompanyID)
+                                        .Where(o => o.Address.City.ToLower() == pickUpCity.ToLower() && o.Address.Country.ToLower() == pickUpCountry.ToLower() && o.RentCarId == searchCarModel.CompanyID)
                                         .AnyAsync();
 
             var companiesDropOff = await _context.Offices.Include(o => o.Address)
-                                       .Where(o => o.Address.City == dropOffCity && o.Address.Country == dropOffCountry && o.RentCarId == searchCarModel.CompanyID)
+                                       .Where(o => o.Address.City.ToLower() == dropOffCity.ToLower() && o.Address.Country.ToLower() == dropOffCountry.ToLower() && o.RentCarId == searchCarModel.CompanyID)
                                        .Select(o => o.RentCarId)
                                        .AnyAsync();
             if (companiesDropOff && companiesPickUp)
@@ -181,17 +181,17 @@ namespace Server.Repositories
             DateTime datepickUp = Convert.ToDateTime(searchCarModel.PickUpDate);
             DateTime dateDropOff = dateDropOff = Convert.ToDateTime(searchCarModel.DropOffDate);                    
 
-            if (!searchCarModel.PickUpLocation.Contains(", ") || datepickUp > dateDropOff)
+            if (!searchCarModel.PickUpLocation.Contains(",") || datepickUp > dateDropOff)
             {
                 return new List<Car>();
             }
 
-            string[] dropOffLocationParams = searchCarModel.DropOffLocation.Split(", ");
-            string[] pickUpLocationParams = searchCarModel.PickUpLocation.Split(", ");
-            string dropOffCity = dropOffLocationParams[0];
-            string dropOffCountry = dropOffLocationParams[1];
-            string pickUpCity = pickUpLocationParams[0];
-            string pickUpCountry = pickUpLocationParams[1];
+            string[] dropOffLocationParams = searchCarModel.DropOffLocation.Split(",");
+            string[] pickUpLocationParams = searchCarModel.PickUpLocation.Split(",");
+            string dropOffCity = dropOffLocationParams[0].Trim();
+            string dropOffCountry = dropOffLocationParams[1].Trim();
+            string pickUpCity = pickUpLocationParams[0].Trim();
+            string pickUpCountry = pickUpLocationParams[1].Trim();
 
 
             IEnumerable<int> carIDS;
@@ -207,12 +207,12 @@ namespace Server.Repositories
 
 
             var companiesPickUp = await _context.Offices.Include(o => o.Address)
-                                        .Where(o => o.Address.City == pickUpCity && o.Address.Country == pickUpCountry)
+                                        .Where(o => o.Address.City.ToLower() == pickUpCity.ToLower() && o.Address.Country.ToLower() == pickUpCountry.ToLower())
                                         .Select(o => o.RentCarId)
                                         .ToArrayAsync();
 
             var companiesDropOff = await _context.Offices.Include(o => o.Address)
-                                       .Where(o => o.Address.City == dropOffCity && o.Address.Country == dropOffCountry)
+                                       .Where(o => o.Address.City.ToLower() == dropOffCity.ToLower() && o.Address.Country.ToLower() == dropOffCountry.ToLower())
                                        .Select(o => o.RentCarId)
                                        .ToArrayAsync();
 

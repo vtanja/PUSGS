@@ -17,18 +17,7 @@ import {
 import { RentCarService } from '../../../../services/rent-a-car.service';
 import { Observable } from 'rxjs/internal/Observable';
 import { startWith, map } from 'rxjs/operators';
-import { NgbTime } from '@ng-bootstrap/ng-bootstrap/timepicker/ngb-time';
-
-export interface LocationGroup {
-  letter: string;
-  names: string[];
-}
-
-export const _filter = (opt: string[], value: string): string[] => {
-  const filterValue = value.toLowerCase();
-
-  return opt.filter((item) => item.toLowerCase().indexOf(filterValue) === 0);
-};
+import { AppDataService } from 'src/app/services/app-data.service';
 
 @Component({
   selector: 'app-cars-search-form',
@@ -36,39 +25,11 @@ export const _filter = (opt: string[], value: string): string[] => {
   styleUrls: ['./cars-search-form.component.css'],
 })
 export class CarsSearchFormComponent implements OnInit {
-  stateForm: FormGroup = this._formBuilder.group({
-    locationGroup: '',
-  });
 
-  locationGroups: LocationGroup[] = [
-    {
-      letter: 'B',
-      names: [
-        'Belgrade, Serbia',
-        'Budapest, Hungary',
-        'Banja Luka, Bosnia and Herzegovina',
-      ],
-    },
-    {
-      letter: 'D',
-      names: ['Dubrovnik, Croatia'],
-    },
-    {
-      letter: 'M',
-      names: ['Mostar, Bosnia and Herzegovina', 'Munich, Germany'],
-    },
-    {
-      letter: 'N',
-      names: ['Novi Sad, Serbia', 'Novo Mesto, Slovenia'],
-    },
-    {
-      letter: 'T',
-      names: ['Trebinje, Bosnia and Herzegovina'],
-    },
-  ];
+  options: string[] = [];
 
-  pickUpLocationOptions: Observable<LocationGroup[]>;
-  dropOffLocationOptions: Observable<LocationGroup[]>;
+  pickUpLocationOptions: Observable<string[]>;
+  dropOffLocationOptions: Observable<string[]>;
 
   times: Array<string>;
   cars: Array<string>;
@@ -84,7 +45,8 @@ export class CarsSearchFormComponent implements OnInit {
     private _formBuilder: FormBuilder,
     private rentCarsService: RentCarService,
     private config: NgbDatepickerConfig,
-    private calendar: NgbCalendar
+    private calendar: NgbCalendar,
+    private appDataService: AppDataService
   ) {
     const current = new Date();
     config.minDate = {
@@ -96,7 +58,6 @@ export class CarsSearchFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
     let params = this.activeRoute.snapshot.queryParams;
 
     let pickUpDate;
@@ -180,16 +141,14 @@ export class CarsSearchFormComponent implements OnInit {
     );
 
     this.searchForm = new FormGroup({
+
       location: new FormGroup({
-        pickUpLocation: new FormControl(pickUpLocation, [
-          Validators.required,
-          this.requireMatch.bind(this),
-        ]),
+        pickUpLocation: new FormControl(pickUpLocation, [Validators.required]),
         dropOffLocation: new FormControl(dropOffLocation, [
           Validators.required,
-          this.requireMatch.bind(this),
         ]),
       }),
+      dateTimes : new FormGroup({
       dates: new FormGroup(
         {
           pickUpDate: new FormControl(pickUpDate, Validators.required),
@@ -198,9 +157,12 @@ export class CarsSearchFormComponent implements OnInit {
         this.datesValid.bind(this)
       ),
 
-      times: new FormGroup({
-        pickUpTime: new FormControl(pickUpTime, Validators.required),
-        dropOffTime: new FormControl(dropOffTime, Validators.required),
+      times: new FormGroup(
+        {
+          pickUpTime: new FormControl(pickUpTime, Validators.required),
+          dropOffTime: new FormControl(dropOffTime, Validators.required),
+        }
+      )
       },this.timesValid.bind(this)),
 
       carBrand: new FormControl(carBrand),
@@ -211,44 +173,42 @@ export class CarsSearchFormComponent implements OnInit {
       .get('location.pickUpLocation')!
       .valueChanges.pipe(
         startWith(''),
-        map((value) => this._filterGroup(value))
+        map((value) => this._filter(value))
       );
 
     this.dropOffLocationOptions = this.searchForm
       .get('location.dropOffLocation')!
       .valueChanges.pipe(
         startWith(''),
-        map((value) => this._filterGroup(value))
+        map((value) => this._filter(value))
       );
+
+    this.options = this.appDataService.Locations;
+    console.log(this.options);
   }
 
-  private _filterGroup(value: string): LocationGroup[] {
-    if (value) {
-      return this.locationGroups
-        .map((group) => ({
-          letter: group.letter,
-          names: _filter(group.names, value),
-        }))
-        .filter((group) => group.names.length > 0);
-    }
+  private _filter(value: string): string[] {
+    const filterValue = value.toLowerCase();
 
-    return this.locationGroups;
+    return this.options.filter((option) =>
+      option.toLowerCase().includes(filterValue)
+    );
   }
 
   onFormSubmit() {
     const searchParams = {};
     this.searched = true;
 
-    let pickUpDate = this.searchForm.get('dates.pickUpDate').value;
-    let dropOffDate = this.searchForm.get('dates.dropOffDate').value;
+    let pickUpDate = this.searchForm.get('dateTimes.dates.pickUpDate').value;
+    let dropOffDate = this.searchForm.get('dateTimes.dates.dropOffDate').value;
 
     searchParams['pickUpDate'] =
       pickUpDate.day + '-' + pickUpDate.month + '-' + pickUpDate.year;
     searchParams['dropOffDate'] =
       dropOffDate.day + '-' + dropOffDate.month + '-' + dropOffDate.year;
-    searchParams['pickUpTime'] = this.searchForm.get('times.pickUpTime').value;
+    searchParams['pickUpTime'] = this.searchForm.get('dateTimes.times.pickUpTime').value;
     searchParams['dropOffTime'] = this.searchForm.get(
-      'times.dropOffTime'
+      'dateTimes.times.dropOffTime'
     ).value;
     searchParams['pickUpLocation'] = this.searchForm.get(
       'location.pickUpLocation'
@@ -270,87 +230,91 @@ export class CarsSearchFormComponent implements OnInit {
   private requireMatch(control: FormControl): ValidationErrors | null {
     const selection: string = control.value;
 
-    if (selection != undefined && selection != '') {
-      let group = this.locationGroups.find(
-        (e) => e.letter === selection.substring(0, 1).toUpperCase()
-      );
-      if (group != undefined) {
-        if (group.names.indexOf(selection) < 0) {
-          return { requireMatch: true };
-        }
+    // if (selection != undefined && selection != '') {
+    //   let group = this.locationGroups.find(
+    //     (e) => e.letter === selection.substring(0, 1).toUpperCase()
+    //   );
+    if (control.value != undefined) {
+      if (this.options.indexOf(selection) < 0) {
+        return { requireMatch: true };
       }
-      return null;
     }
+    return null;
   }
 
   private datesValid(group: FormGroup): { [s: string]: boolean } | null {
     if (group) {
-      if(group.get('pickUpDate')!=undefined && group.get('dropOffDate')!=undefined){
       if (
-        group.get('pickUpDate').value != '' &&
-        group.get('dropOffDate').value != ''
+        group.get('pickUpDate') != undefined &&
+        group.get('dropOffDate') != undefined
       ) {
-        let pickUpForm = group.get('pickUpDate').value;
-        let dropOffForm = group.get('dropOffDate').value;
-        let pickUpDate = new NgbDate(
-          pickUpForm.year,
-          pickUpForm.month,
-          pickUpForm.day
-        );
-        let dropoffDate = new NgbDate(
-          dropOffForm.year,
-          dropOffForm.month,
-          dropOffForm.day
-        );
+        if (
+          group.get('pickUpDate').value != '' &&
+          group.get('dropOffDate').value != ''
+        ) {
+          let pickUpForm = group.get('pickUpDate').value;
+          let dropOffForm = group.get('dropOffDate').value;
+          let pickUpDate = new NgbDate(
+            pickUpForm.year,
+            pickUpForm.month,
+            pickUpForm.day
+          );
+          let dropoffDate = new NgbDate(
+            dropOffForm.year,
+            dropOffForm.month,
+            dropOffForm.day
+          );
 
-        if (dropoffDate.after(pickUpDate) || dropoffDate.equals(pickUpDate)) {
-          return null;
+          if (dropoffDate.after(pickUpDate) || dropoffDate.equals(pickUpDate)) {
+            return null;
+          }
         }
       }
+      return { invalidDates: true };
     }
-    return { invalidDates: true };
-  }
-  return null;
+    return null;
   }
 
   private timesValid(group: FormGroup): { [s: string]: boolean } | null {
     if (group && this.searchForm) {
-      if(group.get('pickUpTime')!=undefined && group.get('dropOffTime')!=undefined){
       if (
-        group.get('pickUpTime').value != '' &&
-        group.get('dropOffTime').value != ''
+        group.get('times.pickUpTime') != undefined &&
+        group.get('times.dropOffTime') != undefined
       ) {
         if (
-          this.searchForm.get('dates.pickUpDate') != undefined &&
-          this.searchForm.get('dates.dropOffDate') != undefined &&
-          this.searchForm.get('dates.pickUpDate').value != '' &&
-          this.searchForm.get('dates.dropOffDate').value != ''
+          group.get('times.pickUpTime').value != '' &&
+          group.get('times.dropOffTime').value != ''
         ) {
-          let pickUpTimeParts = group.get('pickUpTime').value.split(':');
-          let dropOffTimeParts = group
-            .get('dropOffTime')
-            .value.split(':');
+          if (
+            group.get('dates.pickUpDate') != undefined &&
+            group.get('dates.dropOffDate') != undefined &&
+            group.get('dates.pickUpDate').value != '' &&
+            group.get('dates.dropOffDate').value != ''
+          ) {
+            let pickUpTimeParts = group.get('times.pickUpTime').value.split(':');
+            let dropOffTimeParts = group.get('times.dropOffTime').value.split(':');
 
-          let pickUpDateForm = this.searchForm.get('dates.pickUpDate').value;
-          let dropOffDateForm = this.searchForm.get('dates.dropOffDate').value;
-          let pickUpDate = new NgbDate(
-            pickUpDateForm.year,
-            pickUpDateForm.month,
-            pickUpDateForm.day
-          );
-          let dropoffDate = new NgbDate(
-            dropOffDateForm.year,
-            dropOffDateForm.month,
-            dropOffDateForm.day
-          );
+            let pickUpDateForm = group.get('dates.pickUpDate').value;
+            let dropOffDateForm = group.get('dates.dropOffDate')
+              .value;
+            let pickUpDate = new NgbDate(
+              pickUpDateForm.year,
+              pickUpDateForm.month,
+              pickUpDateForm.day
+            );
+            let dropoffDate = new NgbDate(
+              dropOffDateForm.year,
+              dropOffDateForm.month,
+              dropOffDateForm.day
+            );
 
-          if (dropoffDate.equals(pickUpDate)) {
-            if (+dropOffTimeParts[0] < +pickUpTimeParts[0]) {
-              return { 'times invalid': true };
+            if (dropoffDate.equals(pickUpDate)) {
+              if (+dropOffTimeParts[0] < +pickUpTimeParts[0]) {
+                return { 'times invalid': true };
+              }
             }
           }
         }
-      }
       }
     }
 

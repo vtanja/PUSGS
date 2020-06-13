@@ -7,11 +7,9 @@
 <div class="col">
   <input formControlName="address" class="input100" type="text" placeholder="Address.." [matAutocomplete] ="autoGroup">
   <mat-autocomplete #autoGroup="matAutocomplete">
-    <mat-optgroup *ngFor="let group of locationOptions | async" [label]="group.letter">
-      <mat-option *ngFor="let name of group.names" [value]="name">
+      <mat-option *ngFor="let name of locationOptions" [value]="name">
         {{name}}
       </mat-option>
-      </mat-optgroup>
       </mat-autocomplete>
 </div>
 <div class="col">

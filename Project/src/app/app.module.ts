@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
-import { NgModule } from '@angular/core';
+import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NgbModule, NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap';
 import { IgxAvatarModule } from 'igniteui-angular';
@@ -126,6 +126,7 @@ import { IncomesComponent } from './components/rent-a-cars/rent-a-car-administra
 import { MatDatepicker, MatDatepickerModule } from '@angular/material/datepicker';
 import { MonthlyIncomesComponent } from './components/rent-a-cars/rent-a-car-administrator/rent-a-car-home/monthly-incomes/monthly-incomes.component';
 import { RatesService } from './services/rates.service';
+import {AppDataService} from './services/app-data.service';
 
 const fbLoginOptions: LoginOpt = {
   scope: 'first_name,last_name,name,email',
@@ -144,12 +145,17 @@ let config = new AuthServiceConfig([
   },
   {
     id: FacebookLoginProvider.PROVIDER_ID,
-    provider: new FacebookLoginProvider("179484520010513")
+    provider: new FacebookLoginProvider("286971232489629")
   }
 ]);
 
 export function provideConfig() {
   return config;
+}
+
+
+export function init_app(appDataService: AppDataService) {
+    return () => appDataService.load();
 }
 
 @NgModule({
@@ -268,6 +274,8 @@ export function provideConfig() {
     MatDatepickerModule
   ],
   providers: [
+    AppDataService,
+    { provide: APP_INITIALIZER, useFactory: init_app, deps: [AppDataService], multi: true },
     UserService,
     RentCarService,
     AirlineService,
@@ -290,7 +298,8 @@ export function provideConfig() {
     GoogleMapsAPIWrapper,
     SocialLoginModule,
     BonusPointsDiscountService,
-    RatesService
+    RatesService,
+
   ],
   bootstrap: [AppComponent],
 })
