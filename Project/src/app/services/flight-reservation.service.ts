@@ -16,6 +16,8 @@ export class FlightReservationService {
   monthlyIncomesSubject = new Subject();
   annualIncomesSubject = new Subject();
 
+  reload = new Subject();
+
   pendingReservation:FlightReservation;
   pendingCarReservation:{} = {};
   rateModalClose = new Subject<{}>();

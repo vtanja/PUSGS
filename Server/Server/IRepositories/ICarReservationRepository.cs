@@ -19,7 +19,7 @@ namespace Server.IRepositories
         Task<Dictionary<string, int>> GetRangeReservationReport(int companyId,DateTime startDate,DateTime endDate);
         Task<Dictionary<int, double>> GetMonthlyIncomes(int companyId,int month,int year);
         Task<Dictionary<int, double>> GetAnnualIncomes(int companyId,int year);
-        bool CancelReservation(CarReservation reservation);
+        void CancelReservation(CarReservation reservation);
         Task Save();
     }
 }

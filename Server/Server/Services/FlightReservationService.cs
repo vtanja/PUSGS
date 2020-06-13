@@ -14,21 +14,24 @@ namespace Server.Services
     {
         private FlightReservationRepository flightReservationRepository;
         private FlightRepository flightRepository;
+        private CarReservationRepository carReservationRepository;
 
-        public FlightReservationService(FlightReservationRepository flightReservationRepository, FlightRepository flightRepository)
+        public FlightReservationService(FlightReservationRepository flightReservationRepository, FlightRepository flightRepository, CarReservationRepository carReservationRepository)
         {
             this.flightReservationRepository = flightReservationRepository;
             this.flightRepository = flightRepository;
+            this.carReservationRepository = carReservationRepository;
         }
 
         public async Task<bool> CancelReservation(FlightReservation reservation)
         {
             flightReservationRepository.CancelReservation(reservation);
+            carReservationRepository.CancelReservation(reservation.CarReservation);
             try
             {
                 await flightReservationRepository.Save();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return false;
             }

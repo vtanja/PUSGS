@@ -268,7 +268,7 @@ namespace Server.Controllers
                 message += "\n\n\tCar model: " + flightReservation.CarReservation.Car.Model;
                 message += "\n\n\tPick up date: " + flightReservation.CarReservation.PickUpDate;
                 message += "\n\n\tDrop off date: " + flightReservation.CarReservation.DropOffDate;
-                message += "\n\n\tRent car company: " + flightReservation.CarReservation.Car.CarCompany.Name;
+                //message += "\n\n\tRent car company: " + flightReservation.CarReservation.Car.CarCompany.Name;
             }
             message += "\nTotal price: " + flightReservation.TotalPrice;
 

@@ -56,13 +56,14 @@ export class CarReservationItemComponent implements OnInit,OnDestroy {
     console.log('current moment: ',currentMoment);
     var parts=this.reservation.pickUpDate.split('-');
     console.log(parts);
-    var pickUp = new Date(+parts[2], +parts[1]-1, +parts[0]);
+    var pickUp = new Date(this.reservation.pickUpDate);
     console.log('pick up: ', pickUp);
 
-    var diff = Math.abs(pickUp.getTime() - currentMoment.getTime());
+    var diff = Math.round(pickUp.getTime() - currentMoment.getTime());
     var diffDays = Math.ceil(diff / (1000 * 3600 * 24)); 
-
+console.log(diffDays);
     if(diff>=2){
+      console.log(this.reservation);
       this.carsReservationsService.cancelReservation(this.reservation).subscribe((res:any)=>{
         Swal.fire({
           text: 'Successfully canceled reservation',

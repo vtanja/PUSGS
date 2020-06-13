@@ -134,17 +134,21 @@ namespace Server.Repositories
         
         }
 
-        public  bool CancelReservation(CarReservation reservation)
-        {
-            if (CarReservationExists(reservation.Id))
-            {
-                reservation.Cancelled = true;
-                _context.Entry(reservation).State = EntityState.Detached;
-                _context.Entry(reservation).State = EntityState.Modified;
+        public  void CancelReservation(CarReservation reservation)
+        {   
+            reservation.Cancelled = true;
+             _context.Entry(reservation).State = EntityState.Detached;
+             _context.Entry(reservation).State = EntityState.Modified;
 
-                return true;
-            }
-            return false;
+                for (DateTime date = reservation.PickUpDate; date < reservation.DropOffDate; date = date.AddDays(1))
+                {
+                    var reservedDate =  _context.ReservedDates.Where(x => x.CarId == reservation.CarId && x.Date == date).FirstOrDefault();
+                    if (reservedDate != null)
+                    {
+                        _context.ReservedDates.Remove(reservedDate);
+                    }
+                }
+
         }
     }
 }

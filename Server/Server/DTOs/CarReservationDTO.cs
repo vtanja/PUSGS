@@ -20,5 +20,6 @@ namespace Server.DTOs
         public double CarRate { get; set; }
         public double Price { get; set; }
         public bool CanRate { get; set; }
+        public int CarId { get; set; }
     }
 }

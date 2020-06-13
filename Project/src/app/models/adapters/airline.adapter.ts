@@ -18,12 +18,7 @@ export class AirlineAdapter implements Adapter<Airline>{
   adapt(item:any):Airline{
     console.log('airline adapter: ', item);
     let addr = this.addressAdapter.adapt(item.address);
-    let planes=[]
-     item.planes.forEach(element => {
-        planes.push(this.planeAdapter.adapt(element))    
-     });
    let airline = new Airline(item.id,item.name,addr,item.description,null,item.destinations,item.logo)
-   airline.planes=planes;
    airline.owner= this.userAdapter.adapt(item.owner);
    console.log(airline);
    return airline;

@@ -101,7 +101,7 @@ namespace Server.Repositories
 
             foreach (var item in userFlights)
             {
-                var res = await _context.FlightFlightReservation.Where(x => x.ReservationId == item.ReservationId && !x.Reservation.Cancelled).Include(x => x.Flight).ThenInclude(x => x.LandingLocation).Include(x => x.Flight).ThenInclude(x => x.TakeOffLocation).Include(x => x.Flight).ThenInclude(x => x.OccupiedSeats).Include(x => x.Flight).ThenInclude(x => x.Plane).Include(x => x.Flight).ThenInclude(x => x.SegmentPrices).Include(x => x.Reservation).ThenInclude(x => x.Passengers).Include(x => x.Reservation).ThenInclude(x => x.CarReservation).FirstOrDefaultAsync();
+                var res = await _context.FlightFlightReservation.Where(x => x.ReservationId == item.ReservationId && !x.Reservation.Cancelled).Include(x => x.Flight).ThenInclude(x => x.LandingLocation).Include(x => x.Flight).ThenInclude(x => x.TakeOffLocation).Include(x => x.Flight).ThenInclude(x => x.OccupiedSeats).Include(x => x.Flight).ThenInclude(x => x.Plane).Include(x => x.Flight).ThenInclude(x => x.SegmentPrices).Include(x => x.Reservation).ThenInclude(x => x.Passengers).Include(x => x.Reservation).ThenInclude(x => x.CarReservation).ThenInclude(x=>x.Car).FirstOrDefaultAsync();
                 if (res != null)
                 {
                     flightReservations.Add(res);
@@ -164,10 +164,10 @@ namespace Server.Repositories
                 _context.Seats.Remove(item);
             }
 
-            if (reservation.CarReservation != null)
-            {
-                reservation.CarReservation.Cancelled = true;
-            }
+            //if (reservation.CarReservation != null)
+            //{
+            //    reservation.CarReservation.Cancelled = true;
+            //}
         }
 
         public async Task<FlightReservation> GetFlightReservation(int reservationId)
@@ -314,7 +314,7 @@ namespace Server.Repositories
             {
                 
 
-                if ((item.Reservation.DateCreated.Date - now.Date).TotalDays < 2 || ((item.Reservation.DateCreated.Date - now.Date).TotalDays == 2 && (item.Reservation.DateCreated.TimeOfDay - now.Date.TimeOfDay).TotalSeconds<7140))
+                if ((item.Reservation.DateCreated.Date - now.Date).TotalDays > 2 || ((item.Reservation.DateCreated.Date - now.Date).TotalDays == 2 && (item.Reservation.DateCreated.TimeOfDay - now.Date.TimeOfDay).TotalSeconds<7140))
                 {
                     List<Passenger> toRemove = new List<Passenger>();
                     for (int i = 0; i <= item.Reservation.Passengers.ToList().Count-1; i++)

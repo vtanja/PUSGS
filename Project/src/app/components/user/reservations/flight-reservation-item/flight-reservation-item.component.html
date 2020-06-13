@@ -177,19 +177,18 @@
       <h6 class="modal-title header" id="modal-basic-title">Cars rented:</h6>
       <br>
       <div >
-        <label class="lblStyle header">Rental company: <span class="valueStyle text"> {{flightReservation.carReservation.companyName}}
+        <label class="lblStyle header">Rental company: <span class="valueStyle text"> {{companyName}}
             &nbsp; </span></label>
         <br>
         <label class="lblStyle header">Car: <span class="valueStyle text">
-            {{flightReservation.carReservation.carModel}} &nbsp; </span></label>
+            {{flightReservation.carReservation.car.brand}} &nbsp; {{flightReservation.carReservation.car.model}} </span></label>
         <br>
         <label class="lblStyle header">Pick up: <span class="valueStyle text">
             {{flightReservation.carReservation.pickUpDate}} &nbsp;h
           </span></label>
         <br>
         <label class="lblStyle header">Drop off: <span class="valueStyle text">
-            {{flightReservation.carReservation.dropOffDate}} &nbsp;
-            {{flightReservation.carReservation.dropOffTime}}h </span></label>
+            {{flightReservation.carReservation.dropOffDate}} &nbsp;h</span></label>
         <br>
       </div>
     </div>

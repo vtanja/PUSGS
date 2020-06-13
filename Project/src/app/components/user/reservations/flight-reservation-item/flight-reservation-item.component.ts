@@ -11,15 +11,16 @@ import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
 import { FlightReservationService } from 'src/app/services/flight-reservation.service';
 import { Router } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
 @Component({
   selector: 'app-flight-reservation-item',
   templateUrl: './flight-reservation-item.component.html',
   styleUrls: ['./flight-reservation-item.component.css']
 })
-export class FlightReservationItemComponent implements OnInit,OnDestroy, AfterViewInit {
+export class FlightReservationItemComponent implements OnInit, AfterViewInit {
 
   @Input() flightReservation:FlightReservation;
-
+  isSpinning:boolean = false;
   closeResult = '';
 
   toRate:string;
@@ -29,7 +30,9 @@ export class FlightReservationItemComponent implements OnInit,OnDestroy, AfterVi
   imgToDisplay:string;
   imgToDisplay2:string;
 
-  constructor(private airlineService:AirlineService, private modalService: NgbModal, private rentCarService:RentCarService, private router:Router, private flightReservationService:FlightReservationService) { }
+  carModel:string='';
+  companyName:string='';
+  constructor(private airlineService:AirlineService, private modalService: NgbModal, private rentCarService:RentCarService,private spinner: NgxSpinnerService, private router:Router, private flightReservationService:FlightReservationService) { }
 
   ngAfterViewInit(): void {
     this.airlineService.getAirline(this.flightReservation.flights[0].plane.airlineId).subscribe((res:any)=>{
@@ -42,6 +45,12 @@ export class FlightReservationItemComponent implements OnInit,OnDestroy, AfterVi
         this.imgToDisplay2 = this.image + res.image;
         console.log(res.image);
       });
+    }
+
+    if(this.flightReservation.carReservation!==undefined && this.flightReservation.carReservation!==null){
+      this.rentCarService.getRentCarCompany(this.flightReservation.carReservation.car.companyId).subscribe((res:any)=>{
+        this.companyName = res.name;
+      })
     }
   }
 
@@ -67,13 +76,7 @@ export class FlightReservationItemComponent implements OnInit,OnDestroy, AfterVi
     // if(landingDate<=today)
     //   this.canRate = true;
 
-
   }
-
-  ngOnDestroy():void{
-    //this.modalCloseSubscription.unsubscribe();
-  }
-
   openRateModal(content,rateItem) {
 
     this.toRate = rateItem
@@ -114,7 +117,7 @@ export class FlightReservationItemComponent implements OnInit,OnDestroy, AfterVi
           showConfirmButton: false,
           timer:1500
         }).then(()=>{
-          this.router.navigate(['/user/reservations/flight-reservations']);
+          this.flightReservationService.reload.next();
         })
       },
       (err)=>{
@@ -145,4 +148,5 @@ export class FlightReservationItemComponent implements OnInit,OnDestroy, AfterVi
       return `with: ${reason}`;
     }
   }
+
 }

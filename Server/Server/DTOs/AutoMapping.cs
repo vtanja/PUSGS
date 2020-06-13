@@ -140,6 +140,7 @@ namespace Server.DTOs
                 .ForMember(dest => dest.CarModel, opt => opt.MapFrom(src => src.Car.Model))
                 .ForMember(dest => dest.CompanyName, opt => opt.MapFrom(src => src.Car.CarCompany.Name))
                 .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.TotalPrice))
+                .ForMember(dest => dest.CarId, opt => opt.MapFrom(src => src.Car.Id))
                 .ForMember(dest => dest.CarRate, opt => opt.MapFrom(src => (src.CarRateId == null ? -1 : src.CarRate.Rate)))
                 .ForMember(dest => dest.CompanyRate, opt => opt.MapFrom(src => (src.CompanyRateId == null ? -1 : src.CompanyRate.Rate)))
                 .ForMember(dest => dest.CanRate, opt => opt.MapFrom(src => (src.DropOffDate < DateTime.Now ? true : false)));

@@ -88,7 +88,7 @@ namespace Server.UOW
             {
                 if(this.flightReservationService == null)
                 {
-                    this.flightReservationService = new FlightReservationService(flightReservationRepository, flightRepository);
+                    this.flightReservationService = new FlightReservationService(flightReservationRepository, flightRepository, carReservationRepository);
                 }
                 return this.flightReservationService;
             }
