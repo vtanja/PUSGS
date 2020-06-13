@@ -45,12 +45,14 @@ export class RentACarSearchComponent implements OnInit {
       rate: new FormControl('', [Validators.min(1), Validators.max(5)]),
     });
 
+    this.options = this.appDataService.Locations;
+
     this.locationOptions = this.searchForm.get('address')!.valueChanges.pipe(
       startWith(''),
       map((value) => this._filter(value))
     );
 
-    this.options = this.appDataService.Locations;
+
   }
 
   private _filter(value: string): string[] {

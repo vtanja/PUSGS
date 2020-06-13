@@ -13,9 +13,9 @@ export class AdminHomeComponent implements OnInit {
   fourthImage:string = "../../assets/images/adminHome/airline.png";
 
   firstCounter:number=100;
-  secondCounter:number=215;
-  thirdCounter:number=178;
-  fourthCounter:number=395;
+  secondCounter:number=100;
+  thirdCounter:number=100;
+  fourthCounter:number=100;
 
   firstString:string="Car reservations";
   secondString:string="Flight reservations";

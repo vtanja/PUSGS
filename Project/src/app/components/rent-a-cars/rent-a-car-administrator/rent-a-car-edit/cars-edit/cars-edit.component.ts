@@ -167,13 +167,14 @@ export class CarsEditComponent implements OnInit {
   changePrice(): void {
     let oldPrice = this.currentCar.price;
     let newPrice = this.changePriceForm.get('newPrice').value;
-    this.currentCar.price = newPrice;
+
     this.spinner.show();
     this.carService
       .changeCarPrice(this.currentCar.id, this.currentCar)
       .subscribe(
         (res: any) => {
           this.spinner.hide();
+          this.currentCar.price = newPrice;
           Swal.fire({
             text: 'Price successfully changed!',
             icon: 'success',

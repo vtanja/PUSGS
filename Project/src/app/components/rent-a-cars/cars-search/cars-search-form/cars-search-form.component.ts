@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ɵConsole } from '@angular/core';
+import { Component, OnInit, Input, ɵConsole, OnDestroy } from '@angular/core';
 import {
   FormGroup,
   FormControl,
@@ -18,15 +18,15 @@ import { RentCarService } from '../../../../services/rent-a-car.service';
 import { Observable } from 'rxjs/internal/Observable';
 import { startWith, map } from 'rxjs/operators';
 import { AppDataService } from 'src/app/services/app-data.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-cars-search-form',
   templateUrl: './cars-search-form.component.html',
   styleUrls: ['./cars-search-form.component.css'],
 })
-export class CarsSearchFormComponent implements OnInit {
-
-  options: string[] = [];
+export class CarsSearchFormComponent implements OnInit, OnDestroy {
+  options: string[] = ['Novi Sad,Serbia', 'Belgrade,Serbia'];
 
   pickUpLocationOptions: Observable<string[]>;
   dropOffLocationOptions: Observable<string[]>;
@@ -36,6 +36,8 @@ export class CarsSearchFormComponent implements OnInit {
 
   searchForm: FormGroup;
   searched: boolean;
+
+  addressesSubscription: Subscription = new Subscription();
 
   @Input('companyID') companyID: number;
 
@@ -141,29 +143,29 @@ export class CarsSearchFormComponent implements OnInit {
     );
 
     this.searchForm = new FormGroup({
-
       location: new FormGroup({
         pickUpLocation: new FormControl(pickUpLocation, [Validators.required]),
         dropOffLocation: new FormControl(dropOffLocation, [
           Validators.required,
         ]),
       }),
-      dateTimes : new FormGroup({
-      dates: new FormGroup(
+      dateTimes: new FormGroup(
         {
-          pickUpDate: new FormControl(pickUpDate, Validators.required),
-          dropOffDate: new FormControl(dropOffDate, Validators.required),
-        },
-        this.datesValid.bind(this)
-      ),
+          dates: new FormGroup(
+            {
+              pickUpDate: new FormControl(pickUpDate, Validators.required),
+              dropOffDate: new FormControl(dropOffDate, Validators.required),
+            },
+            this.datesValid.bind(this)
+          ),
 
-      times: new FormGroup(
-        {
-          pickUpTime: new FormControl(pickUpTime, Validators.required),
-          dropOffTime: new FormControl(dropOffTime, Validators.required),
-        }
-      )
-      },this.timesValid.bind(this)),
+          times: new FormGroup({
+            pickUpTime: new FormControl(pickUpTime, Validators.required),
+            dropOffTime: new FormControl(dropOffTime, Validators.required),
+          }),
+        },
+        this.timesValid.bind(this)
+      ),
 
       carBrand: new FormControl(carBrand),
       passengers: new FormControl(passengers),
@@ -183,8 +185,14 @@ export class CarsSearchFormComponent implements OnInit {
         map((value) => this._filter(value))
       );
 
-    this.options = this.appDataService.Locations;
-    console.log(this.options);
+      this.options = this.appDataService.Locations===null?this.options:this.appDataService.Locations;
+
+    this.addressesSubscription = this.appDataService.addressesSubject.subscribe(
+      (data: string[]) => {
+        this.options = this.appDataService.Locations;
+
+      }
+    );
   }
 
   private _filter(value: string): string[] {
@@ -206,7 +214,9 @@ export class CarsSearchFormComponent implements OnInit {
       pickUpDate.day + '-' + pickUpDate.month + '-' + pickUpDate.year;
     searchParams['dropOffDate'] =
       dropOffDate.day + '-' + dropOffDate.month + '-' + dropOffDate.year;
-    searchParams['pickUpTime'] = this.searchForm.get('dateTimes.times.pickUpTime').value;
+    searchParams['pickUpTime'] = this.searchForm.get(
+      'dateTimes.times.pickUpTime'
+    ).value;
     searchParams['dropOffTime'] = this.searchForm.get(
       'dateTimes.times.dropOffTime'
     ).value;
@@ -291,12 +301,15 @@ export class CarsSearchFormComponent implements OnInit {
             group.get('dates.pickUpDate').value != '' &&
             group.get('dates.dropOffDate').value != ''
           ) {
-            let pickUpTimeParts = group.get('times.pickUpTime').value.split(':');
-            let dropOffTimeParts = group.get('times.dropOffTime').value.split(':');
+            let pickUpTimeParts = group
+              .get('times.pickUpTime')
+              .value.split(':');
+            let dropOffTimeParts = group
+              .get('times.dropOffTime')
+              .value.split(':');
 
             let pickUpDateForm = group.get('dates.pickUpDate').value;
-            let dropOffDateForm = group.get('dates.dropOffDate')
-              .value;
+            let dropOffDateForm = group.get('dates.dropOffDate').value;
             let pickUpDate = new NgbDate(
               pickUpDateForm.year,
               pickUpDateForm.month,
@@ -319,5 +332,9 @@ export class CarsSearchFormComponent implements OnInit {
     }
 
     return null;
+  }
+
+  ngOnDestroy(){
+    this.addressesSubscription.unsubscribe();
   }
 }
