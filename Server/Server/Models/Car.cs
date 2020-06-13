@@ -9,6 +9,8 @@ namespace Server.Models
 {
     public class Car
     {
+        
+
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
@@ -42,6 +44,16 @@ namespace Server.Models
         public ICollection<ReservedDate> ReservedDates { get; set; }
         public ICollection<DiscountDate> DisocuntDates { get; set; }
         public ICollection<CarRate> Rates { get; set; }
+
+        [Timestamp]
+        public byte[] RowVersion { get; set; }
+
+        public Car()
+        {
+            this.Reservations = new List<CarReservation>();
+            this.DisocuntDates = new List<DiscountDate>();
+            this.ReservedDates = new List<ReservedDate>();
+        }
 
 
     }

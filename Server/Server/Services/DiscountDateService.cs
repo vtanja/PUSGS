@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
+using Server.Interfaces;
 using Server.IRepositories;
 using Server.IServices;
 using Server.Models;
@@ -13,16 +15,23 @@ namespace Server.Services
     {
         private IDiscountDateRepository discountDateRepository;
         private ICarReservationRepository carReservationRepository;
+        private ICarRepository carRepository; 
 
-        public DiscountDateService(IDiscountDateRepository discountDateRepository,ICarReservationRepository carReservationRepository)
+        public DiscountDateService(IDiscountDateRepository discountDateRepository,ICarReservationRepository carReservationRepository,ICarRepository carRepository)
         {
             this.discountDateRepository = discountDateRepository;
             this.carReservationRepository = carReservationRepository;
+            this.carRepository = carRepository;
 
         }
 
         public async Task<string> AddDiscountDate(DiscountRangeModel discountRange)
         {
+            var car = await carRepository.GetCarWithReservationData(discountRange.CarId);
+            carRepository.UpdateCar(car);
+            if (car == null || car.IsDeleted)
+                return "error";
+
             var alreadyOnDiscount = new List<DateTime>();
             alreadyOnDiscount = await discountDateRepository.GetCarDiscountDates(discountRange.CarId);
 
@@ -40,7 +49,8 @@ namespace Server.Services
                 };
 
                 if (!alreadyOnDiscount.Contains(Convert.ToDateTime(date)))
-                    discountDateRepository.AddDiscountDate(discountDate);
+                    //  discountDateRepository.AddDiscountDate(discountDate);
+                    carRepository.AddDiscountDateToCar(car, discountDate);
                 else
                 {
                     conflictDates.Add(date);
@@ -51,6 +61,10 @@ namespace Server.Services
             try
             {
                 await discountDateRepository.Save();
+            }
+            catch(DbUpdateConcurrencyException dbUpdateConcurencyException)
+            {
+                return "errorYour data is not totally updated. It looks like some changes happend or another user has reserved those dates.Please reload page to get up to dated values.";
             }
             catch
             {

@@ -6,34 +6,43 @@ import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { CarReservation } from 'src/app/models/car-reservation.model';
 import Swal from 'sweetalert2';
 import { CarReservationsService } from 'src/app/services/car-reservations.service';
+import { Router } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-car-item',
   templateUrl: './car-item.component.html',
-  styleUrls: ['./car-item.component.css']
+  styleUrls: ['./car-item.component.css'],
 })
 export class CarItemComponent implements OnInit {
+  @Input('car') car: Car;
+  @Input('daysBetween') daysBetween: number;
+  @Input('params') params: {};
+  closeResult: string;
 
-  @Input('car') car:Car;
-  @Input('daysBetween')daysBetween:number;
-  @Input('params')params:{};
-  closeResult:string;
-
-
-  isUserLogged:boolean;
-  constructor(private carReservationsService:CarReservationsService,private usersService:UserService,private modalService: NgbModal){}
-
+  isUserLogged: boolean;
+  constructor(
+    private carReservationsService: CarReservationsService,
+    private usersService: UserService,
+    private modalService: NgbModal,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.isUserLogged = this.usersService.isUserLoggedIn();
   }
 
   open(content) {
-    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
-      this.closeResult = `Closed with: ${result}`;
-    }, (reason) => {
-      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-    });
+    this.modalService
+      .open(content, { ariaLabelledBy: 'modal-basic-title' })
+      .result.then(
+        (result) => {
+          this.closeResult = `Closed with: ${result}`;
+        },
+        (reason) => {
+          this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+        }
+      );
   }
 
   private getDismissReason(reason: any): string {
@@ -42,47 +51,51 @@ export class CarItemComponent implements OnInit {
     } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
       return 'by clicking on a backdrop';
     } else {
-      return  `with: ${reason}`;
+      return `with: ${reason}`;
     }
   }
 
-  makeReservation():void{
-
-    let data ={
-      'pickUpDate' : this.changeDateFormat(this.params['pickUpDate']) + " " + this.params['pickUpTime'],
-      'dropOffDate' : this.changeDateFormat(this.params['dropOffDate']) + " " + this.params['dropOffTime'],
-      'carId' : this.car.id,
-      'pricePerDay' : this.car.price
-    }
+  makeReservation(): void {
+    let data = {
+      pickUpDate:
+        this.changeDateFormat(this.params['pickUpDate']) +
+        ' ' +
+        this.params['pickUpTime'],
+      dropOffDate:
+        this.changeDateFormat(this.params['dropOffDate']) +
+        ' ' +
+        this.params['dropOffTime'],
+      pricePerDay: this.car.price,
+      carId: this.car.id,
+    };
 
     this.carReservationsService.makeCarReservation(data).subscribe(
-      ret=>{
+      (ret) => {
         Swal.fire({
-              text: 'Reservation successfully made!',
-              icon: 'success',
-              showConfirmButton: false,
-              timer:1500,
-            })
+          text: 'Reservation successfully made!',
+          icon: 'success',
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        this.router.navigateByUrl('/user/reservations/car-reservations');
       },
-      err=>{
+      (err) => {
         Swal.fire({
           title: 'Reservation making failed.',
-          text:err.error.message,
+          text: err.error.message,
           icon: 'error',
-          showConfirmButton: false,
-          timer:1500,
-        })
+          showConfirmButton: true,
+        });
       }
-    )
+    );
   }
 
-  changeDateFormat(date:string):string{
+  changeDateFormat(date: string): string {
     let dateParts = date.split('-');
-    let day = dateParts[0];
-    let month = dateParts[1];
-    let year = dateParts[2];
+    let day = +dateParts[0];
+    let month = +dateParts[1];
+    let year = +dateParts[2];
 
-    return month + '-' + day + '-' +year;
+    return month + '-' + day + '-' + year;
   }
-
 }

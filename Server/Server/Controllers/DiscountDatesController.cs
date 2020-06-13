@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Microsoft.VisualStudio.Web.CodeGeneration.Contracts.Messaging;
 using Newtonsoft.Json;
 using Server.DTOs;
 using Server.Models;
@@ -64,6 +65,10 @@ namespace Server.Controllers
             {
                 return BadRequest();
             }
+            else if (ret.Contains("error"))
+            {
+                return BadRequest(new { message = ret.Substring(5) });
+            }
             else
             {
                 return Ok(ret);
@@ -86,7 +91,6 @@ namespace Server.Controllers
 
             return BadRequest();
         }
-
 
         // DELETE: api/DiscountDates/id
         [HttpDelete("{id}")]
