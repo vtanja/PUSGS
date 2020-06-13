@@ -25,6 +25,7 @@ namespace Server.Controllers
         private readonly DataBaseContext _context;
         private readonly IMapper _mapper;
         private readonly AirlineService _airlineService;
+        private readonly AirlineAdminService airlineAdminService;
 
         public AirlinesController(DataBaseContext context, IMapper mapper, UnitOfWork
             unitOfWork)
@@ -32,6 +33,7 @@ namespace Server.Controllers
             _context = context;
             _mapper = mapper;
             _airlineService = unitOfWork.AirlineService;
+            airlineAdminService = unitOfWork.AirlineAdminService;
         }
 
         // GET: api/Airlines
@@ -40,6 +42,26 @@ namespace Server.Controllers
         {
             return await _airlineService.GetAirlines();
         }
+
+        [HttpGet]
+        [Route("Rate")]
+        [Authorize(Roles = "AIRLINEADMIN")]
+        public async Task<ActionResult<AirlineDTO>> GetAirlineRate()
+        {
+            string userId = User.Claims.First(c => c.Type == "UserID").Value;
+            var user = await airlineAdminService.GetAirlineAdmin(userId);
+
+            if (user.Airline == null)
+            {
+                return BadRequest();
+            }
+
+            var id = await _airlineService.GetCompanyRate((int)user.AirlineId);
+
+            return Ok(id);
+
+        }
+
 
         // GET: api/Airlines/5
         [HttpGet]
@@ -78,6 +100,7 @@ namespace Server.Controllers
             return _mapper.Map<Airline, AirlineDTO>(airline);
         }
 
+
         // GET: api/Airlines/5
         [HttpGet]
         [Authorize(Roles = "AIRLINEADMIN")]
@@ -100,52 +123,11 @@ namespace Server.Controllers
                 return BadRequest(new { message = "An error ocured. Please try again later." });
             }
 
-            //airline.OwnerId  = User.Claims.First(c => c.Type == "UserID").Value;
-            try
+            if (!await _airlineService.UpdateAirline(airline))
             {
-                _context.Entry<Airline>(airline).State = EntityState.Detached;
-                _context.Entry<Airline>(airline).State = EntityState.Modified;
-            }
-            catch (Exception)
-            {
-                _context.Entry(airline).State = EntityState.Unchanged;
                 return BadRequest(new { message = "Updating data failed. Please try again later." });
             }
-
-            try
-            {
-                _context.Entry<Address>(airline.Address).State = EntityState.Detached;
-                _context.Entry<Address>(airline.Address).State = EntityState.Modified;
-            }
-            catch (Exception)
-            {
-                _context.Entry<Address>(airline.Address).State = EntityState.Unchanged;
-                return BadRequest(new { message = "Updating data failed. Please try again later." });
-            }
-
-            _context.Entry(airline).Property(a => a.Id).IsModified = false;
-            _context.Entry(airline).Property(a => a.AddressId).IsModified = false;
-            _context.Entry(airline).Property(a => a.OwnerId).IsModified = false;
-            _context.Entry(airline).Property(a => a.Rate).IsModified = false;
-
-
-
-            try
-            {
-                 await _context.SaveChangesAsync();
-            }
-            catch(Exception e)
-            {
-                if (!AirlineExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    return BadRequest(new { message = "Updating data failed. Please try again later." });
-                }
-            }
-
+            
 
             return NoContent();
         }
@@ -182,10 +164,6 @@ namespace Server.Controllers
             
         }
 
-        private bool AirlineExists(int id)
-        {
-            return _context.Airlines.Any(e => e.Id == id);
-        }
 
         // DELETE: api/Airlines/5
         [HttpDelete("{id}")]

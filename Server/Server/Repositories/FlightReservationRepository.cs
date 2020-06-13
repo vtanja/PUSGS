@@ -179,5 +179,82 @@ namespace Server.Repositories
         {
             _context.Entry<FlightReservation>(flightReservation).State = EntityState.Modified;
         }
+
+        public async Task<Dictionary<string, int>> GetDailyReservationReport(int companyId)
+        {
+            var ret = await _context.FlightFlightReservation.Include(x => x.Flight).ThenInclude(x => x.TakeOffLocation).Include(x => x.Flight).ThenInclude(x => x.LandingLocation).Include(x => x.Flight).ThenInclude(x => x.Plane).Include(x => x.Reservation).ThenInclude(x=>x.Passengers).Where(x => x.Flight.Plane.AirlineId == companyId && !x.Reservation.Cancelled && x.Reservation.DateCreated == DateTime.Now.Date).ToListAsync();
+            var flightIds = ret.Select(x => x.FlightId).ToList();
+            var flights = ret.Select(x => x.Flight).ToList();
+
+            var res = ret.GroupBy(x => x.FlightId).ToDictionary(g => g.Key, g => g.Sum(x => x.Reservation.Passengers.Count));
+
+            var notIn = await _context.Flights.Include(x => x.Plane).Include(x => x.LandingLocation).Include(x => x.TakeOffLocation).Where(x => x.Plane.AirlineId == companyId && !flightIds.Contains(x.Id)).ToListAsync();
+
+            var toAdd = ret.GroupBy(r => r.FlightId).ToDictionary(g => g.Key, g => res[g.Key]);
+
+            Dictionary<string, int> result = new Dictionary<string, int>();
+
+            foreach (var x in toAdd)
+            {
+                var flight = flights.Where(y => y.Id == x.Key).FirstOrDefault();
+                result.Add(flight.TakeOffLocation.Code + ", " + flight.TakeOffDate + " " + flight.TakeOffTime + "-" + flight.LandingLocation.Code + ", " + flight.LandingDate + " " + flight.LandingTime + "\n[Id: " + flight.Id.ToString() + "]", x.Value);
+            }
+
+
+            foreach (var x in notIn)
+            {
+                result.Add(x.TakeOffLocation.Code + ", " + x.TakeOffDate + " " + x.TakeOffTime + "-" + x.LandingLocation.Code + ", " + x.LandingDate + " " + x.LandingTime + "\n[Id: " + x.Id.ToString() + "]", 0);
+            }
+
+            return result;
+        }
+
+        public async Task<Dictionary<string, int>> GetRangeReservationReport(int companyId, DateTime startDate, DateTime endDate)
+        {
+            var ret = await _context.FlightFlightReservation.Include(x => x.Flight).ThenInclude(x=>x.TakeOffLocation).Include(x => x.Flight).ThenInclude(x => x.LandingLocation).Include(x=>x.Flight).ThenInclude(x => x.Plane).Include(x => x.Reservation).ThenInclude(x=>x.Passengers).Where(x => x.Flight.Plane.AirlineId == companyId && !x.Reservation.Cancelled && x.Reservation.DateCreated >= startDate.Date && x.Reservation.DateCreated <= endDate.Date).ToListAsync();
+            
+            var flightIds = ret.Select(x => x.FlightId).ToList();
+            var flights = ret.Select(x => x.Flight).ToList();
+            var res = ret.GroupBy(x => x.FlightId).ToDictionary(g => g.Key, g => g.Sum(x => x.Reservation.Passengers.Count));
+
+            var notIn = await _context.Flights.Include(x=>x.Plane).Include(x => x.LandingLocation).Include(x => x.TakeOffLocation).Where(x => x.Plane.AirlineId == companyId && !flightIds.Contains(x.Id)).ToListAsync();
+
+            var toAdd = ret.GroupBy(r=>r.FlightId).ToDictionary(g => g.Key, g => res[g.Key]);
+
+            Dictionary<string, int> result = new Dictionary<string, int>();
+
+            foreach (var x in toAdd)
+            {
+                var flight = flights.Where(y => y.Id == x.Key).FirstOrDefault();
+                result.Add(flight.TakeOffLocation.Code + ", " + flight.TakeOffDate + " " + flight.TakeOffTime + "-" + flight.LandingLocation.Code + ", " + flight.LandingDate + " " + flight.LandingTime + "\n[Id: " + flight.Id.ToString() + "]", x.Value);
+            }
+
+
+            foreach (var x in notIn)
+            {
+                result.Add(x.TakeOffLocation.Code + ", " + x.TakeOffDate + " " + x.TakeOffTime + "-" + x.LandingLocation.Code + ", " + x.LandingDate + " " + x.LandingTime + "\n[Id: " + x.Id.ToString() + "]", 0);
+            }
+
+            return result;
+        }
+
+        public async Task<Dictionary<int, double>> GetMonthlyIncomes(int companyId, int month, int year)
+        {
+            var ret = await _context.FlightFlightReservation.Include(x => x.Reservation).Include(x => x.Flight).ThenInclude(x => x.Plane).
+                Where(x => x.Flight.Plane.AirlineId == companyId && !x.Reservation.Cancelled && x.Reservation.DateCreated.Date.Year == year && x.Reservation.DateCreated.Date.Month == month).ToListAsync();
+            
+            var result = ret.GroupBy(r => r.Reservation.DateCreated.Date.Day).ToDictionary(g => g.Key, g => g.Sum(r => r.Reservation.TotalPrice));
+
+            return result; ;
+        }
+
+        public async Task<Dictionary<int, double>> GetAnnualIncomes(int companyId, int year)
+        {
+            var ret = await _context.FlightFlightReservation.Include(x=>x.Reservation).Include(x=>x.Flight).ThenInclude(x=>x.Plane).Where(x => x.Flight.Plane.AirlineId == companyId && !x.Reservation.Cancelled && x.Reservation.DateCreated.Date.Year == year).ToListAsync();
+
+            var result = ret.GroupBy(r => r.Reservation.DateCreated.Date.Month).ToDictionary(g => g.Key, g => g.Sum(r => r.Reservation.TotalPrice));
+
+            return result;
+        }
     }
 }

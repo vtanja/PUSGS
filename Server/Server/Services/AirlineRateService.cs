@@ -74,9 +74,9 @@ namespace Server.Services
         {
             var airlineRates = await airlineRateRepository.GetAirlineRates(airlineId);
             double avg = airlineRates.Average(r => r.Rate);
-            var airline = await airlineRepository.GetAirline(airlineId);
+            var airline = await airlineRepository.GetAirlineById(airlineId);
             airline.Rate = avg;
-            airlineRepository.UpdateAirline(airline);
+            airlineRepository.UpdateAirlineRate(airline);
             try
             {
                 await airlineRepository.Save();

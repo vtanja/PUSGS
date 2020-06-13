@@ -126,6 +126,11 @@ import { IncomesComponent } from './components/rent-a-cars/rent-a-car-administra
 import { MatDatepicker, MatDatepickerModule } from '@angular/material/datepicker';
 import { MonthlyIncomesComponent } from './components/rent-a-cars/rent-a-car-administrator/rent-a-car-home/monthly-incomes/monthly-incomes.component';
 import { RatesService } from './services/rates.service';
+import { AirlineAdminHomeComponent } from './components/airlines/airline-administrator/airline-admin-home/airline-admin-home.component';
+import { AirlineChartBarComponent } from './components/airlines/airline-administrator/airline-admin-home/airline-chart-bar/airline-chart-bar.component';
+import { AirlineMonthlyIncomesComponent } from './components/airlines/airline-administrator/airline-admin-home/airline-monthly-incomes/airline-monthly-incomes.component';
+import { AirlineNavbarComponent } from './components/airlines/airline-administrator/airline-admin-home/airline-navbar/airline-navbar.component';
+import { AirlineAnnualIncomesComponent } from './components/airlines/airline-administrator/airline-admin-home/airline-annual-incomes/airline-annual-incomes.component';
 
 const fbLoginOptions: LoginOpt = {
   scope: 'first_name,last_name,name,email',
@@ -235,7 +240,12 @@ export function provideConfig() {
     BarChartComponent,
     NavBarComponent,
     IncomesComponent,
-    MonthlyIncomesComponent
+    MonthlyIncomesComponent,
+    AirlineAdminHomeComponent,
+    AirlineChartBarComponent,
+    AirlineMonthlyIncomesComponent,
+    AirlineNavbarComponent,
+    AirlineAnnualIncomesComponent
   ],
   imports: [
     BrowserModule,

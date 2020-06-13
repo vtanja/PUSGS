@@ -118,7 +118,7 @@ export class LoginComponent implements OnInit {
     } else if(role === 'AIRLINEADMIN'){
       this.userService.hasAirline().subscribe((data: any) => {
         if(data){
-          this.router.navigate(['/airline-company-data/edit-airline-main-data']);
+          this.router.navigate(['/airline-admin-home/airline-chart-bar']);
         }
         else{
           this.router.navigate(['/airline-admin']);

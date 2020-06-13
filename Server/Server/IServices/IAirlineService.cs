@@ -15,5 +15,7 @@ namespace Server.IServices
         Task<bool> HasAirline(string userId);
         Task<bool> PostAirline(Airline airline);
         Task<bool> DeleteAirline(int id);
+        Task<bool> UpdateAirline(Airline airline);
+        Task<double> GetCompanyRate(int id);
     }
 }

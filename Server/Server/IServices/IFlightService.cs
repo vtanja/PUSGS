@@ -16,5 +16,6 @@ namespace Server.IServices
         Task<IEnumerable<Flight>> SearchMultiFlights(SearchFlightModel model);
         Task<IEnumerable<Tuple<Flight, Flight>>> SearchRoundFlights(SearchFlightModel model);
         Task<IEnumerable<Seat>> GetOccupiedSeats(int flightId);
+        Task<string> GetAirlineFlightRate(int airlineId);
     }
 }

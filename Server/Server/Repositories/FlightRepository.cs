@@ -196,5 +196,23 @@ namespace Server.Repositories
             seats.ForEach(x => retVal.AddRange(x.Flight.OccupiedSeats));
             return retVal;
         }
+
+        public async Task<IEnumerable<Flight>> GetAirlineFlights(int airlineId)
+        {
+            return await _context.Flights.Include(x => x.Plane).Include(x=>x.LandingLocation).Include(x=>x.TakeOffLocation).Where(x => x.Plane.AirlineId == airlineId).ToListAsync();
+        }
+
+        public async Task<Dictionary<string, double>> GetAirlineFlightRate(int airlineId)
+        {
+            var flights = await GetAirlineFlights(airlineId);
+            Dictionary<string, double> retVal = new Dictionary<string, double>();
+
+            foreach (var x in flights)
+            {
+                retVal.Add(x.TakeOffLocation.Code + ", " + x.TakeOffDate + " " + x.TakeOffTime +"-"+ x.LandingLocation.Code + ", " + x.LandingDate + " " + x.LandingTime + "\n[Id: " + x.Id.ToString() + "]", x.Rate);
+            }
+
+            return retVal;
+        }
     }
 }

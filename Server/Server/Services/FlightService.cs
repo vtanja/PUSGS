@@ -1,4 +1,5 @@
-﻿using Server.IServices;
+﻿using Newtonsoft.Json;
+using Server.IServices;
 using Server.Models;
 using Server.Repositories;
 using System;
@@ -28,6 +29,23 @@ namespace Server.Services
                 return false;
             }
             return true;
+        }
+
+        public async Task<string> GetAirlineFlightRate(int airlineId)
+        {
+            var ret = await flightRepository.GetAirlineFlightRate(airlineId);
+
+            string titleString = "Flight average rates";
+
+
+            return (JsonConvert.SerializeObject(new
+            {
+                labels = ret.Keys,
+                data = ret.Values,
+                title = titleString
+
+            }));
+
         }
 
         public async Task<IEnumerable<Flight>> GetAllFlights()

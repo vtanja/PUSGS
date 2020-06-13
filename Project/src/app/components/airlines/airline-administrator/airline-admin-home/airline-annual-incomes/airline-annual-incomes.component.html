@@ -1,0 +1,13 @@
+<div class="d-flex justify-content-start" style="margin-left: 13%; margin-top:-10%">
+    <mat-form-field>
+      <mat-label>Change Year</mat-label>
+      <input matInput [matDatepicker]="dp" [formControl]="date">
+      <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+      <mat-datepicker #dp startView="multi-year" (yearSelected)="chosenYearHandler($event,dp)"
+       panelClass="example-month-picker">
+      </mat-datepicker>
+    </mat-form-field>
+  </div>
+  
+  <app-airline-chart-bar></app-airline-chart-bar>
+  

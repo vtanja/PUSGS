@@ -43,12 +43,7 @@ export class AirlineService{
         );
     }
 
-
-    addFlightRate(companyID:number,flightID:number,flightRate:UsersRate){
-     // this.airlines.find(r=>r.id===companyID).flights.find(f=>f.id===flightID).addRate(flightRate);
+    getCompanyRate(){
+        return this.httpClient.get(this.baseUri+"Airlines/Rate");
     }
-
-    // addCompanyRate(companyID:number,rate:UsersRate){
-    //   this.airlines.find(r=>r.id===companyID).addRate(rate);
-    // }
 }

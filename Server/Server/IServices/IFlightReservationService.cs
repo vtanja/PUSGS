@@ -11,5 +11,11 @@ namespace Server.IServices
         Task<bool> PostFlightReservation(FlightReservation flightReservation, List<int> flightIds);
         Task<IEnumerable<FlightReservation>> GetFlightReservations(string userId);
         Task<bool> CancelReservation(FlightReservation reservation);
+
+        Task<string> GetDailyReservationReport(int companyId);
+        Task<string> GetWeeklyReservationReport(int companyId);
+        Task<string> GetMonthlyReservationReport(int companyId);
+        Task<string> GetMonthlyIncomes(int companyId, int year, int month);
+        Task<string> GetAnnualIncomes(int companyId, int year);
     }
 }
