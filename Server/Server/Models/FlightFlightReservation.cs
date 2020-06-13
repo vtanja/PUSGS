@@ -16,7 +16,7 @@ namespace Server.Models
         public int FlightId { get; set; }
         [ForeignKey("FlightId")]
         public virtual Flight Flight{ get; set; }
-
+        public double FlightPrice { get; set; }
         public int ReservationId { get; set; }
         [ForeignKey("ReservationId")]
         public virtual FlightReservation Reservation { get; set; }

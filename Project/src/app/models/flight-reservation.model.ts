@@ -11,6 +11,7 @@ export class FlightReservation{
    cancelled :boolean;
    carReservation :any ;
    passengers: Passenger[];
+   flightPrice:number[]=[];
    flights:Flight[];
    flightsIds:number[]=[];
 

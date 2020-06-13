@@ -15,6 +15,7 @@ namespace Server.IRepositories
         Task<FlightReservation> GetFlightReservation(int reservationId);
         void UpdateFlightReservation(FlightReservation flightReservation);
         void CancelReservation(FlightReservation reservation);
+        bool UpdateReservations();
         Task<Dictionary<string, int>> GetDailyReservationReport(int companyId);
         Task<Dictionary<string, int>> GetRangeReservationReport(int companyId, DateTime startDate, DateTime endDate);
         Task<Dictionary<int, double>> GetMonthlyIncomes(int companyId, int month, int year);

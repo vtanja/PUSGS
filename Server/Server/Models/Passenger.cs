@@ -18,5 +18,6 @@ namespace Server.Models
         public ICollection<Seat> Seats { get; set; }
         public string Passport { get; set; }
         public bool SendInvitation { get; set; }
+        public bool AddedBonus { get; set; }
     }
 }

@@ -11,6 +11,7 @@ namespace Server.IServices
         Task<bool> PostFlightReservation(FlightReservation flightReservation, List<int> flightIds);
         Task<IEnumerable<FlightReservation>> GetFlightReservations(string userId);
         Task<bool> CancelReservation(FlightReservation reservation);
+        Task<bool> UpdateReservations();
 
         Task<string> GetDailyReservationReport(int companyId);
         Task<string> GetWeeklyReservationReport(int companyId);

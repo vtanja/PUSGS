@@ -1,4 +1,7 @@
-<div *ngIf="flights!==undefined">
+<div *ngIf="flights.lenght===0">
+
+</div>
+<div *ngIf="flights.lenght!==0">
     <div class="list-group" *ngFor="let flight of flights" style="margin-top: 5%;">
       <app-flight-item [flight]="flight"></app-flight-item>
     </div> 

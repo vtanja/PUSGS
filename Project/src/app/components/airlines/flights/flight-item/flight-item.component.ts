@@ -4,6 +4,7 @@ import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { Airline } from 'src/app/models/airline.model';
 import { AirlineService } from 'src/app/services/airline.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { UserService } from 'src/app/services/user-service.service';
 
 @Component({
   selector: 'app-flight-item',
@@ -21,7 +22,7 @@ export class FlightItemComponent implements OnInit, AfterViewInit{
   showBuyButton = true;
   price:number;
 
-  constructor( private modalService: NgbModal, private airlineService:AirlineService, private route:ActivatedRoute, private router:Router) { 
+  constructor( private modalService: NgbModal, private airlineService:AirlineService, private route:ActivatedRoute, private router:Router, private userService:UserService) { 
     
   }
   ngAfterViewInit(): void {
@@ -32,6 +33,11 @@ export class FlightItemComponent implements OnInit, AfterViewInit{
   }
 
   ngOnInit(): void {
+
+    if(!this.userService.isUserLoggedIn()){
+      this.showBuyButton= false;
+    }
+
     if(this.route.snapshot.routeConfig.path.includes('admin-flights')){
       this.showBuyButton=false;
     }

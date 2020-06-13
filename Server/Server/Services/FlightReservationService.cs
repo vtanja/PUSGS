@@ -170,5 +170,19 @@ namespace Server.Services
             }
             
         }
+
+        public async Task<bool> UpdateReservations()
+        {
+            flightReservationRepository.UpdateReservations();
+            try
+            {
+                await flightReservationRepository.Save();
+            }
+            catch (Exception)
+            {
+                return false;   
+            }
+            return true;
+        }
     }
 }

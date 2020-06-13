@@ -22,6 +22,7 @@ import { Passenger } from 'src/app/models/passenger.model';
 import { Seat } from 'src/app/models/seat.model';
 import { element } from 'protractor';
 import { CarService } from 'src/app/services/car.service';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 @Component({
   selector: 'app-create-flight-reservation',
@@ -258,20 +259,32 @@ fillForm(){
 
    confirmReservation(){
     this.flightReservation = new FlightReservation();
+    this.flightReservation.flightPrice.push(this.flight.segmentPrices.find(x=>x.segment.name===this.class).price);
     this.flightReservation.passengers = this.getPassengers();
     this.flightReservation.flightsIds.push(this.flight.id);
     this.flightReservation.totalPrice = this.flightReservation.passengers.length * this.flight.segmentPrices.find(x=>x.segment.name===this.class).price;
-    if(this.backFlight!==undefined){
+    console.log('one way flight price: ', this.flightReservation.totalPrice);
+    if(this.backFlight!==undefined && this.backFlight!==null){
       this.flightReservation.flightsIds.push(this.backFlight.id);
-      this.flightReservation.totalPrice += this.flightReservation.passengers.length * this.backFlight.segmentPrices.find(x=>x.segment.name===this.class).price;
+      this.flightReservation.flightPrice.push(this.backFlight.segmentPrices.find(x=>x.segment.name===this.class).price);
+      let price = this.flightReservation.passengers.length * this.backFlight.segmentPrices.find(x=>x.segment.name===this.class).price;
+      this.flightReservation.totalPrice = this.flightReservation.totalPrice + price;
+      console.log('price with return flight: ', this.flightReservation.totalPrice);
     }
+
+    
     this.flightReservation.carReservation=this.flightReservationService.getPendingCarReservation();
 
+    console.log(this.flightReservation.carReservation);
 
+     if( this.flightReservation.carReservation!==null && this.flightReservation.carReservation!==undefined && Object.keys( this.flightReservation.carReservation).length !== 0 && this.flightReservation.carReservation.constructor !== Object){
+       let price = this.flightReservation.totalPrice+this.flightReservation.carReservation.totalPrice;
+       let discountPrice = price - (price*0.05);
+      this.flightReservation.totalPrice = discountPrice;
+      console.log('total price with car: ',this.flightReservation.totalPrice );
+     }
+     else{
 
-     if(this.flightReservation.carReservation!==undefined){
-      this.flightReservation.totalPrice = this.flightReservation.totalPrice+this.flightReservation.carReservation.totalPrice;
-      console.log('total price: ',this.flightReservation.totalPrice );
      }
 
      console.log(this.flightReservation);
@@ -433,6 +446,7 @@ fillForm(){
       (res:any)=>{
         this.cars = res;
         this.carsSearched=true;
+        console.log(this.cars);
       },
       (err)=>{
         this.carsSearched=true;

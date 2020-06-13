@@ -40,19 +40,18 @@ export class FlightListComponent implements OnInit {
 
   constructor(private flightService:FlightService, private route:ActivatedRoute, private router:Router, private spinner: NgxSpinnerService) {}
 
-  ngOnChanges(changes: import("@angular/core").SimpleChanges): void {
-    this.flightService.filter.subscribe((filter:{airlines:{name:string, isChecked:boolean}[], duration:number, price:number, stops:number[] })=>{
-      this.filterFlight=filter;
-      console.log(this.filterFlight+ " from changes");
-    });
+  // ngOnChanges(changes: import("@angular/core").SimpleChanges): void {
+  //   // this.flightService.filter.subscribe((filter:{airlines:{name:string, isChecked:boolean}[], duration:number, price:number, stops:number[] })=>{
+  //   //   this.filterFlight=filter;
+  //   //   console.log(this.filterFlight+ " from changes");
+  //   // });
 
-  }
+  // }
 
   ngOnInit(): void {
 
     this.flightService.filter.subscribe((filter:{airlines:{name:string, isChecked:boolean}[], duration:number, price:number, stops:number[] })=>{
        this.filterFlight = {...filter};
-       this.filterFlightRound = {...filter};
     });
 
    

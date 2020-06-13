@@ -36,7 +36,6 @@ namespace Server.Controllers
         // GET: api/FlightReservations
         [HttpGet]
         [Route("All")]
-        [Authorize("USER")]
         public async Task<IEnumerable<FlightReservation>> GetFlightReservations()
         {
             var userId = User.Claims.First(c => c.Type == "UserID").Value;
@@ -46,7 +45,6 @@ namespace Server.Controllers
 
         // GET: api/FlightReservations/5
         [HttpGet("{id}")]
-        [Authorize("USER")]
         public async Task<ActionResult<FlightReservation>> GetFlightReservation(int id)
         {
             var flightReservation = await _context.FlightReservations.FindAsync(id);
@@ -78,11 +76,22 @@ namespace Server.Controllers
             return NoContent();
         }
 
+        [HttpPut("Update")]
+        public async Task<IActionResult> UpdateReservations(FlightReservation flightReservation)
+        {
+            
+            if(!await flightReservationService.UpdateReservations())
+            {
+                return BadRequest(new { message = "Error while updating flight reservations!" });
+            }
+
+            return NoContent();
+        }
+
         // POST: api/FlightReservations
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        [Authorize("USER")]
         public async Task<ActionResult<FlightReservation>> PostFlightReservation(FlightReservationModel flightReservation)
         {
             var userId = User.Claims.First(c => c.Type == "UserID").Value;
@@ -90,38 +99,28 @@ namespace Server.Controllers
 
             List<FlightFlightReservation> flightReservations = new List<FlightFlightReservation>();
 
-            var userRes = await _context.UserFlightReservations.Where(x => x.UserId == userId).Include(x => x.Reservation).ThenInclude(x => x.Flights).ToListAsync();
+            var userRes = await _context.UserFlightReservations.Include(x => x.Reservation).ThenInclude(x => x.Flights).Where(x => x.UserId == userId && !x.Reservation.Cancelled).ToListAsync();
             foreach (var item in userRes)
             {
                 var flights = await _context.FlightFlightReservation.Include(x=>x.Flight).Where(x => x.ReservationId == item.ReservationId).ToListAsync();
                 foreach (var item2 in flights)
                 {
-                    if (flightReservation.FlightsIds.Contains(item2.Id))
+                    if (flightReservation.FlightsIds.Contains(item2.FlightId))
                     {
                         return BadRequest(new { message = "User has already made a reservation on this flight! " });
                     }
                 }
             }
-            //foreach (var item in user.FlightReservations)
-            //{
-            //    flightReservations.AddRange(await _context.FlightFlightReservation.Where(x => x.Reservation.Users.Contains(user) && flightReservation.FlightsIds.Contains(x.FlightId) && !x.Reservation.Cancelled).ToListAsync());
-            //}
-
-            //if (flightReservations.Count > 0)
-            //{
-               
-            //}
 
             FlightReservation fr = new FlightReservation()
             {
-                //mislim da ovo ne treba sad da se ne bi dva puta dodalo
-                //CarReservation = flightReservation.CarReservation,
                 Cancelled = flightReservation.Cancelled,
                 FlightRated = flightReservation.FlightRated,
                 AirlineRated = flightReservation.AirlineRated,
                 Passengers = flightReservation.Passengers,
                 TotalPrice = flightReservation.TotalPrice,
-                DateCreated = DateTime.Now
+                DateCreated = DateTime.Now,
+                
             };
 
             //ako postoji carReservation upisem je
@@ -153,20 +152,22 @@ namespace Server.Controllers
 
                 foreach (var item in flightReservation.FlightsIds)
                 {
+                    int i = 0;
                     var flight = await _context.Flights.Where(x => x.Id == item).Include(x => x.LandingLocation).Include(x => x.TakeOffLocation).FirstAsync();
                     if (flight != null)
                     {
                         //fr.Flights.Add(flight);
                         FlightFlightReservation reservation = new FlightFlightReservation();
                         reservation.Flight = flight;
+                        reservation.FlightPrice = flightReservation.FlightPrice[i];
                         reservation.FlightId = flight.Id;
                         reservation.Reservation = fr;
                         reservation.ReservationId = fr.ReservationId;
                         _context.FlightFlightReservation.Add(reservation);
                     }
+                    i++;
                 }
 
-                //user.FlightReservations.Add(fr);
 
                 try
                 {
@@ -436,14 +437,6 @@ namespace Server.Controllers
                     return RedirectToAction("LateConfirm", "Notifications");
                 }
             }
-
-            //if (passenger!=null)
-            //{
-            //    return Redirect("http://localhost:4200//user/reservations/flight-reservations");
-            //}
-
-            //var result = await _userManager.ConfirmEmailAsync(user, code);
-
 
         }
 

@@ -72,7 +72,10 @@ export class EditPlaneComponent implements OnInit {
     let segment =this.addSeatsForm.get('segment').value;
     let rows = +this.addSeatsForm.get('rowsInput').value;
 
-    this.plane.segments.find(x=>x.name === segment).rows += rows;
+    console.log('segments, rows: ', segment, rows);
+    console.log('before adding: ', this.plane.segments.find(x=>x.name === segment).rows);
+    this.plane.segments.find(x=>x.name === segment).rows = this.plane.segments.find(x=>x.name === segment).rows + rows;
+    console.log('after adding: ', this.plane.segments.find(x=>x.name === segment).rows);
 
     this.planeService.updatePlaneConfig(this.plane.code, this.plane).subscribe((res:any)=>{
       Swal.fire({
@@ -81,8 +84,11 @@ export class EditPlaneComponent implements OnInit {
         showConfirmButton: false,
         timer: 1500,
       });
+      this.showLoader();
     this.planeService.getPlane(this.plane.code).subscribe((res:any)=>{
+      this.plane=undefined;
       this.plane=res;
+      this.hideLoader();
     })
   }  ,
     (err)=>{

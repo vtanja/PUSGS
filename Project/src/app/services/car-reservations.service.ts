@@ -3,6 +3,7 @@ import { Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { CarReservationAdapter } from '../models/adapters/car-reservation.adapter';
 import { map } from 'rxjs/operators';
+import { CarReservation } from '../models/car-reservation.model';
 
 @Injectable()
 export class CarReservationsService {
@@ -52,5 +53,9 @@ export class CarReservationsService {
     return this.httpClient.get(this.baseUri + 'CarReservations').pipe(
       map((data: any[]) => data.map(item => this.carReservationAdapter.adapt(item))),
     );
+  }
+
+  cancelReservation(reservation:CarReservation){
+    return this.httpClient.put(this.baseUri + 'CarReservations/'+reservation.id, reservation);
   }
 }

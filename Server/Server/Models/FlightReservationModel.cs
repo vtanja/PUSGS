@@ -15,5 +15,6 @@ namespace Server.Models
         public CarReservation CarReservation { get; set; } 
         public List<Passenger> Passengers { get; set; }
         public List<int> FlightsIds { get; set; }
+        public List<double> FlightPrice { get; set; }
     }
 }
