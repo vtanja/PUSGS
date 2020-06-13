@@ -36,6 +36,7 @@ namespace Server.Controllers
 
         // GET: api/Flights
         [HttpGet]
+        [Authorize(Roles = "AIRLINEADMIN")]
         public async Task<ActionResult<IEnumerable<FlightDTO>>> GetFlights()
         {
             var userId = User.Claims.First(c => c.Type == "UserID").Value;
@@ -165,6 +166,7 @@ namespace Server.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
+        [Authorize(Roles = "AIRLINEADMIN")]
         public async Task<ActionResult<Flight>> PostFlight(Flight flight)
         {
             flight.Id = 0;
@@ -273,6 +275,7 @@ namespace Server.Controllers
 
         // DELETE: api/Flights/5
         [HttpDelete("{id}")]
+        [Authorize(Roles = "AIRLINEADMIN")]
         public async Task<ActionResult<Flight>> DeleteFlight(int id)
         {
             var flight = await flightService.GetFlight(id);

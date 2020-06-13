@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -31,6 +32,7 @@ namespace Server.Controllers
 
         // GET: api/Segments
         [HttpGet]
+        [Authorize(Roles = "AIRLINEADMIN")]
         public async Task<ActionResult<IEnumerable<SegmentDTO>>> GetSegments()
         {
             var segments = await segmentService.GetSegments();
@@ -45,6 +47,7 @@ namespace Server.Controllers
 
         // GET: api/Segments/5
         [HttpGet("{id}")]
+        [Authorize(Roles = "AIRLINEADMIN")]
         public async Task<ActionResult<SegmentDTO>> GetSegment(int id)
         {
             var segment = await segmentService.GetSegment(id);
@@ -61,6 +64,7 @@ namespace Server.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
+        [Authorize(Roles = "AIRLINEADMIN")]
         public async Task<IActionResult> PutSegment(int id, Segment segment)
         {
             if (id != segment.Id)
@@ -81,6 +85,7 @@ namespace Server.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
+        [Authorize(Roles = "AIRLINEADMIN")]
         public async Task<ActionResult<Segment>> PostSegment(Segment segment)
         {
             if (!await segmentService.PostSegment(segment))
@@ -92,6 +97,7 @@ namespace Server.Controllers
 
         // DELETE: api/Segments/5
         [HttpDelete("{id}")]
+        [Authorize(Roles = "AIRLINEADMIN")]
         public async Task<ActionResult<Segment>> DeleteSegment(int id)
         {
             var segment = await segmentService.GetSegment(id);

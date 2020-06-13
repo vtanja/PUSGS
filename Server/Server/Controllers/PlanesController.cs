@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.TagHelpers;
@@ -33,6 +34,7 @@ namespace Server.Controllers
 
         // GET: api/Planes
         [HttpGet]
+        [Authorize(Roles = "AIRLINEADMIN")]
         public async Task<ActionResult<IEnumerable<PlaneDTO>>> GetPlanes()
         {
             var adminId = User.Claims.First(c => c.Type == "UserID").Value;
@@ -54,6 +56,7 @@ namespace Server.Controllers
 
         // GET: api/Planes/5
         [HttpGet("{id}")]
+        [Authorize(Roles = "AIRLINEADMIN")]
         public async Task<ActionResult<PlaneDTO>> GetPlane(string id)
         {
             var plane = await planeService.GetPlane(id);
@@ -69,6 +72,7 @@ namespace Server.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
+        [Authorize(Roles = "AIRLINEADMIN")]
         public async Task<IActionResult> PutPlane(string id, Plane plane)
         {
             if (id != plane.Code)
@@ -88,6 +92,7 @@ namespace Server.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
+        [Authorize(Roles = "AIRLINEADMIN")]
         public async Task<ActionResult<Plane>> PostPlane(Plane plane)
         {
             var adminId =  User.Claims.First(c => c.Type == "UserID").Value;
@@ -116,6 +121,7 @@ namespace Server.Controllers
 
         // DELETE: api/Planes/5
         [HttpDelete("{id}")]
+        [Authorize(Roles = "AIRLINEADMIN")]
         public async Task<ActionResult<Plane>> DeletePlane(string id)
         {
             var adminId = User.Claims.First(c => c.Type == "UserID").Value;

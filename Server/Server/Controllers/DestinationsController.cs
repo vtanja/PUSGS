@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -70,6 +71,7 @@ namespace Server.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
+        [Authorize(Roles = "AIRLINEADMIN")]
         public async Task<ActionResult<Destination>> PostDestination(Destination destination)
         {
             var adminId = User.Claims.First(c => c.Type == "UserID").Value;
@@ -103,6 +105,7 @@ namespace Server.Controllers
 
         // DELETE: api/Destinations/5
         [HttpDelete("{id}")]
+        [Authorize(Roles = "AIRLINEADMIN")]
         public async Task<ActionResult<Destination>> DeleteDestination(int id)
         {
             if (await destinationService.DeleteDestination(id))

@@ -36,6 +36,7 @@ namespace Server.Controllers
         // GET: api/FlightReservations
         [HttpGet]
         [Route("All")]
+        [Authorize(Roles ="USER")]
         public async Task<IEnumerable<FlightReservation>> GetFlightReservations()
         {
             var userId = User.Claims.First(c => c.Type == "UserID").Value;
@@ -45,6 +46,7 @@ namespace Server.Controllers
 
         // GET: api/FlightReservations/5
         [HttpGet("{id}")]
+        [Authorize(Roles = "USER")]
         public async Task<ActionResult<FlightReservation>> GetFlightReservation(int id)
         {
             var flightReservation = await _context.FlightReservations.FindAsync(id);
@@ -92,6 +94,7 @@ namespace Server.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
+        [Authorize(Roles = "USER")]
         public async Task<ActionResult<FlightReservation>> PostFlightReservation(FlightReservationModel flightReservation)
         {
             var userId = User.Claims.First(c => c.Type == "UserID").Value;
@@ -277,7 +280,7 @@ namespace Server.Controllers
 
         // DELETE: api/FlightReservations/5
         [HttpDelete("{id}")]
-        [Authorize("USER")]
+        [Authorize(Roles = "USER")]
         public async Task<ActionResult<FlightReservation>> DeleteFlightReservation(int id)
         {
             var flightReservation = await _context.FlightReservations.FindAsync(id);
@@ -298,7 +301,7 @@ namespace Server.Controllers
         }
 
         [HttpGet("[action]")]
-        [Authorize("USER")]
+        [Authorize(Roles = "USER")]
         public async Task<IActionResult> ConfirmFlightReservation(string userId, int reservationId)
         {
             if (reservationId==null)
@@ -360,18 +363,10 @@ namespace Server.Controllers
                 }
             }
 
-            //if (passenger!=null)
-            //{
-            //    return Redirect("http://localhost:4200//user/reservations/flight-reservations");
-            //}
-
-            //var result = await _userManager.ConfirmEmailAsync(user, code);
-            
-
         }
 
         [HttpGet("[action]")]
-        [Authorize("USER")]
+        [Authorize(Roles = "USER")]
         public async Task<IActionResult> DeclineFlightReservation(string userId, int reservationId)
         {
             if (reservationId == null)

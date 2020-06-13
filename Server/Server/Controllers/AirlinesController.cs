@@ -116,6 +116,7 @@ namespace Server.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
+        [Authorize(Roles = "AIRLINEADMIN")]
         public async Task<IActionResult> PutAirline(int id, Airline airline)
         {
             if (id != airline.Id)
@@ -167,6 +168,7 @@ namespace Server.Controllers
 
         // DELETE: api/Airlines/5
         [HttpDelete("{id}")]
+        [Authorize(Roles = "AIRLINEADMIN")]
         public async Task<ActionResult<Airline>> DeleteAirline(int id)
         {
             if (await _airlineService.DeleteAirline(id))
