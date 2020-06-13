@@ -103,45 +103,46 @@
             [hidden]="numOfPassengers===1 || numOfPassengers===0">Fill in other passengers personal data</button>
         </div>
         <div class="col" formArrayName="passengers">
-          <div *ngFor="let passengerCtrl of passengersControls; let i = index" formGroupName="i"
-            style="margin-top: 10px;">
+          <div *ngFor="let passengerCtrl of passengersControls; let i = index" 
+            style="margin-top: 10px;" [formGroupName]="i">
             <hr>
-            <label style="color: #31124b; font-weight: bolder;">Passenger {{i+2}} of {{numOfPassengers}}</label>
-            <div class="form-group"
-              [ngClass]="{'has-error': passengerCtrl.get('seat').invalid && passengerCtrl.get('seat').touched}">
-              <label class="control-label" [attr.for]="'seat'+i">Seat:</label>
-              <input [id]="'seat'+i" [attr.name]="'seat'+i" type="text" class="form-control" formControlName="seat">
-              <span class="help-block"
-                *ngIf="passengerCtrl.get('seat').errors?.invalid && passengerCtrl.get('seat').touched">Seat is
-                required!</span>
-            </div>
-            <div class="form-group"
-              [ngClass]="{'has-error': passengerCtrl.get('firstName').invalid && passengerCtrl.get('firstName').touched}">
-              <label class="control-label" [attr.for]="'firstName'+i">First name:</label>
-              <input [id]="'firstName'+i" [attr.name]="'firstName'+i" type="text" class="form-control"
-                formControlName="firstName">
-              <span class="help-block"
-                *ngIf="passengerCtrl.get('firstName').errors?.invalid && passengerCtrl.get('firstName').touched">First
-                name is required!</span>
-            </div>
-            <div class="form-group"
-              [ngClass]="{'has-error': passengerCtrl.get('lastName').invalid && passengerCtrl.get('lastName').touched}">
-              <label class="control-label" [attr.for]="'lastName'+i">Last name:</label>
-              <input [id]="'lastName'+i" [attr.name]="'lastName'+i" type="text" class="form-control"
-                formControlName="lastName">
-              <span class="help-block"
-                *ngIf="passengerCtrl.get('lastName').errors?.invalid && passengerCtrl.get('lastName').touched">Last name
-                is required!</span>
-            </div>
-            <div class="form-group"
-              [ngClass]="{'has-error': passengerCtrl.get('passport').invalid && passengerCtrl.get('passport').touched}">
-              <label class="control-label" [attr.for]="'passport'+i">Passport:</label>
-              <input [id]="'passport'+i" [attr.name]="'passport'+i" type="text" class="form-control"
-                formControlName="passport">
-              <span class="help-block"
-                *ngIf="passengerCtrl.get('passport').errors?.invalid && passengerCtrl.get('passport').touched">Passport
-                is required!</span>
-            </div>
+              <label style="color: #31124b; font-weight: bolder;">Passenger {{i+2}} of {{numOfPassengers}}</label>
+              <div class="form-group"
+                [ngClass]="{'has-error': passengerCtrl.get('seat').invalid && passengerCtrl.get('seat').touched}">
+                <label class="control-label" [attr.for]="'seat'+i">Seat:</label>
+                <input [id]="'seat'+i" [attr.name]="'seat'+i" type="text" class="form-control" formControlName="seat">
+                <span class="help-block"
+                  *ngIf="passengerCtrl.get('seat').errors?.invalid && passengerCtrl.get('seat').touched">Seat is
+                  required!</span>
+              </div>
+              <div class="form-group"
+                [ngClass]="{'has-error': passengerCtrl.get('firstName').invalid && passengerCtrl.get('firstName').touched}">
+                <label class="control-label" [attr.for]="'firstName'+i">First name:</label>
+                <input [id]="'firstName'+i" [attr.name]="'firstName'+i" type="text" class="form-control"
+                  formControlName="firstName">
+                <span class="help-block"
+                  *ngIf="passengerCtrl.get('firstName').errors?.invalid && passengerCtrl.get('firstName').touched">First
+                  name is required!</span>
+              </div>
+              <div class="form-group"
+                [ngClass]="{'has-error': passengerCtrl.get('lastName').invalid && passengerCtrl.get('lastName').touched}">
+                <label class="control-label" [attr.for]="'lastName'+i">Last name:</label>
+                <input [id]="'lastName'+i" [attr.name]="'lastName'+i" type="text" class="form-control"
+                  formControlName="lastName">
+                <span class="help-block"
+                  *ngIf="passengerCtrl.get('lastName').errors?.invalid && passengerCtrl.get('lastName').touched">Last name
+                  is required!</span>
+              </div>
+              <div class="form-group"
+                [ngClass]="{'has-error': passengerCtrl.get('passport').invalid && passengerCtrl.get('passport').touched}">
+                <label class="control-label" [attr.for]="'passport'+i">Passport:</label>
+                <input [id]="'passport'+i" [attr.name]="'passport'+i" type="text" class="form-control"
+                  formControlName="passport">
+                <span class="help-block"
+                  *ngIf="passengerCtrl.get('passport').errors?.invalid && passengerCtrl.get('passport').touched">Passport
+                  is required!</span>
+              </div>
+            
           </div>
         </div>
       </form>

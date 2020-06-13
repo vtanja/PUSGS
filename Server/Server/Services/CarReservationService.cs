@@ -217,5 +217,28 @@ namespace Server.Services
 
             }));
         }
+
+        public async Task<bool> CancelReservation(CarReservation reservation)
+        {
+            if (carReservationRepository.CancelReservation(reservation))
+            {
+                for (DateTime date = reservation.PickUpDate; date < reservation.DropOffDate; date = date.AddDays(1))
+                {
+                    if(!await reservedDateRepository.RemoveDate(date, reservation.CarId))
+                    {
+                        return false;
+                    }
+                }
+            };
+            try
+            {
+                await carReservationRepository.Save();
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+            return true;
+        }
     }
 }

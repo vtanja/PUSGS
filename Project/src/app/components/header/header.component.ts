@@ -44,9 +44,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
     if (this.userService.isUserLoggedIn()) {
       this.loggedIn = true;
       this.getUserData();
-      if (this.userService.getUserRole() === 'USER') {
-        this.invitations = this.getRequests();
-      }
+      // if (this.userService.getUserRole() === 'USER') {
+      //   this.invitations = this.getRequests();
+      // }
     }
 
     this.userService.userLogged.subscribe((isLogged: boolean) => {

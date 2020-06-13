@@ -12,6 +12,7 @@ namespace Server.IRepositories
         void AddReservedDate(ReservedDate reservedDate);
         Task<bool> AreDatesReserved(int carId, DateTime pickUpDate, DateTime dropOffDate);
         Task<bool> IsCarReserved(int carID);
+        Task<bool> RemoveDate(DateTime date, int carId);
         Task Save();
     }
 }

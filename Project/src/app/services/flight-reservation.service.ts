@@ -86,4 +86,10 @@ export class FlightReservationService {
   resetPendingCarReservation(){
     this.pendingCarReservation=null;
   }
+
+  checkInvitationsUpdateBonusPoints(){
+    let id = "all";
+    return this.httpClient.put(this.baseUri+'FlightReservations/Update',{} );
+  }
+
 }

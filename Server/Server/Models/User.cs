@@ -17,5 +17,6 @@ namespace Server.Models
 
         public ICollection<CarReservation> CarReservations { get; set; }
         public ICollection<UserFlightReservation> FlightReservations { get; set; }
+        public double BonusPoints { get; set; }
     }
 }

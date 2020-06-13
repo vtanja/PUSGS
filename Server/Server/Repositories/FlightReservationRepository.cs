@@ -256,5 +256,119 @@ namespace Server.Repositories
 
             return result;
         }
+
+        public bool UpdateReservations()
+        {
+            var reservations = _context.FlightFlightReservation.Include(x => x.Flight).ThenInclude(x => x.OccupiedSeats).Include(x => x.Reservation).ThenInclude(x => x.Passengers).Where(x=>!x.Reservation.Cancelled).ToList();
+
+            foreach (var item in reservations)
+            {
+                DateTime takeOffDate = new DateTime(Convert.ToInt32(item.Flight.TakeOffDate.Split('-')[2]),Convert.ToInt32(item.Flight.TakeOffDate.Split('-')[1]),Convert.ToInt32(item.Flight.TakeOffDate.Split('-')[0]));
+
+                int hours = Convert.ToInt32(item.Flight.TakeOffTime.Split(':')[0]);
+                int minutes = Convert.ToInt32(item.Flight.TakeOffTime.Split(':')[1]);
+
+                TimeSpan ts = new TimeSpan(hours, minutes, 0);
+                takeOffDate = takeOffDate.Date + ts;
+
+                if (takeOffDate.Date<DateTime.Now.Date || takeOffDate.Date.TimeOfDay < DateTime.Now.Date.TimeOfDay)
+                {
+                    foreach (var passenger in item.Reservation.Passengers)
+                    {
+                        var user = _context.Users.Include(x => x.RegisteredUser).Where(x => x.RegisteredUser.FirstName == passenger.FirstName && x.RegisteredUser.LastName == passenger.LastName).FirstOrDefault();
+                        if (user != null)
+                        {
+                            if (item.Flight.Duration <= 1200 && !passenger.AcceptedInvitation)
+                            {
+                                user.BonusPoints += 15;
+                                passenger.AddedBonus = true;
+                            }
+                            else
+                            {
+                                user.BonusPoints += 30;
+                                passenger.AddedBonus = true;
+                            }
+                        }
+
+                        try
+                        {
+                            _context.Entry(user).State = EntityState.Detached;
+                            _context.Entry(user).State = EntityState.Modified;
+                        }
+                        catch (Exception)
+                        {
+                            _context.Entry(user).State = EntityState.Unchanged;
+                            return false;
+                        }
+
+                    }
+                }
+                
+            }
+
+            var now = DateTime.Now;
+
+            reservations =  _context.FlightFlightReservation.Include(x => x.Flight).ThenInclude(x => x.OccupiedSeats).Include(x => x.Reservation).ThenInclude(x => x.Passengers).Where(x => x.Reservation.DateCreated >= DateTime.Now.Date && !x.Reservation.Cancelled).ToList();
+
+            foreach (var item in reservations)
+            {
+                
+
+                if ((item.Reservation.DateCreated.Date - now.Date).TotalDays < 2 || ((item.Reservation.DateCreated.Date - now.Date).TotalDays == 2 && (item.Reservation.DateCreated.TimeOfDay - now.Date.TimeOfDay).TotalSeconds<7140))
+                {
+                    List<Passenger> toRemove = new List<Passenger>();
+                    for (int i = 0; i <= item.Reservation.Passengers.ToList().Count-1; i++)
+                    {
+                        if (!item.Reservation.Passengers.ToList()[i].AcceptedInvitation)
+                        {
+                            List<Seat> seatsToRemove = new List<Seat>();
+
+                            var flights = reservations.Where(x => x.ReservationId == item.ReservationId).ToList();
+                            for (int j = 0; j <= flights.Count-1; j++)
+                            {
+                                
+                                    var seat = item.Reservation.Passengers.ToList()[i].Seats.ToArray()[j];
+                                    if (flights.ToArray()[j].Flight.OccupiedSeats.Contains(seat))
+                                    {
+                                        flights.ToArray()[j].Flight.OccupiedSeats.ToList().RemoveAt(j);
+                                    }
+
+                                    toRemove.Add(item.Reservation.Passengers.ToList()[i]);
+                                seatsToRemove.Add(seat);
+                                    //item.Reservation.Passengers.ToList()[i].Seats.ToList().RemoveAt(j);
+                                    //item.Reservation.Passengers.ToList().RemoveAt(i);
+                                    //_context.Passengers.Remove(item.Reservation.Passengers.ToList()[i]); 
+                               
+
+                            }
+
+                            foreach (var item2 in seatsToRemove)
+                            {
+                                if (seatsToRemove.Contains(item2))
+                                {
+                                    item.Reservation.Passengers.ToList()[i].Seats.ToList().Remove(item2);
+                                }
+                                
+                            }
+
+                        }
+                    }
+
+                    foreach (var item2 in toRemove)
+                    {
+                        if (item.Reservation.Passengers.ToList().Contains(item2))
+                        {
+                            item.Reservation.Passengers.ToList().Remove(item2);
+
+                            item.Reservation.TotalPrice = item.Reservation.TotalPrice - item.FlightPrice;
+                        }
+                        _context.Passengers.Remove(item2);
+                    }
+                }
+            }
+
+            return true;
+
+        }
     }
 }

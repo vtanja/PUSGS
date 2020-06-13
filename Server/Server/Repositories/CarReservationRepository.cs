@@ -128,5 +128,18 @@ namespace Server.Repositories
             return result;
         
         }
+
+        public  bool CancelReservation(CarReservation reservation)
+        {
+            if (CarReservationExists(reservation.Id))
+            {
+                reservation.Cancelled = true;
+                _context.Entry(reservation).State = EntityState.Detached;
+                _context.Entry(reservation).State = EntityState.Modified;
+
+                return true;
+            }
+            return false;
+        }
     }
 }

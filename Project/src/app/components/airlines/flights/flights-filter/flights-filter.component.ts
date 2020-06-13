@@ -45,7 +45,7 @@ export class FlightsFilterComponent implements OnInit, AfterViewInit {
 
     this.filter= {
       airlines:this.companies.slice(),
-      duration:30,
+      duration:1800,
       price:500,
       stops:[0,1,2]
     };

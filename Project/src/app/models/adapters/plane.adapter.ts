@@ -15,10 +15,10 @@ export class PlaneAdapter implements Adapter<Plane>{
   adapt(item: any) {
       console.log('plane adapter ',item);
     let plane = new Plane(item.code, item.segments, item.airlineId);
-    this.airlineService.getAirline(item.airlineId).subscribe((res:any)=>{
-      plane.airline = res;
-    });
     console.log('plane adapter: ', plane);
+    this.airlineService.getAirline(item.airlineId).subscribe((res:any)=>{
+      plane.airlineName = res.name;
+    });
     return plane;
   }
 

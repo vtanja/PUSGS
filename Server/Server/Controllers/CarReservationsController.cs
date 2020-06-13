@@ -223,5 +223,22 @@ namespace Server.Controllers
                 return BadRequest(new { message = ret });
             }
         }
+
+        [HttpPut("{id}")]
+        [Authorize(Roles ="USER")]
+        public async Task<IActionResult> CancelReservation(int id, CarReservation carReservation)
+        {
+            if (id != carReservation.Id)
+            {
+                return BadRequest();
+            }
+
+            if (!await carReservationService.CancelReservation(carReservation))
+            {
+                return BadRequest(new { message = "Error while canceling reservation! " });
+            }
+
+            return NoContent();
+        }
     }
 }

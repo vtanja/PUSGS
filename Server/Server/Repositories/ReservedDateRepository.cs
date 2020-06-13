@@ -64,5 +64,16 @@ namespace Server.Repositories
             Dispose(true);
             GC.SuppressFinalize(this);
         }
+
+        public async Task<bool> RemoveDate(DateTime date, int carId)
+        {
+            var reservedDate = await _context.ReservedDates.Where(x => x.CarId == carId && x.Date == date).FirstOrDefaultAsync();
+            if (reservedDate != null)
+            {
+                _context.ReservedDates.Remove(reservedDate);
+                return true;
+            }
+            return false;
+        }
     }
 }

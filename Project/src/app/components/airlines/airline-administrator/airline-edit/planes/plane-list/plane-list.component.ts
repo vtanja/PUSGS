@@ -3,6 +3,7 @@ import { Plane } from 'src/app/models/plane';
 import { AirlineAdministratorService } from 'src/app/services/airline-administrator.service';
 import Swal from 'sweetalert2';
 import { PlaneService } from 'src/app/services/plane.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-plane-list',
@@ -12,7 +13,9 @@ import { PlaneService } from 'src/app/services/plane.service';
 export class PlaneListComponent implements OnInit {
 
   @Input('planes') planes:Plane[];
-  constructor(private planeService:PlaneService) { }
+
+  isSpinning:boolean=false;
+  constructor(private spinner: NgxSpinnerService, private planeService:PlaneService) { }
 
   ngOnInit(): void {
   }
@@ -38,4 +41,16 @@ export class PlaneListComponent implements OnInit {
       });
     });
   }
+
+   
+showSpinner(){
+  this.isSpinning = true;
+  this.spinner.show();
+  }
+  
+  hideSpinner(){
+  this.spinner.hide();
+  this.isSpinning = false;
+  }
+  
 }

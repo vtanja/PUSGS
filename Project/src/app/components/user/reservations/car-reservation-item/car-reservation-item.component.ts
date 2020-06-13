@@ -6,6 +6,8 @@ import { RentCar } from 'src/app/models/rent-a-car.model';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { Observable, Subscribable, Subscription } from 'rxjs';
 import { CarReservationsService } from 'src/app/services/car-reservations.service';
+import Swal from 'sweetalert2';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-car-reservation-item',
@@ -19,7 +21,7 @@ export class CarReservationItemComponent implements OnInit,OnDestroy {
   toRate:string;
   closeModalSubscription:Subscription;
 
-  constructor(private carsReservationsService:CarReservationsService, private rentCarService:RentCarService,private modalService: NgbModal) { }
+  constructor(private carsReservationsService:CarReservationsService, private rentCarService:RentCarService,private modalService: NgbModal, private router:Router) { }
 
   ngOnInit(): void {
 
@@ -47,6 +49,45 @@ export class CarReservationItemComponent implements OnInit,OnDestroy {
     }, (reason) => {
       this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
     });
+  }
+
+  CancelReservation(){
+    var currentMoment = new Date();
+    console.log('current moment: ',currentMoment);
+    var parts=this.reservation.pickUpDate.split('-');
+    console.log(parts);
+    var pickUp = new Date(+parts[2], +parts[1]-1, +parts[0]);
+    console.log('pick up: ', pickUp);
+
+    var diff = Math.abs(pickUp.getTime() - currentMoment.getTime());
+    var diffDays = Math.ceil(diff / (1000 * 3600 * 24)); 
+
+    if(diff>=2){
+      this.carsReservationsService.cancelReservation(this.reservation).subscribe((res:any)=>{
+        Swal.fire({
+          text: 'Successfully canceled reservation',
+          icon: 'success',
+          showConfirmButton: false,
+          timer:1500
+        }).then(()=>{
+          this.router.navigate(['/user/reservations/car-reservations']);
+        })
+      },
+      (err)=>{
+        Swal.fire({
+          text: err.error.message,
+          icon: 'error',
+          showConfirmButton: true
+        })
+      })
+    }
+    else{
+      Swal.fire({
+        text: 'It is possible to cancel reservation 2 days before pick up day!',
+        icon: 'warning',
+        showConfirmButton: true
+      })
+    }
   }
 
   private getDismissReason(reason: any): string {

@@ -16,5 +16,6 @@ namespace Server.IServices
         Task<string> GetMonthlyReservationReport(int companyId);
         Task<string> GetMonthlyIncomes(int companyId,int year,int month);
         Task<string> GetAnnualIncomes(int companyId,int year);
+        Task<bool> CancelReservation(CarReservation reservation);
     }
 }

@@ -8,6 +8,7 @@ export class Plane {
     booked:string[]=[];
     airlineId:number;
     airline:Airline;
+    airlineName:string;
 
     constructor(code:string, segments:Segment[], airlineId:number){
         this.code=code;

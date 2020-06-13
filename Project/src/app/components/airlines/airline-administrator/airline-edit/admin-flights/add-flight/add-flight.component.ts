@@ -127,24 +127,6 @@ export class AddFlightComponent implements OnInit, AfterViewInit {
         
       });
       
-      // if(this.chosenPlane !== undefined){
-      //   if(this.planeSegments.find(x=>x.name==='Economy class')!==undefined){
-      //     this.addFlightForm.get('prices.economyPrice').setValidators(Validators.required);
-      //     this.addFlightForm.get('prices.economyPrice').updateValueAndValidity();
-      //   }
-      //   if(this.planeSegments.find(x=>x.name==='Premium economy')!==undefined){
-      //     this.addFlightForm.get('prices.economyPremiumPrice').setValidators(Validators.required);
-      //     this.addFlightForm.get('prices.economyPremiumPrice').updateValueAndValidity();
-      //   }
-      //   if(this.planeSegments.find(x=>x.name==='Business class')!==undefined){
-      //     this.addFlightForm.get('prices.businessPrice').setValidators(Validators.required);
-      //     this.addFlightForm.get('prices.businessPrice').updateValueAndValidity();
-      //   }
-      //   if(this.planeSegments.find(x=>x.name==='First class')!==undefined){
-      //     this.addFlightForm.get('prices.firstPrice').setValidators(Validators.required);
-      //     this.addFlightForm.get('prices.firstPrice').updateValueAndValidity();
-      //   }
-      // }
     });
   }
 
