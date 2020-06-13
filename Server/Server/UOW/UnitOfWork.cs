@@ -33,6 +33,7 @@ namespace Server.UOW
         private AirlineRateService airlineRateService;
         private RentCarAdminService rentCarAdminService;
         private AirlineAdminService airlineAdminService;
+        private AddressService addressService;
 
         private CarRepository carRepository;
         private RentCarRepository rentCarRepository;
@@ -54,6 +55,7 @@ namespace Server.UOW
         private FlightRateRepository flightRateRepository;
         private RentCarAdminRepository rentCarAdminRepository;
         private AirlineAdminRepository airlineAdminRepository;
+        private AddressRepository addressRepository;
 
         public UnitOfWork(DataBaseContext context)
         {
@@ -80,6 +82,7 @@ namespace Server.UOW
             flightRateRepository = new FlightRateRepository(_context);
             rentCarAdminRepository = new RentCarAdminRepository(_context);
             airlineAdminRepository = new AirlineAdminRepository(_context);
+            addressRepository = new AddressRepository(_context);
         }
 
         public FlightReservationService FlightReservationService
@@ -308,6 +311,18 @@ namespace Server.UOW
                     airlineAdminService = new AirlineAdminService(airlineAdminRepository);
                 }
                 return airlineAdminService;
+            }
+        }
+
+        public AddressService AddressService
+        {
+            get
+            {
+                if (addressService == null)
+                {
+                    addressService = new AddressService(addressRepository);
+                }
+                return addressService;
             }
         }
 

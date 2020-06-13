@@ -1,4 +1,4 @@
- <div class="container">
+<div class="container">
   <div class="row" style="width: 90%;margin-left: 5%; margin-top: 3%;">
     <ul class="list-group" *ngFor="let item of items |keyvalue ; let i = index"
       style="margin-bottom: 2%;width: 33.33333%;padding: 0%;margin: 0%">
@@ -17,7 +17,8 @@
                 <li class="list-group-item " style="padding: 2%;">
                   <div class="row" *ngIf="isCarCompany">
                     <div class="col" *ngIf="!isCarCompanyEdit">
-                      <img src="{{images[place.city]}}" style="width: 100%;height:100%;">
+                      <img *ngIf="existImage(place.city)" src="{{images[place.city]}}" style="width: 100%;height:100%;">
+                      <img *ngIf="!existImage(place.city)" src="{{images['default']}}" style="width: 100%;height:100%;">
                     </div>
                     <div class="col" style="margin-right: 5%;margin-left: 5%;">
                       <div class="row">{{place.street}} {{place.number}},{{place.city}}</div>
@@ -25,19 +26,21 @@
                           (click)="changeMap(place)">Show on map</button></div>
                     </div>
                     <div class="col-sm-2" style="margin-right: 5%;" *ngIf="isCarCompanyEdit">
-                      <button type="button" class="delete-button"  title="Remove this office" (click)="removeOffice(place)"></button>
+                      <button type="button" class="delete-button" title="Remove this office"
+                        (click)="removeOffice(place)"></button>
                     </div>
                   </div>
 
                   <div class="row" *ngIf="!isCarCompany">
-                    <div class="col" >
+                    <div class="col">
                       <img src="{{images[place.city]}}" style="width: 100%;height:100%;margin-right: 1%;">
                     </div>
                     <div class="col">
                       {{place.city}}, {{place.country}}
                     </div>
                     <div class="col-sm-2" style="margin-right: 5%;" *ngIf="isAirlineCompanyEdit">
-                      <button type="button" class="delete-button"  title="Remove this destination" (click)="removeDestination(place)"></button>
+                      <button type="button" class="delete-button" title="Remove this destination"
+                        (click)="removeDestination(place)"></button>
                     </div>
                   </div>
                 </li>
@@ -49,6 +52,3 @@
     </ul>
   </div>
 </div>
-
-
-

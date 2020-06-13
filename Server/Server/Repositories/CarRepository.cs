@@ -269,12 +269,10 @@ namespace Server.Repositories
             Dispose(true);
             GC.SuppressFinalize(this);
         }
-
         public async Task<Car> GetCarWithReservationData(int carId)
         {
             return await _context.Cars.Where(c=>c.Id==carId).Include(c=>c.Reservations).Include(c=>c.DisocuntDates).Include(c=>c.ReservedDates).FirstOrDefaultAsync();
         }
-
         public void AddReservationToCar(Car car, CarReservation carReservation)
         {
             if (car.Reservations == null)
@@ -283,7 +281,6 @@ namespace Server.Repositories
             }
             car.Reservations.Add(carReservation);
         }
-
         public void AddReservedDateToCar(Car car, ReservedDate reservedDate)
         {
             if(car.ReservedDates == null)
@@ -292,7 +289,6 @@ namespace Server.Repositories
             }
             car.ReservedDates.Add(reservedDate);
         }
-
         public void AddDiscountDateToCar(Car car, DiscountDate discountDate)
         {
             if (car.DisocuntDates == null)

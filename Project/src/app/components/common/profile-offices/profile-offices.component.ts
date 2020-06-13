@@ -130,6 +130,7 @@ export class ProfileOfficesComponent implements OnInit {
       'Ibiza': '../../../assets/images/cities/Ibiza.jpg',
       'Amsterdam': '../../../assets/images/cities/Amsterdam.jpg',
       'Brussels': '../../../assets/images/cities/Brussels.jpg',
+      'default':'../../../assets/images/cities/default.jpg'
     };
   }
 
@@ -230,5 +231,11 @@ export class ProfileOfficesComponent implements OnInit {
       this.items[office.country].splice(index,1);
       if(this.items[office.country].length===0)
         delete this.items[office.country]
+  }
+
+  existImage(place:string){
+    if(this.images[place]===undefined)
+      return false;
+    return true;
   }
 }

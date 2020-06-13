@@ -96,7 +96,12 @@ namespace Server.Services
             if (carId != car.Id)
                 return false;
 
-            carRepository.UpdateCar(car);
+            var carr = await carRepository.GetCarByID(carId);
+            if (carr == null)
+                return false;
+
+            carr.Price = car.Price;
+            carRepository.UpdateCar(carr);
             try
             {
                 await carRepository.Save();

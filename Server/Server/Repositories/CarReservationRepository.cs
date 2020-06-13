@@ -24,12 +24,10 @@ namespace Server.Repositories
         {
             _context.CarReservations.Add(reservation);
         }
-
         public void UpdateCarReservation(CarReservation reservation)
         {
             _context.Entry<CarReservation>(reservation).State = EntityState.Modified;
         }
-
         public async Task<CarReservation> GetCarReservation(int reservationId)
         {
             return await _context.CarReservations.FindAsync(reservationId);
@@ -97,7 +95,6 @@ namespace Server.Repositories
 
             return result;
         }
-
         public async Task<Dictionary<string, int>> GetRangeReservationReport(int companyId,DateTime startDate,DateTime endDate)
         {
             var ret = await _context.CarReservations.Include(r => r.Car).Where(r => r.Car.CompanyId == companyId && !r.Cancelled && r.DateCreated.Date >= startDate.Date && r.DateCreated <= endDate.Date).ToListAsync();
@@ -113,7 +110,6 @@ namespace Server.Repositories
             return result;
 
         }
-
         public async Task<Dictionary<int, double>> GetMonthlyIncomes(int companyId,int month,int year)
         {
 
@@ -123,7 +119,6 @@ namespace Server.Repositories
 
             return result; ;
         }
-
         public async Task<Dictionary<int, double>> GetAnnualIncomes(int companyId,int year)
         {
             var ret = await _context.CarReservations.Include(r => r.Car).Where(r => r.Car.CompanyId == companyId && !r.Cancelled && r.DateCreated.Date.Year==year).ToListAsync();

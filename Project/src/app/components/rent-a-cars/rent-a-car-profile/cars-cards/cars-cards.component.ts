@@ -26,22 +26,21 @@ export class CarsCardsComponent implements OnInit, OnDestroy {
   closeResult: string;
   notFlightRes: boolean = true;
   isSpining: boolean = false;
-  carReserved:boolean=false;
+  carReserved: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
-    private router:Router,
+    private router: Router,
     private rentCarsService: RentCarService,
     private carService: CarService,
     private spinner: NgxSpinnerService,
     private modalService: NgbModal,
     private carReservationsService: CarReservationsService,
-    private flightReservationService:FlightReservationService
+    private flightReservationService: FlightReservationService
   ) {}
 
   ngOnInit() {
-
-    this.carReserved=false;
+    this.carReserved = false;
 
     this.searchParamsSubscription = this.rentCarsService.searchCarsParamsSubject.subscribe(
       (queryParams: '') => {
@@ -133,51 +132,51 @@ export class CarsCardsComponent implements OnInit, OnDestroy {
   }
 
   makeReservation(): void {
-      let data = {
-        pickUpDate:
-          this.changeDateFormat(this.params['pickUpDate']) +
-          ' ' +
-          this.params['pickUpTime'],
-        dropOffDate:
-          this.changeDateFormat(this.params['dropOffDate']) +
-          ' ' +
-          this.params['dropOffTime'],
-        pricePerDay: this.currentCar.price,
-        carId: this.currentCar.id,
-      };
+    let data = {
+      pickUpDate:
+        this.changeDateFormat(this.params['pickUpDate']) +
+        ' ' +
+        this.params['pickUpTime'],
+      dropOffDate:
+        this.changeDateFormat(this.params['dropOffDate']) +
+        ' ' +
+        this.params['dropOffTime'],
+      pricePerDay: this.currentCar.price,
+      carId: this.currentCar.id,
+    };
 
-      this.carReservationsService.makeCarReservation(data).subscribe(
-        (ret) => {
-          Swal.fire({
-            text: 'Reservation successfully made!',
-            icon: 'success',
-            showConfirmButton: false,
-            timer: 2300,
-          });
+    this.carReservationsService.makeCarReservation(data).subscribe(
+      (ret) => {
+        Swal.fire({
+          text: 'Reservation successfully made!',
+          icon: 'success',
+          showConfirmButton: false,
+          timer: 2300,
+        });
 
-          this.router.navigateByUrl('/user/reservations/car-reservations');
-        },
-        (err) => {
-          Swal.fire({
-            title: 'Reservation making failed.',
-            text: err.error.message,
-            icon: 'error',
-            showConfirmButton: true
-          });
-        }
-      );
+        this.router.navigateByUrl('/user/reservations/car-reservations');
+      },
+      (err) => {
+        Swal.fire({
+          title: 'Reservation making failed.',
+          text: err.error.message,
+          icon: 'error',
+          showConfirmButton: true,
+        });
+      }
+    );
   }
 
   makeQuickReservation(): void {
     let data = {
-       pickUpDate :  this.changeDateFormat(this.quickResInput.pickUpDate),
-       dropOffDate :  this.changeDateFormat(this.quickResInput.dropOffDate),
-       carId : this.currentCar.id,
-       totalPrice : this.currentCar.price
-      }
+      pickUpDate: this.changeDateFormat(this.quickResInput.pickUpDate),
+      dropOffDate: this.changeDateFormat(this.quickResInput.dropOffDate),
+      carId: this.currentCar.id,
+      totalPrice: this.currentCar.price,
+    };
 
     this.flightReservationService.setPendingCarReservation(data);
-    this.carReserved=true;
+    this.carReserved = true;
   }
 
   showSpinner() {

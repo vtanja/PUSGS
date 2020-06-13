@@ -115,7 +115,6 @@ namespace Server.Controllers
         }
 
 
-
         // GET: api/Cars/DiscountCarsSearch
         [HttpGet("{pickUpLocation}/{dropOffLocation}/{pickUpDate}/{dropOffDate}/{daysNumber}")]
         [Route("DiscountCarsSearch")]

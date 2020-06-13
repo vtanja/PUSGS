@@ -26,7 +26,6 @@ export class CarService {
 
   changeCarPrice(carId: number, car: Car) {
 
-    let data = JSON.stringify(car);
     return this.httpClient.put(this.baseUri + 'Cars/' + carId,car);
   }
 
