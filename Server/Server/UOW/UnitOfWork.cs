@@ -164,7 +164,7 @@ namespace Server.UOW
             {
                 if (this.carReservationService == null)
                 {
-                    this.carReservationService = new CarReservationService(carReservationRepository,reservedDateRepository);
+                    this.carReservationService = new CarReservationService(carRepository,carReservationRepository,reservedDateRepository,discountDateRepository);
                 }
                 return this.carReservationService;
             }

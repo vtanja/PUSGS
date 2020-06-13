@@ -9,7 +9,7 @@ export class FlightReservation{
    flightRated :boolean;
    airlineRated :boolean;
    cancelled :boolean;
-   carReservation :CarReservation ;
+   carReservation :any ;
    passengers: Passenger[];
    flights:Flight[];
    flightsIds:number[]=[];

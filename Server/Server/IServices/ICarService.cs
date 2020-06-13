@@ -13,6 +13,7 @@ namespace Server.IServices
         Task<IEnumerable<Car>> GetCompanyCars(int companyID);
         Task<IEnumerable<Car>> SearchCars(SearchCarModel searchCarModel);
         Task<IEnumerable<Car>> SearchCompanyCars(SearchCarModel searchCarModel);
+        Task<IEnumerable<Car>> SearchCarsOnDiscount(SearchCarModel searchCarModel);
         Task<Car> GetCarByID(int carId);
         Task<bool> AddCar(Car car);
         Task<string> DeleteCar(int carID);

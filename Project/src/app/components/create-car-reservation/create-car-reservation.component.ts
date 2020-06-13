@@ -64,7 +64,7 @@ export class CreateCarReservationComponent implements OnInit {
 
 
   constructor(private airlineService:AirlineService,private router:Router, private route:ActivatedRoute,private userService:UserService,private modalService: NgbModal, private rentCarService:RentCarService, private config: NgbDatepickerConfig, private flightReservationService:FlightReservationService) {
-  
+
   }
 
   ngOnInit(): void {
@@ -150,7 +150,7 @@ export class CreateCarReservationComponent implements OnInit {
 
     if(this.flightReservation!==undefined){
       // days, companyId, this.car.companyName,"",-1,-1,false, this.car.id,
-    this.flightReservation.carReservation = new CarReservation(-1,this.flight.takeOffDate, this.flight.landingTime, date, "10:00",10,"","","",-1,-1,false,"");
+    this.flightReservation.carReservation = new CarReservation(-1,this.flight.takeOffDate, this.flight.landingTime, date, "10:00",10,"","","",-1,-1,false,"",-1);
     //this.flightReservation.price +=this.flightReservation.carReservation.price;
     this.flightReservationService.saveReservation(this.flightReservation);
     console.log(this.flightReservation);

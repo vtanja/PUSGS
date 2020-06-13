@@ -14,6 +14,7 @@ namespace Server.Interfaces
         Task<IEnumerable<Car>> GetCompanyCars(int companyID);
         Task<IEnumerable<Car>> SearchCars(SearchCarModel searchCarModel);
         Task<IEnumerable<Car>> SearchCompanyCars(SearchCarModel searchCarModel);
+        Task<IEnumerable<Car>> SearchCarsOnDiscount(SearchCarModel searchCarModel);
         Task<Car> GetCarByID(int carId);
         void AddCar(Car car);
         Task DeleteCar(int carID);

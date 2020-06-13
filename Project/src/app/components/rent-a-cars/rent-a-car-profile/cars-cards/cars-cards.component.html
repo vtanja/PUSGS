@@ -11,7 +11,11 @@
   <h3 style="margin-bottom: 500px;">We haven't found any cars for you...</h3>
 </div>
 
-<div *ngIf="cars.length!==0 && !isSpining" class="container" style="margin-bottom: 3%;">
+<div *ngIf="!notFlightRes && carReserved">
+  <h5 style="color: darkorange;">Your car reservation was successfully pieced together with flight reservation. Go ahead to confirm your reservation...</h5>
+</div>
+
+<div *ngIf="cars.length!==0 && !isSpining && !carReserved" class="container" style="margin-bottom: 3%;">
   <div class="row" style="width: 80%;margin-left: 10%;">
     <div *ngFor="let car of cars; index as i" style="width: 25%;">
       <div class="card " style="width: 100%; height: 100%;">
@@ -63,13 +67,44 @@
           <button [hidden]="!searched" class="btn  btn-md btn-rounded button-style" style="display: block;width: 100%;"
             (click)="open(mymodal) ; currentCar=car">Rent</button>
           <button [hidden]="notFlightRes" class="btn btn-md btn-rounded button-style"
-            style="display: block;width: 100%;" [routerLink]="'create-car-reservation/'+car.id">Rent</button>
+            style="display: block;width: 100%;" (click)="open(myquickmodal); currentCar=car">Rent</button>
         </div>
 
       </div>
     </div>
   </div>
 </div>
+
+
+<ng-template #myquickmodal let-modal>
+  <div class="modal-header">
+    <h6 class="modal-title" id="modal-basic-title">Confirm reservation</h6>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">×</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <label class="lblStyle">Car: <span class="valueStyle"> {{currentCar.brand}}&nbsp;{{currentCar.model}}
+      </span></label>
+    <br>
+    <label class="lblStyle">Pick up location: <span class="valueStyle"> {{quickResInput['pickUpLocation']}} </span></label>
+    <br>
+    <label class="lblStyle">Pick up date:<span class="valueStyle">
+        {{quickResInput['pickUpDate']}}</span></label>
+    <br>
+    <label class="lblStyle">Drop off location:<span class="valueStyle"> {{quickResInput['dropOffLocation']}}</span></label>
+    <br>
+    <label class="lblStyle">Drop off date:<span class="valueStyle">
+        {{quickResInput['dropOffDate']}}</span></label>
+    <br>
+    <label class="lblStyle">Reservation total price: <span class="valueStyle">
+      {{currentCar.price | currency:'EUR' }}</span></label>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn confirmBtnStyle"
+      (click)="makeQuickReservation();modal.close('Save click')">Confirm</button>
+  </div>
+</ng-template>
 
 
 <ng-template #mymodal let-modal>
@@ -96,7 +131,7 @@
     <label class="lblStyle">Price per day:<span class="valueStyle">
         {{currentCar.price | currency:'EUR' }}</span></label>
     <br>
-    <label class="lblStyle">Total price: <span class="valueStyle">
+     <label class="lblStyle">Total price: <span class="valueStyle">
         {{currentCar.price*(rentDays===0?1:rentDays) | currency:'EUR' }}</span></label>
   </div>
   <div class="modal-footer">

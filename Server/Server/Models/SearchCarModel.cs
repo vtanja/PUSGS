@@ -14,6 +14,7 @@ namespace Server.Models
         private int passengers;
         private string brand;
         private int companyID;
+        private int daysNumber;
 
         public string PickUpLocation { get => pickUpLocation; set => pickUpLocation = value; }
         public string DropOffLocation { get => dropOffLocation; set => dropOffLocation = value; }
@@ -22,5 +23,6 @@ namespace Server.Models
         public int Passengers { get => passengers; set => passengers = value; }
         public string Brand { get => brand; set => brand = value; }
         public int CompanyID { get => companyID; set => companyID = value; }
+        public int DaysNumber { get => daysNumber; set => daysNumber = value; }
     }
 }

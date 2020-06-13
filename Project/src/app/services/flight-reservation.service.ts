@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { regExpEscape } from '@ng-bootstrap/ng-bootstrap/util/util';
 import { Observable, Subject } from 'rxjs';
 import { subscribeOn } from 'rxjs/operators';
+import { CarReservation } from '../models/car-reservation.model';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +17,7 @@ export class FlightReservationService {
   annualIncomesSubject = new Subject();
 
   pendingReservation:FlightReservation;
+  pendingCarReservation:{} = {};
   rateModalClose = new Subject<{}>();
   readonly baseUri = 'http://localhost:51474/api/';
 
@@ -71,5 +73,17 @@ export class FlightReservationService {
 
   cancelReservation(reservation:FlightReservation){
     return this.httpClient.put(this.baseUri + 'FlightReservations/'+reservation.reservationId, reservation);
+  }
+
+  setPendingCarReservation(carReservation:{}){
+    this.pendingCarReservation=carReservation;
+  }
+
+  getPendingCarReservation(){
+    return this.pendingCarReservation;
+  }
+
+  resetPendingCarReservation(){
+    this.pendingCarReservation=null;
   }
 }

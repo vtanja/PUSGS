@@ -283,7 +283,7 @@ namespace Server.Controllers
                             await _dataBaseContext.Users.AddAsync(new User { UserId = newUser.Id });
                             await _dataBaseContext.SaveChangesAsync();
 
-                            var token = await GenerateToken(user);
+                            var token = await GenerateToken(newUser);
                             return Ok(new { token });
 
                         }
