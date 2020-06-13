@@ -77,7 +77,7 @@ namespace Server.Repositories
 
 
             IEnumerable<int> carIDS;
-            IEnumerable<int> carOnDiscountIDS = await _context.DiscountDates.Where(d => d.Date >= datepickUp && d.Date <= dateDropOff).Select(c=>c.CarId).ToArrayAsync();
+            IEnumerable<int> carOnDiscountIDS = await _context.DiscountDates.Where(d => d.Date >= datepickUp && d.Date < dateDropOff).Select(c=>c.CarId).ToArrayAsync();
 
             if (searchCarModel.Passengers > 0 && !string.IsNullOrEmpty(searchCarModel.Brand))
             {
@@ -118,7 +118,7 @@ namespace Server.Repositories
             if(intersectComapnies.Count()==0)
                 return new List<Car>();
 
-            var reservedCars = await _context.ReservedDates.Where(d => d.Date <= dateDropOff && d.Date >= datepickUp).Select(c => c.CarId).ToArrayAsync();
+            var reservedCars = await _context.ReservedDates.Where(d => d.Date < dateDropOff && d.Date >= datepickUp).Select(c => c.CarId).ToArrayAsync();
 
             var ret = await _context.Cars.Include(c=>c.CarCompany).Where(c => intersectComapnies.Contains(c.CompanyId) && !reservedCars.Contains(c.Id) && carIDS.Contains(c.Id)).ToListAsync();
 
@@ -136,6 +136,7 @@ namespace Server.Repositories
             DateTime datepickUp = Convert.ToDateTime(searchCarModel.PickUpDate);
 
             IEnumerable<int> carIDS;
+            IEnumerable<int> carOnDiscountIDS = await _context.DiscountDates.Include(d=>d.Car).Where(d => !d.Car.IsDeleted && d.Car.CompanyId == searchCarModel.CompanyID && d.Date >= datepickUp && d.Date < dateDropOff).Select(c => c.CarId).ToArrayAsync();
 
             if (searchCarModel.Passengers > 0 && !string.IsNullOrEmpty(searchCarModel.Brand))
             {
@@ -169,7 +170,7 @@ namespace Server.Repositories
                                        .AnyAsync();
             if (companiesDropOff && companiesPickUp)
             {
-                var reservedCars = await _context.ReservedDates.Where(d => d.Date <= dateDropOff && d.Date >= datepickUp).Select(c => c.CarId).ToArrayAsync();
+                var reservedCars = await _context.ReservedDates.Where(d => d.Date < dateDropOff && d.Date >= datepickUp).Select(c => c.CarId).ToArrayAsync();
 
                return await _context.Cars.Include(c=>c.CarCompany).Where(c => carIDS.Contains(c.CompanyId) && !reservedCars.Contains(c.Id)).ToListAsync();
             }
@@ -195,7 +196,7 @@ namespace Server.Repositories
 
 
             IEnumerable<int> carIDS;
-            IEnumerable<int> carOnDiscountIDS = await _context.DiscountDates.Where(d => d.Date >= datepickUp && d.Date <= dateDropOff).Select(c => c.CarId).ToArrayAsync();
+            IEnumerable<int> carOnDiscountIDS = await _context.DiscountDates.Where(d => d.Date >= datepickUp && d.Date < dateDropOff).Select(c => c.CarId).ToArrayAsync();
 
 
            carIDS = await _context.Cars.Include(c => c.CarCompany).Where(c => !c.IsDeleted).Select(c => c.Id).ToArrayAsync();
@@ -267,6 +268,38 @@ namespace Server.Repositories
         {
             Dispose(true);
             GC.SuppressFinalize(this);
+        }
+
+        public async Task<Car> GetCarWithReservationData(int carId)
+        {
+            return await _context.Cars.Where(c=>c.Id==carId).Include(c=>c.Reservations).Include(c=>c.DisocuntDates).Include(c=>c.ReservedDates).FirstOrDefaultAsync();
+        }
+
+        public void AddReservationToCar(Car car, CarReservation carReservation)
+        {
+            if (car.Reservations == null)
+            {
+                car.Reservations = new List<CarReservation>();
+            }
+            car.Reservations.Add(carReservation);
+        }
+
+        public void AddReservedDateToCar(Car car, ReservedDate reservedDate)
+        {
+            if(car.ReservedDates == null)
+            {
+                car.ReservedDates = new List<ReservedDate>();
+            }
+            car.ReservedDates.Add(reservedDate);
+        }
+
+        public void AddDiscountDateToCar(Car car, DiscountDate discountDate)
+        {
+            if (car.DisocuntDates == null)
+            {
+                car.DisocuntDates = new List<DiscountDate>();
+            }
+            car.DisocuntDates.Add(discountDate);
         }
     }
 }

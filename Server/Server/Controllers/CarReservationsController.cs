@@ -179,7 +179,7 @@ namespace Server.Controllers
             }
 
             carReservation.UserId = userId;
-            var ret = await carReservationService.AddQuickReservation(carReservation);
+            var ret = await carReservationService.AddReservation(carReservation);
 
             if (ret == "success")
             {

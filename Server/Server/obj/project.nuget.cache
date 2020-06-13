@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "1ruZ/C4ybqmW4CTYo095Uf6SQmDnI+GD8BykFdS6ofbe8uIpfJyNPxhYL/W2bEV+HcovgQfo+3A+GZNL6yTwbQ==",
+  "dgSpecHash": "uNbz62UMTC4q18ePdq+c3yqVrxfA9/BY8Bsh4SEc6O3WHxANGXyA1CbEAukaAP2Th/5+DpGOjLYNBRo3DNACSQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\vukmi\\OneDrive\\Dokumenti\\GitHub\\PUSGS\\Server\\Server\\Server.csproj",
   "expectedPackageFiles": [
@@ -189,5 +189,12 @@
     "C:\\Users\\vukmi\\.nuget\\packages\\system.xml.xmldocument\\4.3.0\\system.xml.xmldocument.4.3.0.nupkg.sha512",
     "C:\\Users\\vukmi\\.nuget\\packages\\system.xml.xmlserializer\\4.3.0\\system.xml.xmlserializer.4.3.0.nupkg.sha512"
   ],
-  "logs": []
+  "logs": [
+    {
+      "code": "Undefined",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Problem reading the cache file C:\\Users\\vukmi\\OneDrive\\Dokumenti\\GitHub\\PUSGS\\Server\\Server\\obj\\project.nuget.cache : Invalid property identifier character: <. Path 'version', line 3, position 0."
+    }
+  ]
 }

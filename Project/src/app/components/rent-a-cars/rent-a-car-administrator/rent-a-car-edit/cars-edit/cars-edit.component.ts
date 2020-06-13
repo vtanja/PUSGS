@@ -263,6 +263,7 @@ export class CarsEditComponent implements OnInit {
       (err) => {
         this.spinner.hide();
         this.clearDates();
+        console.log(err.message);
       }
     );
   }
@@ -329,13 +330,20 @@ export class CarsEditComponent implements OnInit {
           });
 
           this.updateCarsAfterDelete(car);
-
+        },
           (err) => {
             this.spinner.hide();
-          };
-        });
+            console.log(err);
+            Swal.fire({
+              text: err.error.message,
+              icon: 'error',
+              showConfirmButton: true
+            });
+          }
+
+        )
       }
-    });
+    })
   }
 
   carsEmpty(): boolean {

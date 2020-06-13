@@ -40,7 +40,7 @@ namespace Server.Repositories
             return await _context.ReservedDates.Where(
                                   c => c.CarId == carId &&
                                   c.Date >= pickUpDate &&
-                                  c.Date <= dropOffDate
+                                  c.Date < dropOffDate
                                   ).AnyAsync();
         }
 

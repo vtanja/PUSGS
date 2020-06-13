@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { RentCarService } from '../../../../services/rent-a-car.service';
 import { Car } from 'src/app/models/Car.model';
 import { Subscription, Observable } from 'rxjs';
@@ -30,6 +30,7 @@ export class CarsCardsComponent implements OnInit, OnDestroy {
 
   constructor(
     private route: ActivatedRoute,
+    private router:Router,
     private rentCarsService: RentCarService,
     private carService: CarService,
     private spinner: NgxSpinnerService,
@@ -151,16 +152,17 @@ export class CarsCardsComponent implements OnInit, OnDestroy {
             text: 'Reservation successfully made!',
             icon: 'success',
             showConfirmButton: false,
-            timer: 1500,
+            timer: 2300,
           });
+
+          this.router.navigateByUrl('/user/reservations/car-reservations');
         },
         (err) => {
           Swal.fire({
             title: 'Reservation making failed.',
             text: err.error.message,
             icon: 'error',
-            showConfirmButton: false,
-            timer: 1500,
+            showConfirmButton: true
           });
         }
       );
@@ -190,9 +192,9 @@ export class CarsCardsComponent implements OnInit, OnDestroy {
 
   changeDateFormat(date: string): string {
     let dateParts = date.split('-');
-    let day = dateParts[0];
-    let month = dateParts[1];
-    let year = dateParts[2];
+    let day = +dateParts[0];
+    let month = +dateParts[1];
+    let year = +dateParts[2];
 
     return month + '-' + day + '-' + year;
   }

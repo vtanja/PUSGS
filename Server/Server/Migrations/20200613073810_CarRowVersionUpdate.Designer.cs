@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Server.Settings;
 
 namespace Server.Migrations
 {
     [DbContext(typeof(DataBaseContext))]
-    partial class DataBaseContextModelSnapshot : ModelSnapshot
+    [Migration("20200613073810_CarRowVersionUpdate")]
+    partial class CarRowVersionUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -639,9 +641,6 @@ namespace Server.Migrations
                     b.Property<int>("FlightId")
                         .HasColumnType("int");
 
-                    b.Property<double>("FlightPrice")
-                        .HasColumnType("float");
-
                     b.Property<int>("ReservationId")
                         .HasColumnType("int");
 
@@ -781,9 +780,6 @@ namespace Server.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<bool>("AcceptedInvitation")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("AddedBonus")
                         .HasColumnType("bit");
 
                     b.Property<string>("FirstName")
@@ -972,9 +968,6 @@ namespace Server.Migrations
                 {
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<double>("BonusPoints")
-                        .HasColumnType("float");
 
                     b.Property<int?>("FlightReservationReservationId")
                         .HasColumnType("int");

@@ -1,10 +1,12 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using Server.Interfaces;
 using Server.IRepositories;
 using Server.IServices;
 using Server.Models;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
@@ -25,15 +27,18 @@ namespace Server.Services
             this.discountDateRepository = discountDateRepository;
             this.carRepository = carRepository;
         }
-
         public async Task<string> AddReservation(CarReservation carReservation)
         {
+            var car = await carRepository.GetCarWithReservationData(carReservation.CarId);
+
+            carRepository.UpdateCar(car);
+
             if (await reservedDateRepository.AreDatesReserved(carReservation.CarId, carReservation.PickUpDate, carReservation.DropOffDate))
                 return "Not all dates in this range are still available. Please reload page to get changed results.";
 
             carReservation.DateCreated = DateTime.Now;
             carReservation.TotalPrice = (carReservation.DropOffDate.Date - carReservation.PickUpDate.Date).TotalDays * carReservation.PricePerDay;
-            carReservationRepository.AddCarReservation(carReservation);
+            carRepository.AddReservationToCar(car, carReservation);
 
             for (DateTime date = carReservation.PickUpDate; date < carReservation.DropOffDate; date = date.AddDays(1))
             {
@@ -43,19 +48,21 @@ namespace Server.Services
                     Date = date
                 };
 
-                reservedDateRepository.AddReservedDate(reservedDate);
+                carRepository.AddReservedDateToCar(car,reservedDate);
             }
             try
             {
                 await carReservationRepository.Save();
             }
-            catch
+            catch(DbUpdateConcurrencyException dbConcurencyException)
             {
+                return "Your data is not totally updated. It looks like some changes happend or another user has reserved those dates.Please reload page to get up to dated values.";
+            }
+            catch {
                 return "error";
             }
             return "success";
         }
-
         public async Task<string> AddQuickReservation(CarReservation carReservation)
         {
             if (await reservedDateRepository.AreDatesReserved(carReservation.CarId, carReservation.PickUpDate, carReservation.DropOffDate))
@@ -102,12 +109,10 @@ namespace Server.Services
             }
             return "success_" + carReservation.Id;
         }
-
         public async Task<List<CarReservation>> GetUserCarReservations(string userId)
         {
             return await carReservationRepository.GetUserCarReservation(userId);
         }
-
         public async Task<string> GetDailyReservationReport(int companyId)
         {
             var ret = await carReservationRepository.GetDailyReservationReport(companyId);
@@ -121,7 +126,6 @@ namespace Server.Services
 
             })); ;
         }
-
         public async Task<string> GetWeeklyReservationReport(int companyId)
         {
             DateTime endDate = DateTime.Now;
@@ -158,7 +162,6 @@ namespace Server.Services
 
             }));
         }
-
         public async Task<string> GetMonthlyIncomes(int companyId, int month, int year)
         {
             var ret = await carReservationRepository.GetMonthlyIncomes(companyId, month, year);
@@ -184,7 +187,6 @@ namespace Server.Services
 
             }));
         }
-
         public async Task<string> GetAnnualIncomes(int companyId, int year)
         {
             var ret = await carReservationRepository.GetAnnualIncomes(companyId, year);
