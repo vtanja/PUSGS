@@ -53,11 +53,6 @@ namespace Server.Repositories
             return await _context.Airlines.Include(x => x.Address).Include(x => x.Destinations).Include(x=>x.Planes).Include(x=>x.Owner).Where(x => x.Id == id).FirstOrDefaultAsync();
         }
 
-        public async Task<Airline> GetAirline(int id)
-        {
-            return await _context.Airlines.FindAsync(id);
-        }
-
         public async Task<Airline> GetAirlineByUser(string username)
         {
             return await _context.Airlines.Include(x => x.Address).Include(x => x.Owner).Include(x => x.Planes).Include(x => x.Destinations).Where(x => x.Owner.UserName == username).FirstOrDefaultAsync();
@@ -73,10 +68,44 @@ namespace Server.Repositories
 
             return true;
         }
-
-        public void UpdateAirline(Airline airline)
+        public void UpdateAirlineRate(Airline airline)
         {
+            _context.Entry<Airline>(airline).State = EntityState.Detached;
             _context.Entry<Airline>(airline).State = EntityState.Modified;
+        }
+
+        public bool UpdateAirline(Airline airline)
+        {
+            try
+            {
+                _context.Entry<Airline>(airline).State = EntityState.Detached;
+                _context.Entry<Airline>(airline).State = EntityState.Modified;
+            }
+            catch (Exception)
+            {
+                _context.Entry(airline).State = EntityState.Unchanged;
+                //return BadRequest(new { message = "Updating data failed. Please try again later." });
+                return false;
+            }
+
+            try
+            {
+                _context.Entry<Address>(airline.Address).State = EntityState.Detached;
+                _context.Entry<Address>(airline.Address).State = EntityState.Modified;
+            }
+            catch (Exception)
+            {
+                _context.Entry<Address>(airline.Address).State = EntityState.Unchanged;
+                //return BadRequest(new { message = "Updating data failed. Please try again later." });
+                return false;
+            }
+
+            _context.Entry(airline).Property(a => a.Id).IsModified = false;
+            _context.Entry(airline).Property(a => a.AddressId).IsModified = false;
+            _context.Entry(airline).Property(a => a.OwnerId).IsModified = false;
+            _context.Entry(airline).Property(a => a.Rate).IsModified = false;
+
+            return true;
         }
 
         public void PostAirline(Airline airline)

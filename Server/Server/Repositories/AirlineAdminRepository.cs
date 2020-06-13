@@ -27,7 +27,7 @@ namespace Server.Repositories
 
         public async Task<AirlineAdmin> GetAirlineAdmin(string id)
         {
-            return await _context.AirlineAdmins.FindAsync(id);
+            return await _context.AirlineAdmins.Include(x=>x.Airline).Where(x=>x.UserId==id).FirstOrDefaultAsync();
         }
 
         public async Task<List<AirlineAdmin>> GetAirlineAdmins()

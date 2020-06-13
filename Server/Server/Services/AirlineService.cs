@@ -49,6 +49,12 @@ namespace Server.Services
             return await airlineRepository.GetAirlines();
         }
 
+        public async Task<double> GetCompanyRate(int id)
+        {
+            var airline = await airlineRepository.GetAirlineById(id);
+            return airline.Rate;
+        }
+
         public async Task<bool> HasAirline(string userId)
         {
             return await airlineRepository.HasAirline(userId);
@@ -67,5 +73,27 @@ namespace Server.Services
             }
             return true;
         }
+
+        public async Task<bool> UpdateAirline(Airline airline)
+        {
+            if (airlineRepository.UpdateAirline(airline))
+            {
+                try
+                {
+                    await airlineRepository.Save();
+                }
+                catch
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+            
+            return true;
+        }
+
     }
 }

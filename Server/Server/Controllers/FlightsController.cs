@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Razor.Language;
@@ -23,12 +24,14 @@ namespace Server.Controllers
         private readonly DataBaseContext _context;
         private readonly IMapper _mapper;
         private readonly FlightService flightService;
+        private readonly AirlineAdminService airlineAdminService;
 
         public FlightsController(DataBaseContext context, IMapper mapper, UnitOfWork unitOfWork)
         {
             _context = context;
             _mapper = mapper;
             flightService = unitOfWork.FlightService;
+            airlineAdminService = unitOfWork.AirlineAdminService;
         }
 
         // GET: api/Flights
@@ -286,6 +289,25 @@ namespace Server.Controllers
             return flight;
         }
 
-        
+        [HttpGet]
+        [Route("Average")]
+        [Authorize(Roles = "AIRLINEADMIN")]
+        public async Task<ActionResult<CarReservation>> GetWeeklyReservation()
+        {
+            string userId = User.Claims.First(c => c.Type == "UserID").Value;
+            var admin = await airlineAdminService.GetAirlineAdmin(userId);
+
+            if (admin.AirlineId == null)
+                return BadRequest();
+
+            var flightReservation = await flightService.GetAirlineFlightRate((int)admin.AirlineId);
+
+            if (flightReservation == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(flightReservation);
+        }
     }
 }

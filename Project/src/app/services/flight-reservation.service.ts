@@ -4,6 +4,7 @@ import { UserService } from './user-service.service';
 import { HttpClient } from '@angular/common/http';
 import { regExpEscape } from '@ng-bootstrap/ng-bootstrap/util/util';
 import { Observable, Subject } from 'rxjs';
+import { subscribeOn } from 'rxjs/operators';
 import { CarReservation } from '../models/car-reservation.model';
 
 @Injectable({
@@ -11,12 +12,42 @@ import { CarReservation } from '../models/car-reservation.model';
 })
 export class FlightReservationService {
 
+  airlinebarChartSubject = new Subject();
+  monthlyIncomesSubject = new Subject();
+  annualIncomesSubject = new Subject();
+
   pendingReservation:FlightReservation;
   pendingCarReservation:{} = {};
   rateModalClose = new Subject<{}>();
   readonly baseUri = 'http://localhost:51474/api/';
 
   constructor(private userService:UserService, private httpClient:HttpClient) { }
+
+  getWeeklyReport(){
+    return this.httpClient.get(this.baseUri+"FlightReservations/Weekly");
+  }
+
+  getDailyReport(){
+    return this.httpClient.get(this.baseUri+"FlightReservations/Daily");
+  }
+
+  getMonthlyReport(){
+    return this.httpClient.get(this.baseUri+"FlightReservations/Monthly");
+  }
+
+  getMonthlyIncomes(data){
+    return this.httpClient.get(this.baseUri+"FlightReservations/MonthlyIncomes/" + data);
+  }
+
+  getAnnualIncomes(data){
+    console.log('annual incomes');
+    return this.httpClient.get(this.baseUri+"FlightReservations/AnnualIncomes/" + data);
+  }
+
+  getAverageRating(){
+    return this.httpClient.get(this.baseUri+'Flights/Average');
+  }
+
 
   saveReservation(reservation:FlightReservation){
     this.pendingReservation=reservation;

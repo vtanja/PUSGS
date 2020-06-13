@@ -51,6 +51,10 @@ import { RentACarHomeComponent } from './components/rent-a-cars/rent-a-car-admin
 import { BarChartComponent } from './components/rent-a-cars/rent-a-car-administrator/rent-a-car-home/bar-chart/bar-chart.component';
 import { MonthlyIncomesComponent } from './components/rent-a-cars/rent-a-car-administrator/rent-a-car-home/monthly-incomes/monthly-incomes.component';
 import { IncomesComponent } from './components/rent-a-cars/rent-a-car-administrator/rent-a-car-home/incomes/incomes.component';
+import { AirlineChartBarComponent } from './components/airlines/airline-administrator/airline-admin-home/airline-chart-bar/airline-chart-bar.component';
+import { AirlineAdminHomeComponent } from './components/airlines/airline-administrator/airline-admin-home/airline-admin-home.component';
+import { AirlineMonthlyIncomesComponent } from './components/airlines/airline-administrator/airline-admin-home/airline-monthly-incomes/airline-monthly-incomes.component';
+import { AirlineAnnualIncomesComponent } from './components/airlines/airline-administrator/airline-admin-home/airline-annual-incomes/airline-annual-incomes.component';
 
 const routes: Routes = [
   { path: '', component: HomePageComponent, pathMatch: 'full' },
@@ -77,6 +81,24 @@ const routes: Routes = [
       {
         path:'annual-incomes',component:IncomesComponent,canActivate: [AuthGuard],
         data: { permittedRoles: ['RENTCARADMIN'] },
+      }
+    ]
+  },
+  {
+    path:'airline-admin-home',
+    component:AirlineAdminHomeComponent,
+    children:[
+      {
+        path: 'airline-chart-bar', component: AirlineChartBarComponent,canActivate: [AuthGuard],
+        data: { permittedRoles: ['AIRLINEADMIN'] },
+      },
+      {
+        path:'airline-monthly-incomes',component:AirlineMonthlyIncomesComponent,canActivate: [AuthGuard],
+        data: { permittedRoles: ['AIRLINEADMIN'] },
+      },
+      {
+        path:'airline-annual-incomes',component:AirlineAnnualIncomesComponent,canActivate: [AuthGuard],
+        data: { permittedRoles: ['AIRLINEADMIN'] },
       }
     ]
   },
@@ -180,7 +202,7 @@ const routes: Routes = [
     path: 'airline-admin',
     component: AirlineAdministratorComponent,
     canActivate: [AuthGuard],
-    data: { permittedRoles: ['AIRLINEADMIN'] },
+    data: { permittedRoles: ['AIRLINEADMIN']},
   },
   {
     path: 'add-airline-data',

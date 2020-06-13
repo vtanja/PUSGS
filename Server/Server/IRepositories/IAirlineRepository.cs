@@ -11,8 +11,7 @@ namespace Server.IRepositories
     {
         Task<ActionResult<IEnumerable<Airline>>> GetAirlines();
         Task<Airline> GetAirlineById(int id);
-        Task<Airline> GetAirline(int id);
-        void UpdateAirline(Airline airline);
+        bool UpdateAirline(Airline airline);
         Task<Airline> GetAirlineByUser(string username);
         Task<bool> HasAirline(string userId);
         void PostAirline(Airline airline);

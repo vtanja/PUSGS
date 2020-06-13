@@ -20,6 +20,7 @@ namespace Server.Controllers
     {
         private readonly DataBaseContext _context;
         private readonly FlightReservationService flightReservationService;
+        private readonly AirlineAdminService airlineAdminService;
         private readonly CarReservationService carReservationService;
         private readonly Email.IEmailSender _emailSender;
 
@@ -27,6 +28,7 @@ namespace Server.Controllers
         {
             _context = context;
             flightReservationService = unitOfWork.FlightReservationService;
+            airlineAdminService = unitOfWork.AirlineAdminService;
             carReservationService = unitOfWork.CarReservationService;
             _emailSender = emailSender;
         }
@@ -34,6 +36,7 @@ namespace Server.Controllers
         // GET: api/FlightReservations
         [HttpGet]
         [Route("All")]
+        [Authorize("USER")]
         public async Task<IEnumerable<FlightReservation>> GetFlightReservations()
         {
             var userId = User.Claims.First(c => c.Type == "UserID").Value;
@@ -43,6 +46,7 @@ namespace Server.Controllers
 
         // GET: api/FlightReservations/5
         [HttpGet("{id}")]
+        [Authorize("USER")]
         public async Task<ActionResult<FlightReservation>> GetFlightReservation(int id)
         {
             var flightReservation = await _context.FlightReservations.FindAsync(id);
@@ -78,6 +82,7 @@ namespace Server.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
+        [Authorize("USER")]
         public async Task<ActionResult<FlightReservation>> PostFlightReservation(FlightReservationModel flightReservation)
         {
             var userId = User.Claims.First(c => c.Type == "UserID").Value;
@@ -271,6 +276,7 @@ namespace Server.Controllers
 
         // DELETE: api/FlightReservations/5
         [HttpDelete("{id}")]
+        [Authorize("USER")]
         public async Task<ActionResult<FlightReservation>> DeleteFlightReservation(int id)
         {
             var flightReservation = await _context.FlightReservations.FindAsync(id);
@@ -291,6 +297,7 @@ namespace Server.Controllers
         }
 
         [HttpGet("[action]")]
+        [Authorize("USER")]
         public async Task<IActionResult> ConfirmFlightReservation(string userId, int reservationId)
         {
             if (reservationId==null)
@@ -363,6 +370,7 @@ namespace Server.Controllers
         }
 
         [HttpGet("[action]")]
+        [Authorize("USER")]
         public async Task<IActionResult> DeclineFlightReservation(string userId, int reservationId)
         {
             if (reservationId == null)
@@ -438,6 +446,125 @@ namespace Server.Controllers
 
 
         }
+
+        //GET: api/CarReservations/Daily
+        [HttpGet]
+        [Route("Daily")]
+        [Authorize(Roles = "AIRLINEADMIN")]
+        public async Task<ActionResult<CarReservation>> GetDailyCarReservation()
+        {
+            string userId = User.Claims.First(c => c.Type == "UserID").Value;
+            var admin = await airlineAdminService.GetAirlineAdmin(userId);
+
+            if (admin.Airline == null)
+                return BadRequest();
+
+            var flightReservation = await flightReservationService.GetDailyReservationReport((int)admin.AirlineId);
+
+            if (flightReservation == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(flightReservation);
+        }
+
+        [HttpGet]
+        [Route("MonthlyIncomes/{date}")]
+        [Authorize(Roles = "AIRLINEADMIN")]
+        public async Task<ActionResult<CarReservation>> GetMonthlyIncomes(string date)
+        {
+            string userId = User.Claims.First(c => c.Type == "UserID").Value;
+            var admin = await airlineAdminService.GetAirlineAdmin(userId);
+
+            if (admin.AirlineId == null)
+                return BadRequest();
+
+            string[] parts = date.Split(':');
+            if (parts.Count() == 0)
+                return BadRequest();
+
+            int month;
+            int year;
+            if (Int32.TryParse(parts[0], out month) && Int32.TryParse(parts[1], out year))
+            {
+                var flightReservation = await flightReservationService.GetMonthlyIncomes((int)admin.AirlineId, year, month);
+
+                if (flightReservation == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(flightReservation);
+
+            }
+
+            return BadRequest();
+        }
+
+        [HttpGet]
+        [Route("AnnualIncomes/{year}")]
+        [Authorize(Roles = "AIRLINEADMIN")]
+        public async Task<ActionResult<CarReservation>> GetAnnualIncomes(int year)
+        {
+            string userId = User.Claims.First(c => c.Type == "UserID").Value;
+            var admin = await airlineAdminService.GetAirlineAdmin(userId);
+
+            if (admin.AirlineId == null)
+                return BadRequest();
+
+            var flightReservation = await flightReservationService.GetAnnualIncomes((int)admin.AirlineId, year);
+
+            if (flightReservation == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(flightReservation);
+        }
+
+        [HttpGet]
+        [Route("Weekly")]
+        [Authorize(Roles = "AIRLINEADMIN")]
+        public async Task<ActionResult<CarReservation>> GetWeeklyReservation()
+        {
+            string userId = User.Claims.First(c => c.Type == "UserID").Value;
+            var admin = await airlineAdminService.GetAirlineAdmin(userId);
+
+            if (admin.AirlineId == null)
+                return BadRequest();
+
+            var flightReservation = await flightReservationService.GetWeeklyReservationReport((int)admin.AirlineId);
+
+            if (flightReservation == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(flightReservation);
+        }
+
+        [HttpGet]
+        [Route("Monthly")]
+        [Authorize(Roles = "AIRLINEADMIN")]
+        public async Task<ActionResult<CarReservation>> GetMonthlyCarReservation()
+        {
+            string userId = User.Claims.First(c => c.Type == "UserID").Value;
+            var admin = await airlineAdminService.GetAirlineAdmin(userId);
+
+            if (admin.AirlineId == null)
+                return BadRequest();
+
+            var flightReservation = await flightReservationService.GetMonthlyReservationReport((int)admin.AirlineId);
+
+            if (flightReservation == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(flightReservation);
+        }
+
 
     }
 }
